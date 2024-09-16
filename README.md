@@ -28,8 +28,11 @@ yarn run serve
 3. **安装后端依赖并启动**：
 ```sh
 cd ../backend
-sudo apt install -y openjdk-8-jdk
 sudo apt install -y redis-server
+sudo apt install -y openjdk-8-jdk-headless
+echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
 sudo service redis-server start
 mvn clean install
 mvn spring-boot:run
