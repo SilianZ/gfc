@@ -1,12 +1,90 @@
-## ide
-**/.idea
+# Java-related ignores
+*.class
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IntelliJ IDEA files
+.idea/
 *.iml
-rebel.xml
+*.iws
+*.ipr
 
-## backend
-**/target
-**/logs
+# Eclipse files
+.project
+.classpath
+.settings/
 
-## front
-**/*.lock
+# NetBeans files
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+.gradle/
+build/
+
+# Vue.js-related ignores
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
 .DS_Store
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# IDE specific files
+*.idea/
+*.vscode/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Linux generated files
+*~
