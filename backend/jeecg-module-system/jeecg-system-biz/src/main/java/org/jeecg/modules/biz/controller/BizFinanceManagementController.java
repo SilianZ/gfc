@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.biz.entity.BizMaterialTrans;
 import org.jeecg.modules.biz.entity.BizFinanceManagement;
 import org.jeecg.modules.biz.entity.BizSubjectBalance;
 import org.jeecg.modules.biz.service.*;
@@ -42,28 +43,31 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.aspect.annotation.AutoLog;
 
- /**
+/**
  * @Description: 理财
  * @Author: jeecg-boot
- * @Date:   2023-09-27
+ * @Date: 2023-09-27
  * @Version: V1.0
  */
-@Api(tags="理财")
+@Api(tags = "理财")
 @RestController
 @RequestMapping("/biz/bizFinanceManagement")
 @Slf4j
-public class BizFinanceManagementController extends JeecgController<BizFinanceManagement, IBizFinanceManagementService> {
+public class BizFinanceManagementController
+        extends JeecgController<BizFinanceManagement, IBizFinanceManagementService> {
     @Autowired
     private IBizFinanceManagementService bizFinanceManagementService;
-     @Autowired
-     private IBizSubjectBalanceService bizSubjectBalanceService;
-     @Autowired
-     private IBizFiscalYearService bizFiscalYearService;
-     @Autowired
-     private IBizBankConfigService bizBankConfigService;
-     @Autowired
-     private ISysDepartService sysDepartService;
-    
+    @Autowired
+    private IBizSubjectBalanceService bizSubjectBalanceService;
+    @Autowired
+    private IBizMaterialTransService bizMaterialTransService;
+    @Autowired
+    private IBizFiscalYearService bizFiscalYearService;
+    @Autowired
+    private IBizBankConfigService bizBankConfigService;
+    @Autowired
+    private ISysDepartService sysDepartService;
+
     /**
      * 分页列表查询 Management
      *
@@ -73,170 +77,186 @@ public class BizFinanceManagementController extends JeecgController<BizFinanceMa
      * @param req
      * @return
      */
-    //@AutoLog(value = "理财-分页列表查询")
-    @ApiOperation(value="理财-分页列表查询", notes="理财-分页列表查询")
+    // @AutoLog(value = "理财-分页列表查询")
+    @ApiOperation(value = "理财-分页列表查询", notes = "理财-分页列表查询")
     @GetMapping(value = "/list")
     public Result<IPage<BizFinanceManagement>> queryPageList(BizFinanceManagement bizFinanceManagement,
-                                   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-                                   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-                                   HttpServletRequest req) {
-        QueryWrapper<BizFinanceManagement> queryWrapper = QueryGenerator.initQueryWrapper(bizFinanceManagement, req.getParameterMap());
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            HttpServletRequest req) {
+        QueryWrapper<BizFinanceManagement> queryWrapper = QueryGenerator.initQueryWrapper(bizFinanceManagement,
+                req.getParameterMap());
         Page<BizFinanceManagement> page = new Page<BizFinanceManagement>(pageNo, pageSize);
         IPage<BizFinanceManagement> pageList = bizFinanceManagementService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
+
     /**
-     *   添加
+     * 添加
      *
      * @param bizFinanceManagement
      * @return
      */
     @AutoLog(value = "原材交易-添加")
-    @ApiOperation(value="原材交易-添加", notes="原材交易-添加")
-    //@RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
+    @ApiOperation(value = "原材交易-添加", notes = "原材交易-添加")
+    // @RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
     public Result<String> add(@RequestBody BizFinanceManagement bizFinanceManagement) {
         try {
-            //设置所属财年
+            // 设置所属财年
             bizFinanceManagement.setYearCode(bizFiscalYearService.getActiveYearCode());
             BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizFinanceManagement.getBuyerId());
-            //减少买方现金余额
-            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct()) - (bizFinanceManagement.getTransPrice() == null ? 0 : bizFinanceManagement.getTransPrice()));
-            if(buyerBalance.getCashAcct() < 0){
+            // 减少买方现金余额
+            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
+                    - (bizFinanceManagement.getTransPrice() == null ? 0 : bizFinanceManagement.getTransPrice()));
+            if (buyerBalance.getCashAcct() < 0) {
                 throw new Exception("存入方现金余额不足");
             }
             bizSubjectBalanceService.updateById(buyerBalance);
             bizFinanceManagementService.save(bizFinanceManagement);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            //回滚事务
+            // 回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error("交易失败：" + e.getMessage());
         }
         return Result.OK("添加成功！");
     }
-    
+
     /**
-     *  编辑
+     * 编辑
      *
      * @param bizFinanceManagement
      * @return
      */
     @AutoLog(value = "理财-编辑")
-    @ApiOperation(value="理财-编辑", notes="理财-编辑")
-    //@RequiresPermissions("org.jeecg.modules:biz_material_trans:edit")
-    @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
+    @ApiOperation(value = "理财-编辑", notes = "理财-编辑")
+    // @RequiresPermissions("org.jeecg.modules:biz_material_trans:edit")
+    @RequestMapping(value = "/edit", method = { RequestMethod.PUT, RequestMethod.POST })
     public Result<String> edit(@RequestBody BizFinanceManagement bizFinanceManagement) {
         bizFinanceManagementService.updateById(bizFinanceManagement);
         return Result.OK("编辑成功!");
     }
-    
+
     /**
-     *   通过id删除
+     * 通过id删除
      *
      * @param id
      * @return
      */
     @AutoLog(value = "理财-通过id删除")
-    @ApiOperation(value="理财-通过id删除", notes="理财-通过id删除")
-    //@RequiresPermissions("org.jeecg.modules:biz_material_trans:delete")
+    @ApiOperation(value = "理财-通过id删除", notes = "理财-通过id删除")
+    // @RequiresPermissions("org.jeecg.modules:biz_material_trans:delete")
     @DeleteMapping(value = "/delete")
-    public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-        try{
+    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
+        try {
             BizMaterialTrans bizMaterialTrans = bizMaterialTransService.getById(id);
-            //增加卖方材料库存
+            // 增加卖方材料库存
             BizSubjectBalance sellerBalance = bizSubjectBalanceService.getByUserId(bizMaterialTrans.getSellerId());
-            sellerBalance.setSteelAcct((sellerBalance.getSteelAcct() == null ? 0 : sellerBalance.getSteelAcct()) + (bizMaterialTrans.getGtNumber() == null ? 0 : bizMaterialTrans.getGtNumber()));
-            sellerBalance.setSilicaAcct((sellerBalance.getSilicaAcct() == null ? 0 : sellerBalance.getSilicaAcct()) + (bizMaterialTrans.getGsNumber() == null ? 0 : bizMaterialTrans.getGsNumber()));
-            sellerBalance.setCrudeAcct((sellerBalance.getCrudeAcct() == null ? 0 : sellerBalance.getCrudeAcct()) + (bizMaterialTrans.getSyNumber() == null ? 0 : bizMaterialTrans.getSyNumber()));
-            sellerBalance.setPlasticsAcct((sellerBalance.getPlasticsAcct() == null ? 0 : sellerBalance.getPlasticsAcct()) + (bizMaterialTrans.getSlNumber() == null ? 0 : bizMaterialTrans.getSlNumber()));
-            //冲销交易所得税
+            sellerBalance.setSteelAcct((sellerBalance.getSteelAcct() == null ? 0 : sellerBalance.getSteelAcct())
+                    + (bizMaterialTrans.getGtNumber() == null ? 0 : bizMaterialTrans.getGtNumber()));
+            sellerBalance.setSilicaAcct((sellerBalance.getSilicaAcct() == null ? 0 : sellerBalance.getSilicaAcct())
+                    + (bizMaterialTrans.getGsNumber() == null ? 0 : bizMaterialTrans.getGsNumber()));
+            sellerBalance.setCrudeAcct((sellerBalance.getCrudeAcct() == null ? 0 : sellerBalance.getCrudeAcct())
+                    + (bizMaterialTrans.getSyNumber() == null ? 0 : bizMaterialTrans.getSyNumber()));
+            sellerBalance
+                    .setPlasticsAcct((sellerBalance.getPlasticsAcct() == null ? 0 : sellerBalance.getPlasticsAcct())
+                            + (bizMaterialTrans.getSlNumber() == null ? 0 : bizMaterialTrans.getSlNumber()));
+            // 冲销交易所得税
             SysDepart depart = sysDepartService.queryDepartsByUsername(bizMaterialTrans.getSellerId()).get(0);
-            Double taxAmount = bizBankConfigService.offTaxes(bizMaterialTrans.getTransPrice(), bizMaterialTrans.getIsTransnational().equals("Y"), depart.getId());
-            //减少卖方现金余额
-            sellerBalance.setCashAcct((sellerBalance.getCashAcct() == null ? 0 : sellerBalance.getCashAcct()) - (bizMaterialTrans.getTransPrice() == null ? 0 : bizMaterialTrans.getTransPrice()) + taxAmount);
-            //减少买方材料库存
+            Double taxAmount = bizBankConfigService.offTaxes(bizMaterialTrans.getTransPrice(),
+                    bizMaterialTrans.getIsTransnational().equals("Y"), depart.getId());
+            // 减少卖方现金余额
+            sellerBalance.setCashAcct((sellerBalance.getCashAcct() == null ? 0 : sellerBalance.getCashAcct())
+                    - (bizMaterialTrans.getTransPrice() == null ? 0 : bizMaterialTrans.getTransPrice()) + taxAmount);
+            // 减少买方材料库存
             BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizMaterialTrans.getBuyerId());
-            buyerBalance.setSteelAcct((buyerBalance.getSteelAcct() == null ? 0 : buyerBalance.getSteelAcct()) - (bizMaterialTrans.getGtNumber() == null ? 0 : bizMaterialTrans.getGtNumber()));
-            buyerBalance.setSilicaAcct((buyerBalance.getSilicaAcct() == null ? 0 : buyerBalance.getSilicaAcct()) - (bizMaterialTrans.getGsNumber() == null ? 0 : bizMaterialTrans.getGsNumber()));
-            buyerBalance.setCrudeAcct((buyerBalance.getCrudeAcct() == null ? 0 : buyerBalance.getCrudeAcct()) - (bizMaterialTrans.getSyNumber() == null ? 0 : bizMaterialTrans.getSyNumber()));
-            buyerBalance.setPlasticsAcct((buyerBalance.getPlasticsAcct() == null ? 0 : buyerBalance.getPlasticsAcct()) - (bizMaterialTrans.getSlNumber() == null ? 0 : bizMaterialTrans.getSlNumber()));
-            //增加买方现金余额
-            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct()) + (bizMaterialTrans.getTransPrice() == null ? 0 : bizMaterialTrans.getTransPrice()));
-            if(buyerBalance.getCashAcct() < 0){
-                throw new Exception("卖家现金余额不足");                
+            buyerBalance.setSteelAcct((buyerBalance.getSteelAcct() == null ? 0 : buyerBalance.getSteelAcct())
+                    - (bizMaterialTrans.getGtNumber() == null ? 0 : bizMaterialTrans.getGtNumber()));
+            buyerBalance.setSilicaAcct((buyerBalance.getSilicaAcct() == null ? 0 : buyerBalance.getSilicaAcct())
+                    - (bizMaterialTrans.getGsNumber() == null ? 0 : bizMaterialTrans.getGsNumber()));
+            buyerBalance.setCrudeAcct((buyerBalance.getCrudeAcct() == null ? 0 : buyerBalance.getCrudeAcct())
+                    - (bizMaterialTrans.getSyNumber() == null ? 0 : bizMaterialTrans.getSyNumber()));
+            buyerBalance.setPlasticsAcct((buyerBalance.getPlasticsAcct() == null ? 0 : buyerBalance.getPlasticsAcct())
+                    - (bizMaterialTrans.getSlNumber() == null ? 0 : bizMaterialTrans.getSlNumber()));
+            // 增加买方现金余额
+            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
+                    + (bizMaterialTrans.getTransPrice() == null ? 0 : bizMaterialTrans.getTransPrice()));
+            if (buyerBalance.getCashAcct() < 0) {
+                throw new Exception("卖家现金余额不足");
             }
-            if(sellerBalance.getSteelAcct() < 0 ||  sellerBalance.getSilicaAcct() < 0 || sellerBalance.getCrudeAcct() < 0 || sellerBalance.getPlasticsAcct() < 0){
-                throw new Exception("卖家材料库存不足");                
+            if (sellerBalance.getSteelAcct() < 0 || sellerBalance.getSilicaAcct() < 0
+                    || sellerBalance.getCrudeAcct() < 0 || sellerBalance.getPlasticsAcct() < 0) {
+                throw new Exception("卖家材料库存不足");
             }
             bizSubjectBalanceService.updateById(sellerBalance);
             bizSubjectBalanceService.updateById(buyerBalance);
             bizMaterialTransService.removeById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            //回滚事务
+            // 回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return  Result.error("撤销失败：" + e.getMessage());
+            return Result.error("撤销失败：" + e.getMessage());
         }
         return Result.OK("撤销成功!");
     }
-    
+
     /**
-     *  批量删除
+     * 批量删除
      *
      * @param ids
      * @return
      */
     @AutoLog(value = "原材交易-批量删除")
-    @ApiOperation(value="原材交易-批量删除", notes="原材交易-批量删除")
-    //@RequiresPermissions("org.jeecg.modules:biz_material_trans:deleteBatch")
+    @ApiOperation(value = "原材交易-批量删除", notes = "原材交易-批量删除")
+    // @RequiresPermissions("org.jeecg.modules:biz_material_trans:deleteBatch")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
         this.bizMaterialTransService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功!");
     }
-    
+
     /**
      * 通过id查询
      *
      * @param id
      * @return
      */
-    //@AutoLog(value = "原材交易-通过id查询")
-    @ApiOperation(value="原材交易-通过id查询", notes="原材交易-通过id查询")
+    // @AutoLog(value = "原材交易-通过id查询")
+    @ApiOperation(value = "原材交易-通过id查询", notes = "原材交易-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<BizMaterialTrans> queryById(@RequestParam(name="id",required=true) String id) {
+    public Result<BizMaterialTrans> queryById(@RequestParam(name = "id", required = true) String id) {
         BizMaterialTrans bizMaterialTrans = bizMaterialTransService.getById(id);
-        if(bizMaterialTrans==null) {
+        if (bizMaterialTrans == null) {
             return Result.error("未找到对应数据");
         }
         return Result.OK(bizMaterialTrans);
     }
 
     /**
-    * 导出excel
-    *
-    * @param request
-    * @param bizMaterialTrans
-    */
-    //@RequiresPermissions("org.jeecg.modules:biz_material_trans:exportXls")
+     * 导出excel
+     *
+     * @param request
+     * @param bizMaterialTrans
+     */
+    // @RequiresPermissions("org.jeecg.modules:biz_material_trans:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizMaterialTrans bizMaterialTrans) {
-        return super.exportXls(request, bizMaterialTrans, BizMaterialTrans.class, "原材交易");
+    public ModelAndView exportXls(HttpServletRequest request, BizFinanceManagement bizFinanceManagement) {
+        return super.exportXls(request, bizFinanceManagement, BizFinanceManagement.class, "理财");
     }
 
     /**
-      * 通过excel导入数据
-    *
-    * @param request
-    * @param response
-    * @return
-    */
-    //@RequiresPermissions("biz_material_trans:importExcel")
+     * 通过excel导入数据
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    // @RequiresPermissions("biz_material_trans:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizMaterialTrans.class);
+        return super.importExcel(request, response, BizFinanceManagement.class);
     }
 
 }
