@@ -21,7 +21,8 @@ git clone https://github.com/Amazingkenneth/gfc.git
 2. **安装前端依赖并启动**：
 ```sh
 cd ./gfc/frontend
-sudo apt install -y yarn
+sudo apt install -y npm
+sudo npm install --global yarn
 yarn install
 yarn run serve
 ```

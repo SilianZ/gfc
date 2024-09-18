@@ -8,7 +8,8 @@ cd ./gfc
 
 # 安装前端依赖并启动
 cd ./frontend
-sudo apt install -y yarn
+sudo apt install -y npm
+sudo npm install --global yarn
 yarn install
 yarn run serve &
 
