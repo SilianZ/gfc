@@ -111,13 +111,12 @@ public class Result<T> implements Serializable {
 	 */
 	public static<T> Result<T> OK(String msg) {
 		Result<T> r = new Result<T>();
-		Result<T> r2 = new Result<T>();
 		r.setSuccess(true);
 		r.setCode(CommonConstant.SC_OK_200);
 		r.setMessage(msg);
 		//Result OK(String msg)方法会造成兼容性问题 issues/I4IP3D
 		r.setResult((T) msg);
-		return r2;
+		return r;
 	}
 
 	public static<T> Result<T> OK(T data) {

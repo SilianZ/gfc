@@ -50,10 +50,6 @@ public class BizFinanceManagement implements Serializable {
     @Excel(name = "交易价格", width = 15)
     @ApiModelProperty(value = "交易价格")
     private java.lang.Double transPrice;
-    /** 预计收益 */
-    @Excel(name = "预计收益", width = 15)
-    @ApiModelProperty(value = "预计收益")
-    private java.lang.Double Revenue;
     /** 备注 */
     @Excel(name = "备注", width = 15)
     @ApiModelProperty(value = "备注")

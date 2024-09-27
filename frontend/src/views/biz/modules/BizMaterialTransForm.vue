@@ -348,6 +348,8 @@ export default {
       var params = {userId: this.model.sellerId}
       getAction("/biz/bizSubjectBalance/queryByUserId", params).then((res) => {
         if (res.success) {
+          console.log("This is for Material Trans")
+          console.log(res)
           this.model.ngtNumber = res.result.steelAcct;
           this.model.ngsNumber = res.result.silicaAcct;
           this.model.nsyNumber = res.result.crudeAcct;

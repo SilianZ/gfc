@@ -182,6 +182,21 @@
           }
         }).finally(() => {
         });
+      },
+      queryValid() {
+        if (!this.model.yearCode) return;
+        getAction("/biz/bizSubjectBalance/queryByUserId", params).then((res) => {
+          if (res.success) {
+            this.model.ngtNumber = res.result.steelAcct;
+            this.model.ngsNumber = res.result.silicaAcct;
+            this.model.nsyNumber = res.result.crudeAcct;
+            this.model.nslNumber = res.result.plasticsAcct;
+            this.$forceUpdate();
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).finally(() => {
+        })
       }
     }
   }

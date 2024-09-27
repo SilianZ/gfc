@@ -101,6 +101,8 @@ import {httpAction, getAction, deleteAction} from '@/api/manage'
             }
             httpAction(httpurl,this.model,method).then((res)=>{
               if(res.success){
+                console.log("This is for BizFiscalYearForm")
+                console.log(res)
                 that.$message.success(res.message);
                 that.$emit('ok');
               }else{

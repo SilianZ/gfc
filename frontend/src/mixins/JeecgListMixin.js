@@ -129,7 +129,6 @@ export const JeecgListMixin = {
       param.field = this.getQueryField();
       param.pageNo = this.ipagination.current;
       param.pageSize = this.ipagination.pageSize;
-      console.log("12356825t2r92423445")
       console.log(filterObj(param))
       return filterObj(param);
     },

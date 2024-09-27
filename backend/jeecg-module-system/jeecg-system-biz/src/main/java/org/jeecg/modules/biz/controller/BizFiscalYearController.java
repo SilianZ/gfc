@@ -90,6 +90,7 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	public Result<String> edit(@RequestBody BizFiscalYear bizFiscalYear) {
 		bizFiscalYearService.updateById(bizFiscalYear);
+		
 		return Result.OK("编辑成功!");
 	}
 	
