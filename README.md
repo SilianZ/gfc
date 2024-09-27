@@ -35,6 +35,7 @@ echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 sudo service redis-server start
+cd ./jeecg-module-system/jeecg-system-start
 mvn clean install
 mvn spring-boot:run
 ```
