@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.biz.entity.BizMaterialTrans;
-import org.jeecg.modules.biz.entity.BizFinanceManagement;
+import org.jeecg.modules.biz.entity.BizVirtualCurrency;
 import org.jeecg.modules.biz.entity.BizFiscalYear;
 import org.jeecg.modules.biz.entity.BizSubjectBalance;
 import org.jeecg.modules.biz.service.*;
@@ -49,19 +48,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import lombok.Data;
 /**
- * @Description: 理财
+ * @Description: 虚拟货币投资
  * @Author: jeecg-boot
  * @Date: 2023-09-27
  * @Version: V1.0
  */
-@Api(tags = "理财")
+@Api(tags = "虚拟货币投资")
 @RestController
-@RequestMapping("/biz/bizFinanceManagement")
+@RequestMapping("/biz/bizVirtualCurrency")
 @Slf4j
-public class BizFinanceManagementController
-        extends JeecgController<BizFinanceManagement, IBizFinanceManagementService> {
+public class BizVirtualCurrencyController
+        extends JeecgController<BizVirtualCurrency, IBizVirtualCurrencyService> {
     @Autowired
-    private IBizFinanceManagementService bizFinanceManagementService;
+    private IBizVirtualCurrencyService bizVirtualCurrencyService;
     @Autowired
     private IBizSubjectBalanceService bizSubjectBalanceService;
     @Autowired
@@ -74,48 +73,43 @@ public class BizFinanceManagementController
     /**
      * 分页列表查询 Management
      *
-     * @param bizFinanceManagement
+     * @param bizVirtualCurrency
      * @param pageNo
      * @param pageSize
      * @param req
      * @return
      */
-    // @AutoLog(value = "理财-分页列表查询")
-    @ApiOperation(value = "理财-分页列表查询", notes = "理财-分页列表查询")
+    // @AutoLog(value = "虚拟货币投资-分页列表查询")
+    @ApiOperation(value = "虚拟货币投资-分页列表查询", notes = "虚拟货币投资-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<BizFinanceManagement>> queryPageList(BizFinanceManagement bizFinanceManagement,
+    public Result<IPage<BizVirtualCurrency>> queryPageList(BizVirtualCurrency bizVirtualCurrency,
             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             HttpServletRequest req) {
-        QueryWrapper<BizFinanceManagement> queryWrapper = QueryGenerator.initQueryWrapper(bizFinanceManagement,
+        QueryWrapper<BizVirtualCurrency> queryWrapper = QueryGenerator.initQueryWrapper(bizVirtualCurrency,
                 req.getParameterMap());
-        Page<BizFinanceManagement> page = new Page<BizFinanceManagement>(pageNo, pageSize);
-        IPage<BizFinanceManagement> pageList = bizFinanceManagementService.page(page, queryWrapper);
+        Page<BizVirtualCurrency> page = new Page<BizVirtualCurrency>(pageNo, pageSize);
+        IPage<BizVirtualCurrency> pageList = bizVirtualCurrencyService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
 
     /**
      * 添加
      *
-     * @param bizFinanceManagement
+     * @param bizVirtualCurrency
      * @return
      */
-    @AutoLog(value = "理财-添加")
-    @ApiOperation(value = "理财-添加", notes = "理财-添加")
+    @AutoLog(value = "虚拟货币投资-添加")
+    @ApiOperation(value = "虚拟货币投资-添加", notes = "虚拟货币投资-添加")
     // @RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> add(@RequestBody BizFinanceManagement bizFinanceManagement) {
-
-
-
-
-        log.info("开始初始化查询条件构造器，搜索对象类型：{}", bizFinanceManagement);
+    public Result<String> add(@RequestBody BizVirtualCurrency bizVirtualCurrency) {
 
 
         try {
             log.info("12356896074578697");
-            Integer yearc=bizFinanceManagement.getYearCode();
+            Integer yearc=bizVirtualCurrency.getYearCode();
             log.info("YearCode: {}", yearc);
             
             log.info("Start Year :::: {}", bizFiscalYearService.getById(yearc));
@@ -137,15 +131,23 @@ public class BizFinanceManagementController
                 throw new Exception("已过当前财年投资时间");
             }
 
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizFinanceManagement.getSellerId());
+            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
+            //判断投资总额是否超标
+            Double acct=buyerBalance.getCashAcct();
+            if(acct * 0.05 < bizVirtualCurrency.getTransPrice()){
+                throw new Exception("投资金额超过5%");
+            }
+
             // 减少买方现金余额
             buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
-                    - (bizFinanceManagement.getTransPrice() == null ? 0 : bizFinanceManagement.getTransPrice()));
+                    - (bizVirtualCurrency.getTransPrice() == null ? 0 : bizVirtualCurrency.getTransPrice()));
             if (buyerBalance.getCashAcct() < 0) {
                 throw new Exception("存入方现金余额不足");
             }
+
             bizSubjectBalanceService.updateById(buyerBalance);
-            bizFinanceManagementService.save(bizFinanceManagement);
+            bizVirtualCurrencyService.save(bizVirtualCurrency);
+
         } catch (Exception e) {
             e.printStackTrace();
             // 回滚事务
@@ -155,48 +157,59 @@ public class BizFinanceManagementController
         return Result.OK("添加成功！");
     }
 
+
+
     /**
      *   通过id删除
      *
      * @param id
      * @return
      */
-    @AutoLog(value = "理财-通过id提现")
-    @ApiOperation(value="理财-通过id提现", notes="理财-通过id提现")
+    @AutoLog(value = "虚拟货币投资-通过id提现")
+    @ApiOperation(value="虚拟货币投资-通过id提现", notes="虚拟货币投资-通过id提现")
     //@RequiresPermissions("org.jeecg.modules:biz_finance_management:delete")
     @DeleteMapping(value = "/delete")
+    @Transactional(rollbackFor = Exception.class)
     public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-        
-        log.info("Here is the FinanceManagement Process' id: {}", id);
 
         try{
 
-            BizFinanceManagement bizFinanceManagement = bizFinanceManagementService.getById(id);
+            BizVirtualCurrency bizVirtualCurrency = bizVirtualCurrencyService.getById(id);
 
-            log.info("Here is the FinanceManagement Process we need to delete: {}", bizFinanceManagement);
-
-            //计算复利次数
-            Integer period=bizFiscalYearService.getActiveYearCode()-bizFinanceManagement.getYearCode();
-
-            log.info("Here is the ActiveYearCode: {}", bizFiscalYearService.getActiveYearCode());
-            log.info("Here is the got YearCode: {}", bizFinanceManagement.getYearCode());
-            log.info("Here is the period we need to calculate: {}", period);
+            Integer now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
             
-            //增加投资方资金
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizFinanceManagement.getSellerId());
+            if(now==bizVirtualCurrency.getYearCode()){//第0财年提款
+                BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
 
-            buyerBalance.setCashAcct(buyerBalance.getCashAcct()+bizFinanceManagement.getTransPrice() * Math.pow(1.04,period));
+                buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizVirtualCurrency.getTransPrice());
 
-            bizSubjectBalanceService.updateById(buyerBalance);
-            bizFinanceManagementService.removeById(id);
+                bizSubjectBalanceService.updateById(buyerBalance);
+                
+                bizVirtualCurrencyService.removeById(id);
+            }
+            else{
+                //计算收益
+                Double Inc=bizFiscalYearService.getByYearCode(now).getCurrencyInc();
 
+                log.info("Here is the Increase: {}", Inc);
+                
+                //增加投资方资金
+                BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
+
+                buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizVirtualCurrency.getTransPrice() * (1.00 + Inc));
+
+                bizSubjectBalanceService.updateById(buyerBalance);
+                bizVirtualCurrencyService.removeById(id);
+            }
+            
         }catch (Exception e){
+            
             e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return  Result.error("提现失败：" + e.getMessage());
+
         }
         return Result.OK("提现成功!");
     }
-
 }

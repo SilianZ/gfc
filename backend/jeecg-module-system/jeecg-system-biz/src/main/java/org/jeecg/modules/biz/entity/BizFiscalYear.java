@@ -40,6 +40,14 @@ public class BizFiscalYear implements Serializable {
 	@Excel(name = "财年编号", width = 15)
     @ApiModelProperty(value = "财年编号")
     private Integer yearCode;
+    /**当年股票涨额 */
+    @Excel(name = "当年股票涨额", width = 15)
+    @ApiModelProperty(value = "当年股票涨额")
+    private Double stockInc;
+    /**当年股票涨额 */
+    @Excel(name = "当年虚拟货币涨额", width = 15)
+    @ApiModelProperty(value = "当年虚拟货币涨额")
+    private Double currencyInc;
 	/**财年名称*/
 	@Excel(name = "财年名称", width = 15)
     @ApiModelProperty(value = "财年名称")

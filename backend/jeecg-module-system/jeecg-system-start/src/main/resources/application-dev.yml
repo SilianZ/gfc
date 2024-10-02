@@ -130,9 +130,9 @@ spring:
         connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
         master:
-          url: jdbc:mysql://43.138.239.189:3306/bizgame?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://43.134.112.36:3306/bizgame?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: bizgame
-          password: biz.yxjk@game
+          password: 43.134.112.36
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -230,6 +230,11 @@ jeecg:
     password:
     type: STANDALONE
     enabled: true
+cors:
+  allowed-origins: "http://gdhfi.net.cn"
+  allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+  allowed-headers: "*"
+  allow-credentials: true
 #cas单点登录
 cas:
   prefixUrl: http://cas.example.org:8443/cas

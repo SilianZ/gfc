@@ -24,6 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 财年信息管理
@@ -74,6 +79,8 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@PostMapping(value = "/add")
 	public Result<String> add(@RequestBody BizFiscalYear bizFiscalYear) {
 		bizFiscalYear.setYearCode(bizFiscalYearService.getMaxYearCode()+1);
+		bizFiscalYear.setStockInc(0.00);
+		bizFiscalYear.setCurrencyInc(0.00);
 		bizFiscalYearService.save(bizFiscalYear);
 		return Result.OK("添加成功！");
 	}
@@ -133,22 +140,32 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	public Result<Date> start(@RequestParam(name="id",required=true) String id) {
 		BizFiscalYear fiscalYear = bizFiscalYearService.getById(id);
 		fiscalYear.setStatus("1");
+		Random random = new Random();
+        double min = -0.20;
+        double max = 0.20;
+
+        // 生成-0.2到+0.2之间的随机小数
+        double randomValue = min + (max - min) * random.nextDouble();
+
+        // 保留小数点后两位
+        double formattedValue = Math.round(randomValue * 100.0) / 100.0;
+
+		fiscalYear.setStockInc(formattedValue);//设定当年股票涨额
+
+		random = new Random();
+        min = -0.50;
+        max = 0.50;
+
+        // 生成-0.2到+0.2之间的随机小数
+        randomValue = min + (max - min) * random.nextDouble();
+
+        // 保留小数点后两位
+        formattedValue = Math.round(randomValue * 100.0) / 100.0;
+
+		fiscalYear.setCurrencyInc(formattedValue);//设定当年虚拟货币涨额
 
 		bizFiscalYearService.updateById(fiscalYear);
-		return Result.OK("开尼玛");
-		/*
-		BizFiscalYear fiscalYear = bizFiscalYearService.getById(id);
-		if (fiscalYear == null) {
-			return Result.error("未找到对应的财年信息");
-		}
-		fiscalYear.setStatus("1"); // 假设1代表财年已开始
-		fiscalYear.setStartTime(new Date());
-		boolean updated = bizFiscalYearService.updateById(fiscalYear);
-		if (!updated) {
-			return Result.error("财年开启失败");
-		}
-		return Result.OK("CNM"); // Return updated fiscal year object
-		*/
+		return Result.OK("财年开始");
 	}
 
 	/**
@@ -198,6 +215,45 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 		return Result.OK(bizFiscalYear);
 	}
 
+	@AutoLog(value = "财年信息-打包财年信息")
+	@ApiOperation(value="财年信息-打包财年信息", notes="财年信息-打包财年信息")
+	@GetMapping(value = "/getYearNameAndStockInc")
+	public Result<Map<String, Object>[]> getYearNameAndStockInc() {
+
+		List<BizFiscalYear> list = bizFiscalYearService.getAllFiscalYears();
+		List<Map<String, Object>> resultList = list.stream()
+			.map(fy -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("type", fy.getYearName());
+				map.put("Percentage", fy.getStockInc());
+				return map;
+			})
+			.collect(Collectors.toList());
+
+		Map<String, Object>[] resultArray = new Map[resultList.size()];
+    	resultArray = resultList.toArray(resultArray);
+		return Result.OK(resultArray);
+	}
+
+	@AutoLog(value = "财年信息-打包财年信息2")
+	@ApiOperation(value="财年信息-打包财年信息2", notes="财年信息-打包财年信息2")
+	@GetMapping(value = "/getYearNameAndVirtualCurrencyInc")
+	public Result<Map<String, Object>[]> getYearNameAndVirtualCurrencyInc() {
+
+		List<BizFiscalYear> list = bizFiscalYearService.getAllFiscalYears();
+		List<Map<String, Object>> resultList = list.stream()
+			.map(fy -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("type", fy.getYearName());
+				map.put("Percentage", fy.getCurrencyInc());
+				return map;
+			})
+			.collect(Collectors.toList());
+
+		Map<String, Object>[] resultArray = new Map[resultList.size()];
+    	resultArray = resultList.toArray(resultArray);
+		return Result.OK(resultArray);
+	}
     /**
     * 导出excel
     *

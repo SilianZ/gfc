@@ -8,17 +8,17 @@
       :okButtonProps="{ class:{'jee-hidden': disableSubmit} }"
       @cancel="handleCancel"
       cancelText="关闭">
-      <biz-finance-management-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"></biz-finance-management-form>
+      <biz-stock-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"></biz-stock-form>
     </j-modal>
   </template>
   
   <script>
   
-    import BizFinanceManagementForm from './BizFinanceManagementForm'
+    import BizStockForm from './BizStockForm'
     export default {
-      name: 'BizFinanceManagementModal',
+      name: 'BizStockModal',
       components: {
-        BizFinanceManagementForm
+        BizStockForm
       },
       data () {
         return {

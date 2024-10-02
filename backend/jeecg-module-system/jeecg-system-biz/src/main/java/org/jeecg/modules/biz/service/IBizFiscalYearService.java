@@ -1,5 +1,7 @@
 package org.jeecg.modules.biz.service;
 
+import java.util.List;
+
 import org.jeecg.modules.biz.entity.BizFiscalYear;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,9 +14,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IBizFiscalYearService extends IService<BizFiscalYear> {
     Integer getMaxYearCode();
 
+    BizFiscalYear getByYearCode(Integer yearCode);
+
     Integer getProcessCount();
 
     Integer getActiveYearCode();
 
     void updateResourceStatus(Integer yearCode);
+
+    List<BizFiscalYear> getAllFiscalYears();
 }

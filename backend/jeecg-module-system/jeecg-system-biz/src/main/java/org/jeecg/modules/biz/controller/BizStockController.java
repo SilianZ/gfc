@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.biz.entity.BizMaterialTrans;
-import org.jeecg.modules.biz.entity.BizFinanceManagement;
+import org.jeecg.modules.biz.entity.BizStock;
 import org.jeecg.modules.biz.entity.BizFiscalYear;
 import org.jeecg.modules.biz.entity.BizSubjectBalance;
 import org.jeecg.modules.biz.service.*;
@@ -49,19 +48,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import lombok.Data;
 /**
- * @Description: 理财
+ * @Description: 股票投资
  * @Author: jeecg-boot
  * @Date: 2023-09-27
  * @Version: V1.0
  */
-@Api(tags = "理财")
+@Api(tags = "股票投资")
 @RestController
-@RequestMapping("/biz/bizFinanceManagement")
+@RequestMapping("/biz/bizStock")
 @Slf4j
-public class BizFinanceManagementController
-        extends JeecgController<BizFinanceManagement, IBizFinanceManagementService> {
+public class BizStockController
+        extends JeecgController<BizStock, IBizStockService> {
     @Autowired
-    private IBizFinanceManagementService bizFinanceManagementService;
+    private IBizStockService bizStockService;
     @Autowired
     private IBizSubjectBalanceService bizSubjectBalanceService;
     @Autowired
@@ -74,48 +73,48 @@ public class BizFinanceManagementController
     /**
      * 分页列表查询 Management
      *
-     * @param bizFinanceManagement
+     * @param bizStock
      * @param pageNo
      * @param pageSize
      * @param req
      * @return
      */
-    // @AutoLog(value = "理财-分页列表查询")
-    @ApiOperation(value = "理财-分页列表查询", notes = "理财-分页列表查询")
+    // @AutoLog(value = "股票投资-分页列表查询")
+    @ApiOperation(value = "股票投资-分页列表查询", notes = "股票投资-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<BizFinanceManagement>> queryPageList(BizFinanceManagement bizFinanceManagement,
+    public Result<IPage<BizStock>> queryPageList(BizStock bizStock,
             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             HttpServletRequest req) {
-        QueryWrapper<BizFinanceManagement> queryWrapper = QueryGenerator.initQueryWrapper(bizFinanceManagement,
+        QueryWrapper<BizStock> queryWrapper = QueryGenerator.initQueryWrapper(bizStock,
                 req.getParameterMap());
-        Page<BizFinanceManagement> page = new Page<BizFinanceManagement>(pageNo, pageSize);
-        IPage<BizFinanceManagement> pageList = bizFinanceManagementService.page(page, queryWrapper);
+        Page<BizStock> page = new Page<BizStock>(pageNo, pageSize);
+        IPage<BizStock> pageList = bizStockService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
 
     /**
      * 添加
      *
-     * @param bizFinanceManagement
+     * @param bizStock
      * @return
      */
-    @AutoLog(value = "理财-添加")
-    @ApiOperation(value = "理财-添加", notes = "理财-添加")
+    @AutoLog(value = "股票投资-添加")
+    @ApiOperation(value = "股票投资-添加", notes = "股票投资-添加")
     // @RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> add(@RequestBody BizFinanceManagement bizFinanceManagement) {
+    public Result<String> add(@RequestBody BizStock bizStock) {
 
 
 
 
-        log.info("开始初始化查询条件构造器，搜索对象类型：{}", bizFinanceManagement);
+        log.info("开始初始化查询条件构造器，搜索对象类型：{}", bizStock);
 
 
         try {
             log.info("12356896074578697");
-            Integer yearc=bizFinanceManagement.getYearCode();
+            Integer yearc=bizStock.getYearCode();
             log.info("YearCode: {}", yearc);
             
             log.info("Start Year :::: {}", bizFiscalYearService.getById(yearc));
@@ -137,15 +136,23 @@ public class BizFinanceManagementController
                 throw new Exception("已过当前财年投资时间");
             }
 
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizFinanceManagement.getSellerId());
+            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizStock.getSellerId());
+            //判断投资总额是否超标
+            Double acct=buyerBalance.getCashAcct();
+            if(acct * 0.10 < bizStock.getTransPrice()){
+                throw new Exception("投资金额超过10%");
+            }
+
             // 减少买方现金余额
             buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
-                    - (bizFinanceManagement.getTransPrice() == null ? 0 : bizFinanceManagement.getTransPrice()));
+                    - (bizStock.getTransPrice() == null ? 0 : bizStock.getTransPrice()));
             if (buyerBalance.getCashAcct() < 0) {
                 throw new Exception("存入方现金余额不足");
             }
+
             bizSubjectBalanceService.updateById(buyerBalance);
-            bizFinanceManagementService.save(bizFinanceManagement);
+            bizStockService.save(bizStock);
+
         } catch (Exception e) {
             e.printStackTrace();
             // 回滚事务
@@ -155,48 +162,52 @@ public class BizFinanceManagementController
         return Result.OK("添加成功！");
     }
 
+
+
     /**
      *   通过id删除
      *
      * @param id
      * @return
      */
-    @AutoLog(value = "理财-通过id提现")
-    @ApiOperation(value="理财-通过id提现", notes="理财-通过id提现")
+    @AutoLog(value = "股票投资-通过id提现")
+    @ApiOperation(value="股票投资-通过id提现", notes="股票投资-通过id提现")
     //@RequiresPermissions("org.jeecg.modules:biz_finance_management:delete")
     @DeleteMapping(value = "/delete")
+    @Transactional(rollbackFor = Exception.class)
     public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-        
-        log.info("Here is the FinanceManagement Process' id: {}", id);
 
         try{
 
-            BizFinanceManagement bizFinanceManagement = bizFinanceManagementService.getById(id);
+            BizStock bizStock = bizStockService.getById(id);
 
-            log.info("Here is the FinanceManagement Process we need to delete: {}", bizFinanceManagement);
+            Integer now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
+            
+            if(now==bizStock.getYearCode()){//无法在第0财年提款
+                throw new Exception("股票投资为t+1模式,无法在当前财年提款");
+            }
 
-            //计算复利次数
-            Integer period=bizFiscalYearService.getActiveYearCode()-bizFinanceManagement.getYearCode();
+            //计算收益
+            Double Inc=bizFiscalYearService.getByYearCode(now).getStockInc();
 
-            log.info("Here is the ActiveYearCode: {}", bizFiscalYearService.getActiveYearCode());
-            log.info("Here is the got YearCode: {}", bizFinanceManagement.getYearCode());
-            log.info("Here is the period we need to calculate: {}", period);
+            log.info("Here is the Increase: {}", Inc);
             
             //增加投资方资金
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizFinanceManagement.getSellerId());
+            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizStock.getSellerId());
 
-            buyerBalance.setCashAcct(buyerBalance.getCashAcct()+bizFinanceManagement.getTransPrice() * Math.pow(1.04,period));
+            buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizStock.getTransPrice() * (1.00 + Inc));
 
             bizSubjectBalanceService.updateById(buyerBalance);
-            bizFinanceManagementService.removeById(id);
+            bizStockService.removeById(id);
 
         }catch (Exception e){
+            
             e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return  Result.error("提现失败：" + e.getMessage());
+
         }
         return Result.OK("提现成功!");
     }
-
 }

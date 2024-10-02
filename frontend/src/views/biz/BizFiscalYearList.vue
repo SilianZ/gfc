@@ -182,6 +182,8 @@
           content: "是否对该财年进行清算?",
           onOk: function () {
             that.loading = true;
+            console.log("Here is the id of a year");
+            console.log(id);
             getAction(that.url.end, {id: id}).then((res) => {
               if (res.success) {
                 //重新计算分页问题

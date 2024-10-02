@@ -5,12 +5,12 @@
           <a-row>
             <a-col :span="8">
               <a-form-model-item label="存入方" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="sellerId">
-                <j-search-select-tag v-model="model.sellerId" dict="sys_user,realname,username" @change="querySellerAssets"/>
+                <j-search-select-tag v-model="model.sellerId" dict="sys_user,realname,username"/>
               </a-form-model-item>
             </a-col>
             <a-col :span="8">
               <a-form-model-item label="存入资金" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="transPrice">
-                <a-input-number v-model="model.transPrice" placeholder="请输入存入资金" style="width: 100%" @blur="queryTaxs"/>
+                <a-input-number v-model="model.transPrice" placeholder="请输入存入资金" style="width: 100%"/>
               </a-form-model-item>
             </a-col>
             <a-col :span="8">
@@ -106,6 +106,8 @@
               httpurl += this.url.edit;
               method = 'put';
             }
+            console.log("This is the request body for finance management:");
+            console.log(this.model);
             httpAction(httpurl, this.model, method).then((res) => {
               if (res.success) {
                 that.$message.success(res.message);
@@ -119,31 +121,6 @@
           }
   
         })
-      },
-      querySellerAssets() {
-        if (!this.model.sellerId) return;
-        var params = {
-          userId: this.model.sellerId,
-          resourceType: "CN",
-          pageNo: this.table1.pagination.current,
-          pageSize: this.table1.pagination.pageSize
-        }
-        this.table1.loading = true;
-        getAction("/biz/vTeamResource/listChannel", params).then((res) => {
-          if (res.success) {
-            this.table1.dataSource = res.result.records || res.result;
-            if (res.result.total) {
-              this.table1.pagination.total = res.result.total;
-            } else {
-              this.table1.pagination.total = 0;
-            }
-          } else {
-            this.$message.warning(res.message)
-          }
-        }).finally(() => {
-          this.table1.loading = false
-        })
-        this.queryTeamInfo();
       },
       queryTeamInfo() {
       //查询团队信息，其中含有账户资金
@@ -161,27 +138,6 @@
           }
         }).finally(() => {
         })
-      },
-      queryTaxs() {
-        if (!this.model.buyerId || !this.model.transPrice) return;
-        let bizBankConfig = {
-          userId: this.model.buyerId,
-          taxAmount: this.model.transPrice+1
-        }
-        getAction("/biz/bizBankConfig/queryTaxs", bizBankConfig).then((res) => {
-          if (res.success) {
-            if (this.model.isTransnational == "Y") {
-              this.model.taxRate = res.result.tariffRate;
-            } else {
-              this.model.taxRate = res.result.saveRate;
-            }
-            this.model.transTax = res.result.taxAmount;
-            this.$forceUpdate();
-          } else {
-            this.$message.warning(res.message)
-          }
-        }).finally(() => {
-        });
       }
     }
   }

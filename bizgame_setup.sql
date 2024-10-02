@@ -59,6 +59,8 @@ DROP TABLE IF EXISTS `biz_fiscal_year`;
 CREATE TABLE `biz_fiscal_year` (
   `id` varchar(36) NOT NULL,
   `year_code` int(5) NOT NULL COMMENT '财年编号',
+  `stock_inc` double(10,2) DEFAULT NULL COMMENT '当年股票涨额',
+  `currency_inc` double(10,2) DEFAULT NULL COMMENT '当年虚拟货币涨额',
   `year_name` varchar(50) NOT NULL COMMENT '财年名称',
   `start_time` datetime DEFAULT NULL COMMENT '开始时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
@@ -77,10 +79,13 @@ CREATE TABLE `biz_fiscal_year` (
 --
 
 LOCK TABLES `biz_fiscal_year` WRITE;
+/*
 /*!40000 ALTER TABLE `biz_fiscal_year` DISABLE KEYS */;
 INSERT INTO `biz_fiscal_year` VALUES ('1705608863222214657',1,'第一财年','2024-08-15 14:34:24','2024-08-15 14:44:24','1','admin','2023-09-23 23:43:36','admin','2023-09-24 20:21:58','A02'),('1705920472054431745',2,'第二财年',NULL,NULL,'0','admin','2023-09-24 20:21:50',NULL,NULL,'A02'),('1705920566807953409',3,'第三财年',NULL,NULL,'0','admin','2023-09-24 20:22:12',NULL,NULL,'A02'),('1705920718608203778',4,'第四财年',NULL,NULL,'0','admin','2023-09-24 20:22:48',NULL,NULL,'A02'),('1705920745929900033',5,'第五财年',NULL,NULL,'0','admin','2023-09-24 20:22:55',NULL,NULL,'A02'),('1705920776758034434',6,'第六财年',NULL,NULL,'0','admin','2023-09-24 20:23:02',NULL,NULL,'A02'),('1705920813336559617',7,'第七财年',NULL,NULL,'0','admin','2023-09-24 20:23:11',NULL,NULL,'A02'),('1705920837181177857',8,'第八财年',NULL,NULL,'0','admin','2023-09-24 20:23:17',NULL,NULL,'A02'),('1705920859599732737',9,'第九财年',NULL,NULL,'0','admin','2023-09-24 20:23:22',NULL,NULL,'A02'),('1705920903648313346',10,'第十财年',NULL,NULL,'0','admin','2023-09-24 20:23:33',NULL,NULL,'A02'),('1705920946061115393',11,'第十一财年',NULL,NULL,'0','admin','2023-09-24 20:23:43',NULL,NULL,'A02'),('1705920974968258561',12,'第十二财年',NULL,NULL,'0','admin','2023-09-24 20:23:50',NULL,NULL,'A02'),('1705921001597894658',13,'第十三财年',NULL,NULL,'0','admin','2023-09-24 20:23:56',NULL,NULL,'A02'),('1705921030337265665',14,'第十四财年',NULL,NULL,'0','admin','2023-09-24 20:24:03',NULL,NULL,'A02'),('1705921053280108545',15,'第十五财年',NULL,NULL,'0','admin','2023-09-24 20:24:08',NULL,NULL,'A02');
+*/
 /*!40000 ALTER TABLE `biz_fiscal_year` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `biz_fixed_assets_trans`
@@ -169,7 +174,7 @@ DROP TABLE IF EXISTS `biz_finance_management`;
 CREATE TABLE `biz_finance_management` (
   `id` varchar(36) NOT NULL,
   `year_code` int(11) DEFAULT NULL COMMENT '所属财年',
-  `buyer_id` varchar(36) DEFAULT NULL COMMENT '买方',
+  `seller_id` varchar(36) DEFAULT NULL COMMENT '买方',
   `trans_price` double(10,2) DEFAULT NULL COMMENT '交易价格',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_by` varchar(50) DEFAULT NULL COMMENT '创建人',
@@ -191,6 +196,68 @@ LOCK TABLES `biz_finance_management` WRITE;
 UNLOCK TABLES;
 
 
+--
+-- Table structure for table `biz_stock`
+--
+
+DROP TABLE IF EXISTS `biz_stock`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `biz_stock` (
+  `id` varchar(36) NOT NULL,
+  `year_code` int(11) DEFAULT NULL COMMENT '所属财年',
+  `seller_id` varchar(36) DEFAULT NULL COMMENT '买方',
+  `trans_price` double(10,2) DEFAULT NULL COMMENT '交易价格',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建日期',
+  `update_by` varchar(50) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新日期',
+  `sys_org_code` varchar(64) DEFAULT NULL COMMENT '所属部门',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `biz_stock`
+--
+
+LOCK TABLES `biz_stock` WRITE;
+/*!40000 ALTER TABLE `biz_stock` DISABLE KEYS */;
+/*!40000 ALTER TABLE `biz_stock` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `biz_virtual_currency`
+--
+
+DROP TABLE IF EXISTS `biz_virtual_currency`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `biz_virtual_currency` (
+  `id` varchar(36) NOT NULL,
+  `year_code` int(11) DEFAULT NULL COMMENT '所属财年',
+  `seller_id` varchar(36) DEFAULT NULL COMMENT '买方',
+  `trans_price` double(10,2) DEFAULT NULL COMMENT '交易价格',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建日期',
+  `update_by` varchar(50) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新日期',
+  `sys_org_code` varchar(64) DEFAULT NULL COMMENT '所属部门',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `biz_virtual_currency`
+--
+
+LOCK TABLES `biz_virtual_currency` WRITE;
+/*!40000 ALTER TABLE `biz_virtual_currency` DISABLE KEYS */;
+/*!40000 ALTER TABLE `biz_virtual_currency` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `biz_mine_open`
@@ -1646,7 +1713,10 @@ UNLOCK TABLES;
 -- Table structure for table `qrtz_blob_triggers`
 --
 
+
+-- 删除表，如果存在
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `qrtz_blob_triggers` (

@@ -19,17 +19,17 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * @Description: 理财
+ * @Description: 股票投资
  * @Author: jeecg-boot
  * @Date: 2024-9-16
  * @Version: V1.0
  */
 @Data
-@TableName("biz_finance_management")
+@TableName("biz_stock")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "biz_finance_management对象", description = "理财")
-public class BizFinanceManagement implements Serializable {
+@ApiModel(value = "biz_stock对象", description = "股票投资")
+public class BizStock implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */

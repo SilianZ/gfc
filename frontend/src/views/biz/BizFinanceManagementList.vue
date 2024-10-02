@@ -80,17 +80,12 @@ export default {
         {
           title: '存入方',
           align: "center",
-          dataIndex: 'buyerId_dictText'
+          dataIndex: 'sellerId_dictText'
         },
         {
           title: '存入资金',
           align: "center",
-          dataIndex: 'yearCode_dictText'
-        },
-        {
-          title: '预计收益',
-          align: "center",
-          dataIndex: ''
+          dataIndex: 'transPrice'
         },
         {
           title: '操作',

@@ -13,7 +13,7 @@
 
 <script>
   import { DataSet } from '@antv/data-set'
-  import { ChartEventMixins } from './mixins/ChartMixins'
+  import { ChartEventMixins } from '@/mixins/ChartMixin'
 
   export default {
     name: 'LineChartMultid',
@@ -59,7 +59,7 @@
         scale: [{
           type: 'cat',
           dataKey: 'x',
-          min: 0,
+          min: -1,
           max: 1
         }],
         style: { stroke: '#fff', lineWidth: 1 }

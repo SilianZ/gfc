@@ -19,17 +19,17 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * @Description: 理财
+ * @Description: 虚拟货币投资
  * @Author: jeecg-boot
  * @Date: 2024-9-16
  * @Version: V1.0
  */
 @Data
-@TableName("biz_finance_management")
+@TableName("biz_virtual_currency")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "biz_finance_management对象", description = "理财")
-public class BizFinanceManagement implements Serializable {
+@ApiModel(value = "biz_virtual_currency对象", description = "虚拟货币投资")
+public class BizVirtualCurrency implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
