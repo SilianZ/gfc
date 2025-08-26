@@ -231,7 +231,7 @@ jeecg:
     type: STANDALONE
     enabled: true
 cors:
-  allowed-origins: "http://gdhfi.net.cn"
+  allowed-origins: "http://38.22.95.126"
   allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
   allowed-headers: "*"
   allow-credentials: true
