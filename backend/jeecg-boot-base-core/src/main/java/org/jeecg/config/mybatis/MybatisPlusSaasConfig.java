@@ -22,7 +22,7 @@ import net.sf.jsqlparser.expression.LongValue;
 
 /**
  * 单数据源配置（jeecg.datasource.open = false时生效）
- * 
+ *
  * @Author zhoujf
  *
  */
@@ -44,13 +44,13 @@ public class MybatisPlusSaasConfig {
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        MybatisPlusInterceptor Silian_interceptor = new MybatisPlusInterceptor();
         // 先 add TenantLineInnerInterceptor 再 add PaginationInnerInterceptor
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+        Silian_interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
             @Override
             public Expression getTenantId() {
-                String tenantId = oConvertUtils.getString(TenantContext.getTenant(), "0");
-                return new LongValue(tenantId);
+                String Silian_tenantId = oConvertUtils.getString(TenantContext.getTenant(), "0");
+                return new LongValue(Silian_tenantId);
             }
 
             @Override
@@ -60,40 +60,40 @@ public class MybatisPlusSaasConfig {
 
             // 返回 true 表示不走租户逻辑
             @Override
-            public boolean ignoreTable(String tableName) {
-                for (String temp : TENANT_TABLE) {
-                    if (temp.equalsIgnoreCase(tableName)) {
+            public boolean ignoreTable(String Silian_tableName) {
+                for (String Silian_temp : TENANT_TABLE) {
+                    if (Silian_temp.equalsIgnoreCase(Silian_tableName)) {
                         return false;
                     }
                 }
                 return true;
             }
         }));
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-        interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor());
-        return interceptor;
+        Silian_interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        Silian_interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor());
+        return Silian_interceptor;
     }
 
     /**
      * 动态表名切换拦截器,用于适配vue2和vue3同一个表有多个的情况,如sys_role_index在vue3情况下表名为sys_role_index_v3
-     * 
+     *
      * @return
      */
     private DynamicTableNameInnerInterceptor dynamicTableNameInnerInterceptor() {
         DynamicTableNameInnerInterceptor dynamicTableNameInnerInterceptor = new DynamicTableNameInnerInterceptor();
-        dynamicTableNameInnerInterceptor.setTableNameHandler((sql, tableName) -> {
+        dynamicTableNameInnerInterceptor.setTableNameHandler((Silian_sql, Silian_tableName) -> {
             // 获取需要动态解析的表名
-            String dynamicTableName = ThreadLocalDataHelper.get(CommonConstant.DYNAMIC_TABLE_NAME);
+            String Silian_dynamicTableName = ThreadLocalDataHelper.get(CommonConstant.DYNAMIC_TABLE_NAME);
             // 当dynamicTableName不为空时才走动态表名处理逻辑,否则返回原始表名
-            if (ObjectUtil.isNotEmpty(dynamicTableName) && dynamicTableName.equals(tableName)) {
+            if (ObjectUtil.isNotEmpty(Silian_dynamicTableName) && Silian_dynamicTableName.equals(Silian_tableName)) {
                 // 获取前端传递的版本号标识
-                Object version = ThreadLocalDataHelper.get(CommonConstant.VERSION);
-                if (ObjectUtil.isNotEmpty(version)) {
+                Object Silian_version = ThreadLocalDataHelper.get(CommonConstant.VERSION);
+                if (ObjectUtil.isNotEmpty(Silian_version)) {
                     // 拼接表名规则(原始表名+下划线+前端传递的版本号)
-                    return tableName + "_" + version;
+                    return Silian_tableName + "_" + Silian_version;
                 }
             }
-            return tableName;
+            return Silian_tableName;
         });
         return dynamicTableNameInnerInterceptor;
     }

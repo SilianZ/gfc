@@ -62,38 +62,38 @@ public class CommonController {
      * @return
      */
     @PostMapping(value = "/upload")
-    public Result<?> upload(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Result<?> result = new Result<>();
-        String savePath = "";
-        String bizPath = request.getParameter("biz");
+    public Result<?> upload(HttpServletRequest Silian_request, HttpServletResponse Silian_response) throws Exception {
+        Result<?> Silian_result = new Result<>();
+        String Silian_savePath = "";
+        String Silian_bizPath = Silian_request.getParameter("biz");
 
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath)) {
-            if(bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)){
+        if (oConvertUtils.isNotEmpty(Silian_bizPath)) {
+            if(Silian_bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || Silian_bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)){
                 throw new JeecgBootException("上传目录bizPath，格式非法！");
             }
         }
 
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
         // 获取上传文件对象
-        MultipartFile file = multipartRequest.getFile("file");
-        if(oConvertUtils.isEmpty(bizPath)){
+        MultipartFile Silian_file = Silian_multipartRequest.getFile("file");
+        if(oConvertUtils.isEmpty(Silian_bizPath)){
             if(CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)){
                 //未指定目录，则用阿里云默认目录 upload
-                bizPath = "upload";
+                Silian_bizPath = "upload";
                 //result.setMessage("使用阿里云文件上传时，必须添加目录！");
                 //result.setSuccess(false);
                 //return result;
             }else{
-                bizPath = "";
+                Silian_bizPath = "";
             }
         }
         if(CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)){
             //update-begin-author:liusq date:20221102 for: 过滤上传文件类型
-            FileTypeFilter.fileTypeFilter(file);
+            FileTypeFilter.fileTypeFilter(Silian_file);
             //update-end-author:liusq date:20221102 for: 过滤上传文件类型
             //update-begin-author:lvdandan date:20200928 for:修改JEditor编辑器本地上传
-            savePath = this.uploadLocal(file,bizPath);
+            Silian_savePath = this.uploadLocal(Silian_file,Silian_bizPath);
             //update-begin-author:lvdandan date:20200928 for:修改JEditor编辑器本地上传
             /**  富文本编辑器及markdown本地上传时，采用返回链接方式
             //针对jeditor编辑器如何使 lcaol模式，采用 base64格式存储
@@ -108,17 +108,17 @@ public class CommonController {
             */
         }else{
             //update-begin-author:taoyan date:20200814 for:文件上传改造
-            savePath = CommonUtils.upload(file, bizPath, uploadType);
+            Silian_savePath = CommonUtils.upload(Silian_file, Silian_bizPath, uploadType);
             //update-end-author:taoyan date:20200814 for:文件上传改造
         }
-        if(oConvertUtils.isNotEmpty(savePath)){
-            result.setMessage(savePath);
-            result.setSuccess(true);
+        if(oConvertUtils.isNotEmpty(Silian_savePath)){
+            Silian_result.setMessage(Silian_savePath);
+            Silian_result.setSuccess(true);
         }else {
-            result.setMessage("上传失败！");
-            result.setSuccess(false);
+            Silian_result.setMessage("上传失败！");
+            Silian_result.setSuccess(false);
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -127,38 +127,38 @@ public class CommonController {
      * @param bizPath  自定义路径
      * @return
      */
-    private String uploadLocal(MultipartFile mf,String bizPath){
+    private String uploadLocal(MultipartFile Silian_mf,String Silian_bizPath){
         try {
-            String ctxPath = uploadpath;
-            String fileName = null;
-            File file = new File(ctxPath + File.separator + bizPath + File.separator );
-            if (!file.exists()) {
+            String Silian_ctxPath = uploadpath;
+            String Silian_fileName = null;
+            File Silian_file = new File(Silian_ctxPath + File.separator + Silian_bizPath + File.separator );
+            if (!Silian_file.exists()) {
                 // 创建文件根目录
-                file.mkdirs();
+                Silian_file.mkdirs();
             }
             // 获取文件名
-            String orgName = mf.getOriginalFilename();
-            orgName = CommonUtils.getFileName(orgName);
-            if(orgName.indexOf(SymbolConstant.SPOT)!=-1){
-                fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.lastIndexOf("."));
+            String Silian_orgName = Silian_mf.getOriginalFilename();
+            Silian_orgName = CommonUtils.getFileName(Silian_orgName);
+            if(Silian_orgName.indexOf(SymbolConstant.SPOT)!=-1){
+                Silian_fileName = Silian_orgName.substring(0, Silian_orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + Silian_orgName.substring(Silian_orgName.lastIndexOf("."));
             }else{
-                fileName = orgName+ "_" + System.currentTimeMillis();
+                Silian_fileName = Silian_orgName+ "_" + System.currentTimeMillis();
             }
-            String savePath = file.getPath() + File.separator + fileName;
-            File savefile = new File(savePath);
-            FileCopyUtils.copy(mf.getBytes(), savefile);
-            String dbpath = null;
-            if(oConvertUtils.isNotEmpty(bizPath)){
-                dbpath = bizPath + File.separator + fileName;
+            String Silian_savePath = Silian_file.getPath() + File.separator + Silian_fileName;
+            File Silian_savefile = new File(Silian_savePath);
+            FileCopyUtils.copy(Silian_mf.getBytes(), Silian_savefile);
+            String Silian_dbpath = null;
+            if(oConvertUtils.isNotEmpty(Silian_bizPath)){
+                Silian_dbpath = Silian_bizPath + File.separator + Silian_fileName;
             }else{
-                dbpath = fileName;
+                Silian_dbpath = Silian_fileName;
             }
-            if (dbpath.contains(SymbolConstant.DOUBLE_BACKSLASH)) {
-                dbpath = dbpath.replace(SymbolConstant.DOUBLE_BACKSLASH, SymbolConstant.SINGLE_SLASH);
+            if (Silian_dbpath.contains(SymbolConstant.DOUBLE_BACKSLASH)) {
+                Silian_dbpath = Silian_dbpath.replace(SymbolConstant.DOUBLE_BACKSLASH, SymbolConstant.SINGLE_SLASH);
             }
-            return dbpath;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            return Silian_dbpath;
+        } catch (IOException Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
         }
         return "";
     }
@@ -208,54 +208,54 @@ public class CommonController {
      * @param response
      */
     @GetMapping(value = "/static/**")
-    public void view(HttpServletRequest request, HttpServletResponse response) {
+    public void view(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
         // ISO-8859-1 ==> UTF-8 进行编码转换
-        String imgPath = extractPathFromPattern(request);
-        if(oConvertUtils.isEmpty(imgPath) || CommonConstant.STRING_NULL.equals(imgPath)){
+        String Silian_imgPath = extractPathFromPattern(Silian_request);
+        if(oConvertUtils.isEmpty(Silian_imgPath) || CommonConstant.STRING_NULL.equals(Silian_imgPath)){
             return;
         }
         // 其余处理略
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
+        InputStream Silian_inputStream = null;
+        OutputStream Silian_outputStream = null;
         try {
-            imgPath = imgPath.replace("..", "").replace("../","");
-            if (imgPath.endsWith(SymbolConstant.COMMA)) {
-                imgPath = imgPath.substring(0, imgPath.length() - 1);
+            Silian_imgPath = Silian_imgPath.replace("..", "").replace("../","");
+            if (Silian_imgPath.endsWith(SymbolConstant.COMMA)) {
+                Silian_imgPath = Silian_imgPath.substring(0, Silian_imgPath.length() - 1);
             }
-            String filePath = uploadpath + File.separator + imgPath;
-            File file = new File(filePath);
-            if(!file.exists()){
-                response.setStatus(404);
-                throw new RuntimeException("文件["+imgPath+"]不存在..");
+            String Silian_filePath = uploadpath + File.separator + Silian_imgPath;
+            File Silian_file = new File(Silian_filePath);
+            if(!Silian_file.exists()){
+                Silian_response.setStatus(404);
+                throw new RuntimeException("文件["+Silian_imgPath+"]不存在..");
             }
             // 设置强制下载不打开
-            response.setContentType("application/force-download");
-            response.addHeader("Content-Disposition", "attachment;fileName=" + new String(file.getName().getBytes("UTF-8"),"iso-8859-1"));
-            inputStream = new BufferedInputStream(new FileInputStream(filePath));
-            outputStream = response.getOutputStream();
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-                outputStream.write(buf, 0, len);
+            Silian_response.setContentType("application/force-download");
+            Silian_response.addHeader("Content-Disposition", "attachment;fileName=" + new String(Silian_file.getName().getBytes("UTF-8"),"iso-8859-1"));
+            Silian_inputStream = new BufferedInputStream(new FileInputStream(Silian_filePath));
+            Silian_outputStream = Silian_response.getOutputStream();
+            byte[] Silian_buf = new byte[1024];
+            int Silian_len;
+            while ((Silian_len = Silian_inputStream.read(Silian_buf)) > 0) {
+                Silian_outputStream.write(Silian_buf, 0, Silian_len);
             }
-            response.flushBuffer();
-        } catch (IOException e) {
-            log.error("预览文件失败" + e.getMessage());
-            response.setStatus(404);
-            e.printStackTrace();
+            Silian_response.flushBuffer();
+        } catch (IOException Silian_e) {
+            log.error("预览文件失败" + Silian_e.getMessage());
+            Silian_response.setStatus(404);
+            Silian_e.printStackTrace();
         } finally {
-            if (inputStream != null) {
+            if (Silian_inputStream != null) {
                 try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    Silian_inputStream.close();
+                } catch (IOException Silian_e) {
+                    log.error(Silian_e.getMessage(), Silian_e);
                 }
             }
-            if (outputStream != null) {
+            if (Silian_outputStream != null) {
                 try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    Silian_outputStream.close();
+                } catch (IOException Silian_e) {
+                    log.error(Silian_e.getMessage(), Silian_e);
                 }
             }
         }
@@ -326,9 +326,9 @@ public class CommonController {
      * @return
      */
     @RequestMapping("/pdf/pdfPreviewIframe")
-    public ModelAndView pdfPreviewIframe(ModelAndView modelAndView) {
-        modelAndView.setViewName("pdfPreviewIframe");
-        return modelAndView;
+    public ModelAndView pdfPreviewIframe(ModelAndView Silian_modelAndView) {
+        Silian_modelAndView.setViewName("pdfPreviewIframe");
+        return Silian_modelAndView;
     }
 
     /**
@@ -337,10 +337,10 @@ public class CommonController {
      * @param request
      * @return
      */
-    private static String extractPathFromPattern(final HttpServletRequest request) {
-        String path = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        String bestMatchPattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-        return new AntPathMatcher().extractPathWithinPattern(bestMatchPattern, path);
+    private static String extractPathFromPattern(final HttpServletRequest Silian_request) {
+        String Silian_path = (String) Silian_request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        String Silian_bestMatchPattern = (String) Silian_request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        return new AntPathMatcher().extractPathWithinPattern(Silian_bestMatchPattern, Silian_path);
     }
 
 }

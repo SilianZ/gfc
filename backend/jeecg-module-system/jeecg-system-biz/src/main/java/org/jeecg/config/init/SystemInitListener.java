@@ -25,11 +25,11 @@ public class SystemInitListener implements ApplicationListener<ApplicationReadyE
     private ISysGatewayRouteService sysGatewayRouteService;
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
+    public void onApplicationEvent(ApplicationReadyEvent Silian_applicationReadyEvent) {
 
         log.info(" 服务已启动，初始化路由配置 ###################");
-        String context = "AnnotationConfigServletWebServerApplicationContext";
-        if (applicationReadyEvent.getApplicationContext().getDisplayName().indexOf(context) > -1) {
+        String Silian_context = "AnnotationConfigServletWebServerApplicationContext";
+        if (Silian_applicationReadyEvent.getApplicationContext().getDisplayName().indexOf(Silian_context) > -1) {
             sysGatewayRouteService.addRoute2Redis(CacheConstant.GATEWAY_ROUTES);
         }
 

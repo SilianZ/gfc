@@ -40,7 +40,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 	@Resource
 	private SysPermissionMapper sysPermissionMapper;
-	
+
 	@Resource
 	private ISysPermissionDataRuleService permissionDataRuleService;
 
@@ -60,8 +60,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	}
 
 	@Override
-	public List<TreeModel> queryListByParentId(String parentId) {
-		return sysPermissionMapper.queryListByParentId(parentId);
+	public List<TreeModel> queryListByParentId(String Silian_parentId) {
+		return sysPermissionMapper.queryListByParentId(Silian_parentId);
 	}
 
 	/**
@@ -70,172 +70,172 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	@CacheEvict(value = CacheConstant.SYS_DATA_PERMISSIONS_CACHE,allEntries=true)
-	public void deletePermission(String id) throws JeecgBootException {
-		SysPermission sysPermission = this.getById(id);
-		if(sysPermission==null) {
+	public void deletePermission(String Silian_id) throws JeecgBootException {
+		SysPermission Silian_sysPermission = this.getById(Silian_id);
+		if(Silian_sysPermission==null) {
 			throw new JeecgBootException("未找到菜单信息");
 		}
-		String pid = sysPermission.getParentId();
-		if(oConvertUtils.isNotEmpty(pid)) {
-			Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, pid));
+		String Silian_pid = Silian_sysPermission.getParentId();
+		if(oConvertUtils.isNotEmpty(Silian_pid)) {
+			Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, Silian_pid));
 			if(count==1) {
 				//若父节点无其他子节点，则该父节点是叶子节点
-				this.sysPermissionMapper.setMenuLeaf(pid, 1);
+				this.sysPermissionMapper.setMenuLeaf(Silian_pid, 1);
 			}
 		}
-		sysPermissionMapper.deleteById(id);
+		sysPermissionMapper.deleteById(Silian_id);
 		// 该节点可能是子节点但也可能是其它节点的父节点,所以需要级联删除
-		this.removeChildrenBy(sysPermission.getId());
+		this.removeChildrenBy(Silian_sysPermission.getId());
 		//关联删除
-		Map map = new HashMap(5);
-		map.put("permission_id",id);
+		Map Silian_map = new HashMap(5);
+		Silian_map.put("permission_id",Silian_id);
 		//删除数据规则
-		this.deletePermRuleByPermId(id);
+		this.deletePermRuleByPermId(Silian_id);
 		//删除角色授权表
-		sysRolePermissionMapper.deleteByMap(map);
+		sysRolePermissionMapper.deleteByMap(Silian_map);
 		//删除部门权限表
-		sysDepartPermissionMapper.deleteByMap(map);
+		sysDepartPermissionMapper.deleteByMap(Silian_map);
 		//删除部门角色授权
-		sysDepartRolePermissionMapper.deleteByMap(map);
+		sysDepartRolePermissionMapper.deleteByMap(Silian_map);
 	}
-	
+
 	/**
 	 * 根据父id删除其关联的子节点数据
-	 * 
+	 *
 	 * @return
 	 */
-	public void removeChildrenBy(String parentId) {
-		LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<>();
+	public void removeChildrenBy(String Silian_parentId) {
+		LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<>();
 		// 封装查询条件parentId为主键,
-		query.eq(SysPermission::getParentId, parentId);
+		Silian_query.eq(SysPermission::getParentId, Silian_parentId);
 		// 查出该主键下的所有子级
-		List<SysPermission> permissionList = this.list(query);
-		if (permissionList != null && permissionList.size() > 0) {
+		List<SysPermission> Silian_permissionList = this.list(Silian_query);
+		if (Silian_permissionList != null && Silian_permissionList.size() > 0) {
             // id
-			String id = "";
+			String Silian_id = "";
             // 查出的子级数量
-			Long num = Long.valueOf(0);
+			Long Silian_num = Long.valueOf(0);
 			// 如果查出的集合不为空, 则先删除所有
-			this.remove(query);
+			this.remove(Silian_query);
 			// 再遍历刚才查出的集合, 根据每个对象,查找其是否仍有子级
-			for (int i = 0, len = permissionList.size(); i < len; i++) {
-				id = permissionList.get(i).getId();
-				Map map = new HashMap(5);
-				map.put("permission_id",id);
+			for (int Silian_i = 0, len = Silian_permissionList.size(); Silian_i < len; Silian_i++) {
+				Silian_id = Silian_permissionList.get(Silian_i).getId();
+				Map Silian_map = new HashMap(5);
+				Silian_map.put("permission_id",Silian_id);
 				//删除数据规则
-				this.deletePermRuleByPermId(id);
+				this.deletePermRuleByPermId(Silian_id);
 				//删除角色授权表
-				sysRolePermissionMapper.deleteByMap(map);
+				sysRolePermissionMapper.deleteByMap(Silian_map);
 				//删除部门权限表
-				sysDepartPermissionMapper.deleteByMap(map);
+				sysDepartPermissionMapper.deleteByMap(Silian_map);
 				//删除部门角色授权
-				sysDepartRolePermissionMapper.deleteByMap(map);
-				num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, id));
+				sysDepartRolePermissionMapper.deleteByMap(Silian_map);
+				Silian_num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, Silian_id));
 				// 如果有, 则递归
-				if (num > 0) {
-					this.removeChildrenBy(id);
+				if (Silian_num > 0) {
+					this.removeChildrenBy(Silian_id);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	  * 逻辑删除
 	 */
 	@Override
 	@CacheEvict(value = CacheConstant.SYS_DATA_PERMISSIONS_CACHE,allEntries=true)
 	//@CacheEvict(value = CacheConstant.SYS_DATA_PERMISSIONS_CACHE,allEntries=true,condition="#sysPermission.menuType==2")
-	public void deletePermissionLogical(String id) throws JeecgBootException {
-		SysPermission sysPermission = this.getById(id);
-		if(sysPermission==null) {
+	public void deletePermissionLogical(String Silian_id) throws JeecgBootException {
+		SysPermission Silian_sysPermission = this.getById(Silian_id);
+		if(Silian_sysPermission==null) {
 			throw new JeecgBootException("未找到菜单信息");
 		}
-		String pid = sysPermission.getParentId();
-		Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, pid));
+		String Silian_pid = Silian_sysPermission.getParentId();
+		Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, Silian_pid));
 		if(count==1) {
 			//若父节点无其他子节点，则该父节点是叶子节点
-			this.sysPermissionMapper.setMenuLeaf(pid, 1);
+			this.sysPermissionMapper.setMenuLeaf(Silian_pid, 1);
 		}
-		sysPermission.setDelFlag(1);
-		this.updateById(sysPermission);
+		Silian_sysPermission.setDelFlag(1);
+		this.updateById(Silian_sysPermission);
 	}
 
 	@Override
 	@CacheEvict(value = CacheConstant.SYS_DATA_PERMISSIONS_CACHE,allEntries=true)
-	public void addPermission(SysPermission sysPermission) throws JeecgBootException {
+	public void addPermission(SysPermission Silian_sysPermission) throws JeecgBootException {
 		//----------------------------------------------------------------------
 		//判断是否是一级菜单，是的话清空父菜单
-		if(CommonConstant.MENU_TYPE_0.equals(sysPermission.getMenuType())) {
-			sysPermission.setParentId(null);
+		if(CommonConstant.MENU_TYPE_0.equals(Silian_sysPermission.getMenuType())) {
+			Silian_sysPermission.setParentId(null);
 		}
 		//----------------------------------------------------------------------
-		String pid = sysPermission.getParentId();
-		if(oConvertUtils.isNotEmpty(pid)) {
+		String Silian_pid = Silian_sysPermission.getParentId();
+		if(oConvertUtils.isNotEmpty(Silian_pid)) {
 			//设置父节点不为叶子节点
-			this.sysPermissionMapper.setMenuLeaf(pid, 0);
+			this.sysPermissionMapper.setMenuLeaf(Silian_pid, 0);
 		}
-		sysPermission.setCreateTime(new Date());
-		sysPermission.setDelFlag(0);
-		sysPermission.setLeaf(true);
-		this.save(sysPermission);
+		Silian_sysPermission.setCreateTime(new Date());
+		Silian_sysPermission.setDelFlag(0);
+		Silian_sysPermission.setLeaf(true);
+		this.save(Silian_sysPermission);
 	}
 
 	@Override
 	@CacheEvict(value = CacheConstant.SYS_DATA_PERMISSIONS_CACHE,allEntries=true)
-	public void editPermission(SysPermission sysPermission) throws JeecgBootException {
-		SysPermission p = this.getById(sysPermission.getId());
+	public void editPermission(SysPermission Silian_sysPermission) throws JeecgBootException {
+		SysPermission Silian_p = this.getById(Silian_sysPermission.getId());
 		//TODO 该节点判断是否还有子节点
-		if(p==null) {
+		if(Silian_p==null) {
 			throw new JeecgBootException("未找到菜单信息");
 		}else {
-			sysPermission.setUpdateTime(new Date());
+			Silian_sysPermission.setUpdateTime(new Date());
 			//----------------------------------------------------------------------
 			//Step1.判断是否是一级菜单，是的话清空父菜单ID
-			if(CommonConstant.MENU_TYPE_0.equals(sysPermission.getMenuType())) {
-				sysPermission.setParentId("");
+			if(CommonConstant.MENU_TYPE_0.equals(Silian_sysPermission.getMenuType())) {
+				Silian_sysPermission.setParentId("");
 			}
 			//Step2.判断菜单下级是否有菜单，无则设置为叶子节点
-			Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, sysPermission.getId()));
+			Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, Silian_sysPermission.getId()));
 			if(count==0) {
-				sysPermission.setLeaf(true);
+				Silian_sysPermission.setLeaf(true);
 			}
 			//----------------------------------------------------------------------
-			this.updateById(sysPermission);
-			
+			this.updateById(Silian_sysPermission);
+
 			//如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
-			String pid = sysPermission.getParentId();
-            boolean flag = (oConvertUtils.isNotEmpty(pid) && !pid.equals(p.getParentId())) || oConvertUtils.isEmpty(pid)&&oConvertUtils.isNotEmpty(p.getParentId());
-            if (flag) {
+			String Silian_pid = Silian_sysPermission.getParentId();
+            boolean Silian_flag = (oConvertUtils.isNotEmpty(Silian_pid) && !Silian_pid.equals(Silian_p.getParentId())) || oConvertUtils.isEmpty(Silian_pid)&&oConvertUtils.isNotEmpty(Silian_p.getParentId());
+            if (Silian_flag) {
 				//a.设置新的父菜单不为叶子节点
-				this.sysPermissionMapper.setMenuLeaf(pid, 0);
+				this.sysPermissionMapper.setMenuLeaf(Silian_pid, 0);
 				//b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
-				Long cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, p.getParentId()));
-				if(cc==0) {
-					if(oConvertUtils.isNotEmpty(p.getParentId())) {
-						this.sysPermissionMapper.setMenuLeaf(p.getParentId(), 1);
+				Long Silian_cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, Silian_p.getParentId()));
+				if(Silian_cc==0) {
+					if(oConvertUtils.isNotEmpty(Silian_p.getParentId())) {
+						this.sysPermissionMapper.setMenuLeaf(Silian_p.getParentId(), 1);
 					}
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 	@Override
-	public List<SysPermission> queryByUser(String username) {
-		return this.sysPermissionMapper.queryByUser(username);
+	public List<SysPermission> queryByUser(String Silian_username) {
+		return this.sysPermissionMapper.queryByUser(Silian_username);
 	}
 
 	/**
 	 * 根据permissionId删除其关联的SysPermissionDataRule表中的数据
 	 */
 	@Override
-	public void deletePermRuleByPermId(String id) {
-		LambdaQueryWrapper<SysPermissionDataRule> query = new LambdaQueryWrapper<>();
-		query.eq(SysPermissionDataRule::getPermissionId, id);
-		Long countValue = this.permissionDataRuleService.count(query);
-		if(countValue > 0) {
-			this.permissionDataRuleService.remove(query);	
+	public void deletePermRuleByPermId(String Silian_id) {
+		LambdaQueryWrapper<SysPermissionDataRule> Silian_query = new LambdaQueryWrapper<>();
+		Silian_query.eq(SysPermissionDataRule::getPermissionId, Silian_id);
+		Long Silian_countValue = this.permissionDataRuleService.count(Silian_query);
+		if(Silian_countValue > 0) {
+			this.permissionDataRuleService.remove(Silian_query);
 		}
 	}
 
@@ -249,8 +249,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	}
 
 	@Override
-	public boolean hasPermission(String username, SysPermission sysPermission) {
-		int count = baseMapper.queryCountByUsername(username,sysPermission);
+	public boolean hasPermission(String Silian_username, SysPermission Silian_sysPermission) {
+		int count = baseMapper.queryCountByUsername(Silian_username,Silian_sysPermission);
 		if(count>0){
 			return true;
 		}else{
@@ -259,10 +259,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	}
 
 	@Override
-	public boolean hasPermission(String username, String url) {
-		SysPermission sysPermission = new SysPermission();
-		sysPermission.setUrl(url);
-		int count = baseMapper.queryCountByUsername(username,sysPermission);
+	public boolean hasPermission(String Silian_username, String Silian_url) {
+		SysPermission Silian_sysPermission = new SysPermission();
+		Silian_sysPermission.setUrl(Silian_url);
+		int count = baseMapper.queryCountByUsername(Silian_username,Silian_sysPermission);
 		if(count>0){
 			return true;
 		}else{
@@ -271,15 +271,15 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	}
 
 	@Override
-	public List<SysPermission> queryDepartPermissionList(String departId) {
-		return sysPermissionMapper.queryDepartPermissionList(departId);
+	public List<SysPermission> queryDepartPermissionList(String Silian_departId) {
+		return sysPermissionMapper.queryDepartPermissionList(Silian_departId);
 	}
 
 	@Override
-	public boolean checkPermDuplication(String id, String url,Boolean alwaysShow) {
-		QueryWrapper<SysPermission> qw=new QueryWrapper();
-		qw.lambda().eq(true, SysPermission::getUrl,url).ne(oConvertUtils.isNotEmpty(id), SysPermission::getId,id).eq(true, SysPermission::isAlwaysShow,alwaysShow);
-		return count(qw)==0;
+	public boolean checkPermDuplication(String Silian_id, String Silian_url,Boolean Silian_alwaysShow) {
+		QueryWrapper<SysPermission> Silian_qw=new QueryWrapper();
+		Silian_qw.lambda().eq(true, SysPermission::getUrl,Silian_url).ne(oConvertUtils.isNotEmpty(Silian_id), SysPermission::getId,Silian_id).eq(true, SysPermission::isAlwaysShow,Silian_alwaysShow);
+		return count(Silian_qw)==0;
 	}
 
 }

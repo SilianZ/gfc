@@ -28,51 +28,51 @@ public class NgAlainServiceImpl implements NgAlainService {
     @Autowired
     private SysDictMapper mapper;
     @Override
-    public JSONArray getMenu(String id) throws Exception {
-        return getJeecgMenu(id);
+    public JSONArray getMenu(String Silian_id) throws Exception {
+        return getJeecgMenu(Silian_id);
     }
     @Override
-    public JSONArray getJeecgMenu(String id) throws Exception {
-        List<SysPermission> metaList = sysPermissionService.queryByUser(id);
-        JSONArray jsonArray = new JSONArray();
-        getPermissionJsonArray(jsonArray, metaList, null);
-        JSONArray menulist= parseNgAlain(jsonArray);
-        JSONObject jeecgMenu = new JSONObject();
-        jeecgMenu.put("text", "jeecg菜单");
-        jeecgMenu.put("group",true);
-        jeecgMenu.put("children", menulist);
-        JSONArray jeecgMenuList=new JSONArray();
-        jeecgMenuList.add(jeecgMenu);
-        return jeecgMenuList;
+    public JSONArray getJeecgMenu(String Silian_id) throws Exception {
+        List<SysPermission> Silian_metaList = sysPermissionService.queryByUser(Silian_id);
+        JSONArray Silian_jsonArray = new JSONArray();
+        getPermissionJsonArray(Silian_jsonArray, Silian_metaList, null);
+        JSONArray Silian_menulist= parseNgAlain(Silian_jsonArray);
+        JSONObject Silian_jeecgMenu = new JSONObject();
+        Silian_jeecgMenu.put("text", "jeecg菜单");
+        Silian_jeecgMenu.put("group",true);
+        Silian_jeecgMenu.put("children", Silian_menulist);
+        JSONArray Silian_jeecgMenuList=new JSONArray();
+        Silian_jeecgMenuList.add(Silian_jeecgMenu);
+        return Silian_jeecgMenuList;
     }
 
     @Override
-    public List<Map<String, String>> getDictByTable(String table, String key, String value) {
-        return this.mapper.getDictByTableNgAlain(table,key,value);
+    public List<Map<String, String>> getDictByTable(String Silian_table, String Silian_key, String Silian_value) {
+        return this.mapper.getDictByTableNgAlain(Silian_table,Silian_key,Silian_value);
     }
 
-    private JSONArray parseNgAlain(JSONArray jsonArray) {
-        JSONArray menulist=new JSONArray();
-        for (Object object : jsonArray) {
-            JSONObject jsonObject= (JSONObject) object;
-            String path= (String) jsonObject.get("path");
-            JSONObject meta= (JSONObject) jsonObject.get("meta");
-            JSONObject menu=new JSONObject();
-            menu.put("text",meta.get("title"));
-            menu.put("reuse",true);
-            if (jsonObject.get("children")!=null){
-                JSONArray child=  parseNgAlain((JSONArray) jsonObject.get("children"));
-                menu.put("children",child);
-                JSONObject icon=new JSONObject();
-                icon.put("type", "icon");
-                icon.put("value", meta.get("icon"));
-                menu.put("icon",icon);
+    private JSONArray parseNgAlain(JSONArray Silian_jsonArray) {
+        JSONArray Silian_menulist=new JSONArray();
+        for (Object Silian_object : Silian_jsonArray) {
+            JSONObject Silian_jsonObject= (JSONObject) Silian_object;
+            String Silian_path= (String) Silian_jsonObject.get("path");
+            JSONObject Silian_meta= (JSONObject) Silian_jsonObject.get("meta");
+            JSONObject Silian_menu=new JSONObject();
+            Silian_menu.put("text",Silian_meta.get("title"));
+            Silian_menu.put("reuse",true);
+            if (Silian_jsonObject.get("children")!=null){
+                JSONArray Silian_child=  parseNgAlain((JSONArray) Silian_jsonObject.get("children"));
+                Silian_menu.put("children",Silian_child);
+                JSONObject Silian_icon=new JSONObject();
+                Silian_icon.put("type", "icon");
+                Silian_icon.put("value", Silian_meta.get("icon"));
+                Silian_menu.put("icon",Silian_icon);
             }else {
-                menu.put("link",path);
+                Silian_menu.put("link",Silian_path);
             }
-            menulist.add(menu);
+            Silian_menulist.add(Silian_menu);
         }
-        return menulist;
+        return Silian_menulist;
     }
 
     /**
@@ -81,40 +81,40 @@ public class NgAlainServiceImpl implements NgAlainService {
      * @param metaList
      * @param parentJson
      */
-    private void getPermissionJsonArray(JSONArray jsonArray,List<SysPermission> metaList,JSONObject parentJson) {
-        for (SysPermission permission : metaList) {
-            if(permission.getMenuType()==null) {
+    private void getPermissionJsonArray(JSONArray Silian_jsonArray,List<SysPermission> Silian_metaList,JSONObject Silian_parentJson) {
+        for (SysPermission Silian_permission : Silian_metaList) {
+            if(Silian_permission.getMenuType()==null) {
                 continue;
             }
-            String tempPid = permission.getParentId();
-            JSONObject json = getPermissionJsonObject(permission);
-            if(parentJson==null && oConvertUtils.isEmpty(tempPid)) {
-                jsonArray.add(json);
-                if(!permission.isLeaf()) {
-                    getPermissionJsonArray(jsonArray, metaList, json);
+            String Silian_tempPid = Silian_permission.getParentId();
+            JSONObject Silian_json = getPermissionJsonObject(Silian_permission);
+            if(Silian_parentJson==null && oConvertUtils.isEmpty(Silian_tempPid)) {
+                Silian_jsonArray.add(Silian_json);
+                if(!Silian_permission.isLeaf()) {
+                    getPermissionJsonArray(Silian_jsonArray, Silian_metaList, Silian_json);
                 }
-            }else if(parentJson!=null && oConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))){
-                if(permission.getMenuType()==0) {
-                    JSONObject metaJson = parentJson.getJSONObject("meta");
-                    if(metaJson.containsKey("permissionList")) {
-                        metaJson.getJSONArray("permissionList").add(json);
+            }else if(Silian_parentJson!=null && oConvertUtils.isNotEmpty(Silian_tempPid) && Silian_tempPid.equals(Silian_parentJson.getString("id"))){
+                if(Silian_permission.getMenuType()==0) {
+                    JSONObject Silian_metaJson = Silian_parentJson.getJSONObject("meta");
+                    if(Silian_metaJson.containsKey("permissionList")) {
+                        Silian_metaJson.getJSONArray("permissionList").add(Silian_json);
                     }else {
-                        JSONArray permissionList = new JSONArray();
-                        permissionList.add(json);
-                        metaJson.put("permissionList", permissionList);
+                        JSONArray Silian_permissionList = new JSONArray();
+                        Silian_permissionList.add(Silian_json);
+                        Silian_metaJson.put("permissionList", Silian_permissionList);
                     }
 
-                }else if(permission.getMenuType()==1) {
-                    if(parentJson.containsKey("children")) {
-                        parentJson.getJSONArray("children").add(json);
+                }else if(Silian_permission.getMenuType()==1) {
+                    if(Silian_parentJson.containsKey("children")) {
+                        Silian_parentJson.getJSONArray("children").add(Silian_json);
                     }else {
-                        JSONArray children = new JSONArray();
-                        children.add(json);
-                        parentJson.put("children", children);
+                        JSONArray Silian_children = new JSONArray();
+                        Silian_children.add(Silian_json);
+                        Silian_parentJson.put("children", Silian_children);
                     }
 
-                    if(!permission.isLeaf()) {
-                        getPermissionJsonArray(jsonArray, metaList, json);
+                    if(!Silian_permission.isLeaf()) {
+                        getPermissionJsonArray(Silian_jsonArray, Silian_metaList, Silian_json);
                     }
                 }
             }
@@ -122,50 +122,50 @@ public class NgAlainServiceImpl implements NgAlainService {
 
         }
     }
-    private JSONObject getPermissionJsonObject(SysPermission permission) {
-        JSONObject json = new JSONObject();
+    private JSONObject getPermissionJsonObject(SysPermission Silian_permission) {
+        JSONObject Silian_json = new JSONObject();
         //类型(0：一级菜单 1：子菜单  2：按钮)
-        if(CommonConstant.MENU_TYPE_2.equals(permission.getMenuType())) {
-            json.put("action", permission.getPerms());
-            json.put("describe", permission.getName());
-        }else if(CommonConstant.MENU_TYPE_0.equals(permission.getMenuType()) || CommonConstant.MENU_TYPE_1.equals(permission.getMenuType())) {
-            json.put("id", permission.getId());
-            boolean flag = permission.getUrl()!=null&&(permission.getUrl().startsWith(CommonConstant.HTTP_PROTOCOL)||permission.getUrl().startsWith(CommonConstant.HTTPS_PROTOCOL));
-            if(flag) {
-                String url= new String(Base64.getUrlEncoder().encode(permission.getUrl().getBytes()));
-                json.put("path", "/sys/link/" +url.replaceAll("=",""));
+        if(CommonConstant.MENU_TYPE_2.equals(Silian_permission.getMenuType())) {
+            Silian_json.put("action", Silian_permission.getPerms());
+            Silian_json.put("describe", Silian_permission.getName());
+        }else if(CommonConstant.MENU_TYPE_0.equals(Silian_permission.getMenuType()) || CommonConstant.MENU_TYPE_1.equals(Silian_permission.getMenuType())) {
+            Silian_json.put("id", Silian_permission.getId());
+            boolean Silian_flag = Silian_permission.getUrl()!=null&&(Silian_permission.getUrl().startsWith(CommonConstant.HTTP_PROTOCOL)||Silian_permission.getUrl().startsWith(CommonConstant.HTTPS_PROTOCOL));
+            if(Silian_flag) {
+                String Silian_url= new String(Base64.getUrlEncoder().encode(Silian_permission.getUrl().getBytes()));
+                Silian_json.put("path", "/sys/link/" +Silian_url.replaceAll("=",""));
             }else {
-                json.put("path", permission.getUrl());
+                Silian_json.put("path", Silian_permission.getUrl());
             }
 
             //重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
-            json.put("name", urlToRouteName(permission.getUrl()));
+            Silian_json.put("name", urlToRouteName(Silian_permission.getUrl()));
 
             //是否隐藏路由，默认都是显示的
-            if(permission.isHidden()) {
-                json.put("hidden",true);
+            if(Silian_permission.isHidden()) {
+                Silian_json.put("hidden",true);
             }
             //聚合路由
-            if(permission.isAlwaysShow()) {
-                json.put("alwaysShow",true);
+            if(Silian_permission.isAlwaysShow()) {
+                Silian_json.put("alwaysShow",true);
             }
-            json.put("component", permission.getComponent());
-            JSONObject meta = new JSONObject();
-            meta.put("title", permission.getName());
-            if(oConvertUtils.isEmpty(permission.getParentId())) {
+            Silian_json.put("component", Silian_permission.getComponent());
+            JSONObject Silian_meta = new JSONObject();
+            Silian_meta.put("title", Silian_permission.getName());
+            if(oConvertUtils.isEmpty(Silian_permission.getParentId())) {
                 //一级菜单跳转地址
-                json.put("redirect",permission.getRedirect());
-                meta.put("icon", oConvertUtils.getString(permission.getIcon(), ""));
+                Silian_json.put("redirect",Silian_permission.getRedirect());
+                Silian_meta.put("icon", oConvertUtils.getString(Silian_permission.getIcon(), ""));
             }else {
-                meta.put("icon", oConvertUtils.getString(permission.getIcon(), ""));
+                Silian_meta.put("icon", oConvertUtils.getString(Silian_permission.getIcon(), ""));
             }
-            if(flag) {
-                meta.put("url", permission.getUrl());
+            if(Silian_flag) {
+                Silian_meta.put("url", Silian_permission.getUrl());
             }
-            json.put("meta", meta);
+            Silian_json.put("meta", Silian_meta);
         }
 
-        return json;
+        return Silian_json;
     }
     /**
      * 通过URL生成路由name（去掉URL前缀斜杠，替换内容中的斜杠‘/’为-）
@@ -173,13 +173,13 @@ public class NgAlainServiceImpl implements NgAlainService {
      *     RouteName = isystem-role
      * @return
      */
-    private String urlToRouteName(String url) {
-        if(oConvertUtils.isNotEmpty(url)) {
-            if(url.startsWith(SymbolConstant.SINGLE_SLASH)) {
-                url = url.substring(1);
+    private String urlToRouteName(String Silian_url) {
+        if(oConvertUtils.isNotEmpty(Silian_url)) {
+            if(Silian_url.startsWith(SymbolConstant.SINGLE_SLASH)) {
+                Silian_url = Silian_url.substring(1);
             }
-            url = url.replace("/", "-");
-            return url;
+            Silian_url = Silian_url.replace("/", "-");
+            return Silian_url;
         }else {
             return null;
         }

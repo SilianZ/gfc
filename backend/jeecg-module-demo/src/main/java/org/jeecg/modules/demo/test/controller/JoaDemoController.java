@@ -53,7 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JoaDemoController {
 	@Autowired
 	private IJoaDemoService joaDemoService;
-	
+
 	/**
 	  * 分页列表查询
 	 * @param joaDemo
@@ -63,113 +63,113 @@ public class JoaDemoController {
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<JoaDemo>> queryPageList(JoaDemo joaDemo,
-									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
-		Result<IPage<JoaDemo>> result = new Result<IPage<JoaDemo>>();
-		QueryWrapper<JoaDemo> queryWrapper = QueryGenerator.initQueryWrapper(joaDemo, req.getParameterMap());
-		Page<JoaDemo> page = new Page<JoaDemo>(pageNo, pageSize);
-		IPage<JoaDemo> pageList = joaDemoService.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+	public Result<IPage<JoaDemo>> queryPageList(JoaDemo Silian_joaDemo,
+									  @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+									  HttpServletRequest Silian_req) {
+		Result<IPage<JoaDemo>> Silian_result = new Result<IPage<JoaDemo>>();
+		QueryWrapper<JoaDemo> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_joaDemo, Silian_req.getParameterMap());
+		Page<JoaDemo> Silian_page = new Page<JoaDemo>(Silian_pageNo, Silian_pageSize);
+		IPage<JoaDemo> Silian_pageList = joaDemoService.page(Silian_page, Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
-	
+
 	/**
 	  *   添加
 	 * @param joaDemo
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<JoaDemo> add(@RequestBody JoaDemo joaDemo) {
-		Result<JoaDemo> result = new Result<JoaDemo>();
+	public Result<JoaDemo> add(@RequestBody JoaDemo Silian_joaDemo) {
+		Result<JoaDemo> Silian_result = new Result<JoaDemo>();
 		try {
-			joaDemoService.save(joaDemo);
-			result.success("添加成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
+			joaDemoService.save(Silian_joaDemo);
+			Silian_result.success("添加成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	  *  编辑
 	 * @param joaDemo
 	 * @return
 	 */
 	@PutMapping(value = "/edit")
-	public Result<JoaDemo> edit(@RequestBody JoaDemo joaDemo) {
-		Result<JoaDemo> result = new Result<JoaDemo>();
-		JoaDemo joaDemoEntity = joaDemoService.getById(joaDemo.getId());
-		if(joaDemoEntity==null) {
-			result.error500("未找到对应实体");
+	public Result<JoaDemo> edit(@RequestBody JoaDemo Silian_joaDemo) {
+		Result<JoaDemo> Silian_result = new Result<JoaDemo>();
+		JoaDemo Silian_joaDemoEntity = joaDemoService.getById(Silian_joaDemo.getId());
+		if(Silian_joaDemoEntity==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			boolean ok = joaDemoService.updateById(joaDemo);
+			boolean Silian_ok = joaDemoService.updateById(Silian_joaDemo);
 			//TODO 返回false说明什么？
-			if(ok) {
-				result.success("修改成功!");
+			if(Silian_ok) {
+				Silian_result.success("修改成功!");
 			}
 		}
-		
-		return result;
+
+		return Silian_result;
 	}
-	
+
 	/**
 	  *   通过id删除
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<JoaDemo> delete(@RequestParam(name="id",required=true) String id) {
-		Result<JoaDemo> result = new Result<JoaDemo>();
-		JoaDemo joaDemo = joaDemoService.getById(id);
-		if(joaDemo==null) {
-			result.error500("未找到对应实体");
+	public Result<JoaDemo> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		Result<JoaDemo> Silian_result = new Result<JoaDemo>();
+		JoaDemo Silian_joaDemo = joaDemoService.getById(Silian_id);
+		if(Silian_joaDemo==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			boolean ok = joaDemoService.removeById(id);
-			if(ok) {
-				result.success("删除成功!");
+			boolean Silian_ok = joaDemoService.removeById(Silian_id);
+			if(Silian_ok) {
+				Silian_result.success("删除成功!");
 			}
 		}
-		
-		return result;
+
+		return Silian_result;
 	}
-	
+
 	/**
 	  *  批量删除
 	 * @param ids
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<JoaDemo> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<JoaDemo> result = new Result<JoaDemo>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
+	public Result<JoaDemo> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		Result<JoaDemo> Silian_result = new Result<JoaDemo>();
+		if(Silian_ids==null || "".equals(Silian_ids.trim())) {
+			Silian_result.error500("参数不识别！");
 		}else {
-			this.joaDemoService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
+			this.joaDemoService.removeByIds(Arrays.asList(Silian_ids.split(",")));
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	  * 通过id查询
 	 * @param id
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<JoaDemo> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<JoaDemo> result = new Result<JoaDemo>();
-		JoaDemo joaDemo = joaDemoService.getById(id);
-		if(joaDemo==null) {
-			result.error500("未找到对应实体");
+	public Result<JoaDemo> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		Result<JoaDemo> Silian_result = new Result<JoaDemo>();
+		JoaDemo Silian_joaDemo = joaDemoService.getById(Silian_id);
+		if(Silian_joaDemo==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			result.setResult(joaDemo);
-			result.setSuccess(true);
+			Silian_result.setResult(Silian_joaDemo);
+			Silian_result.setSuccess(true);
 		}
-		return result;
+		return Silian_result;
 	}
 
   /**
@@ -179,29 +179,29 @@ public class JoaDemoController {
    * @param response
    */
   @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
+  public ModelAndView exportXls(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
       // Step.1 组装查询条件
-      QueryWrapper<JoaDemo> queryWrapper = null;
+      QueryWrapper<JoaDemo> Silian_queryWrapper = null;
       try {
-          String paramsStr = request.getParameter("paramsStr");
-          if (oConvertUtils.isNotEmpty(paramsStr)) {
-              String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              JoaDemo joaDemo = JSON.parseObject(deString, JoaDemo.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(joaDemo, request.getParameterMap());
+          String Silian_paramsStr = Silian_request.getParameter("paramsStr");
+          if (oConvertUtils.isNotEmpty(Silian_paramsStr)) {
+              String Silian_deString = URLDecoder.decode(Silian_paramsStr, "UTF-8");
+              JoaDemo Silian_joaDemo = JSON.parseObject(Silian_deString, JoaDemo.class);
+              Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_joaDemo, Silian_request.getParameterMap());
           }
-      } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
+      } catch (UnsupportedEncodingException Silian_e) {
+          Silian_e.printStackTrace();
       }
 
       //Step.2 AutoPoi 导出Excel
-      ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<JoaDemo> pageList = joaDemoService.list(queryWrapper);
+      ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
+      List<JoaDemo> Silian_pageList = joaDemoService.list(Silian_queryWrapper);
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "流程测试列表");
-      mv.addObject(NormalExcelConstants.CLASS, JoaDemo.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("流程测试列表数据", "导出人:Jeecg", "导出信息"));
-      mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-      return mv;
+      Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "流程测试列表");
+      Silian_mv.addObject(NormalExcelConstants.CLASS, JoaDemo.class);
+      Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("流程测试列表数据", "导出人:Jeecg", "导出信息"));
+      Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+      return Silian_mv;
   }
 
   /**
@@ -212,30 +212,30 @@ public class JoaDemoController {
    * @return
    */
   @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-      Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-      for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+  public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+      MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+      Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
+      for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
           // 获取上传文件对象
-          MultipartFile file = entity.getValue();
-          ImportParams params = new ImportParams();
-          params.setTitleRows(2);
-          params.setHeadRows(1);
-          params.setNeedSave(true);
+          MultipartFile Silian_file = Silian_entity.getValue();
+          ImportParams Silian_params = new ImportParams();
+          Silian_params.setTitleRows(2);
+          Silian_params.setHeadRows(1);
+          Silian_params.setNeedSave(true);
           try {
-              List<JoaDemo> listJoaDemos = ExcelImportUtil.importExcel(file.getInputStream(), JoaDemo.class, params);
-              for (JoaDemo joaDemoExcel : listJoaDemos) {
-                  joaDemoService.save(joaDemoExcel);
+              List<JoaDemo> Silian_listJoaDemos = ExcelImportUtil.importExcel(Silian_file.getInputStream(), JoaDemo.class, Silian_params);
+              for (JoaDemo Silian_joaDemoExcel : Silian_listJoaDemos) {
+                  joaDemoService.save(Silian_joaDemoExcel);
               }
-              return Result.ok("文件导入成功！数据行数:" + listJoaDemos.size());
-          } catch (Exception e) {
-              log.error(e.getMessage(),e);
-              return Result.error("文件导入失败:"+e.getMessage());
+              return Result.ok("文件导入成功！数据行数:" + Silian_listJoaDemos.size());
+          } catch (Exception Silian_e) {
+              log.error(Silian_e.getMessage(),Silian_e);
+              return Result.error("文件导入失败:"+Silian_e.getMessage());
           } finally {
               try {
-                  file.getInputStream().close();
-              } catch (IOException e) {
-                  e.printStackTrace();
+                  Silian_file.getInputStream().close();
+              } catch (IOException Silian_e) {
+                  Silian_e.printStackTrace();
               }
           }
       }

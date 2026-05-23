@@ -31,29 +31,29 @@ public enum DySmsEnum {
 	 * 短信模板必需的数据名称，多个key以逗号分隔，此处配置作为校验
 	 */
 	private String keys;
-	
+
 	private DySmsEnum(String templateCode,String signName,String keys) {
 		this.templateCode = templateCode;
 		this.signName = signName;
 		this.keys = keys;
 	}
-	
+
 	public String getTemplateCode() {
 		return templateCode;
 	}
-	
+
 	public void setTemplateCode(String templateCode) {
 		this.templateCode = templateCode;
 	}
-	
+
 	public String getSignName() {
 		return signName;
 	}
-	
+
 	public void setSignName(String signName) {
 		this.signName = signName;
 	}
-	
+
 	public String getKeys() {
 		return keys;
 	}
@@ -66,9 +66,9 @@ public enum DySmsEnum {
 		if(StringUtils.isEmpty(templateCode)){
 			return null;
 		}
-		for(DySmsEnum item : DySmsEnum.values()) {
-			if(item.getTemplateCode().equals(templateCode)) {
-				return item;
+		for(DySmsEnum Silian_item : DySmsEnum.values()) {
+			if(Silian_item.getTemplateCode().equals(templateCode)) {
+				return Silian_item;
 			}
 		}
 		return null;

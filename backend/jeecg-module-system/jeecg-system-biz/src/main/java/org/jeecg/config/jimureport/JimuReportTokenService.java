@@ -33,37 +33,37 @@ public class JimuReportTokenService implements JmReportTokenServiceI {
     private RedisUtil redisUtil;
 
     @Override
-    public String getToken(HttpServletRequest request) {
-        return TokenUtils.getTokenByRequest(request);
+    public String getToken(HttpServletRequest Silian_request) {
+        return TokenUtils.getTokenByRequest(Silian_request);
     }
 
     @Override
-    public String getUsername(String token) {
-        return JwtUtil.getUsername(token);
+    public String getUsername(String Silian_token) {
+        return JwtUtil.getUsername(Silian_token);
     }
 
     @Override
-    public Boolean verifyToken(String token) {
-        return TokenUtils.verifyToken(token, sysBaseApi, redisUtil);
+    public Boolean verifyToken(String Silian_token) {
+        return TokenUtils.verifyToken(Silian_token, sysBaseApi, redisUtil);
     }
 
     @Override
-    public Map<String, Object> getUserInfo(String token) {
-        Map<String, Object> map = new HashMap(5);
-        String username = JwtUtil.getUsername(token);
+    public Map<String, Object> getUserInfo(String Silian_token) {
+        Map<String, Object> Silian_map = new HashMap(5);
+        String Silian_username = JwtUtil.getUsername(Silian_token);
         //此处通过token只能拿到一个信息 用户账号  后面的就是根据账号获取其他信息 查询数据或是走redis 用户根据自身业务可自定义
-        SysUserCacheInfo userInfo = null;
+        SysUserCacheInfo Silian_userInfo = null;
         try {
-            userInfo = sysBaseApi.getCacheUser(username);
-        } catch (Exception e) {
-            log.error("获取用户信息异常:"+ e.getMessage());
-            return map;
+            Silian_userInfo = sysBaseApi.getCacheUser(Silian_username);
+        } catch (Exception Silian_e) {
+            log.error("获取用户信息异常:"+ Silian_e.getMessage());
+            return Silian_map;
         }
         //设置账号名
-        map.put(SYS_USER_CODE, userInfo.getSysUserCode());
+        Silian_map.put(SYS_USER_CODE, Silian_userInfo.getSysUserCode());
         //设置部门编码
-        map.put(SYS_ORG_CODE, userInfo.getSysOrgCode());
+        Silian_map.put(SYS_ORG_CODE, Silian_userInfo.getSysOrgCode());
         // 将所有信息存放至map 解析sql/api会根据map的键值解析
-        return map;
+        return Silian_map;
     }
 }

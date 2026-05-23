@@ -24,7 +24,7 @@ public class SysDictItemServiceImpl extends ServiceImpl<SysDictItemMapper, SysDi
     private SysDictItemMapper sysDictItemMapper;
 
     @Override
-    public List<SysDictItem> selectItemsByMainId(String mainId) {
-        return sysDictItemMapper.selectItemsByMainId(mainId);
+    public List<SysDictItem> selectItemsByMainId(String Silian_mainId) {
+        return sysDictItemMapper.selectItemsByMainId(Silian_mainId);
     }
 }

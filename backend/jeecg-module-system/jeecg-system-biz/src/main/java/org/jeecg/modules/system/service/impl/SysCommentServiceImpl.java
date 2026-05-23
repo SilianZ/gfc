@@ -71,152 +71,152 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
     private static final String SYS_FORM_FILE_TABLE_NAME = "sys_comment";
 
     @Override
-    public List<SysCommentVO> queryFormCommentInfo(SysComment sysComment) {
-        String tableName = sysComment.getTableName();
-        String dataId = sysComment.getTableDataId();
+    public List<SysCommentVO> queryFormCommentInfo(SysComment Silian_sysComment) {
+        String Silian_tableName = Silian_sysComment.getTableName();
+        String Silian_dataId = Silian_sysComment.getTableDataId();
         //获取评论信息
-        List<SysCommentVO> list = this.baseMapper.queryCommentList(tableName, dataId);
+        List<SysCommentVO> Silian_list = this.baseMapper.queryCommentList(Silian_tableName, Silian_dataId);
         // 获取评论相关人员
-        Set<String> personSet = new HashSet<>();
-        if(list!=null && list.size()>0){
-            for(SysCommentVO vo: list){
-                if(oConvertUtils.isNotEmpty(vo.getFromUserId())){
-                    personSet.add(vo.getFromUserId());    
+        Set<String> Silian_personSet = new HashSet<>();
+        if(Silian_list!=null && Silian_list.size()>0){
+            for(SysCommentVO Silian_vo: Silian_list){
+                if(oConvertUtils.isNotEmpty(Silian_vo.getFromUserId())){
+                    Silian_personSet.add(Silian_vo.getFromUserId());
                 }
-                if(oConvertUtils.isNotEmpty(vo.getToUserId())){
-                    personSet.add(vo.getToUserId());
+                if(oConvertUtils.isNotEmpty(Silian_vo.getToUserId())){
+                    Silian_personSet.add(Silian_vo.getToUserId());
                 }
             }
         }
-        if(personSet.size()>0){
+        if(Silian_personSet.size()>0){
             //获取用户信息
-            Map<String, UserAvatar> userAvatarMap = queryUserAvatar(personSet);
-            for(SysCommentVO vo: list){
-                String formId = vo.getFromUserId();
-                String toId = vo.getToUserId();
+            Map<String, UserAvatar> Silian_userAvatarMap = queryUserAvatar(Silian_personSet);
+            for(SysCommentVO Silian_vo: Silian_list){
+                String Silian_formId = Silian_vo.getFromUserId();
+                String Silian_toId = Silian_vo.getToUserId();
                 // 设置头像、用户名
-                if(oConvertUtils.isNotEmpty(formId)){
-                    UserAvatar fromUser = userAvatarMap.get(formId);
-                    if(fromUser!=null){
-                        vo.setFromUserId_dictText(fromUser.getRealname());
-                        vo.setFromUserAvatar(fromUser.getAvatar());
+                if(oConvertUtils.isNotEmpty(Silian_formId)){
+                    UserAvatar Silian_fromUser = Silian_userAvatarMap.get(Silian_formId);
+                    if(Silian_fromUser!=null){
+                        Silian_vo.setFromUserId_dictText(Silian_fromUser.getRealname());
+                        Silian_vo.setFromUserAvatar(Silian_fromUser.getAvatar());
                     }
                 }
-                if(oConvertUtils.isNotEmpty(toId)){
-                    UserAvatar toUser = userAvatarMap.get(toId);
-                    if(toUser!=null){
-                        vo.setToUserId_dictText(toUser.getRealname());
-                        vo.setToUserAvatar(toUser.getAvatar());
+                if(oConvertUtils.isNotEmpty(Silian_toId)){
+                    UserAvatar Silian_toUser = Silian_userAvatarMap.get(Silian_toId);
+                    if(Silian_toUser!=null){
+                        Silian_vo.setToUserId_dictText(Silian_toUser.getRealname());
+                        Silian_vo.setToUserAvatar(Silian_toUser.getAvatar());
                     }
                 }
             }
         }
-        return list;
+        return Silian_list;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveOneFileComment(HttpServletRequest request) {
-        String savePath = "";
-        String bizPath = request.getParameter("biz");
+    public void saveOneFileComment(HttpServletRequest Silian_request) {
+        String Silian_savePath = "";
+        String Silian_bizPath = Silian_request.getParameter("biz");
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath)) {
-            if (bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)) {
+        if (oConvertUtils.isNotEmpty(Silian_bizPath)) {
+            if (Silian_bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || Silian_bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)) {
                 throw new JeecgBootException("上传目录bizPath，格式非法！");
             }
         }
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
         // 获取上传文件对象
-        MultipartFile file = multipartRequest.getFile("file");
-        if (oConvertUtils.isEmpty(bizPath)) {
+        MultipartFile Silian_file = Silian_multipartRequest.getFile("file");
+        if (oConvertUtils.isEmpty(Silian_bizPath)) {
             if (CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)) {
                 //未指定目录，则用阿里云默认目录 upload
-                bizPath = "upload";
+                Silian_bizPath = "upload";
             } else {
-                bizPath = "";
+                Silian_bizPath = "";
             }
         }
         if (CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)) {
-            savePath = this.uploadLocal(file, bizPath);
+            Silian_savePath = this.uploadLocal(Silian_file, Silian_bizPath);
         } else {
-            savePath = CommonUtils.upload(file, bizPath, uploadType);
+            Silian_savePath = CommonUtils.upload(Silian_file, Silian_bizPath, uploadType);
         }
 
-        String orgName = file.getOriginalFilename();
+        String Silian_orgName = Silian_file.getOriginalFilename();
         // 获取文件名
-        orgName = CommonUtils.getFileName(orgName);
+        Silian_orgName = CommonUtils.getFileName(Silian_orgName);
         //文件大小
-        long size = file.getSize();
+        long Silian_size = Silian_file.getSize();
         //文件类型
-        String type = orgName.substring(orgName.lastIndexOf("."), orgName.length());
-        FileTypeEnum fileType = FileTypeEnum.getByType(type);
+        String Silian_type = Silian_orgName.substring(Silian_orgName.lastIndexOf("."), Silian_orgName.length());
+        FileTypeEnum Silian_fileType = FileTypeEnum.getByType(Silian_type);
 
         //保存至 SysFiles
-        SysFiles sysFiles = new SysFiles();
-        sysFiles.setFileName(orgName);
-        sysFiles.setUrl(savePath);
-        sysFiles.setFileType(fileType.getValue());
-        sysFiles.setStoreType("temp");
-        if (size > 0) {
-            sysFiles.setFileSize(Double.parseDouble(String.valueOf(size)));
+        SysFiles Silian_sysFiles = new SysFiles();
+        Silian_sysFiles.setFileName(Silian_orgName);
+        Silian_sysFiles.setUrl(Silian_savePath);
+        Silian_sysFiles.setFileType(Silian_fileType.getValue());
+        Silian_sysFiles.setStoreType("temp");
+        if (Silian_size > 0) {
+            Silian_sysFiles.setFileSize(Double.parseDouble(String.valueOf(Silian_size)));
         }
-        String defaultValue = "0";
-        sysFiles.setIzStar(defaultValue);
-        sysFiles.setIzFolder(defaultValue);
-        sysFiles.setIzRootFolder(defaultValue);
-        sysFiles.setDelFlag(defaultValue);
-        String fileId = String.valueOf(IdWorker.getId());
-        sysFiles.setId(fileId);
-        sysFilesMapper.insert(sysFiles);
+        String Silian_defaultValue = "0";
+        Silian_sysFiles.setIzStar(Silian_defaultValue);
+        Silian_sysFiles.setIzFolder(Silian_defaultValue);
+        Silian_sysFiles.setIzRootFolder(Silian_defaultValue);
+        Silian_sysFiles.setDelFlag(Silian_defaultValue);
+        String Silian_fileId = String.valueOf(IdWorker.getId());
+        Silian_sysFiles.setId(Silian_fileId);
+        sysFilesMapper.insert(Silian_sysFiles);
 
         //保存至 SysFormFile
-        String tableName = SYS_FORM_FILE_TABLE_NAME;
-        String tableDataId = request.getParameter("commentId");
-        SysFormFile sysFormFile = new SysFormFile();
-        sysFormFile.setTableName(tableName);
-        sysFormFile.setFileType(fileType.getValue());
-        sysFormFile.setTableDataId(tableDataId);
-        sysFormFile.setFileId(fileId);
-        sysFormFileMapper.insert(sysFormFile);
+        String Silian_tableName = SYS_FORM_FILE_TABLE_NAME;
+        String Silian_tableDataId = Silian_request.getParameter("commentId");
+        SysFormFile Silian_sysFormFile = new SysFormFile();
+        Silian_sysFormFile.setTableName(Silian_tableName);
+        Silian_sysFormFile.setFileType(Silian_fileType.getValue());
+        Silian_sysFormFile.setTableDataId(Silian_tableDataId);
+        Silian_sysFormFile.setFileId(Silian_fileId);
+        sysFormFileMapper.insert(Silian_sysFormFile);
 
     }
 
     @Override
-    public List<SysCommentFileVo> queryFormFileList(String tableName, String formDataId) {
-        List<SysCommentFileVo> list = baseMapper.queryFormFileList(tableName, formDataId);
-        return list;
+    public List<SysCommentFileVo> queryFormFileList(String Silian_tableName, String Silian_formDataId) {
+        List<SysCommentFileVo> Silian_list = baseMapper.queryFormFileList(Silian_tableName, Silian_formDataId);
+        return Silian_list;
     }
 
     @Override
-    public String saveOne(SysComment sysComment) {
-        this.save(sysComment);
+    public String saveOne(SysComment Silian_sysComment) {
+        this.save(Silian_sysComment);
         //发送系统消息
-        String content = sysComment.getCommentContent();
-        if (content.indexOf("@") >= 0) {
-            Set<String> set = getCommentUsername(content);
-            if (set.size() > 0) {
-                String users = String.join(",", set);
-                MessageDTO md = new MessageDTO();
-                md.setTitle("有人在表单评论中提到了你");
-                md.setContent(content);
-                md.setToAll(false);
-                md.setToUser(users);
-                md.setFromUser("system");
-                md.setType(MessageTypeEnum.XT.getType());
-                sysBaseApi.sendTemplateMessage(md);
+        String Silian_content = Silian_sysComment.getCommentContent();
+        if (Silian_content.indexOf("@") >= 0) {
+            Set<String> Silian_set = getCommentUsername(Silian_content);
+            if (Silian_set.size() > 0) {
+                String Silian_users = String.join(",", Silian_set);
+                MessageDTO Silian_md = new MessageDTO();
+                Silian_md.setTitle("有人在表单评论中提到了你");
+                Silian_md.setContent(Silian_content);
+                Silian_md.setToAll(false);
+                Silian_md.setToUser(Silian_users);
+                Silian_md.setFromUser("system");
+                Silian_md.setType(MessageTypeEnum.XT.getType());
+                sysBaseApi.sendTemplateMessage(Silian_md);
             }
         }
-        return sysComment.getId();
+        return Silian_sysComment.getId();
     }
 
     @Override
-    public void deleteOne(String id) {
-        this.removeById(id);
+    public void deleteOne(String Silian_id) {
+        this.removeById(Silian_id);
         //还要删除关联文件
-        LambdaQueryWrapper<SysFormFile> query = new LambdaQueryWrapper<SysFormFile>()
-                .eq(SysFormFile::getTableDataId, id)
+        LambdaQueryWrapper<SysFormFile> Silian_query = new LambdaQueryWrapper<SysFormFile>()
+                .eq(SysFormFile::getTableDataId, Silian_id)
                 .eq(SysFormFile::getTableName, SYS_FORM_FILE_TABLE_NAME);
-        this.sysFormFileMapper.delete(query);
+        this.sysFormFileMapper.delete(Silian_query);
     }
 
     /**
@@ -224,18 +224,18 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
      *
      * @return
      */
-    private Set<String> getCommentUsername(String content) {
-        Set<String> set = new HashSet<String>(3);
-        String reg = "(@(.*?)\\[(.*?)\\])";
-        Pattern p = Pattern.compile(reg);
-        Matcher m = p.matcher(content);
-        while (m.find()) {
-            if (m.groupCount() == 3) {
-                String username = m.group(3);
-                set.add(username);
+    private Set<String> getCommentUsername(String Silian_content) {
+        Set<String> Silian_set = new HashSet<String>(3);
+        String Silian_reg = "(@(.*?)\\[(.*?)\\])";
+        Pattern Silian_p = Pattern.compile(Silian_reg);
+        Matcher Silian_m = Silian_p.matcher(Silian_content);
+        while (Silian_m.find()) {
+            if (Silian_m.groupCount() == 3) {
+                String Silian_username = Silian_m.group(3);
+                Silian_set.add(Silian_username);
             }
         }
-        return set;
+        return Silian_set;
     }
 
 
@@ -246,40 +246,40 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
      * @param bizPath 自定义路径
      * @return
      */
-    private String uploadLocal(MultipartFile mf, String bizPath) {
+    private String uploadLocal(MultipartFile Silian_mf, String Silian_bizPath) {
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath) && (bizPath.contains("../") || bizPath.contains("..\\"))) {
+        if (oConvertUtils.isNotEmpty(Silian_bizPath) && (Silian_bizPath.contains("../") || Silian_bizPath.contains("..\\"))) {
             throw new JeecgBootException("上传目录bizPath，格式非法！");
         }
         try {
-            String ctxPath = uploadpath;
-            String fileName = null;
-            File file = new File(ctxPath + File.separator + bizPath + File.separator);
-            if (!file.exists()) {
-                file.mkdirs();// 创建文件根目录
+            String Silian_ctxPath = uploadpath;
+            String Silian_fileName = null;
+            File Silian_file = new File(Silian_ctxPath + File.separator + Silian_bizPath + File.separator);
+            if (!Silian_file.exists()) {
+                Silian_file.mkdirs();// 创建文件根目录
             }
-            String orgName = mf.getOriginalFilename();// 获取文件名
-            orgName = CommonUtils.getFileName(orgName);
-            if (orgName.indexOf(".") != -1) {
-                fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.indexOf("."));
+            String Silian_orgName = Silian_mf.getOriginalFilename();// 获取文件名
+            Silian_orgName = CommonUtils.getFileName(Silian_orgName);
+            if (Silian_orgName.indexOf(".") != -1) {
+                Silian_fileName = Silian_orgName.substring(0, Silian_orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + Silian_orgName.substring(Silian_orgName.indexOf("."));
             } else {
-                fileName = orgName + "_" + System.currentTimeMillis();
+                Silian_fileName = Silian_orgName + "_" + System.currentTimeMillis();
             }
-            String savePath = file.getPath() + File.separator + fileName;
-            File savefile = new File(savePath);
-            FileCopyUtils.copy(mf.getBytes(), savefile);
-            String dbpath = null;
-            if (oConvertUtils.isNotEmpty(bizPath)) {
-                dbpath = bizPath + File.separator + fileName;
+            String Silian_savePath = Silian_file.getPath() + File.separator + Silian_fileName;
+            File Silian_savefile = new File(Silian_savePath);
+            FileCopyUtils.copy(Silian_mf.getBytes(), Silian_savefile);
+            String Silian_dbpath = null;
+            if (oConvertUtils.isNotEmpty(Silian_bizPath)) {
+                Silian_dbpath = Silian_bizPath + File.separator + Silian_fileName;
             } else {
-                dbpath = fileName;
+                Silian_dbpath = Silian_fileName;
             }
-            if (dbpath.contains("\\")) {
-                dbpath = dbpath.replace("\\", "/");
+            if (Silian_dbpath.contains("\\")) {
+                Silian_dbpath = Silian_dbpath.replace("\\", "/");
             }
-            return dbpath;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            return Silian_dbpath;
+        } catch (IOException Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
         }
         return "";
     }
@@ -289,15 +289,15 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
      * @param idSet
      * @return
      */
-    private Map<String, UserAvatar> queryUserAvatar(Set<String> idSet){
-        List<UserAvatar> list = this.baseMapper.queryUserAvatarList(idSet);
-        Map<String, UserAvatar> map = new HashMap<>();
-        if(list!=null && list.size()>0){
-            for(UserAvatar user: list){
-                map.put(user.getId(), user);
+    private Map<String, UserAvatar> queryUserAvatar(Set<String> Silian_idSet){
+        List<UserAvatar> Silian_list = this.baseMapper.queryUserAvatarList(Silian_idSet);
+        Map<String, UserAvatar> Silian_map = new HashMap<>();
+        if(Silian_list!=null && Silian_list.size()>0){
+            for(UserAvatar Silian_user: Silian_list){
+                Silian_map.put(Silian_user.getId(), Silian_user);
             }
         }
-        return map;
+        return Silian_map;
     }
-    
+
 }

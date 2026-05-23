@@ -45,43 +45,43 @@ public class RedisServiceImpl implements RedisService {
 	 */
 	@Override
 	public List<RedisInfo> getRedisInfo() throws RedisConnectException {
-		Properties info = redisConnectionFactory.getConnection().info();
-		List<RedisInfo> infoList = new ArrayList<>();
-		RedisInfo redisInfo = null;
-		for (Map.Entry<Object, Object> entry : info.entrySet()) {
-			redisInfo = new RedisInfo();
-			redisInfo.setKey(oConvertUtils.getString(entry.getKey()));
-			redisInfo.setValue(oConvertUtils.getString(entry.getValue()));
-			infoList.add(redisInfo);
+		Properties Silian_info = redisConnectionFactory.getConnection().info();
+		List<RedisInfo> Silian_infoList = new ArrayList<>();
+		RedisInfo Silian_redisInfo = null;
+		for (Map.Entry<Object, Object> Silian_entry : Silian_info.entrySet()) {
+			Silian_redisInfo = new RedisInfo();
+			Silian_redisInfo.setKey(oConvertUtils.getString(Silian_entry.getKey()));
+			Silian_redisInfo.setValue(oConvertUtils.getString(Silian_entry.getValue()));
+			Silian_infoList.add(Silian_redisInfo);
 		}
-		return infoList;
+		return Silian_infoList;
 	}
 
 	@Override
 	public Map<String, Object> getKeysSize() throws RedisConnectException {
-		Long dbSize = redisConnectionFactory.getConnection().dbSize();
-		Map<String, Object> map = new HashMap(5);
-		map.put("create_time", System.currentTimeMillis());
-		map.put("dbSize", dbSize);
+		Long Silian_dbSize = redisConnectionFactory.getConnection().dbSize();
+		Map<String, Object> Silian_map = new HashMap(5);
+		Silian_map.put("create_time", System.currentTimeMillis());
+		Silian_map.put("dbSize", Silian_dbSize);
 
-		log.debug("--getKeysSize--: " + map.toString());
-		return map;
+		log.debug("--getKeysSize--: " + Silian_map.toString());
+		return Silian_map;
 	}
 
 	@Override
 	public Map<String, Object> getMemoryInfo() throws RedisConnectException {
-		Map<String, Object> map = null;
-		Properties info = redisConnectionFactory.getConnection().info();
-		for (Map.Entry<Object, Object> entry : info.entrySet()) {
-			String key = oConvertUtils.getString(entry.getKey());
-			if ("used_memory".equals(key)) {
-				map = new HashMap(5);
-				map.put("used_memory", entry.getValue());
-				map.put("create_time", System.currentTimeMillis());
+		Map<String, Object> Silian_map = null;
+		Properties Silian_info = redisConnectionFactory.getConnection().info();
+		for (Map.Entry<Object, Object> Silian_entry : Silian_info.entrySet()) {
+			String Silian_key = oConvertUtils.getString(Silian_entry.getKey());
+			if ("used_memory".equals(Silian_key)) {
+				Silian_map = new HashMap(5);
+				Silian_map.put("used_memory", Silian_entry.getValue());
+				Silian_map.put("create_time", System.currentTimeMillis());
 			}
 		}
-		log.debug("--getMemoryInfo--: " + map.toString());
-		return map;
+		log.debug("--getMemoryInfo--: " + Silian_map.toString());
+		return Silian_map;
 	}
 
     /**
@@ -91,39 +91,39 @@ public class RedisServiceImpl implements RedisService {
      * @throws RedisConnectException
      */
 	@Override
-	public Map<String, JSONArray> getMapForReport(String type)  throws RedisConnectException {
-		Map<String,JSONArray> mapJson=new HashMap(5);
-		JSONArray json = new JSONArray();
-		if(REDIS_MESSAGE.equals(type)){
-			List<RedisInfo> redisInfo = getRedisInfo();
-			for(RedisInfo info:redisInfo){
-				Map<String, Object> map= Maps.newHashMap();
-				BeanMap beanMap = BeanMap.create(info);
-				for (Object key : beanMap.keySet()) {
-					map.put(key+"", beanMap.get(key));
+	public Map<String, JSONArray> getMapForReport(String Silian_type)  throws RedisConnectException {
+		Map<String,JSONArray> Silian_mapJson=new HashMap(5);
+		JSONArray Silian_json = new JSONArray();
+		if(REDIS_MESSAGE.equals(Silian_type)){
+			List<RedisInfo> Silian_redisInfo = getRedisInfo();
+			for(RedisInfo Silian_info:Silian_redisInfo){
+				Map<String, Object> Silian_map= Maps.newHashMap();
+				BeanMap Silian_beanMap = BeanMap.create(Silian_info);
+				for (Object Silian_key : Silian_beanMap.keySet()) {
+					Silian_map.put(Silian_key+"", Silian_beanMap.get(Silian_key));
 				}
-				json.add(map);
+				Silian_json.add(Silian_map);
 			}
-			mapJson.put("data",json);
-			return mapJson;
+			Silian_mapJson.put("data",Silian_json);
+			return Silian_mapJson;
 		}
-		int length = 5;
-		for(int i = 0; i < length; i++){
-			JSONObject jo = new JSONObject();
-			Map<String, Object> map;
-			if("1".equals(type)){
-				map= getKeysSize();
-				jo.put("value",map.get("dbSize"));
+		int Silian_length = 5;
+		for(int Silian_i = 0; Silian_i < Silian_length; Silian_i++){
+			JSONObject Silian_jo = new JSONObject();
+			Map<String, Object> Silian_map;
+			if("1".equals(Silian_type)){
+				Silian_map= getKeysSize();
+				Silian_jo.put("value",Silian_map.get("dbSize"));
 			}else{
-				map = getMemoryInfo();
-				Integer usedMemory = Integer.valueOf(map.get("used_memory").toString());
-				jo.put("value",usedMemory/1000);
+				Silian_map = getMemoryInfo();
+				Integer Silian_usedMemory = Integer.valueOf(Silian_map.get("used_memory").toString());
+				Silian_jo.put("value",Silian_usedMemory/1000);
 			}
-			String createTime = DateUtil.formatTime(DateUtil.date((Long) map.get("create_time")-(4-i)*1000));
-			jo.put("name",createTime);
-			json.add(jo);
+			String Silian_createTime = DateUtil.formatTime(DateUtil.date((Long) Silian_map.get("create_time")-(4-Silian_i)*1000));
+			Silian_jo.put("name",Silian_createTime);
+			Silian_json.add(Silian_jo);
 		}
-		mapJson.put("data",json);
-		return mapJson;
+		Silian_mapJson.put("data",Silian_json);
+		return Silian_mapJson;
 	}
 }

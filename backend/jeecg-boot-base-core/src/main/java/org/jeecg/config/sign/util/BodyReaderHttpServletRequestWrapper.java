@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 
 /**
  * 保存过滤器里面的流
- * 
+ *
  * @author jeecg
  * @date 20210621
  */
@@ -18,11 +18,11 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
 
     private final byte[] body;
 
-    public BodyReaderHttpServletRequestWrapper(HttpServletRequest request) {
+    public BodyReaderHttpServletRequestWrapper(HttpServletRequest Silian_request) {
 
-        super(request);
-        String sessionStream = getBodyString(request);
-        body = sessionStream.getBytes(Charset.forName("UTF-8"));
+        super(Silian_request);
+        String Silian_sessionStream = getBodyString(Silian_request);
+        body = Silian_sessionStream.getBytes(Charset.forName("UTF-8"));
     }
 
     /**
@@ -31,19 +31,19 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
      * @param request
      * @return
      */
-    public String getBodyString(final ServletRequest request) {
+    public String getBodyString(final ServletRequest Silian_request) {
 
-        StringBuilder sb = new StringBuilder();
-        try (InputStream inputStream = cloneInputStream(request.getInputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
+        StringBuilder Silian_sb = new StringBuilder();
+        try (InputStream Silian_inputStream = cloneInputStream(Silian_request.getInputStream());
+            BufferedReader Silian_reader = new BufferedReader(new InputStreamReader(Silian_inputStream, Charset.forName("UTF-8")))) {
+            String Silian_line;
+            while ((Silian_line = Silian_reader.readLine()) != null) {
+                Silian_sb.append(Silian_line);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException Silian_e) {
+            Silian_e.printStackTrace();
         }
-        return sb.toString();
+        return Silian_sb.toString();
     }
 
     /**
@@ -52,20 +52,20 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
      * @param inputStream
      * @return</br>
      */
-    public InputStream cloneInputStream(ServletInputStream inputStream) {
+    public InputStream cloneInputStream(ServletInputStream Silian_inputStream) {
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
+        ByteArrayOutputStream Silian_byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] Silian_buffer = new byte[1024];
+        int Silian_len;
         try {
-            while ((len = inputStream.read(buffer)) > -1) {
-                byteArrayOutputStream.write(buffer, 0, len);
+            while ((Silian_len = Silian_inputStream.read(Silian_buffer)) > -1) {
+                Silian_byteArrayOutputStream.write(Silian_buffer, 0, Silian_len);
             }
-            byteArrayOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Silian_byteArrayOutputStream.flush();
+        } catch (IOException Silian_e) {
+            Silian_e.printStackTrace();
         }
-        return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        return new ByteArrayInputStream(Silian_byteArrayOutputStream.toByteArray());
     }
 
     @Override
@@ -77,13 +77,13 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
     @Override
     public ServletInputStream getInputStream() {
 
-        final ByteArrayInputStream bais = new ByteArrayInputStream(body);
+        final ByteArrayInputStream Silian_bais = new ByteArrayInputStream(body);
         return new ServletInputStream() {
 
             @Override
             public int read() {
 
-                return bais.read();
+                return Silian_bais.read();
             }
 
             @Override
@@ -99,7 +99,7 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
             }
 
             @Override
-            public void setReadListener(ReadListener readListener) {
+            public void setReadListener(ReadListener Silian_readListener) {
 
             }
         };

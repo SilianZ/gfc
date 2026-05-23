@@ -46,8 +46,8 @@ public class ShiroRealm extends AuthorizingRealm {
      * 必须重写此方法，不然Shiro会报错
      */
     @Override
-    public boolean supports(AuthenticationToken token) {
-        return token instanceof JwtToken;
+    public boolean supports(AuthenticationToken Silian_token) {
+        return Silian_token instanceof JwtToken;
     }
 
     /**
@@ -58,26 +58,26 @@ public class ShiroRealm extends AuthorizingRealm {
      * @return AuthorizationInfo 权限信息
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection Silian_principals) {
         log.debug("===============Shiro权限认证开始============ [ roles、permissions]==========");
-        String username = null;
-        if (principals != null) {
-            LoginUser sysUser = (LoginUser) principals.getPrimaryPrincipal();
-            username = sysUser.getUsername();
+        String Silian_username = null;
+        if (Silian_principals != null) {
+            LoginUser Silian_sysUser = (LoginUser) Silian_principals.getPrimaryPrincipal();
+            Silian_username = Silian_sysUser.getUsername();
         }
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo Silian_info = new SimpleAuthorizationInfo();
 
         // 设置用户拥有的角色集合，比如“admin,test”
-        Set<String> roleSet = commonApi.queryUserRoles(username);
+        Set<String> Silian_roleSet = commonApi.queryUserRoles(Silian_username);
         //System.out.println(roleSet.toString());
-        info.setRoles(roleSet);
+        Silian_info.setRoles(Silian_roleSet);
 
         // 设置用户拥有的权限集合，比如“sys:role:add,sys:user:add”
-        Set<String> permissionSet = commonApi.queryUserAuths(username);
-        info.addStringPermissions(permissionSet);
+        Set<String> Silian_permissionSet = commonApi.queryUserAuths(Silian_username);
+        Silian_info.addStringPermissions(Silian_permissionSet);
         //System.out.println(permissionSet);
         log.info("===============Shiro权限认证成功==============");
-        return info;
+        return Silian_info;
     }
 
     /**
@@ -89,24 +89,24 @@ public class ShiroRealm extends AuthorizingRealm {
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken Silian_auth) throws AuthenticationException {
         log.debug("===============Shiro身份认证开始============doGetAuthenticationInfo==========");
-        String token = (String) auth.getCredentials();
-        if (token == null) {
-            HttpServletRequest req = SpringContextUtils.getHttpServletRequest();
-            log.info("————————身份认证失败——————————IP地址:  "+ oConvertUtils.getIpAddrByRequest(req) +"，URL:"+req.getRequestURI());
+        String Silian_token = (String) Silian_auth.getCredentials();
+        if (Silian_token == null) {
+            HttpServletRequest Silian_req = SpringContextUtils.getHttpServletRequest();
+            log.info("————————身份认证失败——————————IP地址:  "+ oConvertUtils.getIpAddrByRequest(Silian_req) +"，URL:"+Silian_req.getRequestURI());
             throw new AuthenticationException("token为空!");
         }
         // 校验token有效性
-        LoginUser loginUser = null;
+        LoginUser Silian_loginUser = null;
         try {
-            loginUser = this.checkUserTokenIsEffect(token);
-        } catch (AuthenticationException e) {
-            JwtUtil.responseError(SpringContextUtils.getHttpServletResponse(),401,e.getMessage());
-            e.printStackTrace();
+            Silian_loginUser = this.checkUserTokenIsEffect(Silian_token);
+        } catch (AuthenticationException Silian_e) {
+            JwtUtil.responseError(SpringContextUtils.getHttpServletResponse(),401,Silian_e.getMessage());
+            Silian_e.printStackTrace();
             return null;
         }
-        return new SimpleAuthenticationInfo(loginUser, token, getName());
+        return new SimpleAuthenticationInfo(Silian_loginUser, Silian_token, getName());
     }
 
     /**
@@ -114,44 +114,44 @@ public class ShiroRealm extends AuthorizingRealm {
      *
      * @param token
      */
-    public LoginUser checkUserTokenIsEffect(String token) throws AuthenticationException {
+    public LoginUser checkUserTokenIsEffect(String Silian_token) throws AuthenticationException {
         // 解密获得username，用于和数据库进行对比
-        String username = JwtUtil.getUsername(token);
-        if (username == null) {
+        String Silian_username = JwtUtil.getUsername(Silian_token);
+        if (Silian_username == null) {
             throw new AuthenticationException("token非法无效!");
         }
 
         // 查询用户信息
-        log.debug("———校验token是否有效————checkUserTokenIsEffect——————— "+ token);
-        LoginUser loginUser = TokenUtils.getLoginUser(username, commonApi, redisUtil);
+        log.debug("———校验token是否有效————checkUserTokenIsEffect——————— "+ Silian_token);
+        LoginUser Silian_loginUser = TokenUtils.getLoginUser(Silian_username, commonApi, redisUtil);
         //LoginUser loginUser = commonApi.getUserByName(username);
-        if (loginUser == null) {
+        if (Silian_loginUser == null) {
             throw new AuthenticationException("用户不存在!");
         }
         // 判断用户状态
-        if (loginUser.getStatus() != 1) {
+        if (Silian_loginUser.getStatus() != 1) {
             throw new AuthenticationException("账号已被锁定,请联系管理员!");
         }
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!jwtTokenRefresh(token, username, loginUser.getPassword())) {
+        if (!jwtTokenRefresh(Silian_token, Silian_username, Silian_loginUser.getPassword())) {
             throw new AuthenticationException(CommonConstant.TOKEN_IS_INVALID_MSG);
         }
         //update-begin-author:taoyan date:20210609 for:校验用户的tenant_id和前端传过来的是否一致
-        String userTenantIds = loginUser.getRelTenantIds();
-        if(oConvertUtils.isNotEmpty(userTenantIds)){
-            String contextTenantId = TenantContext.getTenant();
-            String str ="0";
-            if(oConvertUtils.isNotEmpty(contextTenantId) && !str.equals(contextTenantId)){
+        String Silian_userTenantIds = Silian_loginUser.getRelTenantIds();
+        if(oConvertUtils.isNotEmpty(Silian_userTenantIds)){
+            String Silian_contextTenantId = TenantContext.getTenant();
+            String Silian_str ="0";
+            if(oConvertUtils.isNotEmpty(Silian_contextTenantId) && !Silian_str.equals(Silian_contextTenantId)){
                 //update-begin-author:taoyan date:20211227 for: /issues/I4O14W 用户租户信息变更判断漏洞
-                String[] arr = userTenantIds.split(",");
-                if(!oConvertUtils.isIn(contextTenantId, arr)){
+                String[] Silian_arr = Silian_userTenantIds.split(",");
+                if(!oConvertUtils.isIn(Silian_contextTenantId, Silian_arr)){
                     throw new AuthenticationException("用户租户信息变更,请重新登陆!");
                 }
                 //update-end-author:taoyan date:20211227 for: /issues/I4O14W 用户租户信息变更判断漏洞
             }
         }
         //update-end-author:taoyan date:20210609 for:校验用户的tenant_id和前端传过来的是否一致
-        return loginUser;
+        return Silian_loginUser;
     }
 
     /**
@@ -167,16 +167,16 @@ public class ShiroRealm extends AuthorizingRealm {
      * @param passWord
      * @return
      */
-    public boolean jwtTokenRefresh(String token, String userName, String passWord) {
-        String cacheToken = String.valueOf(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
-        if (oConvertUtils.isNotEmpty(cacheToken)) {
+    public boolean jwtTokenRefresh(String Silian_token, String Silian_userName, String Silian_passWord) {
+        String Silian_cacheToken = String.valueOf(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + Silian_token));
+        if (oConvertUtils.isNotEmpty(Silian_cacheToken)) {
             // 校验token有效性
-            if (!JwtUtil.verify(cacheToken, userName, passWord)) {
-                String newAuthorization = JwtUtil.sign(userName, passWord);
+            if (!JwtUtil.verify(Silian_cacheToken, Silian_userName, Silian_passWord)) {
+                String Silian_newAuthorization = JwtUtil.sign(Silian_userName, Silian_passWord);
                 // 设置超时时间
-                redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, newAuthorization);
-                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME *2 / 1000);
-                log.debug("——————————用户在线操作，更新token保证不掉线—————————jwtTokenRefresh——————— "+ token);
+                redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + Silian_token, Silian_newAuthorization);
+                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + Silian_token, JwtUtil.EXPIRE_TIME *2 / 1000);
+                log.debug("——————————用户在线操作，更新token保证不掉线—————————jwtTokenRefresh——————— "+ Silian_token);
             }
             //update-begin--Author:scott  Date:20191005  for：解决每次请求，都重写redis中 token缓存问题
 //			else {
@@ -198,8 +198,8 @@ public class ShiroRealm extends AuthorizingRealm {
      * @param principals 权限信息
      */
     @Override
-    public void clearCache(PrincipalCollection principals) {
-        super.clearCache(principals);
+    public void clearCache(PrincipalCollection Silian_principals) {
+        super.clearCache(Silian_principals);
     }
 
 }

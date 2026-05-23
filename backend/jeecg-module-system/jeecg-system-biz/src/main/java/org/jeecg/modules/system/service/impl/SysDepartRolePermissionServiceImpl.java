@@ -24,34 +24,34 @@ import java.util.*;
 public class SysDepartRolePermissionServiceImpl extends ServiceImpl<SysDepartRolePermissionMapper, SysDepartRolePermission> implements ISysDepartRolePermissionService {
 
     @Override
-    public void saveDeptRolePermission(String roleId, String permissionIds, String lastPermissionIds) {
-        String ip = "";
+    public void saveDeptRolePermission(String Silian_roleId, String Silian_permissionIds, String Silian_lastPermissionIds) {
+        String Silian_ip = "";
         try {
             //获取request
-            HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+            HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
             //获取IP地址
-            ip = IpUtils.getIpAddr(request);
-        } catch (Exception e) {
-            ip = "127.0.0.1";
+            Silian_ip = IpUtils.getIpAddr(Silian_request);
+        } catch (Exception Silian_e) {
+            Silian_ip = "127.0.0.1";
         }
-        List<String> add = getDiff(lastPermissionIds,permissionIds);
-        if(add!=null && add.size()>0) {
-            List<SysDepartRolePermission> list = new ArrayList<SysDepartRolePermission>();
-            for (String p : add) {
-                if(oConvertUtils.isNotEmpty(p)) {
-                    SysDepartRolePermission rolepms = new SysDepartRolePermission(roleId, p);
-                    rolepms.setOperateDate(new Date());
-                    rolepms.setOperateIp(ip);
-                    list.add(rolepms);
+        List<String> Silian_add = getDiff(Silian_lastPermissionIds,Silian_permissionIds);
+        if(Silian_add!=null && Silian_add.size()>0) {
+            List<SysDepartRolePermission> Silian_list = new ArrayList<SysDepartRolePermission>();
+            for (String Silian_p : Silian_add) {
+                if(oConvertUtils.isNotEmpty(Silian_p)) {
+                    SysDepartRolePermission Silian_rolepms = new SysDepartRolePermission(Silian_roleId, Silian_p);
+                    Silian_rolepms.setOperateDate(new Date());
+                    Silian_rolepms.setOperateIp(Silian_ip);
+                    Silian_list.add(Silian_rolepms);
                 }
             }
-            this.saveBatch(list);
+            this.saveBatch(Silian_list);
         }
 
-        List<String> delete = getDiff(permissionIds,lastPermissionIds);
-        if(delete!=null && delete.size()>0) {
-            for (String permissionId : delete) {
-                this.remove(new QueryWrapper<SysDepartRolePermission>().lambda().eq(SysDepartRolePermission::getRoleId, roleId).eq(SysDepartRolePermission::getPermissionId, permissionId));
+        List<String> Silian_delete = getDiff(Silian_permissionIds,Silian_lastPermissionIds);
+        if(Silian_delete!=null && Silian_delete.size()>0) {
+            for (String Silian_permissionId : Silian_delete) {
+                this.remove(new QueryWrapper<SysDepartRolePermission>().lambda().eq(SysDepartRolePermission::getRoleId, Silian_roleId).eq(SysDepartRolePermission::getPermissionId, Silian_permissionId));
             }
         }
     }
@@ -62,26 +62,26 @@ public class SysDepartRolePermissionServiceImpl extends ServiceImpl<SysDepartRol
      * @param diff
      * @return
      */
-    private List<String> getDiff(String main, String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+    private List<String> getDiff(String Silian_main, String Silian_diff){
+        if(oConvertUtils.isEmpty(Silian_diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
-            return Arrays.asList(diff.split(","));
+        if(oConvertUtils.isEmpty(Silian_main)) {
+            return Arrays.asList(Silian_diff.split(","));
         }
 
-        String[] mainArr = main.split(",");
-        String[] diffArr = diff.split(",");
-        Map<String, Integer> map = new HashMap(5);
-        for (String string : mainArr) {
-            map.put(string, 1);
+        String[] Silian_mainArr = Silian_main.split(",");
+        String[] Silian_diffArr = Silian_diff.split(",");
+        Map<String, Integer> Silian_map = new HashMap(5);
+        for (String Silian_string : Silian_mainArr) {
+            Silian_map.put(Silian_string, 1);
         }
-        List<String> res = new ArrayList<String>();
-        for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
-                res.add(key);
+        List<String> Silian_res = new ArrayList<String>();
+        for (String Silian_key : Silian_diffArr) {
+            if(oConvertUtils.isNotEmpty(Silian_key) && !Silian_map.containsKey(Silian_key)) {
+                Silian_res.add(Silian_key);
             }
         }
-        return res;
+        return Silian_res;
     }
 }

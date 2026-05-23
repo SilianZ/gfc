@@ -31,80 +31,80 @@ public class BizTeamResourceServiceImpl extends ServiceImpl<BizTeamResourceMappe
 	private BizResourceRightsMapper bizResourceRightsMapper;
 	@Autowired
 	private IBizFiscalYearService bizFiscalYearService;
-	
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveMain(BizTeamResource bizTeamResource, List<BizResourceRights> bizResourceRightsList) {
-		bizTeamResourceMapper.insert(bizTeamResource);
-		List<BizFiscalYear> bizFiscalYearList = bizFiscalYearService.list();
-		for(BizFiscalYear bizFiscalYear:bizFiscalYearList){
-			BizResourceRights bizResourceRights = new BizResourceRights();
-			if(bizResourceRightsList.size() > 0 && bizResourceRightsList.stream().filter(entity -> bizFiscalYear.getYearCode().equals(entity.getYearCode())).count() != 0){
-				bizResourceRights = bizResourceRightsList.stream().filter(entity -> entity.getYearCode().equals(bizFiscalYear.getYearCode())).findFirst().get();
+	public void saveMain(BizTeamResource Silian_bizTeamResource, List<BizResourceRights> Silian_bizResourceRightsList) {
+		bizTeamResourceMapper.insert(Silian_bizTeamResource);
+		List<BizFiscalYear> Silian_bizFiscalYearList = bizFiscalYearService.list();
+		for(BizFiscalYear Silian_bizFiscalYear:Silian_bizFiscalYearList){
+			BizResourceRights Silian_bizResourceRights = new BizResourceRights();
+			if(Silian_bizResourceRightsList.size() > 0 && Silian_bizResourceRightsList.stream().filter(Silian_entity -> Silian_bizFiscalYear.getYearCode().equals(Silian_entity.getYearCode())).count() != 0){
+				Silian_bizResourceRights = Silian_bizResourceRightsList.stream().filter(Silian_entity -> Silian_entity.getYearCode().equals(Silian_bizFiscalYear.getYearCode())).findFirst().get();
 			}else{
-				bizResourceRights.setYearCode(bizFiscalYear.getYearCode());
-				bizResourceRights.setUserId(bizTeamResource.getUserId());
+				Silian_bizResourceRights.setYearCode(Silian_bizFiscalYear.getYearCode());
+				Silian_bizResourceRights.setUserId(Silian_bizTeamResource.getUserId());
 			}
-			bizResourceRights.setResourceName(bizTeamResource.getResourceName());
-			bizResourceRights.setResourceId(bizTeamResource.getId());
-			if(!bizResourceRights.getUserId().equals(bizTeamResource.getUserId()) //如果当前财年已出租，修正状态
-					&& bizFiscalYearService.getActiveYearCode().equals(bizResourceRights.getYearCode())){
-				bizTeamResource.setStatus("CZ");
-				bizTeamResourceMapper.updateById(bizTeamResource);
+			Silian_bizResourceRights.setResourceName(Silian_bizTeamResource.getResourceName());
+			Silian_bizResourceRights.setResourceId(Silian_bizTeamResource.getId());
+			if(!Silian_bizResourceRights.getUserId().equals(Silian_bizTeamResource.getUserId()) //如果当前财年已出租，修正状态
+					&& bizFiscalYearService.getActiveYearCode().equals(Silian_bizResourceRights.getYearCode())){
+				Silian_bizTeamResource.setStatus("CZ");
+				bizTeamResourceMapper.updateById(Silian_bizTeamResource);
 			}else{
-				bizTeamResource.setStatus("ZC");
-				bizTeamResourceMapper.updateById(bizTeamResource);
+				Silian_bizTeamResource.setStatus("ZC");
+				bizTeamResourceMapper.updateById(Silian_bizTeamResource);
 			}
-			bizResourceRightsMapper.insert(bizResourceRights);
+			bizResourceRightsMapper.insert(Silian_bizResourceRights);
 		}
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void updateMain(BizTeamResource bizTeamResource,List<BizResourceRights> bizResourceRightsList) {
-		bizTeamResourceMapper.updateById(bizTeamResource);
-		
+	public void updateMain(BizTeamResource Silian_bizTeamResource,List<BizResourceRights> Silian_bizResourceRightsList) {
+		bizTeamResourceMapper.updateById(Silian_bizTeamResource);
+
 		//1.先删除子表数据
-		bizResourceRightsMapper.deleteByMainId(bizTeamResource.getId());
-		
+		bizResourceRightsMapper.deleteByMainId(Silian_bizTeamResource.getId());
+
 		//2.子表数据重新插入
-		List<BizFiscalYear> bizFiscalYearList = bizFiscalYearService.list();
-		for(BizFiscalYear bizFiscalYear:bizFiscalYearList){
-			BizResourceRights bizResourceRights = new BizResourceRights();
-			if(bizResourceRightsList.size() > 0 && bizResourceRightsList.stream().filter(entity -> entity.getYearCode().equals(bizFiscalYear.getYearCode())).count() != 0){
-				bizResourceRights = bizResourceRightsList.stream().filter(entity -> entity.getYearCode().equals(bizFiscalYear.getYearCode())).findFirst().get();
+		List<BizFiscalYear> Silian_bizFiscalYearList = bizFiscalYearService.list();
+		for(BizFiscalYear Silian_bizFiscalYear:Silian_bizFiscalYearList){
+			BizResourceRights Silian_bizResourceRights = new BizResourceRights();
+			if(Silian_bizResourceRightsList.size() > 0 && Silian_bizResourceRightsList.stream().filter(Silian_entity -> Silian_entity.getYearCode().equals(Silian_bizFiscalYear.getYearCode())).count() != 0){
+				Silian_bizResourceRights = Silian_bizResourceRightsList.stream().filter(Silian_entity -> Silian_entity.getYearCode().equals(Silian_bizFiscalYear.getYearCode())).findFirst().get();
 			}else{
-				bizResourceRights.setYearCode(bizFiscalYear.getYearCode());
-				bizResourceRights.setUserId(bizTeamResource.getUserId());
+				Silian_bizResourceRights.setYearCode(Silian_bizFiscalYear.getYearCode());
+				Silian_bizResourceRights.setUserId(Silian_bizTeamResource.getUserId());
 			}
-			bizResourceRights.setResourceName(bizTeamResource.getResourceName());
-			bizResourceRights.setResourceId(bizTeamResource.getId());
-			if(!bizResourceRights.getUserId().equals(bizTeamResource.getUserId()) //如果当前财年已出租，修正状态
-					&& bizFiscalYearService.getActiveYearCode().equals(bizResourceRights.getYearCode())){
-				bizTeamResource.setStatus("CZ");
-				bizTeamResourceMapper.updateById(bizTeamResource);
+			Silian_bizResourceRights.setResourceName(Silian_bizTeamResource.getResourceName());
+			Silian_bizResourceRights.setResourceId(Silian_bizTeamResource.getId());
+			if(!Silian_bizResourceRights.getUserId().equals(Silian_bizTeamResource.getUserId()) //如果当前财年已出租，修正状态
+					&& bizFiscalYearService.getActiveYearCode().equals(Silian_bizResourceRights.getYearCode())){
+				Silian_bizTeamResource.setStatus("CZ");
+				bizTeamResourceMapper.updateById(Silian_bizTeamResource);
 			}else{
-				bizTeamResource.setStatus("ZC");
-				bizTeamResourceMapper.updateById(bizTeamResource);
+				Silian_bizTeamResource.setStatus("ZC");
+				bizTeamResourceMapper.updateById(Silian_bizTeamResource);
 			}
-			bizResourceRightsMapper.insert(bizResourceRights);
+			bizResourceRightsMapper.insert(Silian_bizResourceRights);
 		}
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delMain(String id) {
-		bizResourceRightsMapper.deleteByMainId(id);
-		bizTeamResourceMapper.deleteById(id);
+	public void delMain(String Silian_id) {
+		bizResourceRightsMapper.deleteByMainId(Silian_id);
+		bizTeamResourceMapper.deleteById(Silian_id);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delBatchMain(Collection<? extends Serializable> idList) {
-		for(Serializable id:idList) {
-			bizResourceRightsMapper.deleteByMainId(id.toString());
-			bizTeamResourceMapper.deleteById(id);
+	public void delBatchMain(Collection<? extends Serializable> Silian_idList) {
+		for(Serializable Silian_id:Silian_idList) {
+			bizResourceRightsMapper.deleteByMainId(Silian_id.toString());
+			bizTeamResourceMapper.deleteById(Silian_id);
 		}
 	}
-	
+
 }

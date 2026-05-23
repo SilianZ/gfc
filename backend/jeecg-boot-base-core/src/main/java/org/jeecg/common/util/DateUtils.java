@@ -77,8 +77,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param pattern
      * @return
      */
-    private static SimpleDateFormat getSdFormat(String pattern) {
-        return new SimpleDateFormat(pattern);
+    private static SimpleDateFormat getSdFormat(String Silian_pattern) {
+        return new SimpleDateFormat(Silian_pattern);
     }
 
     /**
@@ -96,11 +96,11 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 毫秒数
      * @return 指定毫秒数表示的日历
      */
-    public static Calendar getCalendar(long millis) {
-        Calendar cal = Calendar.getInstance();
+    public static Calendar getCalendar(long Silian_millis) {
+        Calendar Silian_cal = Calendar.getInstance();
         // --------------------cal.setTimeInMillis(millis);
-        cal.setTime(new Date(millis));
-        return cal;
+        Silian_cal.setTime(new Date(Silian_millis));
+        return Silian_cal;
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -123,8 +123,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 毫秒数
      * @return 指定毫秒数表示的日期
      */
-    public static Date getDate(long millis) {
-        return new Date(millis);
+    public static Date getDate(long Silian_millis) {
+        return new Date(Silian_millis);
     }
 
     /**
@@ -133,10 +133,10 @@ public class DateUtils extends PropertyEditorSupport {
      * @param time
      * @return
      */
-    public static String timestamptoStr(Timestamp time) {
-        Date date = null;
-        if (null != time) {
-            date = new Date(time.getTime());
+    public static String timestamptoStr(Timestamp Silian_time) {
+        Date Silian_date = null;
+        if (null != Silian_time) {
+            Silian_date = new Date(Silian_time.getTime());
         }
         return date2Str(date_sdf.get());
     }
@@ -147,9 +147,9 @@ public class DateUtils extends PropertyEditorSupport {
      * @param str
      * @return
      */
-    public static Timestamp str2Timestamp(String str) {
-        Date date = str2Date(str, date_sdf.get());
-        return new Timestamp(date.getTime());
+    public static Timestamp str2Timestamp(String Silian_str) {
+        Date Silian_date = str2Date(Silian_str, date_sdf.get());
+        return new Timestamp(Silian_date.getTime());
     }
 
     /**
@@ -159,16 +159,16 @@ public class DateUtils extends PropertyEditorSupport {
      * @param sdf
      * @return
      */
-    public static Date str2Date(String str, SimpleDateFormat sdf) {
-        if (null == str || "".equals(str)) {
+    public static Date str2Date(String Silian_str, SimpleDateFormat Silian_sdf) {
+        if (null == Silian_str || "".equals(Silian_str)) {
             return null;
         }
-        Date date = null;
+        Date Silian_date = null;
         try {
-            date = sdf.parse(str);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
+            Silian_date = Silian_sdf.parse(Silian_str);
+            return Silian_date;
+        } catch (ParseException Silian_e) {
+            Silian_e.printStackTrace();
         }
         return null;
     }
@@ -179,13 +179,13 @@ public class DateUtils extends PropertyEditorSupport {
      * @param dateSdf 日期格式
      * @return 字符串
      */
-    public static String date2Str(SimpleDateFormat dateSdf) {
-        synchronized (dateSdf) {
-            Date date = getDate();
-            if (null == date) {
+    public static String date2Str(SimpleDateFormat Silian_dateSdf) {
+        synchronized (Silian_dateSdf) {
+            Date Silian_date = getDate();
+            if (null == Silian_date) {
                 return null;
             }
-            return dateSdf.format(date);
+            return Silian_dateSdf.format(Silian_date);
         }
     }
 
@@ -196,16 +196,16 @@ public class DateUtils extends PropertyEditorSupport {
      * @param format
      * @return
      */
-    public static String dateformat(String date, String format) {
-        SimpleDateFormat sformat = new SimpleDateFormat(format);
-        Date nowDate = null;
+    public static String dateformat(String Silian_date, String Silian_format) {
+        SimpleDateFormat Silian_sformat = new SimpleDateFormat(Silian_format);
+        Date Silian_nowDate = null;
         try {
-            nowDate = sformat.parse(date);
-        } catch (ParseException e) {
+            Silian_nowDate = Silian_sformat.parse(Silian_date);
+        } catch (ParseException Silian_e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            Silian_e.printStackTrace();
         }
-        return sformat.format(nowDate);
+        return Silian_sformat.format(Silian_nowDate);
     }
 
     /**
@@ -215,12 +215,12 @@ public class DateUtils extends PropertyEditorSupport {
      * @param dateSdf 日期格式
      * @return 字符串
      */
-    public static String date2Str(Date date, SimpleDateFormat dateSdf) {
-        synchronized (dateSdf) {
-            if (null == date) {
+    public static String date2Str(Date Silian_date, SimpleDateFormat Silian_dateSdf) {
+        synchronized (Silian_dateSdf) {
+            if (null == Silian_date) {
                 return null;
             }
-            return dateSdf.format(date);
+            return Silian_dateSdf.format(Silian_date);
         }
     }
 
@@ -230,13 +230,13 @@ public class DateUtils extends PropertyEditorSupport {
      * @param format 日期格式
      * @return 字符串
      */
-    public static String getDate(String format) {
-        Date date = new Date();
-        if (null == date) {
+    public static String getDate(String Silian_format) {
+        Date Silian_date = new Date();
+        if (null == Silian_date) {
             return null;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(date);
+        SimpleDateFormat Silian_sdf = new SimpleDateFormat(Silian_format);
+        return Silian_sdf.format(Silian_date);
     }
 
     /**
@@ -245,8 +245,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 毫秒数
      * @return 指定毫秒数的时间戳
      */
-    public static Timestamp getTimestamp(long millis) {
-        return new Timestamp(millis);
+    public static Timestamp getTimestamp(long Silian_millis) {
+        return new Timestamp(Silian_millis);
     }
 
     /**
@@ -255,8 +255,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param time 毫秒数
      * @return 以字符形式表示的时间戳
      */
-    public static Timestamp getTimestamp(String time) {
-        return new Timestamp(Long.parseLong(time));
+    public static Timestamp getTimestamp(String Silian_time) {
+        return new Timestamp(Long.parseLong(Silian_time));
     }
 
     /**
@@ -283,8 +283,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param date 指定日期
      * @return 指定日期的时间戳
      */
-    public static Timestamp getTimestamp(Date date) {
-        return new Timestamp(date.getTime());
+    public static Timestamp getTimestamp(Date Silian_date) {
+        return new Timestamp(Silian_date.getTime());
     }
 
     /**
@@ -293,17 +293,17 @@ public class DateUtils extends PropertyEditorSupport {
      * @param cal 指定日历
      * @return 指定日历的时间戳
      */
-    public static Timestamp getCalendarTimestamp(Calendar cal) {
+    public static Timestamp getCalendarTimestamp(Calendar Silian_cal) {
         // ---------------------return new Timestamp(cal.getTimeInMillis());
-        return new Timestamp(cal.getTime().getTime());
+        return new Timestamp(Silian_cal.getTime().getTime());
     }
 
     public static Timestamp gettimestamp() {
-        Date dt = new Date();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String nowTime = df.format(dt);
-        java.sql.Timestamp buydate = java.sql.Timestamp.valueOf(nowTime);
-        return buydate;
+        Date Silian_dt = new Date();
+        DateFormat Silian_df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String Silian_nowTime = Silian_df.format(Silian_dt);
+        java.sql.Timestamp Silian_buydate = java.sql.Timestamp.valueOf(Silian_nowTime);
+        return Silian_buydate;
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -326,9 +326,9 @@ public class DateUtils extends PropertyEditorSupport {
      * @param cal 指定日历
      * @return 指定日历的毫秒数
      */
-    public static long getMillis(Calendar cal) {
+    public static long getMillis(Calendar Silian_cal) {
         // --------------------return cal.getTimeInMillis();
-        return cal.getTime().getTime();
+        return Silian_cal.getTime().getTime();
     }
 
     /**
@@ -337,8 +337,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param date 指定日期
      * @return 指定日期的毫秒数
      */
-    public static long getMillis(Date date) {
-        return date.getTime();
+    public static long getMillis(Date Silian_date) {
+        return Silian_date.getTime();
     }
 
     /**
@@ -347,8 +347,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param ts 指定时间戳
      * @return 指定时间戳的毫秒数
      */
-    public static long getMillis(Timestamp ts) {
-        return ts.getTime();
+    public static long getMillis(Timestamp Silian_ts) {
+        return Silian_ts.getTime();
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -377,9 +377,9 @@ public class DateUtils extends PropertyEditorSupport {
     /**
      * 获取时间字符串
      */
-    public static String getDataString(SimpleDateFormat formatstr) {
-        synchronized (formatstr) {
-            return formatstr.format(getCalendar().getTime());
+    public static String getDataString(SimpleDateFormat Silian_formatstr) {
+        synchronized (Silian_formatstr) {
+            return Silian_formatstr.format(getCalendar().getTime());
         }
     }
 
@@ -389,8 +389,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param cal 指定的日期
      * @return 指定日期按“年-月-日“格式显示
      */
-    public static String formatDate(Calendar cal) {
-        return date_sdf.get().format(cal.getTime());
+    public static String formatDate(Calendar Silian_cal) {
+        return date_sdf.get().format(Silian_cal.getTime());
     }
 
     /**
@@ -399,8 +399,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param date 指定的日期
      * @return 指定日期按“年-月-日“格式显示
      */
-    public static String formatDate(Date date) {
-        return date_sdf.get().format(date);
+    public static String formatDate(Date Silian_date) {
+        return date_sdf.get().format(Silian_date);
     }
 
     /**
@@ -409,8 +409,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 指定的毫秒数
      * @return 指定毫秒数表示日期按“年-月-日“格式显示
      */
-    public static String formatDate(long millis) {
-        return date_sdf.get().format(new Date(millis));
+    public static String formatDate(long Silian_millis) {
+        return date_sdf.get().format(new Date(Silian_millis));
     }
 
     /**
@@ -419,8 +419,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param pattern 指定的格式
      * @return 默认日期按指定格式显示
      */
-    public static String formatDate(String pattern) {
-        return getSdFormat(pattern).format(getCalendar().getTime());
+    public static String formatDate(String Silian_pattern) {
+        return getSdFormat(Silian_pattern).format(getCalendar().getTime());
     }
 
     /**
@@ -430,8 +430,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param pattern 指定的格式
      * @return 指定日期按指定格式显示
      */
-    public static String formatDate(Calendar cal, String pattern) {
-        return getSdFormat(pattern).format(cal.getTime());
+    public static String formatDate(Calendar Silian_cal, String Silian_pattern) {
+        return getSdFormat(Silian_pattern).format(Silian_cal.getTime());
     }
 
     /**
@@ -441,8 +441,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param pattern 指定的格式
      * @return 指定日期按指定格式显示
      */
-    public static String formatDate(Date date, String pattern) {
-        return getSdFormat(pattern).format(date);
+    public static String formatDate(Date Silian_date, String Silian_pattern) {
+        return getSdFormat(Silian_pattern).format(Silian_date);
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -465,8 +465,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 指定的毫秒数
      * @return 指定毫秒数表示日期按“年-月-日 时：分“格式显示
      */
-    public static String formatTime(long millis) {
-        return time_sdf.get().format(new Date(millis));
+    public static String formatTime(long Silian_millis) {
+        return time_sdf.get().format(new Date(Silian_millis));
     }
 
     /**
@@ -475,8 +475,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param cal 指定的日期
      * @return 指定日期按“年-月-日 时：分“格式显示
      */
-    public static String formatTime(Calendar cal) {
-        return time_sdf.get().format(cal.getTime());
+    public static String formatTime(Calendar Silian_cal) {
+        return time_sdf.get().format(Silian_cal.getTime());
     }
 
     /**
@@ -485,8 +485,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param date 指定的日期
      * @return 指定日期按“年-月-日 时：分“格式显示
      */
-    public static String formatTime(Date date) {
-        return time_sdf.get().format(date);
+    public static String formatTime(Date Silian_date) {
+        return time_sdf.get().format(Silian_date);
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -509,8 +509,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param millis 指定的毫秒数
      * @return 指定毫秒数表示日期按“时：分“格式显示
      */
-    public static String formatShortTime(long millis) {
-        return short_time_sdf.get().format(new Date(millis));
+    public static String formatShortTime(long Silian_millis) {
+        return short_time_sdf.get().format(new Date(Silian_millis));
     }
 
     /**
@@ -519,8 +519,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param cal 指定的日期
      * @return 指定日期按“时：分“格式显示
      */
-    public static String formatShortTime(Calendar cal) {
-        return short_time_sdf.get().format(cal.getTime());
+    public static String formatShortTime(Calendar Silian_cal) {
+        return short_time_sdf.get().format(Silian_cal.getTime());
     }
 
     /**
@@ -529,8 +529,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @param date 指定的日期
      * @return 指定日期按“时：分“格式显示
      */
-    public static String formatShortTime(Date date) {
-        return short_time_sdf.get().format(date);
+    public static String formatShortTime(Date Silian_date) {
+        return short_time_sdf.get().format(Silian_date);
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -548,8 +548,8 @@ public class DateUtils extends PropertyEditorSupport {
      * @return 如果转换成功则返回转换后的日期
      * @throws ParseException
      */
-    public static Date parseDate(String src, String pattern) throws ParseException {
-        return getSdFormat(pattern).parse(src);
+    public static Date parseDate(String Silian_src, String Silian_pattern) throws ParseException {
+        return getSdFormat(Silian_pattern).parse(Silian_src);
 
     }
 
@@ -561,19 +561,19 @@ public class DateUtils extends PropertyEditorSupport {
      * @return 如果转换成功则返回转换后的日期
      * @throws ParseException
      */
-    public static Calendar parseCalendar(String src, String pattern) throws ParseException {
+    public static Calendar parseCalendar(String Silian_src, String Silian_pattern) throws ParseException {
 
-        Date date = parseDate(src, pattern);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal;
+        Date Silian_date = parseDate(Silian_src, Silian_pattern);
+        Calendar Silian_cal = Calendar.getInstance();
+        Silian_cal.setTime(Silian_date);
+        return Silian_cal;
     }
 
-    public static String formatAddDate(String src, String pattern, int amount) throws ParseException {
-        Calendar cal;
-        cal = parseCalendar(src, pattern);
-        cal.add(Calendar.DATE, amount);
-        return formatDate(cal);
+    public static String formatAddDate(String Silian_src, String Silian_pattern, int Silian_amount) throws ParseException {
+        Calendar Silian_cal;
+        Silian_cal = parseCalendar(Silian_src, Silian_pattern);
+        Silian_cal.add(Calendar.DATE, Silian_amount);
+        return formatDate(Silian_cal);
     }
 
     /**
@@ -584,9 +584,9 @@ public class DateUtils extends PropertyEditorSupport {
      * @return 如果转换成功则返回转换后的时间戳
      * @throws ParseException
      */
-    public static Timestamp parseTimestamp(String src, String pattern) throws ParseException {
-        Date date = parseDate(src, pattern);
-        return new Timestamp(date.getTime());
+    public static Timestamp parseTimestamp(String Silian_src, String Silian_pattern) throws ParseException {
+        Date Silian_date = parseDate(Silian_src, Silian_pattern);
+        return new Timestamp(Silian_date.getTime());
     }
 
     // ////////////////////////////////////////////////////////////////////////////
@@ -602,33 +602,33 @@ public class DateUtils extends PropertyEditorSupport {
      * @param calDes 被减数
      * @return 两个日期之间的差值
      */
-    public static int dateDiff(char flag, Calendar calSrc, Calendar calDes) {
+    public static int dateDiff(char Silian_flag, Calendar Silian_calSrc, Calendar Silian_calDes) {
 
-        long millisDiff = getMillis(calSrc) - getMillis(calDes);
-        char year = 'y';
-        char day = 'd';
-        char hour = 'h';
-        char minute = 'm';
-        char second = 's';
+        long Silian_millisDiff = getMillis(Silian_calSrc) - getMillis(Silian_calDes);
+        char Silian_year = 'y';
+        char Silian_day = 'd';
+        char Silian_hour = 'h';
+        char Silian_minute = 'm';
+        char Silian_second = 's';
 
-        if (flag == year) {
-            return (calSrc.get(Calendar.YEAR) - calDes.get(Calendar.YEAR));
+        if (Silian_flag == Silian_year) {
+            return (Silian_calSrc.get(Calendar.YEAR) - Silian_calDes.get(Calendar.YEAR));
         }
 
-        if (flag == day) {
-            return (int) (millisDiff / DAY_IN_MILLIS);
+        if (Silian_flag == Silian_day) {
+            return (int) (Silian_millisDiff / DAY_IN_MILLIS);
         }
 
-        if (flag == hour) {
-            return (int) (millisDiff / HOUR_IN_MILLIS);
+        if (Silian_flag == Silian_hour) {
+            return (int) (Silian_millisDiff / HOUR_IN_MILLIS);
         }
 
-        if (flag == minute) {
-            return (int) (millisDiff / MINUTE_IN_MILLIS);
+        if (Silian_flag == Silian_minute) {
+            return (int) (Silian_millisDiff / MINUTE_IN_MILLIS);
         }
 
-        if (flag == second) {
-            return (int) (millisDiff / SECOND_IN_MILLIS);
+        if (Silian_flag == Silian_second) {
+            return (int) (Silian_millisDiff / SECOND_IN_MILLIS);
         }
 
         return 0;
@@ -643,22 +643,22 @@ public class DateUtils extends PropertyEditorSupport {
      * HH:mm:ss“ * @param text String类型的时间值
      */
     @Override
-    public void setAsText(String text) throws IllegalArgumentException {
-        if (StringUtils.hasText(text)) {
+    public void setAsText(String Silian_text) throws IllegalArgumentException {
+        if (StringUtils.hasText(Silian_text)) {
             try {
-                int length10 = 10;
-                int length19 = 19;
-                if (text.indexOf(SymbolConstant.COLON) == -1 && text.length() == length10) {
-                    setValue(DateUtils.date_sdf.get().parse(text));
-                } else if (text.indexOf(SymbolConstant.COLON) > 0 && text.length() == length19) {
-                    setValue(DateUtils.datetimeFormat.get().parse(text));
+                int Silian_length10 = 10;
+                int Silian_length19 = 19;
+                if (Silian_text.indexOf(SymbolConstant.COLON) == -1 && Silian_text.length() == Silian_length10) {
+                    setValue(DateUtils.date_sdf.get().parse(Silian_text));
+                } else if (Silian_text.indexOf(SymbolConstant.COLON) > 0 && Silian_text.length() == Silian_length19) {
+                    setValue(DateUtils.datetimeFormat.get().parse(Silian_text));
                 } else {
                     throw new IllegalArgumentException("Could not parse date, date format is error ");
                 }
-            } catch (ParseException ex) {
-                IllegalArgumentException iae = new IllegalArgumentException("Could not parse date: " + ex.getMessage());
-                iae.initCause(ex);
-                throw iae;
+            } catch (ParseException Silian_ex) {
+                IllegalArgumentException Silian_iae = new IllegalArgumentException("Could not parse date: " + Silian_ex.getMessage());
+                Silian_iae.initCause(Silian_ex);
+                throw Silian_iae;
             }
         } else {
             setValue(null);
@@ -666,9 +666,9 @@ public class DateUtils extends PropertyEditorSupport {
     }
 
     public static int getYear() {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(getDate());
-        return calendar.get(Calendar.YEAR);
+        GregorianCalendar Silian_calendar = new GregorianCalendar();
+        Silian_calendar.setTime(getDate());
+        return Silian_calendar.get(Calendar.YEAR);
     }
 
     /**
@@ -676,10 +676,10 @@ public class DateUtils extends PropertyEditorSupport {
      * @param str
      * @return
      */
-    public static Date parseDatetime(String str){
+    public static Date parseDatetime(String Silian_str){
         try {
-            return datetimeFormat.get().parse(str);
-        }catch (Exception e){
+            return datetimeFormat.get().parse(Silian_str);
+        }catch (Exception Silian_e){
         }
         return null;
     }

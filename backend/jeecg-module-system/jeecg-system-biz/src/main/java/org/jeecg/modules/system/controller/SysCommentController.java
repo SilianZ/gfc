@@ -61,11 +61,11 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
      */
     @ApiOperation(value = "系统评论回复表-列表查询", notes = "系统评论回复表-列表查询")
     @GetMapping(value = "/listByForm")
-    public Result<IPage<SysCommentVO>> queryListByForm(SysComment sysComment) {
-        List<SysCommentVO> list = sysCommentService.queryFormCommentInfo(sysComment);
-        IPage<SysCommentVO> pageList = new Page();
-        pageList.setRecords(list);
-        return Result.OK(pageList);
+    public Result<IPage<SysCommentVO>> queryListByForm(SysComment Silian_sysComment) {
+        List<SysCommentVO> Silian_list = sysCommentService.queryFormCommentInfo(Silian_sysComment);
+        IPage<SysCommentVO> Silian_pageList = new Page();
+        Silian_pageList.setRecords(Silian_list);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -76,51 +76,51 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
      */
     @ApiOperation(value = "系统评论回复表-列表查询", notes = "系统评论回复表-列表查询")
     @GetMapping(value = "/fileList")
-    public Result<IPage<SysCommentFileVo>> queryFileList(SysComment sysComment) {
-        List<SysCommentFileVo> list = sysCommentService.queryFormFileList(sysComment.getTableName(), sysComment.getTableDataId());
-        IPage<SysCommentFileVo> pageList = new Page();
-        pageList.setRecords(list);
-        return Result.OK(pageList);
+    public Result<IPage<SysCommentFileVo>> queryFileList(SysComment Silian_sysComment) {
+        List<SysCommentFileVo> Silian_list = sysCommentService.queryFormFileList(Silian_sysComment.getTableName(), Silian_sysComment.getTableDataId());
+        IPage<SysCommentFileVo> Silian_pageList = new Page();
+        Silian_pageList.setRecords(Silian_list);
+        return Result.OK(Silian_pageList);
     }
 
     @ApiOperation(value = "系统评论表-添加文本", notes = "系统评论表-添加文本")
     @PostMapping(value = "/addText")
-    public Result<String> addText(@RequestBody SysComment sysComment) {
-        String commentId = sysCommentService.saveOne(sysComment);
-        return Result.OK(commentId);
+    public Result<String> addText(@RequestBody SysComment Silian_sysComment) {
+        String Silian_commentId = sysCommentService.saveOne(Silian_sysComment);
+        return Result.OK(Silian_commentId);
     }
 
     @ApiOperation(value = "系统评论表-添加文件", notes = "系统评论表-添加文件")
     @PostMapping(value = "/addFile")
-    public Result<String> addFile(HttpServletRequest request) {
+    public Result<String> addFile(HttpServletRequest Silian_request) {
         try {
-            sysCommentService.saveOneFileComment(request);
+            sysCommentService.saveOneFileComment(Silian_request);
             return Result.OK("success");
-        } catch (Exception e) {
-            log.error("评论文件上传失败", e.getMessage());
-            return Result.error("操作失败," + e.getMessage());
+        } catch (Exception Silian_e) {
+            log.error("评论文件上传失败", Silian_e.getMessage());
+            return Result.error("操作失败," + Silian_e.getMessage());
         }
     }
 
     @ApiOperation(value = "系统评论回复表-通过id删除", notes = "系统评论回复表-通过id删除")
     @DeleteMapping(value = "/deleteOne")
-    public Result<String> deleteOne(@RequestParam(name = "id", required = true) String id) {
-        SysComment comment = sysCommentService.getById(id);
-        if(comment==null){
+    public Result<String> deleteOne(@RequestParam(name = "id", required = true) String Silian_id) {
+        SysComment Silian_comment = sysCommentService.getById(Silian_id);
+        if(Silian_comment==null){
             return Result.error("该评论已被删除！");
         }
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        String username = sysUser.getUsername();
-        String admin = "admin";
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        String Silian_username = Silian_sysUser.getUsername();
+        String Silian_admin = "admin";
         //除了admin外 其他人只能删除自己的评论
-        if((!admin.equals(username)) && !username.equals(comment.getCreateBy())){
+        if((!Silian_admin.equals(Silian_username)) && !Silian_username.equals(Silian_comment.getCreateBy())){
             return Result.error("只能删除自己的评论！");
         }
-        sysCommentService.deleteOne(id);
+        sysCommentService.deleteOne(Silian_id);
         //删除评论添加日志
-        String logContent = "删除了评论， "+ comment.getCommentContent();
-        DataLogDTO dataLog = new DataLogDTO(comment.getTableName(), comment.getTableDataId(), logContent, CommonConstant.DATA_LOG_TYPE_COMMENT);
-        sysBaseAPI.saveDataLog(dataLog);
+        String Silian_logContent = "删除了评论， "+ Silian_comment.getCommentContent();
+        DataLogDTO Silian_dataLog = new DataLogDTO(Silian_comment.getTableName(), Silian_comment.getTableDataId(), Silian_logContent, CommonConstant.DATA_LOG_TYPE_COMMENT);
+        sysBaseAPI.saveDataLog(Silian_dataLog);
         return Result.OK("删除成功!");
     }
 
@@ -147,14 +147,14 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     ////@AutoLog(value = "系统评论回复表-分页列表查询")
     @ApiOperation(value = "系统评论回复表-分页列表查询", notes = "系统评论回复表-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<SysComment>> queryPageList(SysComment sysComment,
-                                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                   HttpServletRequest req) {
-        QueryWrapper<SysComment> queryWrapper = QueryGenerator.initQueryWrapper(sysComment, req.getParameterMap());
-        Page<SysComment> page = new Page<SysComment>(pageNo, pageSize);
-        IPage<SysComment> pageList = sysCommentService.page(page, queryWrapper);
-        return Result.OK(pageList);
+    public Result<IPage<SysComment>> queryPageList(SysComment Silian_sysComment,
+                                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                                   HttpServletRequest Silian_req) {
+        QueryWrapper<SysComment> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysComment, Silian_req.getParameterMap());
+        Page<SysComment> Silian_page = new Page<SysComment>(Silian_pageNo, Silian_pageSize);
+        IPage<SysComment> Silian_pageList = sysCommentService.page(Silian_page, Silian_queryWrapper);
+        return Result.OK(Silian_pageList);
     }
 
 
@@ -167,8 +167,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @ApiOperation(value = "系统评论回复表-添加", notes = "系统评论回复表-添加")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:add")
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody SysComment sysComment) {
-        sysCommentService.save(sysComment);
+    public Result<String> add(@RequestBody SysComment Silian_sysComment) {
+        sysCommentService.save(Silian_sysComment);
         return Result.OK("添加成功！");
     }
 
@@ -182,8 +182,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @ApiOperation(value = "系统评论回复表-编辑", notes = "系统评论回复表-编辑")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody SysComment sysComment) {
-        sysCommentService.updateById(sysComment);
+    public Result<String> edit(@RequestBody SysComment Silian_sysComment) {
+        sysCommentService.updateById(Silian_sysComment);
         return Result.OK("编辑成功!");
     }
 
@@ -197,8 +197,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @ApiOperation(value = "系统评论回复表-通过id删除", notes = "系统评论回复表-通过id删除")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:delete")
     @DeleteMapping(value = "/delete")
-    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
-        sysCommentService.removeById(id);
+    public Result<String> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        sysCommentService.removeById(Silian_id);
         return Result.OK("删除成功!");
     }
 
@@ -212,8 +212,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @ApiOperation(value = "系统评论回复表-批量删除", notes = "系统评论回复表-批量删除")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:deleteBatch")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.sysCommentService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.sysCommentService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.OK("批量删除成功!");
     }
 
@@ -226,12 +226,12 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     ////@AutoLog(value = "系统评论回复表-通过id查询")
     @ApiOperation(value = "系统评论回复表-通过id查询", notes = "系统评论回复表-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<SysComment> queryById(@RequestParam(name = "id", required = true) String id) {
-        SysComment sysComment = sysCommentService.getById(id);
-        if (sysComment == null) {
+    public Result<SysComment> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        SysComment Silian_sysComment = sysCommentService.getById(Silian_id);
+        if (Silian_sysComment == null) {
             return Result.error("未找到对应数据");
         }
-        return Result.OK(sysComment);
+        return Result.OK(Silian_sysComment);
     }
 
     /**
@@ -242,8 +242,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
      */
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, SysComment sysComment) {
-        return super.exportXls(request, sysComment, SysComment.class, "系统评论回复表");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, SysComment Silian_sysComment) {
+        return super.exportXls(Silian_request, Silian_sysComment, SysComment.class, "系统评论回复表");
     }
 
     /**
@@ -255,8 +255,8 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
      */
     //@RequiresPermissions("sys_comment:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, SysComment.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, SysComment.class);
     }
 
 

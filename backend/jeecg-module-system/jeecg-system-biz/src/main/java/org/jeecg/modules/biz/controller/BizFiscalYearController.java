@@ -43,7 +43,7 @@ import java.util.Map;
 public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBizFiscalYearService> {
 	@Autowired
 	private IBizFiscalYearService bizFiscalYearService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -56,35 +56,35 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	//@AutoLog(value = "财年信息-分页列表查询")
 	@ApiOperation(value="财年信息-分页列表查询", notes="财年信息-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<BizFiscalYear>> queryPageList(BizFiscalYear bizFiscalYear,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<BizFiscalYear> queryWrapper = QueryGenerator.initQueryWrapper(bizFiscalYear, req.getParameterMap());
-		Page<BizFiscalYear> page = new Page<BizFiscalYear>(pageNo, pageSize);
-		IPage<BizFiscalYear> pageList = bizFiscalYearService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<BizFiscalYear>> queryPageList(BizFiscalYear Silian_bizFiscalYear,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<BizFiscalYear> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizFiscalYear, Silian_req.getParameterMap());
+		Page<BizFiscalYear> Silian_page = new Page<BizFiscalYear>(Silian_pageNo, Silian_pageSize);
+		IPage<BizFiscalYear> Silian_pageList = bizFiscalYearService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
 	 * @param bizFiscalYear
 	 * @return
-	 * 
+	 *
 	 */
 	@AutoLog(value = "财年信息-添加")
 	@ApiOperation(value="财年信息-添加", notes="财年信息-添加")
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody BizFiscalYear bizFiscalYear) {
-		bizFiscalYear.setYearCode(bizFiscalYearService.getMaxYearCode()+1);
-		bizFiscalYear.setStockInc(0.00);
-		bizFiscalYear.setCurrencyInc(0.00);
-		bizFiscalYearService.save(bizFiscalYear);
+	public Result<String> add(@RequestBody BizFiscalYear Silian_bizFiscalYear) {
+		Silian_bizFiscalYear.setYearCode(bizFiscalYearService.getMaxYearCode()+1);
+		Silian_bizFiscalYear.setStockInc(0.00);
+		Silian_bizFiscalYear.setCurrencyInc(0.00);
+		bizFiscalYearService.save(Silian_bizFiscalYear);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -95,12 +95,12 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@ApiOperation(value="财年信息-编辑", notes="财年信息-编辑")
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody BizFiscalYear bizFiscalYear) {
-		bizFiscalYearService.updateById(bizFiscalYear);
-		
+	public Result<String> edit(@RequestBody BizFiscalYear Silian_bizFiscalYear) {
+		bizFiscalYearService.updateById(Silian_bizFiscalYear);
+
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id清算
 	 *
@@ -112,18 +112,18 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:delete")
 	@GetMapping(value = "/end")
 	@Transactional(rollbackFor = Exception.class)
-	public Result<String> end(@RequestParam(name="id",required=true) String id) {
+	public Result<String> end(@RequestParam(name="id",required=true) String Silian_id) {
 		try {
-			BizFiscalYear fiscalYear = bizFiscalYearService.getById(id);
-			fiscalYear.setStatus("2");
+			BizFiscalYear Silian_fiscalYear = bizFiscalYearService.getById(Silian_id);
+			Silian_fiscalYear.setStatus("2");
 			//更新资源出租状态
-			bizFiscalYearService.updateResourceStatus(fiscalYear.getYearCode() + 1);
-			bizFiscalYearService.updateById(fiscalYear);
-		}catch (Exception e){
-			e.printStackTrace();
+			bizFiscalYearService.updateResourceStatus(Silian_fiscalYear.getYearCode() + 1);
+			bizFiscalYearService.updateById(Silian_fiscalYear);
+		}catch (Exception Silian_e){
+			Silian_e.printStackTrace();
 			//回滚事务
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return Result.error("清算失败:" + e.getMessage());
+			return Result.error("清算失败:" + Silian_e.getMessage());
 		}
 		return Result.OK("清算");
 	}
@@ -137,34 +137,34 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@ApiOperation(value="财年信息-通过id开始", notes="财年信息-通过id开始")
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:delete")
 	@GetMapping(value = "/start")
-	public Result<Date> start(@RequestParam(name="id",required=true) String id) {
-		BizFiscalYear fiscalYear = bizFiscalYearService.getById(id);
-		fiscalYear.setStatus("1");
-		Random random = new Random();
-        double min = -0.20;
-        double max = 0.20;
+	public Result<Date> start(@RequestParam(name="id",required=true) String Silian_id) {
+		BizFiscalYear Silian_fiscalYear = bizFiscalYearService.getById(Silian_id);
+		Silian_fiscalYear.setStatus("1");
+		Random Silian_random = new Random();
+        double Silian_min = -0.20;
+        double Silian_max = 0.20;
 
         // 生成-0.2到+0.2之间的随机小数
-        double randomValue = min + (max - min) * random.nextDouble();
+        double Silian_randomValue = Silian_min + (Silian_max - Silian_min) * Silian_random.nextDouble();
 
         // 保留小数点后两位
-        double formattedValue = Math.round(randomValue * 100.0) / 100.0;
+        double Silian_formattedValue = Math.round(Silian_randomValue * 100.0) / 100.0;
 
-		fiscalYear.setStockInc(formattedValue);//设定当年股票涨额
+		Silian_fiscalYear.setStockInc(Silian_formattedValue);//设定当年股票涨额
 
-		random = new Random();
-        min = -0.50;
-        max = 0.50;
+		Silian_random = new Random();
+        Silian_min = -0.50;
+        Silian_max = 0.50;
 
         // 生成-0.2到+0.2之间的随机小数
-        randomValue = min + (max - min) * random.nextDouble();
+        Silian_randomValue = Silian_min + (Silian_max - Silian_min) * Silian_random.nextDouble();
 
         // 保留小数点后两位
-        formattedValue = Math.round(randomValue * 100.0) / 100.0;
+        Silian_formattedValue = Math.round(Silian_randomValue * 100.0) / 100.0;
 
-		fiscalYear.setCurrencyInc(formattedValue);//设定当年虚拟货币涨额
+		Silian_fiscalYear.setCurrencyInc(Silian_formattedValue);//设定当年虚拟货币涨额
 
-		bizFiscalYearService.updateById(fiscalYear);
+		bizFiscalYearService.updateById(Silian_fiscalYear);
 		return Result.OK("财年开始");
 	}
 
@@ -178,11 +178,11 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@ApiOperation(value="财年信息-通过id删除", notes="财年信息-通过id删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		bizFiscalYearService.removeById(id);
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		bizFiscalYearService.removeById(Silian_id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -193,11 +193,11 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@ApiOperation(value="财年信息-批量删除", notes="财年信息-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.bizFiscalYearService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.bizFiscalYearService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -207,12 +207,12 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	//@AutoLog(value = "财年信息-通过id查询")
 	@ApiOperation(value="财年信息-通过id查询", notes="财年信息-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<BizFiscalYear> queryById(@RequestParam(name="id",required=true) String id) {
-		BizFiscalYear bizFiscalYear = bizFiscalYearService.getById(id);
-		if(bizFiscalYear==null) {
+	public Result<BizFiscalYear> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		BizFiscalYear Silian_bizFiscalYear = bizFiscalYearService.getById(Silian_id);
+		if(Silian_bizFiscalYear==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(bizFiscalYear);
+		return Result.OK(Silian_bizFiscalYear);
 	}
 
 	@AutoLog(value = "财年信息-打包财年信息")
@@ -220,19 +220,19 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@GetMapping(value = "/getYearNameAndStockInc")
 	public Result<Map<String, Object>[]> getYearNameAndStockInc() {
 
-		List<BizFiscalYear> list = bizFiscalYearService.getAllFiscalYears();
-		List<Map<String, Object>> resultList = list.stream()
-			.map(fy -> {
-				Map<String, Object> map = new HashMap<>();
-				map.put("type", fy.getYearName());
-				map.put("Percentage", fy.getStockInc());
-				return map;
+		List<BizFiscalYear> Silian_list = bizFiscalYearService.getAllFiscalYears();
+		List<Map<String, Object>> Silian_resultList = Silian_list.stream()
+			.map(Silian_fy -> {
+				Map<String, Object> Silian_map = new HashMap<>();
+				Silian_map.put("type", Silian_fy.getYearName());
+				Silian_map.put("Percentage", Silian_fy.getStockInc());
+				return Silian_map;
 			})
 			.collect(Collectors.toList());
 
-		Map<String, Object>[] resultArray = new Map[resultList.size()];
-    	resultArray = resultList.toArray(resultArray);
-		return Result.OK(resultArray);
+		Map<String, Object>[] Silian_resultArray = new Map[Silian_resultList.size()];
+	Silian_resultArray = Silian_resultList.toArray(Silian_resultArray);
+		return Result.OK(Silian_resultArray);
 	}
 
 	@AutoLog(value = "财年信息-打包财年信息2")
@@ -240,19 +240,19 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
 	@GetMapping(value = "/getYearNameAndVirtualCurrencyInc")
 	public Result<Map<String, Object>[]> getYearNameAndVirtualCurrencyInc() {
 
-		List<BizFiscalYear> list = bizFiscalYearService.getAllFiscalYears();
-		List<Map<String, Object>> resultList = list.stream()
-			.map(fy -> {
-				Map<String, Object> map = new HashMap<>();
-				map.put("type", fy.getYearName());
-				map.put("Percentage", fy.getCurrencyInc());
-				return map;
+		List<BizFiscalYear> Silian_list = bizFiscalYearService.getAllFiscalYears();
+		List<Map<String, Object>> Silian_resultList = Silian_list.stream()
+			.map(Silian_fy -> {
+				Map<String, Object> Silian_map = new HashMap<>();
+				Silian_map.put("type", Silian_fy.getYearName());
+				Silian_map.put("Percentage", Silian_fy.getCurrencyInc());
+				return Silian_map;
 			})
 			.collect(Collectors.toList());
 
-		Map<String, Object>[] resultArray = new Map[resultList.size()];
-    	resultArray = resultList.toArray(resultArray);
-		return Result.OK(resultArray);
+		Map<String, Object>[] Silian_resultArray = new Map[Silian_resultList.size()];
+	Silian_resultArray = Silian_resultList.toArray(Silian_resultArray);
+		return Result.OK(Silian_resultArray);
 	}
     /**
     * 导出excel
@@ -262,8 +262,8 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
     */
     //@RequiresPermissions("org.jeecg.modules:biz_fiscal_year:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizFiscalYear bizFiscalYear) {
-        return super.exportXls(request, bizFiscalYear, BizFiscalYear.class, "财年信息");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizFiscalYear Silian_bizFiscalYear) {
+        return super.exportXls(Silian_request, Silian_bizFiscalYear, BizFiscalYear.class, "财年信息");
     }
 
     /**
@@ -275,8 +275,8 @@ public class BizFiscalYearController extends JeecgController<BizFiscalYear, IBiz
     */
     //@RequiresPermissions("biz_fiscal_year:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizFiscalYear.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, BizFiscalYear.class);
     }
 
 }

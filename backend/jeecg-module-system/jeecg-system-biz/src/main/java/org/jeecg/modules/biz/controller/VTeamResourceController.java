@@ -52,7 +52,7 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	private IVTeamResourceService vTeamResourceService;
 	 @Autowired
 	 private IBizFiscalYearService bizFiscalYearService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -65,23 +65,23 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	//@AutoLog(value = "v_team_resource-分页列表查询")
 	@ApiOperation(value="v_team_resource-分页列表查询", notes="v_team_resource-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<VTeamResource>> queryPageList(VTeamResource vTeamResource,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		Integer yearCode = bizFiscalYearService.getActiveYearCode();
+	public Result<IPage<VTeamResource>> queryPageList(VTeamResource Silian_vTeamResource,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		Integer Silian_yearCode = bizFiscalYearService.getActiveYearCode();
 		//获取指定userId的状态为正常的所有ID
-		QueryWrapper<VTeamResource> query = new QueryWrapper<VTeamResource>();
-		query.eq("data_type", "SYOU");
-		query.eq("status", "ZC");
-		query.eq("user_id", vTeamResource.getUserId());
-		List ids = vTeamResourceService.list(query).stream().map(VTeamResource::getId).collect(Collectors.toList());
-		if(ids.isEmpty()) ids.add("-1");
-		QueryWrapper<VTeamResource> queryWrapper = QueryGenerator.initQueryWrapper(vTeamResource, req.getParameterMap()).eq("data_type", "SYOU");
-		queryWrapper.or(wrapper -> wrapper.eq("user_id", vTeamResource.getUserId()).eq("data_type", "SYON").notIn("id", ids));
-		Page<VTeamResource> page = new Page<VTeamResource>(pageNo, pageSize);
-		IPage<VTeamResource> pageList = vTeamResourceService.page(page, queryWrapper);
-		return Result.OK(pageList);
+		QueryWrapper<VTeamResource> Silian_query = new QueryWrapper<VTeamResource>();
+		Silian_query.eq("data_type", "SYOU");
+		Silian_query.eq("status", "ZC");
+		Silian_query.eq("user_id", Silian_vTeamResource.getUserId());
+		List Silian_ids = vTeamResourceService.list(Silian_query).stream().map(VTeamResource::getId).collect(Collectors.toList());
+		if(Silian_ids.isEmpty()) Silian_ids.add("-1");
+		QueryWrapper<VTeamResource> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_vTeamResource, Silian_req.getParameterMap()).eq("data_type", "SYOU");
+		Silian_queryWrapper.or(Silian_wrapper -> Silian_wrapper.eq("user_id", Silian_vTeamResource.getUserId()).eq("data_type", "SYON").notIn("id", Silian_ids));
+		Page<VTeamResource> Silian_page = new Page<VTeamResource>(Silian_pageNo, Silian_pageSize);
+		IPage<VTeamResource> Silian_pageList = vTeamResourceService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
 
 	/**
@@ -96,25 +96,25 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	//@AutoLog(value = "v_team_resource-分页列表查询通道")
 	@ApiOperation(value="v_team_resource-分页列表查询通道", notes="v_team_resource-分页列表查询通道")
 	@GetMapping(value = "/listChannel")
-	public Result<IPage<VTeamResource>> queryChannelPageList(VTeamResource vTeamResource,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
+	public Result<IPage<VTeamResource>> queryChannelPageList(VTeamResource Silian_vTeamResource,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
 		//获取指定userId的状态为正常的所有ID
-		QueryWrapper<VTeamResource> query = new QueryWrapper<VTeamResource>();
-		query.eq("data_type", "SYOU");
-		query.eq("resource_type", "CN");
-		query.eq("status", "ZC");
-		query.eq("user_id", vTeamResource.getUserId());
-		List ids = vTeamResourceService.list(query).stream().map(VTeamResource::getId).collect(Collectors.toList());
-		if(ids.isEmpty()) ids.add("-1");
-		QueryWrapper<VTeamResource> queryWrapper = QueryGenerator.initQueryWrapper(vTeamResource, req.getParameterMap()).eq("data_type", "SYOU");
-		queryWrapper.or(wrapper -> wrapper.eq("resource_type", "CN").eq("user_id", vTeamResource.getUserId()).eq("data_type", "SYON").notIn("id", ids));
-		Page<VTeamResource> page = new Page<VTeamResource>(pageNo, pageSize);
-		IPage<VTeamResource> pageList = vTeamResourceService.page(page, queryWrapper);
-		return Result.OK(pageList);
+		QueryWrapper<VTeamResource> Silian_query = new QueryWrapper<VTeamResource>();
+		Silian_query.eq("data_type", "SYOU");
+		Silian_query.eq("resource_type", "CN");
+		Silian_query.eq("status", "ZC");
+		Silian_query.eq("user_id", Silian_vTeamResource.getUserId());
+		List Silian_ids = vTeamResourceService.list(Silian_query).stream().map(VTeamResource::getId).collect(Collectors.toList());
+		if(Silian_ids.isEmpty()) Silian_ids.add("-1");
+		QueryWrapper<VTeamResource> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_vTeamResource, Silian_req.getParameterMap()).eq("data_type", "SYOU");
+		Silian_queryWrapper.or(Silian_wrapper -> Silian_wrapper.eq("resource_type", "CN").eq("user_id", Silian_vTeamResource.getUserId()).eq("data_type", "SYON").notIn("id", Silian_ids));
+		Page<VTeamResource> Silian_page = new Page<VTeamResource>(Silian_pageNo, Silian_pageSize);
+		IPage<VTeamResource> Silian_pageList = vTeamResourceService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -125,11 +125,11 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	@ApiOperation(value="v_team_resource-添加", notes="v_team_resource-添加")
 	//@RequiresPermissions("org.jeecg.modules:v_team_resource:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody VTeamResource vTeamResource) {
-		vTeamResourceService.save(vTeamResource);
+	public Result<String> add(@RequestBody VTeamResource Silian_vTeamResource) {
+		vTeamResourceService.save(Silian_vTeamResource);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -140,11 +140,11 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	@ApiOperation(value="v_team_resource-编辑", notes="v_team_resource-编辑")
 	//@RequiresPermissions("org.jeecg.modules:v_team_resource:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody VTeamResource vTeamResource) {
-		vTeamResourceService.updateById(vTeamResource);
+	public Result<String> edit(@RequestBody VTeamResource Silian_vTeamResource) {
+		vTeamResourceService.updateById(Silian_vTeamResource);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -155,11 +155,11 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	@ApiOperation(value="v_team_resource-通过id删除", notes="v_team_resource-通过id删除")
 	//@RequiresPermissions("org.jeecg.modules:v_team_resource:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		vTeamResourceService.removeById(id);
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		vTeamResourceService.removeById(Silian_id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -170,11 +170,11 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	@ApiOperation(value="v_team_resource-批量删除", notes="v_team_resource-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:v_team_resource:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.vTeamResourceService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.vTeamResourceService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -184,12 +184,12 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
 	//@AutoLog(value = "v_team_resource-通过id查询")
 	@ApiOperation(value="v_team_resource-通过id查询", notes="v_team_resource-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<VTeamResource> queryById(@RequestParam(name="id",required=true) String id) {
-		VTeamResource vTeamResource = vTeamResourceService.getById(id);
-		if(vTeamResource==null) {
+	public Result<VTeamResource> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		VTeamResource Silian_vTeamResource = vTeamResourceService.getById(Silian_id);
+		if(Silian_vTeamResource==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(vTeamResource);
+		return Result.OK(Silian_vTeamResource);
 	}
 
     /**
@@ -200,8 +200,8 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
     */
     //@RequiresPermissions("org.jeecg.modules:v_team_resource:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, VTeamResource vTeamResource) {
-        return super.exportXls(request, vTeamResource, VTeamResource.class, "v_team_resource");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, VTeamResource Silian_vTeamResource) {
+        return super.exportXls(Silian_request, Silian_vTeamResource, VTeamResource.class, "v_team_resource");
     }
 
     /**
@@ -213,8 +213,8 @@ public class VTeamResourceController extends JeecgController<VTeamResource, IVTe
     */
     //@RequiresPermissions("v_team_resource:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, VTeamResource.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, VTeamResource.class);
     }
 
 }

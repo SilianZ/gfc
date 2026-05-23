@@ -20,7 +20,7 @@ import java.io.Serializable;
 @TableName("sys_category")
 public class SysCategory implements Serializable,Comparable<SysCategory>{
     private static final long serialVersionUID = 1L;
-    
+
 	/**主键*/
 	@TableId(type = IdType.ASSIGN_ID)
 	private java.lang.String id;
@@ -51,13 +51,13 @@ public class SysCategory implements Serializable,Comparable<SysCategory>{
 	private java.lang.String hasChild;
 
 	@Override
-	public int compareTo(SysCategory o) {
+	public int compareTo(SysCategory Silian_o) {
 		//比较条件我们定的是按照code的长度升序
 		// <0：当前对象比传入对象小。
 		// =0：当前对象等于传入对象。
 		// >0：当前对象比传入对象大。
-		int	 s = this.code.length() - o.code.length();
-		return s;
+		int	 Silian_s = this.code.length() - Silian_o.code.length();
+		return Silian_s;
 	}
 	@Override
 	public String toString() {

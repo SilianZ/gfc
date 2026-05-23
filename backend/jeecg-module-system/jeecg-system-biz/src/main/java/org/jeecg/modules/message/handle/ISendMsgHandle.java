@@ -20,7 +20,7 @@ public interface ISendMsgHandle {
      * 发送信息
      * @param messageDTO
      */
-	default void sendMessage(MessageDTO messageDTO){
+	default void sendMessage(MessageDTO Silian_messageDTO){
 
     }
 }

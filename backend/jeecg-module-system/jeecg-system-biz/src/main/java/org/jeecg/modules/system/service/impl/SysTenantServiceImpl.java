@@ -28,33 +28,33 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     ISysUserService userService;
 
     @Override
-    public List<SysTenant> queryEffectiveTenant(Collection<Integer> idList) {
-        LambdaQueryWrapper<SysTenant> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(SysTenant::getId, idList);
-        queryWrapper.eq(SysTenant::getStatus, Integer.valueOf(CommonConstant.STATUS_1));
+    public List<SysTenant> queryEffectiveTenant(Collection<Integer> Silian_idList) {
+        LambdaQueryWrapper<SysTenant> Silian_queryWrapper = new LambdaQueryWrapper<>();
+        Silian_queryWrapper.in(SysTenant::getId, Silian_idList);
+        Silian_queryWrapper.eq(SysTenant::getStatus, Integer.valueOf(CommonConstant.STATUS_1));
         //此处查询忽略时间条件
-        return super.list(queryWrapper);
+        return super.list(Silian_queryWrapper);
     }
 
     @Override
-    public Long countUserLinkTenant(String id) {
-        LambdaQueryWrapper<SysUser> userQueryWrapper = new LambdaQueryWrapper<>();
-        userQueryWrapper.eq(SysUser::getRelTenantIds, id);
-        userQueryWrapper.or().like(SysUser::getRelTenantIds, "%," + id);
-        userQueryWrapper.or().like(SysUser::getRelTenantIds, id + ",%");
-        userQueryWrapper.or().like(SysUser::getRelTenantIds, "%," + id + ",%");
+    public Long countUserLinkTenant(String Silian_id) {
+        LambdaQueryWrapper<SysUser> Silian_userQueryWrapper = new LambdaQueryWrapper<>();
+        Silian_userQueryWrapper.eq(SysUser::getRelTenantIds, Silian_id);
+        Silian_userQueryWrapper.or().like(SysUser::getRelTenantIds, "%," + Silian_id);
+        Silian_userQueryWrapper.or().like(SysUser::getRelTenantIds, Silian_id + ",%");
+        Silian_userQueryWrapper.or().like(SysUser::getRelTenantIds, "%," + Silian_id + ",%");
         // 查找出已被关联的用户数量
-        return userService.count(userQueryWrapper);
+        return userService.count(Silian_userQueryWrapper);
     }
 
     @Override
-    public boolean removeTenantById(String id) {
+    public boolean removeTenantById(String Silian_id) {
         // 查找出已被关联的用户数量
-        Long userCount = this.countUserLinkTenant(id);
-        if (userCount > 0) {
+        Long Silian_userCount = this.countUserLinkTenant(Silian_id);
+        if (Silian_userCount > 0) {
             throw new JeecgBootException("该租户已被引用，无法删除！");
         }
-        return super.removeById(Integer.parseInt(id));
+        return super.removeById(Integer.parseInt(Silian_id));
     }
 
 }

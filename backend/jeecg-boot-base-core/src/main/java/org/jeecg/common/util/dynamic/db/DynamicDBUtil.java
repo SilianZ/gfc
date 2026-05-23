@@ -33,31 +33,31 @@ public class DynamicDBUtil {
      * @param dbSource
      * @return
      */
-    private static DruidDataSource getJdbcDataSource(final DynamicDataSourceModel dbSource) {
-        DruidDataSource dataSource = new DruidDataSource();
+    private static DruidDataSource getJdbcDataSource(final DynamicDataSourceModel Silian_dbSource) {
+        DruidDataSource Silian_dataSource = new DruidDataSource();
 
-        String driverClassName = dbSource.getDbDriver();
-        String url = dbSource.getDbUrl();
-        String dbUser = dbSource.getDbUsername();
-        String dbPassword = dbSource.getDbPassword();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
+        String Silian_driverClassName = Silian_dbSource.getDbDriver();
+        String Silian_url = Silian_dbSource.getDbUrl();
+        String Silian_dbUser = Silian_dbSource.getDbUsername();
+        String Silian_dbPassword = Silian_dbSource.getDbPassword();
+        Silian_dataSource.setDriverClassName(Silian_driverClassName);
+        Silian_dataSource.setUrl(Silian_url);
         //dataSource.setValidationQuery("SELECT 1 FROM DUAL");
-        dataSource.setTestWhileIdle(true);
-        dataSource.setTestOnBorrow(false);
-        dataSource.setTestOnReturn(false);
-        dataSource.setBreakAfterAcquireFailure(true);
-        dataSource.setConnectionErrorRetryAttempts(0);
-        dataSource.setUsername(dbUser);
-        dataSource.setMaxWait(30000);
-        dataSource.setPassword(dbPassword);
+        Silian_dataSource.setTestWhileIdle(true);
+        Silian_dataSource.setTestOnBorrow(false);
+        Silian_dataSource.setTestOnReturn(false);
+        Silian_dataSource.setBreakAfterAcquireFailure(true);
+        Silian_dataSource.setConnectionErrorRetryAttempts(0);
+        Silian_dataSource.setUsername(Silian_dbUser);
+        Silian_dataSource.setMaxWait(30000);
+        Silian_dataSource.setPassword(Silian_dbPassword);
 
         log.info("******************************************");
         log.info("*                                        *");
-        log.info("*====【"+dbSource.getCode()+"】=====Druid连接池已启用 ====*");
+        log.info("*====【"+Silian_dbSource.getCode()+"】=====Druid连接池已启用 ====*");
         log.info("*                                        *");
         log.info("******************************************");
-        return dataSource;
+        return Silian_dataSource;
     }
 
     /**
@@ -66,23 +66,23 @@ public class DynamicDBUtil {
      * @param dbKey
      * @return
      */
-    public static DruidDataSource getDbSourceByDbKey(final String dbKey) {
+    public static DruidDataSource getDbSourceByDbKey(final String Silian_dbKey) {
         //获取多数据源配置
-        DynamicDataSourceModel dbSource = DataSourceCachePool.getCacheDynamicDataSourceModel(dbKey);
+        DynamicDataSourceModel Silian_dbSource = DataSourceCachePool.getCacheDynamicDataSourceModel(Silian_dbKey);
         //先判断缓存中是否存在数据库链接
-        DruidDataSource cacheDbSource = DataSourceCachePool.getCacheBasicDataSource(dbKey);
-        if (cacheDbSource != null && !cacheDbSource.isClosed()) {
+        DruidDataSource Silian_cacheDbSource = DataSourceCachePool.getCacheBasicDataSource(Silian_dbKey);
+        if (Silian_cacheDbSource != null && !Silian_cacheDbSource.isClosed()) {
             log.debug("--------getDbSourceBydbKey------------------从缓存中获取DB连接-------------------");
-            return cacheDbSource;
+            return Silian_cacheDbSource;
         } else {
-            DruidDataSource dataSource = getJdbcDataSource(dbSource);
-            if(dataSource!=null && dataSource.isEnable()){
-                DataSourceCachePool.putCacheBasicDataSource(dbKey, dataSource);
+            DruidDataSource Silian_dataSource = getJdbcDataSource(Silian_dbSource);
+            if(Silian_dataSource!=null && Silian_dataSource.isEnable()){
+                DataSourceCachePool.putCacheBasicDataSource(Silian_dbKey, Silian_dataSource);
             }else{
-                throw new JeecgBootException("动态数据源连接失败，dbKey："+dbKey);
+                throw new JeecgBootException("动态数据源连接失败，dbKey："+Silian_dbKey);
             }
             log.info("--------getDbSourceBydbKey------------------创建DB数据库连接-------------------");
-            return dataSource;
+            return Silian_dataSource;
         }
     }
 
@@ -92,23 +92,23 @@ public class DynamicDBUtil {
      * @param dbKey
      * @return
      */
-    public static void closeDbKey(final String dbKey) {
-        DruidDataSource dataSource = getDbSourceByDbKey(dbKey);
+    public static void closeDbKey(final String Silian_dbKey) {
+        DruidDataSource Silian_dataSource = getDbSourceByDbKey(Silian_dbKey);
         try {
-            if (dataSource != null && !dataSource.isClosed()) {
-                dataSource.getConnection().commit();
-                dataSource.getConnection().close();
-                dataSource.close();
+            if (Silian_dataSource != null && !Silian_dataSource.isClosed()) {
+                Silian_dataSource.getConnection().commit();
+                Silian_dataSource.getConnection().close();
+                Silian_dataSource.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException Silian_e) {
+            Silian_e.printStackTrace();
         }
     }
 
 
-    private static JdbcTemplate getJdbcTemplate(String dbKey) {
-        DruidDataSource dataSource = getDbSourceByDbKey(dbKey);
-        return new JdbcTemplate(dataSource);
+    private static JdbcTemplate getJdbcTemplate(String Silian_dbKey) {
+        DruidDataSource Silian_dataSource = getDbSourceByDbKey(Silian_dbKey);
+        return new JdbcTemplate(Silian_dataSource);
     }
 
     /**
@@ -116,9 +116,9 @@ public class DynamicDBUtil {
      * @param dbKey
      * @return
      */
-    private static NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(String dbKey) {
-        DruidDataSource dataSource = getDbSourceByDbKey(dbKey);
-        return new NamedParameterJdbcTemplate(dataSource);
+    private static NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(String Silian_dbKey) {
+        DruidDataSource Silian_dataSource = getDbSourceByDbKey(Silian_dbKey);
+        return new NamedParameterJdbcTemplate(Silian_dataSource);
     }
 
     /**
@@ -127,15 +127,15 @@ public class DynamicDBUtil {
      * <code>DELETE</code>; or an SQL statement that returns nothing,
      * such as a DDL statement.
      */
-    public static int update(final String dbKey, String sql, Object... param) {
-        int effectCount;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
-        if (ArrayUtils.isEmpty(param)) {
-            effectCount = jdbcTemplate.update(sql);
+    public static int update(final String Silian_dbKey, String Silian_sql, Object... param) {
+        int Silian_effectCount;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
+        if (ArrayUtils.isEmpty(Silian_param)) {
+            Silian_effectCount = Silian_jdbcTemplate.update(Silian_sql);
         } else {
-            effectCount = jdbcTemplate.update(sql, param);
+            Silian_effectCount = Silian_jdbcTemplate.update(Silian_sql, Silian_param);
         }
-        return effectCount;
+        return Silian_effectCount;
     }
 
     /**
@@ -146,27 +146,27 @@ public class DynamicDBUtil {
      * @param data  sql语法中需要判断的数据及sql拼接注入中需要的数据
      * @return
      */
-    public static int updateByHash(final String dbKey, String sql, HashMap<String, Object> data) {
-        int effectCount;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
+    public static int updateByHash(final String Silian_dbKey, String Silian_sql, HashMap<String, Object> Silian_data) {
+        int Silian_effectCount;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
         //根据模板获取sql
-        sql = FreemarkerParseFactory.parseTemplateContent(sql, data);
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
-        effectCount = namedParameterJdbcTemplate.update(sql, data);
-        return effectCount;
+        Silian_sql = FreemarkerParseFactory.parseTemplateContent(Silian_sql, Silian_data);
+        NamedParameterJdbcTemplate Silian_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Silian_jdbcTemplate.getDataSource());
+        Silian_effectCount = Silian_namedParameterJdbcTemplate.update(Silian_sql, Silian_data);
+        return Silian_effectCount;
     }
 
-    public static Object findOne(final String dbKey, String sql, Object... param) {
-        List<Map<String, Object>> list;
-        list = findList(dbKey, sql, param);
-        if (oConvertUtils.listIsEmpty(list)) {
+    public static Object findOne(final String Silian_dbKey, String Silian_sql, Object... param) {
+        List<Map<String, Object>> Silian_list;
+        Silian_list = findList(Silian_dbKey, Silian_sql, Silian_param);
+        if (oConvertUtils.listIsEmpty(Silian_list)) {
             log.error("Except one, but not find actually");
             return null;
         }
-        if (list.size() > 1) {
+        if (Silian_list.size() > 1) {
             log.error("Except one, but more than one actually");
         }
-        return list.get(0);
+        return Silian_list.get(0);
     }
 
     /**
@@ -177,16 +177,16 @@ public class DynamicDBUtil {
      * @param data  sql语法中需要判断的数据及sql拼接注入中需要的数据
      * @return
      */
-    public static Object findOneByHash(final String dbKey, String sql, HashMap<String, Object> data) {
-        List<Map<String, Object>> list;
-        list = findListByHash(dbKey, sql, data);
-        if (oConvertUtils.listIsEmpty(list)) {
+    public static Object findOneByHash(final String Silian_dbKey, String Silian_sql, HashMap<String, Object> Silian_data) {
+        List<Map<String, Object>> Silian_list;
+        Silian_list = findListByHash(Silian_dbKey, Silian_sql, Silian_data);
+        if (oConvertUtils.listIsEmpty(Silian_list)) {
             log.error("Except one, but not find actually");
         }
-        if (list.size() > 1) {
+        if (Silian_list.size() > 1) {
             log.error("Except one, but more than one actually");
         }
-        return list.get(0);
+        return Silian_list.get(0);
     }
 
     /**
@@ -199,9 +199,9 @@ public class DynamicDBUtil {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> Object findOne(final String dbKey, String sql, Class<T> clazz, Object... param) {
-        Map<String, Object> map = (Map<String, Object>) findOne(dbKey, sql, param);
-        return ReflectHelper.setAll(clazz, map);
+    public static <T> Object findOne(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, Object... param) {
+        Map<String, Object> Silian_map = (Map<String, Object>) findOne(Silian_dbKey, Silian_sql, Silian_param);
+        return ReflectHelper.setAll(Silian_clazz, Silian_map);
     }
 
     /**
@@ -214,21 +214,21 @@ public class DynamicDBUtil {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> Object findOneByHash(final String dbKey, String sql, Class<T> clazz, HashMap<String, Object> data) {
-        Map<String, Object> map = (Map<String, Object>) findOneByHash(dbKey, sql, data);
-        return ReflectHelper.setAll(clazz, map);
+    public static <T> Object findOneByHash(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, HashMap<String, Object> Silian_data) {
+        Map<String, Object> Silian_map = (Map<String, Object>) findOneByHash(Silian_dbKey, Silian_sql, Silian_data);
+        return ReflectHelper.setAll(Silian_clazz, Silian_map);
     }
 
-    public static List<Map<String, Object>> findList(final String dbKey, String sql, Object... param) {
-        List<Map<String, Object>> list;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
+    public static List<Map<String, Object>> findList(final String Silian_dbKey, String Silian_sql, Object... param) {
+        List<Map<String, Object>> Silian_list;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
 
-        if (ArrayUtils.isEmpty(param)) {
-            list = jdbcTemplate.queryForList(sql);
+        if (ArrayUtils.isEmpty(Silian_param)) {
+            Silian_list = Silian_jdbcTemplate.queryForList(Silian_sql);
         } else {
-            list = jdbcTemplate.queryForList(sql, param);
+            Silian_list = Silian_jdbcTemplate.queryForList(Silian_sql, Silian_param);
         }
-        return list;
+        return Silian_list;
     }
 
     /**
@@ -238,9 +238,9 @@ public class DynamicDBUtil {
      * @param param
      * @return
      */
-    public static Map<String, Object> queryCount(String dbKey, String sql, Map<String, Object> param){
-        NamedParameterJdbcTemplate npJdbcTemplate = getNamedParameterJdbcTemplate(dbKey);
-        return npJdbcTemplate.queryForMap(sql, param);
+    public static Map<String, Object> queryCount(String Silian_dbKey, String Silian_sql, Map<String, Object> Silian_param){
+        NamedParameterJdbcTemplate Silian_npJdbcTemplate = getNamedParameterJdbcTemplate(Silian_dbKey);
+        return Silian_npJdbcTemplate.queryForMap(Silian_sql, Silian_param);
     }
 
     /**
@@ -250,10 +250,10 @@ public class DynamicDBUtil {
      * @param param
      * @return
      */
-    public static List<Map<String, Object>> findListByNamedParam(final String dbKey, String sql, Map<String, Object> param) {
-        NamedParameterJdbcTemplate npJdbcTemplate = getNamedParameterJdbcTemplate(dbKey);
-        List<Map<String, Object>> list = npJdbcTemplate.queryForList(sql, param);
-        return list;
+    public static List<Map<String, Object>> findListByNamedParam(final String Silian_dbKey, String Silian_sql, Map<String, Object> Silian_param) {
+        NamedParameterJdbcTemplate Silian_npJdbcTemplate = getNamedParameterJdbcTemplate(Silian_dbKey);
+        List<Map<String, Object>> Silian_list = Silian_npJdbcTemplate.queryForList(Silian_sql, Silian_param);
+        return Silian_list;
     }
 
     /**
@@ -264,14 +264,14 @@ public class DynamicDBUtil {
      * @param data  sql语法中需要判断的数据及sql拼接注入中需要的数据
      * @return
      */
-    public static List<Map<String, Object>> findListByHash(final String dbKey, String sql, HashMap<String, Object> data) {
-        List<Map<String, Object>> list;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
+    public static List<Map<String, Object>> findListByHash(final String Silian_dbKey, String Silian_sql, HashMap<String, Object> Silian_data) {
+        List<Map<String, Object>> Silian_list;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
         //根据模板获取sql
-        sql = FreemarkerParseFactory.parseTemplateContent(sql, data);
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
-        list = namedParameterJdbcTemplate.queryForList(sql, data);
-        return list;
+        Silian_sql = FreemarkerParseFactory.parseTemplateContent(Silian_sql, Silian_data);
+        NamedParameterJdbcTemplate Silian_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Silian_jdbcTemplate.getDataSource());
+        Silian_list = Silian_namedParameterJdbcTemplate.queryForList(Silian_sql, Silian_data);
+        return Silian_list;
     }
 
     /**
@@ -283,16 +283,16 @@ public class DynamicDBUtil {
      * @param <T>
      * @return
      */
-    public static <T> List<T> findList(final String dbKey, String sql, Class<T> clazz, Object... param) {
-        List<T> list;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
+    public static <T> List<T> findList(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, Object... param) {
+        List<T> Silian_list;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
 
-        if (ArrayUtils.isEmpty(param)) {
-            list = jdbcTemplate.queryForList(sql, clazz);
+        if (ArrayUtils.isEmpty(Silian_param)) {
+            Silian_list = Silian_jdbcTemplate.queryForList(Silian_sql, Silian_clazz);
         } else {
-            list = jdbcTemplate.queryForList(sql, clazz, param);
+            Silian_list = Silian_jdbcTemplate.queryForList(Silian_sql, Silian_clazz, Silian_param);
         }
-        return list;
+        return Silian_list;
     }
 
     /**
@@ -304,14 +304,14 @@ public class DynamicDBUtil {
      * @param data  sql语法中需要判断的数据及sql拼接注入中需要的数据
      * @return
      */
-    public static <T> List<T> findListByHash(final String dbKey, String sql, Class<T> clazz, HashMap<String, Object> data) {
-        List<T> list;
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
+    public static <T> List<T> findListByHash(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, HashMap<String, Object> Silian_data) {
+        List<T> Silian_list;
+        JdbcTemplate Silian_jdbcTemplate = getJdbcTemplate(Silian_dbKey);
         //根据模板获取sql
-        sql = FreemarkerParseFactory.parseTemplateContent(sql, data);
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
-        list = namedParameterJdbcTemplate.queryForList(sql, data, clazz);
-        return list;
+        Silian_sql = FreemarkerParseFactory.parseTemplateContent(Silian_sql, Silian_data);
+        NamedParameterJdbcTemplate Silian_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(Silian_jdbcTemplate.getDataSource());
+        Silian_list = Silian_namedParameterJdbcTemplate.queryForList(Silian_sql, Silian_data, Silian_clazz);
+        return Silian_list;
     }
 
     /**
@@ -323,9 +323,9 @@ public class DynamicDBUtil {
      * @param param sql拼接注入中需要的数据
      * @return
      */
-    public static <T> List<T> findListEntities(final String dbKey, String sql, Class<T> clazz, Object... param) {
-        List<Map<String, Object>> queryList = findList(dbKey, sql, param);
-        return ReflectHelper.transList2Entrys(queryList, clazz);
+    public static <T> List<T> findListEntities(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, Object... param) {
+        List<Map<String, Object>> Silian_queryList = findList(Silian_dbKey, Silian_sql, Silian_param);
+        return ReflectHelper.transList2Entrys(Silian_queryList, Silian_clazz);
     }
 
     /**
@@ -337,8 +337,8 @@ public class DynamicDBUtil {
      * @param data  sql语法中需要判断的数据及sql拼接注入中需要的数据
      * @return
      */
-    public static <T> List<T> findListEntitiesByHash(final String dbKey, String sql, Class<T> clazz, HashMap<String, Object> data) {
-        List<Map<String, Object>> queryList = findListByHash(dbKey, sql, data);
-        return ReflectHelper.transList2Entrys(queryList, clazz);
+    public static <T> List<T> findListEntitiesByHash(final String Silian_dbKey, String Silian_sql, Class<T> Silian_clazz, HashMap<String, Object> Silian_data) {
+        List<Map<String, Object>> Silian_queryList = findListByHash(Silian_dbKey, Silian_sql, Silian_data);
+        return ReflectHelper.transList2Entrys(Silian_queryList, Silian_clazz);
     }
 }

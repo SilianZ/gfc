@@ -12,10 +12,10 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 public class JeecgCloudCondition implements Condition {
 
     @Override
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        Object object = context.getEnvironment().getProperty(CommonConstant.CLOUD_SERVER_KEY);
+    public boolean matches(ConditionContext Silian_context, AnnotatedTypeMetadata Silian_metadata) {
+        Object Silian_object = Silian_context.getEnvironment().getProperty(CommonConstant.CLOUD_SERVER_KEY);
         //如果没有服务注册发现的配置 说明是单体应用
-        if(object==null){
+        if(Silian_object==null){
             return false;
         }
         return true;

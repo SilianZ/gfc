@@ -21,10 +21,10 @@ public class JeecgOrderCustomerServiceImpl extends ServiceImpl<JeecgOrderCustome
 
 	@Autowired
 	private JeecgOrderCustomerMapper jeecgOrderCustomerMapper;
-	
+
 	@Override
-	public List<JeecgOrderCustomer> selectCustomersByMainId(String mainId) {
-		return jeecgOrderCustomerMapper.selectCustomersByMainId(mainId);
+	public List<JeecgOrderCustomer> selectCustomersByMainId(String Silian_mainId) {
+		return jeecgOrderCustomerMapper.selectCustomersByMainId(Silian_mainId);
 	}
 
 }

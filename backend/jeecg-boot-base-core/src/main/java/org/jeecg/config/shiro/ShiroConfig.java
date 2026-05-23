@@ -60,128 +60,128 @@ public class ShiroConfig {
      */
     @Bean("shiroFilterFactoryBean")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
-        CustomShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
-        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        CustomShiroFilterFactoryBean Silian_shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
+        Silian_shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        Map<String, String> Silian_filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
         //支持yml方式，配置拦截排除
         if(jeecgBaseConfig!=null && jeecgBaseConfig.getShiro()!=null){
-            String shiroExcludeUrls = jeecgBaseConfig.getShiro().getExcludeUrls();
-            if(oConvertUtils.isNotEmpty(shiroExcludeUrls)){
-                String[] permissionUrl = shiroExcludeUrls.split(",");
-                for(String url : permissionUrl){
-                    filterChainDefinitionMap.put(url,"anon");
+            String Silian_shiroExcludeUrls = jeecgBaseConfig.getShiro().getExcludeUrls();
+            if(oConvertUtils.isNotEmpty(Silian_shiroExcludeUrls)){
+                String[] Silian_permissionUrl = Silian_shiroExcludeUrls.split(",");
+                for(String Silian_url : Silian_permissionUrl){
+                    Silian_filterChainDefinitionMap.put(Silian_url,"anon");
                 }
             }
         }
         // 配置不会被拦截的链接 顺序判断
-        filterChainDefinitionMap.put("/sys/cas/client/validateLogin", "anon"); //cas验证登录
-        filterChainDefinitionMap.put("/sys/randomImage/**", "anon"); //登录验证码接口排除
-        filterChainDefinitionMap.put("/sys/checkCaptcha", "anon"); //登录验证码接口排除
-        filterChainDefinitionMap.put("/sys/login", "anon"); //登录接口排除
-        filterChainDefinitionMap.put("/sys/mLogin", "anon"); //登录接口排除
-        filterChainDefinitionMap.put("/sys/logout", "anon"); //登出接口排除
-        filterChainDefinitionMap.put("/sys/thirdLogin/**", "anon"); //第三方登录
-        filterChainDefinitionMap.put("/sys/getEncryptedString", "anon"); //获取加密串
-        filterChainDefinitionMap.put("/sys/sms", "anon");//短信验证码
-        filterChainDefinitionMap.put("/sys/phoneLogin", "anon");//手机登录
-        filterChainDefinitionMap.put("/sys/user/checkOnlyUser", "anon");//校验用户是否存在
-        filterChainDefinitionMap.put("/sys/user/register", "anon");//用户注册
-        filterChainDefinitionMap.put("/sys/user/phoneVerification", "anon");//用户忘记密码验证手机号
-        filterChainDefinitionMap.put("/sys/user/passwordChange", "anon");//用户更改密码
-        filterChainDefinitionMap.put("/auth/2step-code", "anon");//登录验证码
-        filterChainDefinitionMap.put("/sys/common/static/**", "anon");//图片预览 &下载文件不限制token
-        filterChainDefinitionMap.put("/sys/common/pdf/**", "anon");//pdf预览
-        filterChainDefinitionMap.put("/generic/**", "anon");//pdf预览需要文件
+        Silian_filterChainDefinitionMap.put("/sys/cas/client/validateLogin", "anon"); //cas验证登录
+        Silian_filterChainDefinitionMap.put("/sys/randomImage/**", "anon"); //登录验证码接口排除
+        Silian_filterChainDefinitionMap.put("/sys/checkCaptcha", "anon"); //登录验证码接口排除
+        Silian_filterChainDefinitionMap.put("/sys/login", "anon"); //登录接口排除
+        Silian_filterChainDefinitionMap.put("/sys/mLogin", "anon"); //登录接口排除
+        Silian_filterChainDefinitionMap.put("/sys/logout", "anon"); //登出接口排除
+        Silian_filterChainDefinitionMap.put("/sys/thirdLogin/**", "anon"); //第三方登录
+        Silian_filterChainDefinitionMap.put("/sys/getEncryptedString", "anon"); //获取加密串
+        Silian_filterChainDefinitionMap.put("/sys/sms", "anon");//短信验证码
+        Silian_filterChainDefinitionMap.put("/sys/phoneLogin", "anon");//手机登录
+        Silian_filterChainDefinitionMap.put("/sys/user/checkOnlyUser", "anon");//校验用户是否存在
+        Silian_filterChainDefinitionMap.put("/sys/user/register", "anon");//用户注册
+        Silian_filterChainDefinitionMap.put("/sys/user/phoneVerification", "anon");//用户忘记密码验证手机号
+        Silian_filterChainDefinitionMap.put("/sys/user/passwordChange", "anon");//用户更改密码
+        Silian_filterChainDefinitionMap.put("/auth/2step-code", "anon");//登录验证码
+        Silian_filterChainDefinitionMap.put("/sys/common/static/**", "anon");//图片预览 &下载文件不限制token
+        Silian_filterChainDefinitionMap.put("/sys/common/pdf/**", "anon");//pdf预览
+        Silian_filterChainDefinitionMap.put("/generic/**", "anon");//pdf预览需要文件
 
-        filterChainDefinitionMap.put("/sys/getLoginQrcode/**", "anon"); //登录二维码
-        filterChainDefinitionMap.put("/sys/getQrcodeToken/**", "anon"); //监听扫码
-        filterChainDefinitionMap.put("/sys/checkAuth", "anon"); //授权接口排除
+        Silian_filterChainDefinitionMap.put("/sys/getLoginQrcode/**", "anon"); //登录二维码
+        Silian_filterChainDefinitionMap.put("/sys/getQrcodeToken/**", "anon"); //监听扫码
+        Silian_filterChainDefinitionMap.put("/sys/checkAuth", "anon"); //授权接口排除
 
 
-        filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/doc.html", "anon");
-        filterChainDefinitionMap.put("/**/*.js", "anon");
-        filterChainDefinitionMap.put("/**/*.css", "anon");
-        filterChainDefinitionMap.put("/**/*.html", "anon");
-        filterChainDefinitionMap.put("/**/*.svg", "anon");
-        filterChainDefinitionMap.put("/**/*.pdf", "anon");
-        filterChainDefinitionMap.put("/**/*.jpg", "anon");
-        filterChainDefinitionMap.put("/**/*.png", "anon");
-        filterChainDefinitionMap.put("/**/*.gif", "anon");
-        filterChainDefinitionMap.put("/**/*.ico", "anon");
+        Silian_filterChainDefinitionMap.put("/", "anon");
+        Silian_filterChainDefinitionMap.put("/doc.html", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.js", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.css", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.html", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.svg", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.pdf", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.jpg", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.png", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.gif", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.ico", "anon");
 
         // update-begin--Author:sunjianlei Date:20190813 for：排除字体格式的后缀
-        filterChainDefinitionMap.put("/**/*.ttf", "anon");
-        filterChainDefinitionMap.put("/**/*.woff", "anon");
-        filterChainDefinitionMap.put("/**/*.woff2", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.ttf", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.woff", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.woff2", "anon");
         // update-begin--Author:sunjianlei Date:20190813 for：排除字体格式的后缀
 
-        filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
-        filterChainDefinitionMap.put("/swagger**/**", "anon");
-        filterChainDefinitionMap.put("/webjars/**", "anon");
-        filterChainDefinitionMap.put("/v2/**", "anon");
+        Silian_filterChainDefinitionMap.put("/druid/**", "anon");
+        Silian_filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        Silian_filterChainDefinitionMap.put("/swagger**/**", "anon");
+        Silian_filterChainDefinitionMap.put("/webjars/**", "anon");
+        Silian_filterChainDefinitionMap.put("/v2/**", "anon");
 
-        filterChainDefinitionMap.put("/sys/annountCement/show/**", "anon");
+        Silian_filterChainDefinitionMap.put("/sys/annountCement/show/**", "anon");
 
         //积木报表排除
-        filterChainDefinitionMap.put("/jmreport/**", "anon");
-        filterChainDefinitionMap.put("/**/*.js.map", "anon");
-        filterChainDefinitionMap.put("/**/*.css.map", "anon");
-        
+        Silian_filterChainDefinitionMap.put("/jmreport/**", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.js.map", "anon");
+        Silian_filterChainDefinitionMap.put("/**/*.css.map", "anon");
+
         //大屏模板例子
-        filterChainDefinitionMap.put("/test/bigScreen/**", "anon");
-        filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
-        filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
+        Silian_filterChainDefinitionMap.put("/test/bigScreen/**", "anon");
+        Silian_filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
+        Silian_filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
         //filterChainDefinitionMap.put("/test/jeecgDemo/rabbitMqClientTest/**", "anon"); //MQ测试
         //filterChainDefinitionMap.put("/test/jeecgDemo/html", "anon"); //模板页面
         //filterChainDefinitionMap.put("/test/jeecgDemo/redis/**", "anon"); //redis测试
 
         //websocket排除
-        filterChainDefinitionMap.put("/websocket/**", "anon");//系统通知和公告
-        filterChainDefinitionMap.put("/newsWebsocket/**", "anon");//CMS模块
-        filterChainDefinitionMap.put("/vxeSocket/**", "anon");//JVxeTable无痕刷新示例
+        Silian_filterChainDefinitionMap.put("/websocket/**", "anon");//系统通知和公告
+        Silian_filterChainDefinitionMap.put("/newsWebsocket/**", "anon");//CMS模块
+        Silian_filterChainDefinitionMap.put("/vxeSocket/**", "anon");//JVxeTable无痕刷新示例
 
 
         //性能监控，放开排除会存在安全漏洞泄露TOEKN（durid连接池也有）
         //filterChainDefinitionMap.put("/actuator/**", "anon");
 
         //测试模块排除
-        filterChainDefinitionMap.put("/test/seata/**", "anon");
+        Silian_filterChainDefinitionMap.put("/test/seata/**", "anon");
 
         // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
+        Map<String, Filter> Silian_filterMap = new HashMap<String, Filter>(1);
         //如果cloudServer为空 则说明是单体 需要加载跨域配置【微服务跨域切换】
-        Object cloudServer = env.getProperty(CommonConstant.CLOUD_SERVER_KEY);
-        filterMap.put("jwt", new JwtFilter(cloudServer==null));
-        shiroFilterFactoryBean.setFilters(filterMap);
+        Object Silian_cloudServer = env.getProperty(CommonConstant.CLOUD_SERVER_KEY);
+        Silian_filterMap.put("jwt", new JwtFilter(Silian_cloudServer==null));
+        Silian_shiroFilterFactoryBean.setFilters(Silian_filterMap);
         // <!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
-        filterChainDefinitionMap.put("/**", "jwt");
+        Silian_filterChainDefinitionMap.put("/**", "jwt");
 
         // 未授权界面返回JSON
-        shiroFilterFactoryBean.setUnauthorizedUrl("/sys/common/403");
-        shiroFilterFactoryBean.setLoginUrl("/sys/common/403");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        return shiroFilterFactoryBean;
+        Silian_shiroFilterFactoryBean.setUnauthorizedUrl("/sys/common/403");
+        Silian_shiroFilterFactoryBean.setLoginUrl("/sys/common/403");
+        Silian_shiroFilterFactoryBean.setFilterChainDefinitionMap(Silian_filterChainDefinitionMap);
+        return Silian_shiroFilterFactoryBean;
     }
 
     @Bean("securityManager")
-    public DefaultWebSecurityManager securityManager(ShiroRealm myRealm) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm Silian_myRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(myRealm);
+        securityManager.setRealm(Silian_myRealm);
 
         /*
          * 关闭shiro自带的session，详情见文档
          * http://shiro.apache.org/session-management.html#SessionManagement-
          * StatelessApplications%28Sessionless%29
          */
-        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
-        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
-        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
-        securityManager.setSubjectDAO(subjectDAO);
+        DefaultSubjectDAO Silian_subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator Silian_defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        Silian_defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        Silian_subjectDAO.setSessionStorageEvaluator(Silian_defaultSessionStorageEvaluator);
+        securityManager.setSubjectDAO(Silian_subjectDAO);
         //自定义缓存实现,使用redis
         securityManager.setCacheManager(redisCacheManager());
         return securityManager;
@@ -212,9 +212,9 @@ public class ShiroConfig {
 
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-        advisor.setSecurityManager(securityManager);
-        return advisor;
+        AuthorizationAttributeSourceAdvisor Silian_advisor = new AuthorizationAttributeSourceAdvisor();
+        Silian_advisor.setSecurityManager(securityManager);
+        return Silian_advisor;
     }
 
     /**
@@ -243,7 +243,7 @@ public class ShiroConfig {
     @Bean
     public IRedisManager redisManager() {
         log.info("===============(2)创建RedisManager,连接Redis..");
-        IRedisManager manager;
+        IRedisManager Silian_manager;
         // redis 单机支持，在集群为空，或者集群无机器时候使用 add by jzyadmin@163.com
         if (lettuceConnectionFactory.getClusterConfiguration() == null || lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().isEmpty()) {
             RedisManager redisManager = new RedisManager();
@@ -254,26 +254,26 @@ public class ShiroConfig {
             if (!StringUtils.isEmpty(lettuceConnectionFactory.getPassword())) {
                 redisManager.setPassword(lettuceConnectionFactory.getPassword());
             }
-            manager = redisManager;
+            Silian_manager = redisManager;
         }else{
             // redis集群支持，优先使用集群配置
             RedisClusterManager redisManager = new RedisClusterManager();
-            Set<HostAndPort> portSet = new HashSet<>();
-            lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(node -> portSet.add(new HostAndPort(node.getHost() , node.getPort())));
+            Set<HostAndPort> Silian_portSet = new HashSet<>();
+            lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(Silian_node -> Silian_portSet.add(new HostAndPort(Silian_node.getHost() , Silian_node.getPort())));
             //update-begin--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
             if (oConvertUtils.isNotEmpty(lettuceConnectionFactory.getPassword())) {
-                JedisCluster jedisCluster = new JedisCluster(portSet, 2000, 2000, 5,
+                JedisCluster Silian_jedisCluster = new JedisCluster(Silian_portSet, 2000, 2000, 5,
                     lettuceConnectionFactory.getPassword(), new GenericObjectPoolConfig());
                 redisManager.setPassword(lettuceConnectionFactory.getPassword());
-                redisManager.setJedisCluster(jedisCluster);
+                redisManager.setJedisCluster(Silian_jedisCluster);
             } else {
-                JedisCluster jedisCluster = new JedisCluster(portSet);
-                redisManager.setJedisCluster(jedisCluster);
+                JedisCluster Silian_jedisCluster = new JedisCluster(Silian_portSet);
+                redisManager.setJedisCluster(Silian_jedisCluster);
             }
             //update-end--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
-            manager = redisManager;
+            Silian_manager = redisManager;
         }
-        return manager;
+        return Silian_manager;
     }
 
 }

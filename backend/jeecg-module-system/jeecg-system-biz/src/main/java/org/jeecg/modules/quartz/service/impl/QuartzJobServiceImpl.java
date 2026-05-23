@@ -36,8 +36,8 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 	private static final String JOB_TEST_GROUP = "test_group";
 
 	@Override
-	public List<QuartzJob> findByJobClassName(String jobClassName) {
-		return quartzJobMapper.findByJobClassName(jobClassName);
+	public List<QuartzJob> findByJobClassName(String Silian_jobClassName) {
+		return quartzJobMapper.findByJobClassName(Silian_jobClassName);
 	}
 
 	/**
@@ -45,17 +45,17 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 	 */
 	@Override
 	@Transactional(rollbackFor = JeecgBootException.class)
-	public boolean saveAndScheduleJob(QuartzJob quartzJob) {
+	public boolean saveAndScheduleJob(QuartzJob Silian_quartzJob) {
 		// DB设置修改
-		quartzJob.setDelFlag(CommonConstant.DEL_FLAG_0);
-		boolean success = this.save(quartzJob);
-		if (success) {
-			if (CommonConstant.STATUS_NORMAL.equals(quartzJob.getStatus())) {
+		Silian_quartzJob.setDelFlag(CommonConstant.DEL_FLAG_0);
+		boolean Silian_success = this.save(Silian_quartzJob);
+		if (Silian_success) {
+			if (CommonConstant.STATUS_NORMAL.equals(Silian_quartzJob.getStatus())) {
 				// 定时器添加
-				this.schedulerAdd(quartzJob.getId(), quartzJob.getJobClassName().trim(), quartzJob.getCronExpression().trim(), quartzJob.getParameter());
+				this.schedulerAdd(Silian_quartzJob.getId(), Silian_quartzJob.getJobClassName().trim(), Silian_quartzJob.getCronExpression().trim(), Silian_quartzJob.getParameter());
 			}
 		}
-		return success;
+		return Silian_success;
 	}
 
 	/**
@@ -63,27 +63,27 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 	 */
 	@Override
 	@Transactional(rollbackFor = JeecgBootException.class)
-	public boolean resumeJob(QuartzJob quartzJob) {
-		schedulerDelete(quartzJob.getId());
-		schedulerAdd(quartzJob.getId(), quartzJob.getJobClassName().trim(), quartzJob.getCronExpression().trim(), quartzJob.getParameter());
-		quartzJob.setStatus(CommonConstant.STATUS_NORMAL);
-		return this.updateById(quartzJob);
+	public boolean resumeJob(QuartzJob Silian_quartzJob) {
+		schedulerDelete(Silian_quartzJob.getId());
+		schedulerAdd(Silian_quartzJob.getId(), Silian_quartzJob.getJobClassName().trim(), Silian_quartzJob.getCronExpression().trim(), Silian_quartzJob.getParameter());
+		Silian_quartzJob.setStatus(CommonConstant.STATUS_NORMAL);
+		return this.updateById(Silian_quartzJob);
 	}
 
 	/**
 	 * 编辑&启停定时任务
-	 * @throws SchedulerException 
+	 * @throws SchedulerException
 	 */
 	@Override
 	@Transactional(rollbackFor = JeecgBootException.class)
-	public boolean editAndScheduleJob(QuartzJob quartzJob) throws SchedulerException {
-		if (CommonConstant.STATUS_NORMAL.equals(quartzJob.getStatus())) {
-			schedulerDelete(quartzJob.getId());
-			schedulerAdd(quartzJob.getId(), quartzJob.getJobClassName().trim(), quartzJob.getCronExpression().trim(), quartzJob.getParameter());
+	public boolean editAndScheduleJob(QuartzJob Silian_quartzJob) throws SchedulerException {
+		if (CommonConstant.STATUS_NORMAL.equals(Silian_quartzJob.getStatus())) {
+			schedulerDelete(Silian_quartzJob.getId());
+			schedulerAdd(Silian_quartzJob.getId(), Silian_quartzJob.getJobClassName().trim(), Silian_quartzJob.getCronExpression().trim(), Silian_quartzJob.getParameter());
 		}else{
-			scheduler.pauseJob(JobKey.jobKey(quartzJob.getId()));
+			scheduler.pauseJob(JobKey.jobKey(Silian_quartzJob.getId()));
 		}
-		return this.updateById(quartzJob);
+		return this.updateById(Silian_quartzJob);
 	}
 
 	/**
@@ -91,41 +91,41 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 	 */
 	@Override
 	@Transactional(rollbackFor = JeecgBootException.class)
-	public boolean deleteAndStopJob(QuartzJob job) {
-		schedulerDelete(job.getId());
-		boolean ok = this.removeById(job.getId());
-		return ok;
+	public boolean deleteAndStopJob(QuartzJob Silian_job) {
+		schedulerDelete(Silian_job.getId());
+		boolean Silian_ok = this.removeById(Silian_job.getId());
+		return Silian_ok;
 	}
 
 	@Override
-	public void execute(QuartzJob quartzJob) throws Exception {
-		String jobName = quartzJob.getJobClassName().trim();
-		Date startDate = new Date();
-		String ymd = DateUtils.date2Str(startDate,DateUtils.yyyymmddhhmmss.get());
-		String identity =  jobName + ymd;
+	public void execute(QuartzJob Silian_quartzJob) throws Exception {
+		String Silian_jobName = Silian_quartzJob.getJobClassName().trim();
+		Date Silian_startDate = new Date();
+		String Silian_ymd = DateUtils.date2Str(Silian_startDate,DateUtils.yyyymmddhhmmss.get());
+		String Silian_identity =  Silian_jobName + Silian_ymd;
 		//3秒后执行 只执行一次
 		// update-begin--author:sunjianlei ---- date:20210511--- for：定时任务立即执行，延迟3秒改成0.1秒-------
-		startDate.setTime(startDate.getTime() + 100L);
+		Silian_startDate.setTime(Silian_startDate.getTime() + 100L);
 		// update-end--author:sunjianlei ---- date:20210511--- for：定时任务立即执行，延迟3秒改成0.1秒-------
 		// 定义一个Trigger
-		SimpleTrigger trigger = (SimpleTrigger)TriggerBuilder.newTrigger()
-				.withIdentity(identity, JOB_TEST_GROUP)
-				.startAt(startDate)
+		SimpleTrigger Silian_trigger = (SimpleTrigger)TriggerBuilder.newTrigger()
+				.withIdentity(Silian_identity, JOB_TEST_GROUP)
+				.startAt(Silian_startDate)
 				.build();
 		// 构建job信息
-		JobDetail jobDetail = JobBuilder.newJob(getClass(jobName).getClass()).withIdentity(identity).usingJobData("parameter", quartzJob.getParameter()).build();
+		JobDetail Silian_jobDetail = JobBuilder.newJob(getClass(Silian_jobName).getClass()).withIdentity(Silian_identity).usingJobData("parameter", Silian_quartzJob.getParameter()).build();
 		// 将trigger和 jobDetail 加入这个调度
-		scheduler.scheduleJob(jobDetail, trigger);
+		scheduler.scheduleJob(Silian_jobDetail, Silian_trigger);
 		// 启动scheduler
 		scheduler.start();
 	}
 
 	@Override
 	@Transactional(rollbackFor = JeecgBootException.class)
-	public void pause(QuartzJob quartzJob){
-		schedulerDelete(quartzJob.getId());
-		quartzJob.setStatus(CommonConstant.STATUS_DISABLE);
-		this.updateById(quartzJob);
+	public void pause(QuartzJob Silian_quartzJob){
+		schedulerDelete(Silian_quartzJob.getId());
+		Silian_quartzJob.setStatus(CommonConstant.STATUS_DISABLE);
+		this.updateById(Silian_quartzJob);
 	}
 
 	/**
@@ -135,49 +135,49 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 	 * @param cronExpression
 	 * @param parameter
 	 */
-	private void schedulerAdd(String id, String jobClassName, String cronExpression, String parameter) {
+	private void schedulerAdd(String Silian_id, String Silian_jobClassName, String Silian_cronExpression, String Silian_parameter) {
 		try {
 			// 启动调度器
 			scheduler.start();
 
 			// 构建job信息
-			JobDetail jobDetail = JobBuilder.newJob(getClass(jobClassName).getClass()).withIdentity(id).usingJobData("parameter", parameter).build();
+			JobDetail Silian_jobDetail = JobBuilder.newJob(getClass(Silian_jobClassName).getClass()).withIdentity(Silian_id).usingJobData("parameter", Silian_parameter).build();
 
 			// 表达式调度构建器(即任务执行的时间)
-			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+			CronScheduleBuilder Silian_scheduleBuilder = CronScheduleBuilder.cronSchedule(Silian_cronExpression);
 
 			// 按新的cronExpression表达式构建一个新的trigger
-			CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(id).withSchedule(scheduleBuilder).build();
+			CronTrigger Silian_trigger = TriggerBuilder.newTrigger().withIdentity(Silian_id).withSchedule(Silian_scheduleBuilder).build();
 
-			scheduler.scheduleJob(jobDetail, trigger);
-		} catch (SchedulerException e) {
-			throw new JeecgBootException("创建定时任务失败", e);
-		} catch (RuntimeException e) {
-			throw new JeecgBootException(e.getMessage(), e);
-		}catch (Exception e) {
-			throw new JeecgBootException("后台找不到该类名：" + jobClassName, e);
+			scheduler.scheduleJob(Silian_jobDetail, Silian_trigger);
+		} catch (SchedulerException Silian_e) {
+			throw new JeecgBootException("创建定时任务失败", Silian_e);
+		} catch (RuntimeException Silian_e) {
+			throw new JeecgBootException(Silian_e.getMessage(), Silian_e);
+		}catch (Exception Silian_e) {
+			throw new JeecgBootException("后台找不到该类名：" + Silian_jobClassName, Silian_e);
 		}
 	}
 
 	/**
 	 * 删除定时任务
-	 * 
+	 *
 	 * @param id
 	 */
-	private void schedulerDelete(String id) {
+	private void schedulerDelete(String Silian_id) {
 		try {
-			scheduler.pauseTrigger(TriggerKey.triggerKey(id));
-			scheduler.unscheduleJob(TriggerKey.triggerKey(id));
-			scheduler.deleteJob(JobKey.jobKey(id));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			scheduler.pauseTrigger(TriggerKey.triggerKey(Silian_id));
+			scheduler.unscheduleJob(TriggerKey.triggerKey(Silian_id));
+			scheduler.deleteJob(JobKey.jobKey(Silian_id));
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 			throw new JeecgBootException("删除定时任务失败");
 		}
 	}
 
-	private static Job getClass(String classname) throws Exception {
-		Class<?> class1 = Class.forName(classname);
-		return (Job) class1.newInstance();
+	private static Job getClass(String Silian_classname) throws Exception {
+		Class<?> Silian_class1 = Class.forName(Silian_classname);
+		return (Job) Silian_class1.newInstance();
 	}
 
 }

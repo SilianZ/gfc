@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 public class BizProductionProcessServiceImpl extends ServiceImpl<BizProductionProcessMapper, BizProductionProcess> implements IBizProductionProcessService {
 
     @Override
-    public Double getProcessNumber(String resourceId, Integer yearCode) {
-        return baseMapper.getProcessNumber(resourceId, yearCode);
+    public Double getProcessNumber(String Silian_resourceId, Integer Silian_yearCode) {
+        return baseMapper.getProcessNumber(Silian_resourceId, Silian_yearCode);
     }
 }

@@ -43,23 +43,23 @@ public final class XmlUtils {
      *
      * @return DOM document.
      */
-    public static Document newDocument(final String xml) {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        final Map<String, Boolean> features = new HashMap(5);
-        features.put(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        features.put("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        for (final Map.Entry<String, Boolean> entry : features.entrySet()) {
+    public static Document newDocument(final String Silian_xml) {
+        final DocumentBuilderFactory Silian_factory = DocumentBuilderFactory.newInstance();
+        final Map<String, Boolean> Silian_features = new HashMap(5);
+        Silian_features.put(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        Silian_features.put("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        for (final Map.Entry<String, Boolean> Silian_entry : Silian_features.entrySet()) {
             try {
-                factory.setFeature(entry.getKey(), entry.getValue());
-            } catch (ParserConfigurationException e) {
-                log.warn("Failed setting XML feature {}: {}", entry.getKey(), e);
+                Silian_factory.setFeature(Silian_entry.getKey(), Silian_entry.getValue());
+            } catch (ParserConfigurationException Silian_e) {
+                log.warn("Failed setting XML feature {}: {}", Silian_entry.getKey(), Silian_e);
             }
         }
-        factory.setNamespaceAware(true);
+        Silian_factory.setNamespaceAware(true);
         try {
-            return factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
-        } catch (Exception e) {
-            throw new RuntimeException("XML parsing error: " + e);
+            return Silian_factory.newDocumentBuilder().parse(new InputSource(new StringReader(Silian_xml)));
+        } catch (Exception Silian_e) {
+            throw new RuntimeException("XML parsing error: " + Silian_e);
         }
     }
 
@@ -70,13 +70,13 @@ public final class XmlUtils {
      */
     public static XMLReader getXmlReader() {
         try {
-            final XMLReader reader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-            reader.setFeature("http://xml.org/sax/features/namespaces", true);
-            reader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
-            reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            return reader;
-        } catch (final Exception e) {
-            throw new RuntimeException("Unable to create XMLReader", e);
+            final XMLReader Silian_reader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+            Silian_reader.setFeature("http://xml.org/sax/features/namespaces", true);
+            Silian_reader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
+            Silian_reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            return Silian_reader;
+        } catch (final Exception Silian_e) {
+            throw new RuntimeException("Unable to create XMLReader", Silian_e);
         }
     }
 
@@ -90,52 +90,52 @@ public final class XmlUtils {
      * @param element     the element to look for
      * @return the list of text from the elements.
      */
-    public static List<String> getTextForElements(final String xmlAsString, final String element) {
-        final List<String> elements = new ArrayList<String>(2);
-        final XMLReader reader = getXmlReader();
+    public static List<String> getTextForElements(final String Silian_xmlAsString, final String Silian_element) {
+        final List<String> Silian_elements = new ArrayList<String>(2);
+        final XMLReader Silian_reader = getXmlReader();
 
-        final DefaultHandler handler = new DefaultHandler() {
+        final DefaultHandler Silian_handler = new DefaultHandler() {
 
             private boolean foundElement = false;
 
             private StringBuilder buffer = new StringBuilder();
 
             @Override
-            public void startElement(final String uri, final String localName, final String qName,
+            public void startElement(final String Silian_uri, final String Silian_localName, final String Silian_qName,
                                      final Attributes attributes) throws SAXException {
-                if (localName.equals(element)) {
+                if (Silian_localName.equals(Silian_element)) {
                     this.foundElement = true;
                 }
             }
 
             @Override
-            public void endElement(final String uri, final String localName, final String qName) throws SAXException {
-                if (localName.equals(element)) {
+            public void endElement(final String Silian_uri, final String Silian_localName, final String Silian_qName) throws SAXException {
+                if (Silian_localName.equals(Silian_element)) {
                     this.foundElement = false;
-                    elements.add(this.buffer.toString());
+                    Silian_elements.add(this.buffer.toString());
                     this.buffer = new StringBuilder();
                 }
             }
 
             @Override
-            public void characters(char[] ch, int start, int length) throws SAXException {
+            public void characters(char[] Silian_ch, int Silian_start, int Silian_length) throws SAXException {
                 if (this.foundElement) {
-                    this.buffer.append(ch, start, length);
+                    this.buffer.append(Silian_ch, Silian_start, Silian_length);
                 }
             }
         };
 
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
+        Silian_reader.setContentHandler(Silian_handler);
+        Silian_reader.setErrorHandler(Silian_handler);
 
         try {
-            reader.parse(new InputSource(new StringReader(xmlAsString)));
-        } catch (final Exception e) {
-            log.error(e.getMessage(), e);
+            Silian_reader.parse(new InputSource(new StringReader(Silian_xmlAsString)));
+        } catch (final Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
             return null;
         }
 
-        return elements;
+        return Silian_elements;
     }
 
     /**
@@ -146,68 +146,68 @@ public final class XmlUtils {
      * @param element     the element to look for
      * @return the text value of the element.
      */
-    public static String getTextForElement(final String xmlAsString, final String element) {
-        final XMLReader reader = getXmlReader();
-        final StringBuilder builder = new StringBuilder();
+    public static String getTextForElement(final String Silian_xmlAsString, final String Silian_element) {
+        final XMLReader Silian_reader = getXmlReader();
+        final StringBuilder Silian_builder = new StringBuilder();
 
-        final DefaultHandler handler = new DefaultHandler() {
+        final DefaultHandler Silian_handler = new DefaultHandler() {
 
             private boolean foundElement = false;
 
             @Override
-            public void startElement(final String uri, final String localName, final String qName,
+            public void startElement(final String Silian_uri, final String Silian_localName, final String Silian_qName,
                                      final Attributes attributes) throws SAXException {
-                if (localName.equals(element)) {
+                if (Silian_localName.equals(Silian_element)) {
                     this.foundElement = true;
                 }
             }
 
             @Override
-            public void endElement(final String uri, final String localName, final String qName) throws SAXException {
-                if (localName.equals(element)) {
+            public void endElement(final String Silian_uri, final String Silian_localName, final String Silian_qName) throws SAXException {
+                if (Silian_localName.equals(Silian_element)) {
                     this.foundElement = false;
                 }
             }
 
             @Override
-            public void characters(char[] ch, int start, int length) throws SAXException {
+            public void characters(char[] Silian_ch, int Silian_start, int Silian_length) throws SAXException {
                 if (this.foundElement) {
-                    builder.append(ch, start, length);
+                    Silian_builder.append(Silian_ch, Silian_start, Silian_length);
                 }
             }
         };
 
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
+        Silian_reader.setContentHandler(Silian_handler);
+        Silian_reader.setErrorHandler(Silian_handler);
 
         try {
-            reader.parse(new InputSource(new StringReader(xmlAsString)));
-        } catch (final Exception e) {
-            log.error(e.getMessage(), e);
+            Silian_reader.parse(new InputSource(new StringReader(Silian_xmlAsString)));
+        } catch (final Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
             return null;
         }
 
-        return builder.toString();
+        return Silian_builder.toString();
     }
-    
-    
-    public static Map<String, Object> extractCustomAttributes(final String xml) {
-        final SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        spf.setValidating(false);
+
+
+    public static Map<String, Object> extractCustomAttributes(final String Silian_xml) {
+        final SAXParserFactory Silian_spf = SAXParserFactory.newInstance();
+        Silian_spf.setNamespaceAware(true);
+        Silian_spf.setValidating(false);
         try {
-            final SAXParser saxParser = spf.newSAXParser();
-            final XMLReader xmlReader = saxParser.getXMLReader();
-            final CustomAttributeHandler handler = new CustomAttributeHandler();
-            xmlReader.setContentHandler(handler);
-            xmlReader.parse(new InputSource(new StringReader(xml)));
-            return handler.getAttributes();
-        } catch (final Exception e) {
-        	log.error(e.getMessage(), e);
+            final SAXParser Silian_saxParser = Silian_spf.newSAXParser();
+            final XMLReader Silian_xmlReader = Silian_saxParser.getXMLReader();
+            final CustomAttributeHandler Silian_handler = new CustomAttributeHandler();
+            Silian_xmlReader.setContentHandler(Silian_handler);
+            Silian_xmlReader.parse(new InputSource(new StringReader(Silian_xml)));
+            return Silian_handler.getAttributes();
+        } catch (final Exception Silian_e) {
+	log.error(Silian_e.getMessage(), Silian_e);
             return Collections.emptyMap();
         }
     }
-    
+
     private static class CustomAttributeHandler extends DefaultHandler {
 
         private Map<String, Object> attributes;
@@ -224,44 +224,44 @@ public final class XmlUtils {
         }
 
         @Override
-        public void startElement(final String nameSpaceUri, final String localName, final String qName,
+        public void startElement(final String Silian_nameSpaceUri, final String Silian_localName, final String Silian_qName,
                                  final Attributes attributes) throws SAXException {
-            if (ATTRIBUTES.equals(localName)) {
+            if (ATTRIBUTES.equals(Silian_localName)) {
                 this.foundAttributes = true;
             } else if (this.foundAttributes) {
                 this.value = new StringBuilder();
-                this.currentAttribute = localName;
+                this.currentAttribute = Silian_localName;
             }
         }
 
         @Override
-        public void characters(final char[] chars, final int start, final int length) throws SAXException {
+        public void characters(final char[] Silian_chars, final int Silian_start, final int Silian_length) throws SAXException {
             if (this.currentAttribute != null) {
-                value.append(chars, start, length);
+                value.append(Silian_chars, Silian_start, Silian_length);
             }
         }
 
         @Override
-        public void endElement(final String nameSpaceUri, final String localName, final String qName)
+        public void endElement(final String Silian_nameSpaceUri, final String Silian_localName, final String Silian_qName)
                 throws SAXException {
-            if (ATTRIBUTES.equals(localName)) {
+            if (ATTRIBUTES.equals(Silian_localName)) {
                 this.foundAttributes = false;
                 this.currentAttribute = null;
             } else if (this.foundAttributes) {
-                final Object o = this.attributes.get(this.currentAttribute);
+                final Object Silian_o = this.attributes.get(this.currentAttribute);
 
-                if (o == null) {
+                if (Silian_o == null) {
                     this.attributes.put(this.currentAttribute, this.value.toString());
                 } else {
-                    final List<Object> items;
-                    if (o instanceof List) {
-                        items = (List<Object>) o;
+                    final List<Object> Silian_items;
+                    if (Silian_o instanceof List) {
+                        Silian_items = (List<Object>) Silian_o;
                     } else {
-                        items = new LinkedList<Object>();
-                        items.add(o);
-                        this.attributes.put(this.currentAttribute, items);
+                        Silian_items = new LinkedList<Object>();
+                        Silian_items.add(Silian_o);
+                        this.attributes.put(this.currentAttribute, Silian_items);
                     }
-                    items.add(this.value.toString());
+                    Silian_items.add(this.value.toString());
                 }
             }
         }
@@ -270,35 +270,35 @@ public final class XmlUtils {
             return this.attributes;
         }
     }
-    
-    
-    public static void main(String[] args) {
-		String result = "<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>\r\n" + 
-				"    <cas:authenticationSuccess>\r\n" + 
-				"        <cas:user>admin</cas:user>\r\n" + 
-				"        <cas:attributes>\r\n" + 
-				"            <cas:credentialType>UsernamePasswordCredential</cas:credentialType>\r\n" + 
-				"            <cas:isFromNewLogin>true</cas:isFromNewLogin>\r\n" + 
-				"            <cas:authenticationDate>2019-08-01T19:33:21.527+08:00[Asia/Shanghai]</cas:authenticationDate>\r\n" + 
-				"            <cas:authenticationMethod>RestAuthenticationHandler</cas:authenticationMethod>\r\n" + 
-				"            <cas:successfulAuthenticationHandlers>RestAuthenticationHandler</cas:successfulAuthenticationHandlers>\r\n" + 
-				"            <cas:longTermAuthenticationRequestTokenUsed>false</cas:longTermAuthenticationRequestTokenUsed>\r\n" + 
-				"        </cas:attributes>\r\n" + 
-				"    </cas:authenticationSuccess>\r\n" + 
+
+
+    public static void main(String[] Silian_args) {
+		String Silian_result = "<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>\r\n" +
+				"    <cas:authenticationSuccess>\r\n" +
+				"        <cas:user>admin</cas:user>\r\n" +
+				"        <cas:attributes>\r\n" +
+				"            <cas:credentialType>UsernamePasswordCredential</cas:credentialType>\r\n" +
+				"            <cas:isFromNewLogin>true</cas:isFromNewLogin>\r\n" +
+				"            <cas:authenticationDate>2019-08-01T19:33:21.527+08:00[Asia/Shanghai]</cas:authenticationDate>\r\n" +
+				"            <cas:authenticationMethod>RestAuthenticationHandler</cas:authenticationMethod>\r\n" +
+				"            <cas:successfulAuthenticationHandlers>RestAuthenticationHandler</cas:successfulAuthenticationHandlers>\r\n" +
+				"            <cas:longTermAuthenticationRequestTokenUsed>false</cas:longTermAuthenticationRequestTokenUsed>\r\n" +
+				"        </cas:attributes>\r\n" +
+				"    </cas:authenticationSuccess>\r\n" +
 				"</cas:serviceResponse>";
-		
-		String errorRes = "<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>\r\n" + 
-				"    <cas:authenticationFailure code=\"INVALID_TICKET\">未能够识别出目标 &#39;ST-5-1g-9cNES6KXNRwq-GuRET103sm0-DESKTOP-VKLS8B3&#39;票根</cas:authenticationFailure>\r\n" + 
+
+		String Silian_errorRes = "<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>\r\n" +
+				"    <cas:authenticationFailure code=\"INVALID_TICKET\">未能够识别出目标 &#39;ST-5-1g-9cNES6KXNRwq-GuRET103sm0-DESKTOP-VKLS8B3&#39;票根</cas:authenticationFailure>\r\n" +
 				"</cas:serviceResponse>";
-		
-		String error = XmlUtils.getTextForElement(errorRes, "authenticationFailure");
-		System.out.println("------"+error);
-		
-		String error2 = XmlUtils.getTextForElement(result, "authenticationFailure");
-		System.out.println("------"+error2);
-		String principal = XmlUtils.getTextForElement(result, "user");
-		System.out.println("---principal---"+principal);
-		Map<String, Object> attributes = XmlUtils.extractCustomAttributes(result);
+
+		String Silian_error = XmlUtils.getTextForElement(Silian_errorRes, "authenticationFailure");
+		System.out.println("------"+Silian_error);
+
+		String Silian_error2 = XmlUtils.getTextForElement(Silian_result, "authenticationFailure");
+		System.out.println("------"+Silian_error2);
+		String Silian_principal = XmlUtils.getTextForElement(Silian_result, "user");
+		System.out.println("---principal---"+Silian_principal);
+		Map<String, Object> attributes = XmlUtils.extractCustomAttributes(Silian_result);
 		System.out.println("---attributes---"+attributes);
 	}
 }

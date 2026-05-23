@@ -49,7 +49,7 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	private IBizBankConfigService bizBankConfigService;
 	@Autowired
 	private ISysDepartService sysDepartService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -62,16 +62,16 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	//@AutoLog(value = "成品交易-分页列表查询")
 	@ApiOperation(value="成品交易-分页列表查询", notes="成品交易-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<BizProductionTrans>> queryPageList(BizProductionTrans bizProductionTrans,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<BizProductionTrans> queryWrapper = QueryGenerator.initQueryWrapper(bizProductionTrans, req.getParameterMap());
-		Page<BizProductionTrans> page = new Page<BizProductionTrans>(pageNo, pageSize);
-		IPage<BizProductionTrans> pageList = bizProductionTransService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<BizProductionTrans>> queryPageList(BizProductionTrans Silian_bizProductionTrans,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<BizProductionTrans> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizProductionTrans, Silian_req.getParameterMap());
+		Page<BizProductionTrans> Silian_page = new Page<BizProductionTrans>(Silian_pageNo, Silian_pageSize);
+		IPage<BizProductionTrans> Silian_pageList = bizProductionTransService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -83,47 +83,47 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	//@RequiresPermissions("org.jeecg.modules:biz_production_trans:add")
 	@PostMapping(value = "/add")
 	@Transactional(rollbackFor = Exception.class)
-	public Result<String> add(@RequestBody BizProductionTrans bizProductionTrans) {
+	public Result<String> add(@RequestBody BizProductionTrans Silian_bizProductionTrans) {
 		try {
 			//设置所属财年
-			bizProductionTrans.setYearCode(bizFiscalYearService.getActiveYearCode());
+			Silian_bizProductionTrans.setYearCode(bizFiscalYearService.getActiveYearCode());
 			//扣减卖方成品库存
-			BizSubjectBalance sellerBalance = bizSubjectBalanceService.getByUserId(bizProductionTrans.getSellerId());
-			sellerBalance.setChipAcct((sellerBalance.getChipAcct() == null ? 0 : sellerBalance.getChipAcct()) - (bizProductionTrans.getChipNumber() == null ? 0 : bizProductionTrans.getChipNumber()));
-			sellerBalance.setCardAcct((sellerBalance.getCardAcct() == null ? 0 : sellerBalance.getCardAcct()) - (bizProductionTrans.getCardNumber() == null ? 0 : bizProductionTrans.getCardNumber()));
-			sellerBalance.setEnergyAcct((sellerBalance.getEnergyAcct() == null ? 0 : sellerBalance.getEnergyAcct()) - (bizProductionTrans.getEnergyNumber() == null ? 0 : bizProductionTrans.getEnergyNumber()));
-			sellerBalance.setToyAcct((sellerBalance.getToyAcct() == null ? 0 : sellerBalance.getToyAcct()) - (bizProductionTrans.getToyNumber() == null ? 0 : bizProductionTrans.getToyNumber()));
+			BizSubjectBalance Silian_sellerBalance = bizSubjectBalanceService.getByUserId(Silian_bizProductionTrans.getSellerId());
+			Silian_sellerBalance.setChipAcct((Silian_sellerBalance.getChipAcct() == null ? 0 : Silian_sellerBalance.getChipAcct()) - (Silian_bizProductionTrans.getChipNumber() == null ? 0 : Silian_bizProductionTrans.getChipNumber()));
+			Silian_sellerBalance.setCardAcct((Silian_sellerBalance.getCardAcct() == null ? 0 : Silian_sellerBalance.getCardAcct()) - (Silian_bizProductionTrans.getCardNumber() == null ? 0 : Silian_bizProductionTrans.getCardNumber()));
+			Silian_sellerBalance.setEnergyAcct((Silian_sellerBalance.getEnergyAcct() == null ? 0 : Silian_sellerBalance.getEnergyAcct()) - (Silian_bizProductionTrans.getEnergyNumber() == null ? 0 : Silian_bizProductionTrans.getEnergyNumber()));
+			Silian_sellerBalance.setToyAcct((Silian_sellerBalance.getToyAcct() == null ? 0 : Silian_sellerBalance.getToyAcct()) - (Silian_bizProductionTrans.getToyNumber() == null ? 0 : Silian_bizProductionTrans.getToyNumber()));
 			//扣除交易所得税
-			SysDepart depart = sysDepartService.queryDepartsByUsername(bizProductionTrans.getSellerId()).get(0);
-			Double taxAmount = bizBankConfigService.collectTaxes(bizProductionTrans.getTransPrice(), bizProductionTrans.getIsTransnational().equals("Y"), depart.getId());
+			SysDepart Silian_depart = sysDepartService.queryDepartsByUsername(Silian_bizProductionTrans.getSellerId()).get(0);
+			Double Silian_taxAmount = bizBankConfigService.collectTaxes(Silian_bizProductionTrans.getTransPrice(), Silian_bizProductionTrans.getIsTransnational().equals("Y"), Silian_depart.getId());
 			//增加卖方现金余额
-			sellerBalance.setCashAcct((sellerBalance.getCashAcct() == null ? 0 : sellerBalance.getCashAcct()) + (bizProductionTrans.getTransPrice() == null ? 0 : bizProductionTrans.getTransPrice() - taxAmount));
+			Silian_sellerBalance.setCashAcct((Silian_sellerBalance.getCashAcct() == null ? 0 : Silian_sellerBalance.getCashAcct()) + (Silian_bizProductionTrans.getTransPrice() == null ? 0 : Silian_bizProductionTrans.getTransPrice() - Silian_taxAmount));
 			//增加买方成品库存
-			BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizProductionTrans.getBuyerId());
-			buyerBalance.setChipAcct((buyerBalance.getChipAcct() == null ? 0 : buyerBalance.getChipAcct()) + (bizProductionTrans.getChipNumber() == null ? 0 : bizProductionTrans.getChipNumber()));
-			buyerBalance.setCardAcct((buyerBalance.getCardAcct() == null ? 0 : buyerBalance.getCardAcct()) + (bizProductionTrans.getCardNumber() == null ? 0 : bizProductionTrans.getCardNumber()));
-			buyerBalance.setEnergyAcct((buyerBalance.getEnergyAcct() == null ? 0 : buyerBalance.getEnergyAcct()) + (bizProductionTrans.getEnergyNumber() == null ? 0 : bizProductionTrans.getEnergyNumber()));
-			buyerBalance.setToyAcct((buyerBalance.getToyAcct() == null ? 0 : buyerBalance.getToyAcct()) + (bizProductionTrans.getToyNumber() == null ? 0 : bizProductionTrans.getToyNumber()));
+			BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizProductionTrans.getBuyerId());
+			Silian_buyerBalance.setChipAcct((Silian_buyerBalance.getChipAcct() == null ? 0 : Silian_buyerBalance.getChipAcct()) + (Silian_bizProductionTrans.getChipNumber() == null ? 0 : Silian_bizProductionTrans.getChipNumber()));
+			Silian_buyerBalance.setCardAcct((Silian_buyerBalance.getCardAcct() == null ? 0 : Silian_buyerBalance.getCardAcct()) + (Silian_bizProductionTrans.getCardNumber() == null ? 0 : Silian_bizProductionTrans.getCardNumber()));
+			Silian_buyerBalance.setEnergyAcct((Silian_buyerBalance.getEnergyAcct() == null ? 0 : Silian_buyerBalance.getEnergyAcct()) + (Silian_bizProductionTrans.getEnergyNumber() == null ? 0 : Silian_bizProductionTrans.getEnergyNumber()));
+			Silian_buyerBalance.setToyAcct((Silian_buyerBalance.getToyAcct() == null ? 0 : Silian_buyerBalance.getToyAcct()) + (Silian_bizProductionTrans.getToyNumber() == null ? 0 : Silian_bizProductionTrans.getToyNumber()));
 			//减少买方现金余额
-			buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct()) - (bizProductionTrans.getTransPrice() == null ? 0 : bizProductionTrans.getTransPrice()));
-			if(sellerBalance.getChipAcct() < 0 ||  sellerBalance.getCardAcct() < 0 || sellerBalance.getEnergyAcct() < 0 || sellerBalance.getToyAcct() < 0 ){
+			Silian_buyerBalance.setCashAcct((Silian_buyerBalance.getCashAcct() == null ? 0 : Silian_buyerBalance.getCashAcct()) - (Silian_bizProductionTrans.getTransPrice() == null ? 0 : Silian_bizProductionTrans.getTransPrice()));
+			if(Silian_sellerBalance.getChipAcct() < 0 ||  Silian_sellerBalance.getCardAcct() < 0 || Silian_sellerBalance.getEnergyAcct() < 0 || Silian_sellerBalance.getToyAcct() < 0 ){
 				throw new Exception("卖家成品库存不足");
 			}
-			if(buyerBalance.getCashAcct() < 0){
+			if(Silian_buyerBalance.getCashAcct() < 0){
 				throw new Exception("买家现金余额不足");
 			}
-			bizSubjectBalanceService.updateById(sellerBalance);
-			bizSubjectBalanceService.updateById(buyerBalance);
-			bizProductionTransService.save(bizProductionTrans);
-		}catch (Exception e){
-			e.printStackTrace();
+			bizSubjectBalanceService.updateById(Silian_sellerBalance);
+			bizSubjectBalanceService.updateById(Silian_buyerBalance);
+			bizProductionTransService.save(Silian_bizProductionTrans);
+		}catch (Exception Silian_e){
+			Silian_e.printStackTrace();
 			//回滚事务
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return Result.error("交易失败：" + e.getMessage());
+			return Result.error("交易失败：" + Silian_e.getMessage());
 		}
 		return Result.OK("交易成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -134,11 +134,11 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	@ApiOperation(value="成品交易-编辑", notes="成品交易-编辑")
 	//@RequiresPermissions("org.jeecg.modules:biz_production_trans:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody BizProductionTrans bizProductionTrans) {
-		bizProductionTransService.updateById(bizProductionTrans);
+	public Result<String> edit(@RequestBody BizProductionTrans Silian_bizProductionTrans) {
+		bizProductionTransService.updateById(Silian_bizProductionTrans);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -150,46 +150,46 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	//@RequiresPermissions("org.jeecg.modules:biz_production_trans:delete")
 	@DeleteMapping(value = "/delete")
 	@Transactional(rollbackFor = Exception.class)
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
 		try{
-			BizProductionTrans bizProductionTrans = bizProductionTransService.getById(id);
+			BizProductionTrans Silian_bizProductionTrans = bizProductionTransService.getById(Silian_id);
 			//增加卖方成品库存
-			BizSubjectBalance sellerBalance = bizSubjectBalanceService.getByUserId(bizProductionTrans.getSellerId());
-			sellerBalance.setChipAcct((sellerBalance.getChipAcct() == null ? 0 : sellerBalance.getChipAcct()) + (bizProductionTrans.getChipNumber() == null ? 0 : bizProductionTrans.getChipNumber()));
-			sellerBalance.setCardAcct((sellerBalance.getCardAcct() == null ? 0 : sellerBalance.getCardAcct()) + (bizProductionTrans.getCardNumber() == null ? 0 : bizProductionTrans.getCardNumber()));
-			sellerBalance.setEnergyAcct((sellerBalance.getEnergyAcct() == null ? 0 : sellerBalance.getEnergyAcct()) + (bizProductionTrans.getEnergyNumber() == null ? 0 : bizProductionTrans.getEnergyNumber()));
-			sellerBalance.setToyAcct((sellerBalance.getToyAcct() == null ? 0 : sellerBalance.getToyAcct()) + (bizProductionTrans.getToyNumber() == null ? 0 : bizProductionTrans.getToyNumber()));
+			BizSubjectBalance Silian_sellerBalance = bizSubjectBalanceService.getByUserId(Silian_bizProductionTrans.getSellerId());
+			Silian_sellerBalance.setChipAcct((Silian_sellerBalance.getChipAcct() == null ? 0 : Silian_sellerBalance.getChipAcct()) + (Silian_bizProductionTrans.getChipNumber() == null ? 0 : Silian_bizProductionTrans.getChipNumber()));
+			Silian_sellerBalance.setCardAcct((Silian_sellerBalance.getCardAcct() == null ? 0 : Silian_sellerBalance.getCardAcct()) + (Silian_bizProductionTrans.getCardNumber() == null ? 0 : Silian_bizProductionTrans.getCardNumber()));
+			Silian_sellerBalance.setEnergyAcct((Silian_sellerBalance.getEnergyAcct() == null ? 0 : Silian_sellerBalance.getEnergyAcct()) + (Silian_bizProductionTrans.getEnergyNumber() == null ? 0 : Silian_bizProductionTrans.getEnergyNumber()));
+			Silian_sellerBalance.setToyAcct((Silian_sellerBalance.getToyAcct() == null ? 0 : Silian_sellerBalance.getToyAcct()) + (Silian_bizProductionTrans.getToyNumber() == null ? 0 : Silian_bizProductionTrans.getToyNumber()));
 			//冲销交易所得税
-			SysDepart depart = sysDepartService.queryDepartsByUsername(bizProductionTrans.getSellerId()).get(0);
-			Double taxAmount = bizBankConfigService.offTaxes(bizProductionTrans.getTransPrice(), bizProductionTrans.getIsTransnational().equals("Y"), depart.getId());
+			SysDepart Silian_depart = sysDepartService.queryDepartsByUsername(Silian_bizProductionTrans.getSellerId()).get(0);
+			Double Silian_taxAmount = bizBankConfigService.offTaxes(Silian_bizProductionTrans.getTransPrice(), Silian_bizProductionTrans.getIsTransnational().equals("Y"), Silian_depart.getId());
 			//减少卖方现金余额
-			sellerBalance.setCashAcct((sellerBalance.getCashAcct() == null ? 0 : sellerBalance.getCashAcct()) - (bizProductionTrans.getTransPrice() == null ? 0 : bizProductionTrans.getTransPrice()) + taxAmount);
+			Silian_sellerBalance.setCashAcct((Silian_sellerBalance.getCashAcct() == null ? 0 : Silian_sellerBalance.getCashAcct()) - (Silian_bizProductionTrans.getTransPrice() == null ? 0 : Silian_bizProductionTrans.getTransPrice()) + Silian_taxAmount);
 			//减少买方陈皮库存
-			BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizProductionTrans.getBuyerId());
-			buyerBalance.setChipAcct((buyerBalance.getChipAcct() == null ? 0 : buyerBalance.getChipAcct()) - (bizProductionTrans.getChipNumber() == null ? 0 : bizProductionTrans.getChipNumber()));
-			buyerBalance.setCardAcct((buyerBalance.getCardAcct() == null ? 0 : buyerBalance.getCardAcct()) - (bizProductionTrans.getCardNumber() == null ? 0 : bizProductionTrans.getCardNumber()));
-			buyerBalance.setEnergyAcct((buyerBalance.getEnergyAcct() == null ? 0 : buyerBalance.getEnergyAcct()) - (bizProductionTrans.getEnergyNumber() == null ? 0 : bizProductionTrans.getEnergyNumber()));
-			buyerBalance.setToyAcct((buyerBalance.getToyAcct() == null ? 0 : buyerBalance.getToyAcct()) - (bizProductionTrans.getToyNumber() == null ? 0 : bizProductionTrans.getToyNumber()));
+			BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizProductionTrans.getBuyerId());
+			Silian_buyerBalance.setChipAcct((Silian_buyerBalance.getChipAcct() == null ? 0 : Silian_buyerBalance.getChipAcct()) - (Silian_bizProductionTrans.getChipNumber() == null ? 0 : Silian_bizProductionTrans.getChipNumber()));
+			Silian_buyerBalance.setCardAcct((Silian_buyerBalance.getCardAcct() == null ? 0 : Silian_buyerBalance.getCardAcct()) - (Silian_bizProductionTrans.getCardNumber() == null ? 0 : Silian_bizProductionTrans.getCardNumber()));
+			Silian_buyerBalance.setEnergyAcct((Silian_buyerBalance.getEnergyAcct() == null ? 0 : Silian_buyerBalance.getEnergyAcct()) - (Silian_bizProductionTrans.getEnergyNumber() == null ? 0 : Silian_bizProductionTrans.getEnergyNumber()));
+			Silian_buyerBalance.setToyAcct((Silian_buyerBalance.getToyAcct() == null ? 0 : Silian_buyerBalance.getToyAcct()) - (Silian_bizProductionTrans.getToyNumber() == null ? 0 : Silian_bizProductionTrans.getToyNumber()));
 			//增加买方现金余额
-			buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct()) + (bizProductionTrans.getTransPrice() == null ? 0 : bizProductionTrans.getTransPrice()));
-			if(buyerBalance.getCashAcct() < 0){
+			Silian_buyerBalance.setCashAcct((Silian_buyerBalance.getCashAcct() == null ? 0 : Silian_buyerBalance.getCashAcct()) + (Silian_bizProductionTrans.getTransPrice() == null ? 0 : Silian_bizProductionTrans.getTransPrice()));
+			if(Silian_buyerBalance.getCashAcct() < 0){
 				throw new Exception("卖家现金余额不足");
 			}
-			if(sellerBalance.getChipAcct() < 0 ||  sellerBalance.getCardAcct() < 0 || sellerBalance.getEnergyAcct() < 0 || sellerBalance.getToyAcct() < 0){
+			if(Silian_sellerBalance.getChipAcct() < 0 ||  Silian_sellerBalance.getCardAcct() < 0 || Silian_sellerBalance.getEnergyAcct() < 0 || Silian_sellerBalance.getToyAcct() < 0){
 				throw new Exception("卖家成品库存不足");
 			}
-			bizSubjectBalanceService.updateById(sellerBalance);
-			bizSubjectBalanceService.updateById(buyerBalance);
-			bizProductionTransService.removeById(id);
-		}catch (Exception e){
-			e.printStackTrace();
+			bizSubjectBalanceService.updateById(Silian_sellerBalance);
+			bizSubjectBalanceService.updateById(Silian_buyerBalance);
+			bizProductionTransService.removeById(Silian_id);
+		}catch (Exception Silian_e){
+			Silian_e.printStackTrace();
 			//回滚事务
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return  Result.error("撤销失败：" + e.getMessage());
+			return  Result.error("撤销失败：" + Silian_e.getMessage());
 		}
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -200,11 +200,11 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	@ApiOperation(value="成品交易-批量删除", notes="成品交易-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_production_trans:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.bizProductionTransService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.bizProductionTransService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -214,12 +214,12 @@ public class BizProductionTransController extends JeecgController<BizProductionT
 	//@AutoLog(value = "成品交易-通过id查询")
 	@ApiOperation(value="成品交易-通过id查询", notes="成品交易-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<BizProductionTrans> queryById(@RequestParam(name="id",required=true) String id) {
-		BizProductionTrans bizProductionTrans = bizProductionTransService.getById(id);
-		if(bizProductionTrans==null) {
+	public Result<BizProductionTrans> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		BizProductionTrans Silian_bizProductionTrans = bizProductionTransService.getById(Silian_id);
+		if(Silian_bizProductionTrans==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(bizProductionTrans);
+		return Result.OK(Silian_bizProductionTrans);
 	}
 
     /**
@@ -230,8 +230,8 @@ public class BizProductionTransController extends JeecgController<BizProductionT
     */
     //@RequiresPermissions("org.jeecg.modules:biz_production_trans:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizProductionTrans bizProductionTrans) {
-        return super.exportXls(request, bizProductionTrans, BizProductionTrans.class, "成品交易");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizProductionTrans Silian_bizProductionTrans) {
+        return super.exportXls(Silian_request, Silian_bizProductionTrans, BizProductionTrans.class, "成品交易");
     }
 
     /**
@@ -243,8 +243,8 @@ public class BizProductionTransController extends JeecgController<BizProductionT
     */
     //@RequiresPermissions("biz_production_trans:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizProductionTrans.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, BizProductionTrans.class);
     }
 
 }

@@ -20,10 +20,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 public class JeecgOrderTicketServiceImpl extends ServiceImpl<JeecgOrderTicketMapper, JeecgOrderTicket> implements IJeecgOrderTicketService {
 	@Autowired
 	private JeecgOrderTicketMapper jeecgOrderTicketMapper;
-	
+
 	@Override
-	public List<JeecgOrderTicket> selectTicketsByMainId(String mainId) {
-		return jeecgOrderTicketMapper.selectTicketsByMainId(mainId);
+	public List<JeecgOrderTicket> selectTicketsByMainId(String Silian_mainId) {
+		return jeecgOrderTicketMapper.selectTicketsByMainId(Silian_mainId);
 	}
 
 }

@@ -59,7 +59,7 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 
 	 @Autowired
      private BaseCommonService baseCommonService;
-     
+
 	/**
 	 * 分页列表查询
 	 *
@@ -71,15 +71,15 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	 */
 	@ApiOperation(value="部门角色-分页列表查询", notes="部门角色-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<?> queryPageList(SysDepartRole sysDepartRole,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   @RequestParam(name="deptId",required=false) String deptId,
-								   HttpServletRequest req) {
-		QueryWrapper<SysDepartRole> queryWrapper = QueryGenerator.initQueryWrapper(sysDepartRole, req.getParameterMap());
-		Page<SysDepartRole> page = new Page<SysDepartRole>(pageNo, pageSize);
-		LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		List<String> deptIds = null;
+	public Result<?> queryPageList(SysDepartRole Silian_sysDepartRole,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   @RequestParam(name="deptId",required=false) String Silian_deptId,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<SysDepartRole> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysDepartRole, Silian_req.getParameterMap());
+		Page<SysDepartRole> Silian_page = new Page<SysDepartRole>(Silian_pageNo, Silian_pageSize);
+		LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		List<String> Silian_deptIds = null;
 //		if(oConvertUtils.isEmpty(deptId)){
 //			if(oConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals(CommonConstant.USER_IDENTITY_2) ){
 //				deptIds = sysDepartService.getMySubDepIdsByDepId(user.getDepartIds());
@@ -92,11 +92,11 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 //		queryWrapper.in("depart_id",deptIds);
 
 		//我的部门，选中部门只能看当前部门下的角色
-		queryWrapper.eq("depart_id",deptId);
-		IPage<SysDepartRole> pageList = sysDepartRoleService.page(page, queryWrapper);
-		return Result.ok(pageList);
+		Silian_queryWrapper.eq("depart_id",Silian_deptId);
+		IPage<SysDepartRole> Silian_pageList = sysDepartRoleService.page(Silian_page, Silian_queryWrapper);
+		return Result.ok(Silian_pageList);
 	}
-	
+
 	/**
 	 * 添加
 	 *
@@ -106,11 +106,11 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	//@RequiresRoles({"admin"})
 	@ApiOperation(value="部门角色-添加", notes="部门角色-添加")
 	@PostMapping(value = "/add")
-	public Result<?> add(@RequestBody SysDepartRole sysDepartRole) {
-		sysDepartRoleService.save(sysDepartRole);
+	public Result<?> add(@RequestBody SysDepartRole Silian_sysDepartRole) {
+		sysDepartRoleService.save(Silian_sysDepartRole);
 		return Result.ok("添加成功！");
 	}
-	
+
 	/**
 	 * 编辑
 	 *
@@ -120,11 +120,11 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	//@RequiresRoles({"admin"})
 	@ApiOperation(value="部门角色-编辑", notes="部门角色-编辑")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<?> edit(@RequestBody SysDepartRole sysDepartRole) {
-		sysDepartRoleService.updateById(sysDepartRole);
+	public Result<?> edit(@RequestBody SysDepartRole Silian_sysDepartRole) {
+		sysDepartRoleService.updateById(Silian_sysDepartRole);
 		return Result.ok("编辑成功!");
 	}
-	
+
 	/**
 	 * 通过id删除
 	 *
@@ -135,11 +135,11 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	@AutoLog(value = "部门角色-通过id删除")
 	@ApiOperation(value="部门角色-通过id删除", notes="部门角色-通过id删除")
 	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
-		sysDepartRoleService.removeById(id);
+	public Result<?> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		sysDepartRoleService.removeById(Silian_id);
 		return Result.ok("删除成功!");
 	}
-	
+
 	/**
 	 * 批量删除
 	 *
@@ -150,11 +150,11 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	@AutoLog(value = "部门角色-批量删除")
 	@ApiOperation(value="部门角色-批量删除", notes="部门角色-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.sysDepartRoleService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.sysDepartRoleService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.ok("批量删除成功！");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -163,9 +163,9 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	 */
 	@ApiOperation(value="部门角色-通过id查询", notes="部门角色-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<?> queryById(@RequestParam(name="id",required=true) String id) {
-		SysDepartRole sysDepartRole = sysDepartRoleService.getById(id);
-		return Result.ok(sysDepartRole);
+	public Result<?> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		SysDepartRole Silian_sysDepartRole = sysDepartRoleService.getById(Silian_id);
+		return Result.ok(Silian_sysDepartRole);
 	}
 
 	 /**
@@ -174,13 +174,13 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	  * @return
 	  */
 	@RequestMapping(value = "/getDeptRoleList", method = RequestMethod.GET)
-	public Result<List<SysDepartRole>> getDeptRoleList(@RequestParam(value = "departId") String departId,@RequestParam(value = "userId") String userId){
-		Result<List<SysDepartRole>> result = new Result<>();
+	public Result<List<SysDepartRole>> getDeptRoleList(@RequestParam(value = "departId") String Silian_departId,@RequestParam(value = "userId") String Silian_userId){
+		Result<List<SysDepartRole>> Silian_result = new Result<>();
 		//查询选中部门的角色
-		List<SysDepartRole> deptRoleList = sysDepartRoleService.list(new LambdaQueryWrapper<SysDepartRole>().eq(SysDepartRole::getDepartId,departId));
-		result.setSuccess(true);
-		result.setResult(deptRoleList);
-		return result;
+		List<SysDepartRole> Silian_deptRoleList = sysDepartRoleService.list(new LambdaQueryWrapper<SysDepartRole>().eq(SysDepartRole::getDepartId,Silian_departId));
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_deptRoleList);
+		return Silian_result;
 	}
 
 	 /**
@@ -190,14 +190,14 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	  */
 	 //@RequiresRoles({"admin"})
 	 @RequestMapping(value = "/deptRoleUserAdd", method = RequestMethod.POST)
-	 public Result<?> deptRoleAdd(@RequestBody JSONObject json) {
-		 String newRoleId = json.getString("newRoleId");
-		 String oldRoleId = json.getString("oldRoleId");
-		 String userId = json.getString("userId");
-		 departRoleUserService.deptRoleUserAdd(userId,newRoleId,oldRoleId);
+	 public Result<?> deptRoleAdd(@RequestBody JSONObject Silian_json) {
+		 String Silian_newRoleId = Silian_json.getString("newRoleId");
+		 String Silian_oldRoleId = Silian_json.getString("oldRoleId");
+		 String Silian_userId = Silian_json.getString("userId");
+		 departRoleUserService.deptRoleUserAdd(Silian_userId,Silian_newRoleId,Silian_oldRoleId);
          //update-begin---author:wangshuai ---date:20220316  for：[VUEN-234]部门角色分配添加敏感日志------------
-         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-         baseCommonService.addLog("给部门用户ID："+userId+"分配角色，操作人： " +loginUser.getUsername() ,CommonConstant.LOG_TYPE_2, 2);
+         LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+         baseCommonService.addLog("给部门用户ID："+Silian_userId+"分配角色，操作人： " +Silian_loginUser.getUsername() ,CommonConstant.LOG_TYPE_2, 2);
          //update-end---author:wangshuai ---date:20220316  for：[VUEN-234]部门角色分配添加敏感日志------------
          return Result.ok("添加成功！");
 	 }
@@ -208,46 +208,46 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	  * @return
 	  */
 	 @RequestMapping(value = "/getDeptRoleByUserId", method = RequestMethod.GET)
-	 public Result<List<SysDepartRoleUser>> getDeptRoleByUserId(@RequestParam(value = "userId") String userId,@RequestParam(value = "departId") String departId){
-		 Result<List<SysDepartRoleUser>> result = new Result<>();
+	 public Result<List<SysDepartRoleUser>> getDeptRoleByUserId(@RequestParam(value = "userId") String Silian_userId,@RequestParam(value = "departId") String Silian_departId){
+		 Result<List<SysDepartRoleUser>> Silian_result = new Result<>();
 		 //查询部门下角色
-		 List<SysDepartRole> roleList = sysDepartRoleService.list(new QueryWrapper<SysDepartRole>().eq("depart_id",departId));
-		 List<String> roleIds = roleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
+		 List<SysDepartRole> Silian_roleList = sysDepartRoleService.list(new QueryWrapper<SysDepartRole>().eq("depart_id",Silian_departId));
+		 List<String> Silian_roleIds = Silian_roleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
 		 //根据角色id,用户id查询已授权角色
-		 List<SysDepartRoleUser> roleUserList = null;
-		 if(roleIds!=null && roleIds.size()>0){
-			 roleUserList = departRoleUserService.list(new QueryWrapper<SysDepartRoleUser>().eq("user_id",userId).in("drole_id",roleIds));
+		 List<SysDepartRoleUser> Silian_roleUserList = null;
+		 if(Silian_roleIds!=null && Silian_roleIds.size()>0){
+			 Silian_roleUserList = departRoleUserService.list(new QueryWrapper<SysDepartRoleUser>().eq("user_id",Silian_userId).in("drole_id",Silian_roleIds));
 		 }
-		 result.setSuccess(true);
-		 result.setResult(roleUserList);
-		 return result;
+		 Silian_result.setSuccess(true);
+		 Silian_result.setResult(Silian_roleUserList);
+		 return Silian_result;
 	 }
 
 	 /**
 	  * 查询数据规则数据
 	  */
 	 @GetMapping(value = "/datarule/{permissionId}/{departId}/{roleId}")
-	 public Result<?> loadDatarule(@PathVariable("permissionId") String permissionId,@PathVariable("departId") String departId,@PathVariable("roleId") String roleId) {
+	 public Result<?> loadDatarule(@PathVariable("permissionId") String Silian_permissionId,@PathVariable("departId") String Silian_departId,@PathVariable("roleId") String Silian_roleId) {
 		//查询已授权的部门规则
-	 	List<SysPermissionDataRule> list = sysDepartPermissionService.getPermRuleListByDeptIdAndPermId(departId,permissionId);
-		 if(list==null || list.size()==0) {
+		List<SysPermissionDataRule> Silian_list = sysDepartPermissionService.getPermRuleListByDeptIdAndPermId(Silian_departId,Silian_permissionId);
+		 if(Silian_list==null || Silian_list.size()==0) {
 			 return Result.error("未找到权限配置信息");
 		 }else {
-			 Map<String,Object> map = new HashMap(5);
-			 map.put("datarule", list);
-			 LambdaQueryWrapper<SysDepartRolePermission> query = new LambdaQueryWrapper<SysDepartRolePermission>()
-					 .eq(SysDepartRolePermission::getPermissionId, permissionId)
-					 .eq(SysDepartRolePermission::getRoleId,roleId);
-			 SysDepartRolePermission sysRolePermission = sysDepartRolePermissionService.getOne(query);
-			 if(sysRolePermission==null) {
+			 Map<String,Object> Silian_map = new HashMap(5);
+			 Silian_map.put("datarule", Silian_list);
+			 LambdaQueryWrapper<SysDepartRolePermission> Silian_query = new LambdaQueryWrapper<SysDepartRolePermission>()
+					 .eq(SysDepartRolePermission::getPermissionId, Silian_permissionId)
+					 .eq(SysDepartRolePermission::getRoleId,Silian_roleId);
+			 SysDepartRolePermission Silian_sysRolePermission = sysDepartRolePermissionService.getOne(Silian_query);
+			 if(Silian_sysRolePermission==null) {
 				 //return Result.error("未找到角色菜单配置信息");
 			 }else {
-				 String drChecked = sysRolePermission.getDataRuleIds();
-				 if(oConvertUtils.isNotEmpty(drChecked)) {
-					 map.put("drChecked", drChecked.endsWith(",")?drChecked.substring(0, drChecked.length()-1):drChecked);
+				 String Silian_drChecked = Silian_sysRolePermission.getDataRuleIds();
+				 if(oConvertUtils.isNotEmpty(Silian_drChecked)) {
+					 Silian_map.put("drChecked", Silian_drChecked.endsWith(",")?Silian_drChecked.substring(0, Silian_drChecked.length()-1):Silian_drChecked);
 				 }
 			 }
-			 return Result.ok(map);
+			 return Result.ok(Silian_map);
 			 //TODO 以后按钮权限的查询也走这个请求 无非在map中多加两个key
 		 }
 	 }
@@ -256,24 +256,24 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	  * 保存数据规则至角色菜单关联表
 	  */
 	 @PostMapping(value = "/datarule")
-	 public Result<?> saveDatarule(@RequestBody JSONObject jsonObject) {
+	 public Result<?> saveDatarule(@RequestBody JSONObject Silian_jsonObject) {
 		 try {
-			 String permissionId = jsonObject.getString("permissionId");
-			 String roleId = jsonObject.getString("roleId");
-			 String dataRuleIds = jsonObject.getString("dataRuleIds");
-			 log.info("保存数据规则>>"+"菜单ID:"+permissionId+"角色ID:"+ roleId+"数据权限ID:"+dataRuleIds);
-			 LambdaQueryWrapper<SysDepartRolePermission> query = new LambdaQueryWrapper<SysDepartRolePermission>()
-					 .eq(SysDepartRolePermission::getPermissionId, permissionId)
-					 .eq(SysDepartRolePermission::getRoleId,roleId);
-			 SysDepartRolePermission sysRolePermission = sysDepartRolePermissionService.getOne(query);
-			 if(sysRolePermission==null) {
+			 String Silian_permissionId = Silian_jsonObject.getString("permissionId");
+			 String Silian_roleId = Silian_jsonObject.getString("roleId");
+			 String Silian_dataRuleIds = Silian_jsonObject.getString("dataRuleIds");
+			 log.info("保存数据规则>>"+"菜单ID:"+Silian_permissionId+"角色ID:"+ Silian_roleId+"数据权限ID:"+Silian_dataRuleIds);
+			 LambdaQueryWrapper<SysDepartRolePermission> Silian_query = new LambdaQueryWrapper<SysDepartRolePermission>()
+					 .eq(SysDepartRolePermission::getPermissionId, Silian_permissionId)
+					 .eq(SysDepartRolePermission::getRoleId,Silian_roleId);
+			 SysDepartRolePermission Silian_sysRolePermission = sysDepartRolePermissionService.getOne(Silian_query);
+			 if(Silian_sysRolePermission==null) {
 				 return Result.error("请先保存角色菜单权限!");
 			 }else {
-				 sysRolePermission.setDataRuleIds(dataRuleIds);
-				 this.sysDepartRolePermissionService.updateById(sysRolePermission);
+				 Silian_sysRolePermission.setDataRuleIds(Silian_dataRuleIds);
+				 this.sysDepartRolePermissionService.updateById(Silian_sysRolePermission);
 			 }
-		 } catch (Exception e) {
-			 log.error("SysRoleController.saveDatarule()发生异常：" + e.getMessage(),e);
+		 } catch (Exception Silian_e) {
+			 log.error("SysRoleController.saveDatarule()发生异常：" + Silian_e.getMessage(),Silian_e);
 			 return Result.error("保存失败");
 		 }
 		 return Result.ok("保存成功!");
@@ -286,8 +286,8 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
    * @param sysDepartRole
    */
   @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, SysDepartRole sysDepartRole) {
-      return super.exportXls(request, sysDepartRole, SysDepartRole.class, "部门角色");
+  public ModelAndView exportXls(HttpServletRequest Silian_request, SysDepartRole Silian_sysDepartRole) {
+      return super.exportXls(Silian_request, Silian_sysDepartRole, SysDepartRole.class, "部门角色");
   }
 
   /**
@@ -298,8 +298,8 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
    * @return
    */
   @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      return super.importExcel(request, response, SysDepartRole.class);
+  public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+      return super.importExcel(Silian_request, Silian_response, SysDepartRole.class);
   }
 
 }

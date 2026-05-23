@@ -85,8 +85,8 @@ public class FileTypeFilter {
      * @return String
      * @description 通过文件后缀名获取文件类型
      */
-    private static String getFileTypeBySuffix(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+    private static String getFileTypeBySuffix(String Silian_fileName) {
+        return Silian_fileName.substring(Silian_fileName.lastIndexOf(".") + 1, Silian_fileName.length());
     }
 
     /**
@@ -94,11 +94,11 @@ public class FileTypeFilter {
      *
      * @param file
      */
-    public static void fileTypeFilter(MultipartFile file) throws Exception {
-        String suffix = getFileType(file);
-        for (String type : forbidType) {
-            if (type.contains(suffix)) {
-                throw new Exception("上传失败，非法文件类型：" + suffix);
+    public static void fileTypeFilter(MultipartFile Silian_file) throws Exception {
+        String Silian_suffix = getFileType(Silian_file);
+        for (String Silian_type : forbidType) {
+            if (Silian_type.contains(Silian_suffix)) {
+                throw new Exception("上传失败，非法文件类型：" + Silian_suffix);
             }
         }
     }
@@ -111,34 +111,34 @@ public class FileTypeFilter {
      * @throws Exception
      */
 
-    private static String getFileType(MultipartFile file) throws Exception {
-        String fileExtendName = null;
-        InputStream is;
+    private static String getFileType(MultipartFile Silian_file) throws Exception {
+        String Silian_fileExtendName = null;
+        InputStream Silian_is;
         try {
             //is = new FileInputStream(file);
-            is = file.getInputStream();
-            byte[] b = new byte[10];
-            is.read(b, 0, b.length);
-            String fileTypeHex = String.valueOf(bytesToHexString(b));
-            Iterator<String> keyIter = FILE_TYPE_MAP.keySet().iterator();
-            while (keyIter.hasNext()) {
-                String key = keyIter.next();
+            Silian_is = Silian_file.getInputStream();
+            byte[] Silian_b = new byte[10];
+            Silian_is.read(Silian_b, 0, Silian_b.length);
+            String Silian_fileTypeHex = String.valueOf(bytesToHexString(Silian_b));
+            Iterator<String> Silian_keyIter = FILE_TYPE_MAP.keySet().iterator();
+            while (Silian_keyIter.hasNext()) {
+                String Silian_key = Silian_keyIter.next();
                 // 验证前5个字符比较
-                if (key.toLowerCase().startsWith(fileTypeHex.toLowerCase().substring(0, 5))
-                        || fileTypeHex.toLowerCase().substring(0, 5).startsWith(key.toLowerCase())) {
-                    fileExtendName = FILE_TYPE_MAP.get(key);
+                if (Silian_key.toLowerCase().startsWith(Silian_fileTypeHex.toLowerCase().substring(0, 5))
+                        || Silian_fileTypeHex.toLowerCase().substring(0, 5).startsWith(Silian_key.toLowerCase())) {
+                    Silian_fileExtendName = FILE_TYPE_MAP.get(Silian_key);
                     break;
                 }
             }
             // 如果不是上述类型，则判断扩展名
-            if (StringUtils.isBlank(fileExtendName)) {
-                String fileName = file.getOriginalFilename();
-                return getFileTypeBySuffix(fileName);
+            if (StringUtils.isBlank(Silian_fileExtendName)) {
+                String Silian_fileName = Silian_file.getOriginalFilename();
+                return getFileTypeBySuffix(Silian_fileName);
             }
-            is.close();
-            return fileExtendName;
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage(), exception);
+            Silian_is.close();
+            return Silian_fileExtendName;
+        } catch (Exception Silian_exception) {
+            throw new Exception(Silian_exception.getMessage(), Silian_exception);
         }
     }
 
@@ -148,19 +148,19 @@ public class FileTypeFilter {
      * @param src
      * @return
      */
-    private static String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (src == null || src.length <= 0) {
+    private static String bytesToHexString(byte[] Silian_src) {
+        StringBuilder Silian_stringBuilder = new StringBuilder();
+        if (Silian_src == null || Silian_src.length <= 0) {
             return null;
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
+        for (int Silian_i = 0; Silian_i < Silian_src.length; Silian_i++) {
+            int Silian_v = Silian_src[Silian_i] & 0xFF;
+            String Silian_hv = Integer.toHexString(Silian_v);
+            if (Silian_hv.length() < 2) {
+                Silian_stringBuilder.append(0);
             }
-            stringBuilder.append(hv);
+            Silian_stringBuilder.append(Silian_hv);
         }
-        return stringBuilder.toString();
+        return Silian_stringBuilder.toString();
     }
 }

@@ -63,133 +63,133 @@ public class SysCategoryController {
 	 * @return
 	 */
 	@GetMapping(value = "/rootList")
-	public Result<IPage<SysCategory>> queryPageList(SysCategory sysCategory,
-									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-									  HttpServletRequest req) {
-		if(oConvertUtils.isEmpty(sysCategory.getPid())){
-			sysCategory.setPid("0");
+	public Result<IPage<SysCategory>> queryPageList(SysCategory Silian_sysCategory,
+									  @RequestParam(Silian_name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(Silian_name="pageSize", defaultValue="10") Integer Silian_pageSize,
+									  HttpServletRequest Silian_req) {
+		if(oConvertUtils.isEmpty(Silian_sysCategory.getPid())){
+			Silian_sysCategory.setPid("0");
 		}
-		Result<IPage<SysCategory>> result = new Result<IPage<SysCategory>>();
-		
+		Result<IPage<SysCategory>> Silian_result = new Result<IPage<SysCategory>>();
+
 		//--author:os_chengtgen---date:20190804 -----for: 分类字典页面显示错误,issues:377--------start
 		//--author:liusq---date:20211119 -----for: 【vue3】分类字典页面查询条件配置--------start
-		QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, req.getParameterMap());
-		String name = sysCategory.getName();
-		String code = sysCategory.getCode();
+		QueryWrapper<SysCategory> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysCategory, Silian_req.getParameterMap());
+		String Silian_name = Silian_sysCategory.getName();
+		String Silian_code = Silian_sysCategory.getCode();
 		//QueryWrapper<SysCategory> queryWrapper = new QueryWrapper<SysCategory>();
-		if(StringUtils.isBlank(name)&&StringUtils.isBlank(code)){
-			queryWrapper.eq("pid", sysCategory.getPid());
+		if(StringUtils.isBlank(Silian_name)&&StringUtils.isBlank(Silian_code)){
+			Silian_queryWrapper.eq("pid", Silian_sysCategory.getPid());
 		}
 		//--author:liusq---date:20211119 -----for: 分类字典页面查询条件配置--------end
 		//--author:os_chengtgen---date:20190804 -----for:【vue3】 分类字典页面显示错误,issues:377--------end
 
-		Page<SysCategory> page = new Page<SysCategory>(pageNo, pageSize);
-		IPage<SysCategory> pageList = sysCategoryService.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+		Page<SysCategory> Silian_page = new Page<SysCategory>(Silian_pageNo, Silian_pageSize);
+		IPage<SysCategory> Silian_pageList = sysCategoryService.page(Silian_page, Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
-	
+
 	@GetMapping(value = "/childList")
-	public Result<List<SysCategory>> queryPageList(SysCategory sysCategory,HttpServletRequest req) {
-		Result<List<SysCategory>> result = new Result<List<SysCategory>>();
-		QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, req.getParameterMap());
-		List<SysCategory> list = sysCategoryService.list(queryWrapper);
-		result.setSuccess(true);
-		result.setResult(list);
-		return result;
+	public Result<List<SysCategory>> queryPageList(SysCategory Silian_sysCategory,HttpServletRequest Silian_req) {
+		Result<List<SysCategory>> Silian_result = new Result<List<SysCategory>>();
+		QueryWrapper<SysCategory> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysCategory, Silian_req.getParameterMap());
+		List<SysCategory> Silian_list = sysCategoryService.list(Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_list);
+		return Silian_result;
 	}
-	
-	
+
+
 	/**
 	  *   添加
 	 * @param sysCategory
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<SysCategory> add(@RequestBody SysCategory sysCategory) {
-		Result<SysCategory> result = new Result<SysCategory>();
+	public Result<SysCategory> add(@RequestBody SysCategory Silian_sysCategory) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
 		try {
-			sysCategoryService.addSysCategory(sysCategory);
-			result.success("添加成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
+			sysCategoryService.addSysCategory(Silian_sysCategory);
+			Silian_result.success("添加成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	  *  编辑
 	 * @param sysCategory
 	 * @return
 	 */
 	@RequestMapping(value = "/edit", method = { RequestMethod.PUT,RequestMethod.POST })
-	public Result<SysCategory> edit(@RequestBody SysCategory sysCategory) {
-		Result<SysCategory> result = new Result<SysCategory>();
-		SysCategory sysCategoryEntity = sysCategoryService.getById(sysCategory.getId());
-		if(sysCategoryEntity==null) {
-			result.error500("未找到对应实体");
+	public Result<SysCategory> edit(@RequestBody SysCategory Silian_sysCategory) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
+		SysCategory Silian_sysCategoryEntity = sysCategoryService.getById(Silian_sysCategory.getId());
+		if(Silian_sysCategoryEntity==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			sysCategoryService.updateSysCategory(sysCategory);
-			result.success("修改成功!");
+			sysCategoryService.updateSysCategory(Silian_sysCategory);
+			Silian_result.success("修改成功!");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	  *   通过id删除
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<SysCategory> delete(@RequestParam(name="id",required=true) String id) {
-		Result<SysCategory> result = new Result<SysCategory>();
-		SysCategory sysCategory = sysCategoryService.getById(id);
-		if(sysCategory==null) {
-			result.error500("未找到对应实体");
+	public Result<SysCategory> delete(@RequestParam(Silian_name="id",required=true) String Silian_id) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
+		SysCategory Silian_sysCategory = sysCategoryService.getById(Silian_id);
+		if(Silian_sysCategory==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			this.sysCategoryService.deleteSysCategory(id);
-			result.success("删除成功!");
+			this.sysCategoryService.deleteSysCategory(Silian_id);
+			Silian_result.success("删除成功!");
 		}
-		
-		return result;
+
+		return Silian_result;
 	}
-	
+
 	/**
 	  *  批量删除
 	 * @param ids
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<SysCategory> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<SysCategory> result = new Result<SysCategory>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
+	public Result<SysCategory> deleteBatch(@RequestParam(Silian_name="ids",required=true) String Silian_ids) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
+		if(Silian_ids==null || "".equals(Silian_ids.trim())) {
+			Silian_result.error500("参数不识别！");
 		}else {
-			this.sysCategoryService.deleteSysCategory(ids);
-			result.success("删除成功!");
+			this.sysCategoryService.deleteSysCategory(Silian_ids);
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	  * 通过id查询
 	 * @param id
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<SysCategory> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<SysCategory> result = new Result<SysCategory>();
-		SysCategory sysCategory = sysCategoryService.getById(id);
-		if(sysCategory==null) {
-			result.error500("未找到对应实体");
+	public Result<SysCategory> queryById(@RequestParam(Silian_name="id",required=true) String Silian_id) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
+		SysCategory Silian_sysCategory = sysCategoryService.getById(Silian_id);
+		if(Silian_sysCategory==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			result.setResult(sysCategory);
-			result.setSuccess(true);
+			Silian_result.setResult(Silian_sysCategory);
+			Silian_result.setSuccess(true);
 		}
-		return result;
+		return Silian_result;
 	}
 
   /**
@@ -198,27 +198,27 @@ public class SysCategoryController {
    * @param request
    */
   @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, SysCategory sysCategory) {
+  public ModelAndView exportXls(HttpServletRequest Silian_request, SysCategory Silian_sysCategory) {
       // Step.1 组装查询条件查询数据
-      QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, request.getParameterMap());
-      List<SysCategory> pageList = sysCategoryService.list(queryWrapper);
+      QueryWrapper<SysCategory> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysCategory, Silian_request.getParameterMap());
+      List<SysCategory> Silian_pageList = sysCategoryService.list(Silian_queryWrapper);
       // Step.2 AutoPoi 导出Excel
-      ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+      ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
       // 过滤选中数据
-      String selections = request.getParameter("selections");
-      if(oConvertUtils.isEmpty(selections)) {
-    	  mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
+      String Silian_selections = Silian_request.getParameter("selections");
+      if(oConvertUtils.isEmpty(Silian_selections)) {
+	  Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
       }else {
-    	  List<String> selectionList = Arrays.asList(selections.split(","));
-    	  List<SysCategory> exportList = pageList.stream().filter(item -> selectionList.contains(item.getId())).collect(Collectors.toList());
-    	  mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
+	  List<String> Silian_selectionList = Arrays.asList(Silian_selections.split(","));
+	  List<SysCategory> Silian_exportList = Silian_pageList.stream().filter(Silian_item -> Silian_selectionList.contains(Silian_item.getId())).collect(Collectors.toList());
+	  Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_exportList);
       }
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "分类字典列表");
-      mv.addObject(NormalExcelConstants.CLASS, SysCategory.class);
-      LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("分类字典列表数据", "导出人:"+user.getRealname(), "导出信息"));
-      return mv;
+      Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "分类字典列表");
+      Silian_mv.addObject(NormalExcelConstants.CLASS, SysCategory.class);
+      LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+      Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("分类字典列表数据", "导出人:"+Silian_user.getRealname(), "导出信息"));
+      return Silian_mv;
   }
 
   /**
@@ -229,155 +229,155 @@ public class SysCategoryController {
    * @return
    */
   @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException{
-      MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-      Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+  public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) throws IOException{
+      MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+      Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
 	  // 错误信息
-	  List<String> errorMessage = new ArrayList<>();
-	  int successLines = 0, errorLines = 0;
-	  for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+	  List<String> Silian_errorMessage = new ArrayList<>();
+	  int Silian_successLines = 0, Silian_errorLines = 0;
+	  for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
           // 获取上传文件对象
-          MultipartFile file = entity.getValue();
-          ImportParams params = new ImportParams();
-          params.setTitleRows(2);
-          params.setHeadRows(1);
-          params.setNeedSave(true);
+          MultipartFile Silian_file = Silian_entity.getValue();
+          ImportParams Silian_params = new ImportParams();
+          Silian_params.setTitleRows(2);
+          Silian_params.setHeadRows(1);
+          Silian_params.setNeedSave(true);
           try {
-              List<SysCategory> listSysCategorys = ExcelImportUtil.importExcel(file.getInputStream(), SysCategory.class, params);
+              List<SysCategory> Silian_listSysCategorys = ExcelImportUtil.importExcel(Silian_file.getInputStream(), SysCategory.class, Silian_params);
 			 //按照编码长度排序
-              Collections.sort(listSysCategorys);
-			  log.info("排序后的list====>",listSysCategorys);
-              for (int i = 0; i < listSysCategorys.size(); i++) {
-				  SysCategory sysCategoryExcel = listSysCategorys.get(i);
-				  String code = sysCategoryExcel.getCode();
-				  if(code.length()>3){
-					  String pCode = sysCategoryExcel.getCode().substring(0,code.length()-3);
-					  log.info("pCode====>",pCode);
-					  String pId=sysCategoryService.queryIdByCode(pCode);
-					  log.info("pId====>",pId);
-					  if(StringUtils.isNotBlank(pId)){
-						  sysCategoryExcel.setPid(pId);
+              Collections.sort(Silian_listSysCategorys);
+			  log.info("排序后的list====>",Silian_listSysCategorys);
+              for (int Silian_i = 0; Silian_i < Silian_listSysCategorys.size(); Silian_i++) {
+				  SysCategory Silian_sysCategoryExcel = Silian_listSysCategorys.get(Silian_i);
+				  String Silian_code = Silian_sysCategoryExcel.getCode();
+				  if(Silian_code.length()>3){
+					  String Silian_pCode = Silian_sysCategoryExcel.getCode().substring(0,Silian_code.length()-3);
+					  log.info("pCode====>",Silian_pCode);
+					  String Silian_pId=sysCategoryService.queryIdByCode(Silian_pCode);
+					  log.info("pId====>",Silian_pId);
+					  if(StringUtils.isNotBlank(Silian_pId)){
+						  Silian_sysCategoryExcel.setPid(Silian_pId);
 					  }
 				  }else{
-					  sysCategoryExcel.setPid("0");
+					  Silian_sysCategoryExcel.setPid("0");
 				  }
 				  try {
-					  sysCategoryService.save(sysCategoryExcel);
-					  successLines++;
-				  } catch (Exception e) {
-					  errorLines++;
-					  String message = e.getMessage().toLowerCase();
-					  int lineNumber = i + 1;
+					  sysCategoryService.save(Silian_sysCategoryExcel);
+					  Silian_successLines++;
+				  } catch (Exception Silian_e) {
+					  Silian_errorLines++;
+					  String Silian_message = Silian_e.getMessage().toLowerCase();
+					  int Silian_lineNumber = Silian_i + 1;
 					  // 通过索引名判断出错信息
-					  if (message.contains(CommonConstant.SQL_INDEX_UNIQ_CATEGORY_CODE)) {
-						  errorMessage.add("第 " + lineNumber + " 行：分类编码已经存在，忽略导入。");
+					  if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_CATEGORY_CODE)) {
+						  Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：分类编码已经存在，忽略导入。");
 					  }  else {
-						  errorMessage.add("第 " + lineNumber + " 行：未知错误，忽略导入");
-						  log.error(e.getMessage(), e);
+						  Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：未知错误，忽略导入");
+						  log.error(Silian_e.getMessage(), Silian_e);
 					  }
 				  }
               }
-          } catch (Exception e) {
-			  errorMessage.add("发生异常：" + e.getMessage());
-			  log.error(e.getMessage(), e);
+          } catch (Exception Silian_e) {
+			  Silian_errorMessage.add("发生异常：" + Silian_e.getMessage());
+			  log.error(Silian_e.getMessage(), Silian_e);
           } finally {
               try {
-                  file.getInputStream().close();
-              } catch (IOException e) {
-                  e.printStackTrace();
+                  Silian_file.getInputStream().close();
+              } catch (IOException Silian_e) {
+                  Silian_e.printStackTrace();
               }
           }
       }
-      return ImportExcelUtil.imporReturnRes(errorLines,successLines,errorMessage);
+      return ImportExcelUtil.imporReturnRes(Silian_errorLines,Silian_successLines,Silian_errorMessage);
   }
-  
-  
-  
+
+
+
   /**
      * 加载单个数据 用于回显
    */
     @RequestMapping(value = "/loadOne", method = RequestMethod.GET)
- 	public Result<SysCategory> loadOne(@RequestParam(name="field") String field,@RequestParam(name="val") String val) {
- 		Result<SysCategory> result = new Result<SysCategory>();
- 		try {
+	public Result<SysCategory> loadOne(@RequestParam(Silian_name="field") String Silian_field,@RequestParam(Silian_name="val") String Silian_val) {
+		Result<SysCategory> Silian_result = new Result<SysCategory>();
+		try {
 			//update-begin-author:taoyan date:2022-5-6 for: issues/3663 sql注入问题
-			boolean isClassField = SqlInjectionUtil.isClassField(field, SysCategory.class);
-			if (!isClassField) {
+			boolean Silian_isClassField = SqlInjectionUtil.isClassField(Silian_field, SysCategory.class);
+			if (!Silian_isClassField) {
 				return Result.error("字段无效，请检查!");
 			}
 			//update-end-author:taoyan date:2022-5-6 for: issues/3663 sql注入问题
- 			QueryWrapper<SysCategory> query = new QueryWrapper<SysCategory>();
- 			query.eq(field, val);
- 			List<SysCategory> ls = this.sysCategoryService.list(query);
- 			if(ls==null || ls.size()==0) {
- 				result.setMessage("查询无果");
- 	 			result.setSuccess(false);
- 			}else if(ls.size()>1) {
- 				result.setMessage("查询数据异常,["+field+"]存在多个值:"+val);
- 	 			result.setSuccess(false);
- 			}else {
- 				result.setSuccess(true);
- 				result.setResult(ls.get(0));
- 			}
- 		} catch (Exception e) {
- 			e.printStackTrace();
- 			result.setMessage(e.getMessage());
- 			result.setSuccess(false);
- 		}
- 		return result;
- 	}
-   
+			QueryWrapper<SysCategory> Silian_query = new QueryWrapper<SysCategory>();
+			Silian_query.eq(Silian_field, Silian_val);
+			List<SysCategory> Silian_ls = this.sysCategoryService.list(Silian_query);
+			if(Silian_ls==null || Silian_ls.size()==0) {
+				Silian_result.setMessage("查询无果");
+				Silian_result.setSuccess(false);
+			}else if(Silian_ls.size()>1) {
+				Silian_result.setMessage("查询数据异常,["+Silian_field+"]存在多个值:"+Silian_val);
+				Silian_result.setSuccess(false);
+			}else {
+				Silian_result.setSuccess(true);
+				Silian_result.setResult(Silian_ls.get(0));
+			}
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
+			Silian_result.setMessage(Silian_e.getMessage());
+			Silian_result.setSuccess(false);
+		}
+		return Silian_result;
+	}
+
     /**
           * 加载节点的子数据
      */
     @RequestMapping(value = "/loadTreeChildren", method = RequestMethod.GET)
-	public Result<List<TreeSelectModel>> loadTreeChildren(@RequestParam(name="pid") String pid) {
-		Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
+	public Result<List<TreeSelectModel>> loadTreeChildren(@RequestParam(Silian_name="pid") String Silian_pid) {
+		Result<List<TreeSelectModel>> Silian_result = new Result<List<TreeSelectModel>>();
 		try {
-			List<TreeSelectModel> ls = this.sysCategoryService.queryListByPid(pid);
-			result.setResult(ls);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.setMessage(e.getMessage());
-			result.setSuccess(false);
+			List<TreeSelectModel> Silian_ls = this.sysCategoryService.queryListByPid(Silian_pid);
+			Silian_result.setResult(Silian_ls);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
+			Silian_result.setMessage(Silian_e.getMessage());
+			Silian_result.setSuccess(false);
 		}
-		return result;
+		return Silian_result;
 	}
-    
+
     /**
          * 加载一级节点/如果是同步 则所有数据
      */
     @RequestMapping(value = "/loadTreeRoot", method = RequestMethod.GET)
-   	public Result<List<TreeSelectModel>> loadTreeRoot(@RequestParam(name="async") Boolean async,@RequestParam(name="pcode") String pcode) {
-   		Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
-   		try {
-   			List<TreeSelectModel> ls = this.sysCategoryService.queryListByCode(pcode);
-   			if(!async) {
-   				loadAllCategoryChildren(ls);
-   			}
-   			result.setResult(ls);
-   			result.setSuccess(true);
-   		} catch (Exception e) {
-   			e.printStackTrace();
-   			result.setMessage(e.getMessage());
-   			result.setSuccess(false);
-   		}
-   		return result;
-   	}
-  
+	public Result<List<TreeSelectModel>> loadTreeRoot(@RequestParam(Silian_name="async") Boolean Silian_async,@RequestParam(Silian_name="pcode") String Silian_pcode) {
+		Result<List<TreeSelectModel>> Silian_result = new Result<List<TreeSelectModel>>();
+		try {
+			List<TreeSelectModel> Silian_ls = this.sysCategoryService.queryListByCode(Silian_pcode);
+			if(!Silian_async) {
+				loadAllCategoryChildren(Silian_ls);
+			}
+			Silian_result.setResult(Silian_ls);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
+			Silian_result.setMessage(Silian_e.getMessage());
+			Silian_result.setSuccess(false);
+		}
+		return Silian_result;
+	}
+
     /**
          * 递归求子节点 同步加载用到
      */
-  	private void loadAllCategoryChildren(List<TreeSelectModel> ls) {
-  		for (TreeSelectModel tsm : ls) {
-			List<TreeSelectModel> temp = this.sysCategoryService.queryListByPid(tsm.getKey());
-			if(temp!=null && temp.size()>0) {
-				tsm.setChildren(temp);
-				loadAllCategoryChildren(temp);
+	private void loadAllCategoryChildren(List<TreeSelectModel> Silian_ls) {
+		for (TreeSelectModel Silian_tsm : Silian_ls) {
+			List<TreeSelectModel> Silian_temp = this.sysCategoryService.queryListByPid(Silian_tsm.getKey());
+			if(Silian_temp!=null && Silian_temp.size()>0) {
+				Silian_tsm.setChildren(Silian_temp);
+				loadAllCategoryChildren(Silian_temp);
 			}
 		}
-  	}
+	}
 
 	 /**
 	  * 校验编码
@@ -386,18 +386,18 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @GetMapping(value = "/checkCode")
-	 public Result<?> checkCode(@RequestParam(name="pid",required = false) String pid,@RequestParam(name="code",required = false) String code) {
-		if(oConvertUtils.isEmpty(code)){
+	 public Result<?> checkCode(@RequestParam(Silian_name="pid",required = false) String Silian_pid,@RequestParam(Silian_name="code",required = false) String Silian_code) {
+		if(oConvertUtils.isEmpty(Silian_code)){
 			return Result.error("错误,类型编码为空!");
 		}
-		if(oConvertUtils.isEmpty(pid)){
+		if(oConvertUtils.isEmpty(Silian_pid)){
 			return Result.ok();
 		}
-		SysCategory parent = this.sysCategoryService.getById(pid);
-		if(code.startsWith(parent.getCode())){
+		SysCategory Silian_parent = this.sysCategoryService.getById(Silian_pid);
+		if(Silian_code.startsWith(Silian_parent.getCode())){
 			return Result.ok();
 		}else{
-			return Result.error("编码不符合规范,须以\""+parent.getCode()+"\"开头!");
+			return Result.error("编码不符合规范,须以\""+Silian_parent.getCode()+"\"开头!");
 		}
 
 	 }
@@ -411,35 +411,35 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @RequestMapping(value = "/loadTreeData", method = RequestMethod.GET)
-	 public Result<List<TreeSelectModel>> loadDict(@RequestParam(name="pid",required = false) String pid,@RequestParam(name="pcode",required = false) String pcode, @RequestParam(name="condition",required = false) String condition) {
-		 Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
+	 public Result<List<TreeSelectModel>> loadDict(@RequestParam(Silian_name="pid",required = false) String Silian_pid,@RequestParam(Silian_name="pcode",required = false) String Silian_pcode, @RequestParam(Silian_name="condition",required = false) String Silian_condition) {
+		 Result<List<TreeSelectModel>> Silian_result = new Result<List<TreeSelectModel>>();
 		 //pid如果传值了 就忽略pcode的作用
-		 if(oConvertUtils.isEmpty(pid)){
-		 	if(oConvertUtils.isEmpty(pcode)){
-				result.setSuccess(false);
-				result.setMessage("加载分类字典树参数有误.[null]!");
-				return result;
+		 if(oConvertUtils.isEmpty(Silian_pid)){
+			if(oConvertUtils.isEmpty(Silian_pcode)){
+				Silian_result.setSuccess(false);
+				Silian_result.setMessage("加载分类字典树参数有误.[null]!");
+				return Silian_result;
 			}else{
-		 		if(ISysCategoryService.ROOT_PID_VALUE.equals(pcode)){
-					pid = ISysCategoryService.ROOT_PID_VALUE;
+				if(ISysCategoryService.ROOT_PID_VALUE.equals(Silian_pcode)){
+					Silian_pid = ISysCategoryService.ROOT_PID_VALUE;
 				}else{
-					pid = this.sysCategoryService.queryIdByCode(pcode);
+					Silian_pid = this.sysCategoryService.queryIdByCode(Silian_pcode);
 				}
-				if(oConvertUtils.isEmpty(pid)){
-					result.setSuccess(false);
-					result.setMessage("加载分类字典树参数有误.[code]!");
-					return result;
+				if(oConvertUtils.isEmpty(Silian_pid)){
+					Silian_result.setSuccess(false);
+					Silian_result.setMessage("加载分类字典树参数有误.[code]!");
+					return Silian_result;
 				}
 			}
 		 }
-		 Map<String, String> query = null;
-		 if(oConvertUtils.isNotEmpty(condition)) {
-			 query = JSON.parseObject(condition, Map.class);
+		 Map<String, String> Silian_query = null;
+		 if(oConvertUtils.isNotEmpty(Silian_condition)) {
+			 Silian_query = JSON.parseObject(Silian_condition, Map.class);
 		 }
-		 List<TreeSelectModel> ls = sysCategoryService.queryListByPid(pid,query);
-		 result.setSuccess(true);
-		 result.setResult(ls);
-		 return result;
+		 List<TreeSelectModel> Silian_ls = sysCategoryService.queryListByPid(Silian_pid,Silian_query);
+		 Silian_result.setSuccess(true);
+		 Silian_result.setResult(Silian_ls);
+		 return Silian_result;
 	 }
 
 	 /**
@@ -450,19 +450,19 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @RequestMapping(value = "/loadDictItem", method = RequestMethod.GET)
-	 public Result<List<String>> loadDictItem(@RequestParam(name = "ids") String ids, @RequestParam(name = "delNotExist", required = false, defaultValue = "true") boolean delNotExist) {
-		 Result<List<String>> result = new Result<>();
+	 public Result<List<String>> loadDictItem(@RequestParam(Silian_name = "ids") String Silian_ids, @RequestParam(Silian_name = "delNotExist", required = false, defaultValue = "true") boolean Silian_delNotExist) {
+		 Result<List<String>> Silian_result = new Result<>();
 		 // 非空判断
-		 if (StringUtils.isBlank(ids)) {
-			 result.setSuccess(false);
-			 result.setMessage("ids 不能为空");
-			 return result;
+		 if (StringUtils.isBlank(Silian_ids)) {
+			 Silian_result.setSuccess(false);
+			 Silian_result.setMessage("ids 不能为空");
+			 return Silian_result;
 		 }
 		 // 查询数据
-		 List<String> textList = sysCategoryService.loadDictItem(ids, delNotExist);
-		 result.setSuccess(true);
-		 result.setResult(textList);
-		 return result;
+		 List<String> Silian_textList = sysCategoryService.loadDictItem(Silian_ids, Silian_delNotExist);
+		 Silian_result.setSuccess(true);
+		 Silian_result.setResult(Silian_textList);
+		 return Silian_result;
 	 }
 
 	 /**
@@ -471,25 +471,25 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @RequestMapping(value = "/loadAllData", method = RequestMethod.GET)
-	 public Result<List<DictModel>> loadAllData(@RequestParam(name="code",required = true) String code) {
-		 Result<List<DictModel>> result = new Result<List<DictModel>>();
-		 LambdaQueryWrapper<SysCategory> query = new LambdaQueryWrapper<SysCategory>();
-		 if(oConvertUtils.isNotEmpty(code) && !CATEGORY_ROOT_CODE.equals(code)){
-			 query.likeRight(SysCategory::getCode,code);
+	 public Result<List<DictModel>> loadAllData(@RequestParam(Silian_name="code",required = true) String Silian_code) {
+		 Result<List<DictModel>> Silian_result = new Result<List<DictModel>>();
+		 LambdaQueryWrapper<SysCategory> Silian_query = new LambdaQueryWrapper<SysCategory>();
+		 if(oConvertUtils.isNotEmpty(Silian_code) && !CATEGORY_ROOT_CODE.equals(Silian_code)){
+			 Silian_query.likeRight(SysCategory::getCode,Silian_code);
 		 }
-		 List<SysCategory> list = this.sysCategoryService.list(query);
-		 if(list==null || list.size()==0) {
-			 result.setMessage("无数据,参数有误.[code]");
-			 result.setSuccess(false);
-			 return result;
+		 List<SysCategory> Silian_list = this.sysCategoryService.list(Silian_query);
+		 if(Silian_list==null || Silian_list.size()==0) {
+			 Silian_result.setMessage("无数据,参数有误.[code]");
+			 Silian_result.setSuccess(false);
+			 return Silian_result;
 		 }
-		 List<DictModel> rdList = new ArrayList<DictModel>();
-		 for (SysCategory c : list) {
-			 rdList.add(new DictModel(c.getId(),c.getName()));
+		 List<DictModel> Silian_rdList = new ArrayList<DictModel>();
+		 for (SysCategory Silian_c : Silian_list) {
+			 Silian_rdList.add(new DictModel(Silian_c.getId(),Silian_c.getName()));
 		 }
-		 result.setSuccess(true);
-		 result.setResult(rdList);
-		 return result;
+		 Silian_result.setSuccess(true);
+		 Silian_result.setResult(Silian_rdList);
+		 return Silian_result;
 	 }
 
 	 /**
@@ -498,18 +498,18 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @GetMapping("/getChildListBatch")
-	 public Result getChildListBatch(@RequestParam("parentIds") String parentIds) {
+	 public Result getChildListBatch(@RequestParam("parentIds") String Silian_parentIds) {
 		 try {
-			 QueryWrapper<SysCategory> queryWrapper = new QueryWrapper<>();
-			 List<String> parentIdList = Arrays.asList(parentIds.split(","));
-			 queryWrapper.in("pid", parentIdList);
-			 List<SysCategory> list = sysCategoryService.list(queryWrapper);
-			 IPage<SysCategory> pageList = new Page<>(1, 10, list.size());
-			 pageList.setRecords(list);
-			 return Result.OK(pageList);
-		 } catch (Exception e) {
-			 log.error(e.getMessage(), e);
-			 return Result.error("批量查询子节点失败：" + e.getMessage());
+			 QueryWrapper<SysCategory> Silian_queryWrapper = new QueryWrapper<>();
+			 List<String> Silian_parentIdList = Arrays.asList(Silian_parentIds.split(","));
+			 Silian_queryWrapper.in("pid", Silian_parentIdList);
+			 List<SysCategory> Silian_list = sysCategoryService.list(Silian_queryWrapper);
+			 IPage<SysCategory> Silian_pageList = new Page<>(1, 10, Silian_list.size());
+			 Silian_pageList.setRecords(Silian_list);
+			 return Result.OK(Silian_pageList);
+		 } catch (Exception Silian_e) {
+			 log.error(Silian_e.getMessage(), Silian_e);
+			 return Result.error("批量查询子节点失败：" + Silian_e.getMessage());
 		 }
 	 }
 

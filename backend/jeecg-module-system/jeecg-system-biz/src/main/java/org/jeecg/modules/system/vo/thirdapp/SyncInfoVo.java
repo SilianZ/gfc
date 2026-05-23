@@ -32,13 +32,13 @@ public class SyncInfoVo {
         this.failInfo = failInfo;
     }
 
-    public SyncInfoVo addSuccessInfo(String info) {
-        this.successInfo.add(info);
+    public SyncInfoVo addSuccessInfo(String Silian_info) {
+        this.successInfo.add(Silian_info);
         return this;
     }
 
-    public SyncInfoVo addFailInfo(String info) {
-        this.failInfo.add(info);
+    public SyncInfoVo addFailInfo(String Silian_info) {
+        this.failInfo.add(Silian_info);
         return this;
     }
 }

@@ -48,32 +48,32 @@ public class JeecgController<T, S extends IService<T>> {
      *
      * @param request
      */
-    protected ModelAndView exportXls(HttpServletRequest request, T object, Class<T> clazz, String title) {
+    protected ModelAndView exportXls(HttpServletRequest Silian_request, T Silian_object, Class<T> Silian_clazz, String Silian_title) {
         // Step.1 组装查询条件
-        QueryWrapper<T> queryWrapper = QueryGenerator.initQueryWrapper(object, request.getParameterMap());
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        QueryWrapper<T> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_object, Silian_request.getParameterMap());
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         // 过滤选中数据
-        String selections = request.getParameter("selections");
-        if (oConvertUtils.isNotEmpty(selections)) {
-            List<String> selectionList = Arrays.asList(selections.split(","));
-            queryWrapper.in("id",selectionList);
+        String Silian_selections = Silian_request.getParameter("selections");
+        if (oConvertUtils.isNotEmpty(Silian_selections)) {
+            List<String> Silian_selectionList = Arrays.asList(Silian_selections.split(","));
+            Silian_queryWrapper.in("id",Silian_selectionList);
         }
         // Step.2 获取导出数据
-        List<T> exportList = service.list(queryWrapper);
+        List<T> Silian_exportList = service.list(Silian_queryWrapper);
 
         // Step.3 AutoPoi 导出Excel
-        ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+        ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
         //此处设置的filename无效 ,前端会重更新设置一下
-        mv.addObject(NormalExcelConstants.FILE_NAME, title);
-        mv.addObject(NormalExcelConstants.CLASS, clazz);
+        Silian_mv.addObject(NormalExcelConstants.FILE_NAME, Silian_title);
+        Silian_mv.addObject(NormalExcelConstants.CLASS, Silian_clazz);
         //update-begin--Author:liusq  Date:20210126 for：图片导出报错，ImageBasePath未设置--------------------
-        ExportParams  exportParams=new ExportParams(title + "报表", "导出人:" + sysUser.getRealname(), title);
-        exportParams.setImageBasePath(upLoadPath);
+        ExportParams  Silian_exportParams=new ExportParams(Silian_title + "报表", "导出人:" + Silian_sysUser.getRealname(), Silian_title);
+        Silian_exportParams.setImageBasePath(upLoadPath);
         //update-end--Author:liusq  Date:20210126 for：图片导出报错，ImageBasePath未设置----------------------
-        mv.addObject(NormalExcelConstants.PARAMS,exportParams);
-        mv.addObject(NormalExcelConstants.DATA_LIST, exportList);
-        return mv;
+        Silian_mv.addObject(NormalExcelConstants.PARAMS,Silian_exportParams);
+        Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_exportList);
+        return Silian_mv;
     }
     /**
      * 根据每页sheet数量导出多sheet
@@ -86,45 +86,45 @@ public class JeecgController<T, S extends IService<T>> {
      * @param pageNum 每个sheet的数据条数
      * @param request
      */
-    protected ModelAndView exportXlsSheet(HttpServletRequest request, T object, Class<T> clazz, String title,String exportFields,Integer pageNum) {
+    protected ModelAndView exportXlsSheet(HttpServletRequest Silian_request, T Silian_object, Class<T> Silian_clazz, String Silian_title,String Silian_exportFields,Integer Silian_pageNum) {
         // Step.1 组装查询条件
-        QueryWrapper<T> queryWrapper = QueryGenerator.initQueryWrapper(object, request.getParameterMap());
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        QueryWrapper<T> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_object, Silian_request.getParameterMap());
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         // Step.2 计算分页sheet数据
-        double total = service.count();
-        int count = (int)Math.ceil(total/pageNum);
+        double Silian_total = service.count();
+        int Silian_count = (int)Math.ceil(Silian_total/Silian_pageNum);
         //update-begin-author:liusq---date:20220629--for: 多sheet导出根据选择导出写法调整 ---
         // Step.3  过滤选中数据
-        String selections = request.getParameter("selections");
-        if (oConvertUtils.isNotEmpty(selections)) {
-            List<String> selectionList = Arrays.asList(selections.split(","));
-            queryWrapper.in("id",selectionList);
+        String Silian_selections = Silian_request.getParameter("selections");
+        if (oConvertUtils.isNotEmpty(Silian_selections)) {
+            List<String> Silian_selectionList = Arrays.asList(Silian_selections.split(","));
+            Silian_queryWrapper.in("id",Silian_selectionList);
         }
         //update-end-author:liusq---date:20220629--for: 多sheet导出根据选择导出写法调整 ---
         // Step.4 多sheet处理
-        List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
-        for (int i = 1; i <=count ; i++) {
-            Page<T> page = new Page<T>(i, pageNum);
-            IPage<T> pageList = service.page(page, queryWrapper);
-            List<T> exportList = pageList.getRecords();
-            Map<String, Object> map = new HashMap<>(5);
-            ExportParams  exportParams=new ExportParams(title + "报表", "导出人:" + sysUser.getRealname(), title+i,upLoadPath);
-            exportParams.setType(ExcelType.XSSF);
+        List<Map<String, Object>> Silian_listMap = new ArrayList<Map<String, Object>>();
+        for (int Silian_i = 1; Silian_i <=Silian_count ; Silian_i++) {
+            Page<T> Silian_page = new Page<T>(Silian_i, Silian_pageNum);
+            IPage<T> Silian_pageList = service.page(Silian_page, Silian_queryWrapper);
+            List<T> Silian_exportList = Silian_pageList.getRecords();
+            Map<String, Object> Silian_map = new HashMap<>(5);
+            ExportParams  Silian_exportParams=new ExportParams(Silian_title + "报表", "导出人:" + Silian_sysUser.getRealname(), Silian_title+Silian_i,upLoadPath);
+            Silian_exportParams.setType(ExcelType.XSSF);
             //map.put("title",exportParams);
             //表格Title
-            map.put(NormalExcelConstants.PARAMS,exportParams);
+            Silian_map.put(NormalExcelConstants.PARAMS,Silian_exportParams);
             //表格对应实体
-            map.put(NormalExcelConstants.CLASS,clazz);
+            Silian_map.put(NormalExcelConstants.CLASS,Silian_clazz);
             //数据集合
-            map.put(NormalExcelConstants.DATA_LIST, exportList);
-            listMap.add(map);
+            Silian_map.put(NormalExcelConstants.DATA_LIST, Silian_exportList);
+            Silian_listMap.add(Silian_map);
         }
         // Step.4 AutoPoi 导出Excel
-        ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+        ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
         //此处设置的filename无效 ,前端会重更新设置一下
-        mv.addObject(NormalExcelConstants.FILE_NAME, title);
-        mv.addObject(NormalExcelConstants.MAP_LIST, listMap);
-        return mv;
+        Silian_mv.addObject(NormalExcelConstants.FILE_NAME, Silian_title);
+        Silian_mv.addObject(NormalExcelConstants.MAP_LIST, Silian_listMap);
+        return Silian_mv;
     }
 
 
@@ -133,10 +133,10 @@ public class JeecgController<T, S extends IService<T>> {
      *
      * @param request
      */
-    protected ModelAndView exportXls(HttpServletRequest request, T object, Class<T> clazz, String title,String exportFields) {
-        ModelAndView mv = this.exportXls(request,object,clazz,title);
-        mv.addObject(NormalExcelConstants.EXPORT_FIELDS,exportFields);
-        return mv;
+    protected ModelAndView exportXls(HttpServletRequest Silian_request, T Silian_object, Class<T> Silian_clazz, String Silian_title,String Silian_exportFields) {
+        ModelAndView Silian_mv = this.exportXls(Silian_request,Silian_object,Silian_clazz,Silian_title);
+        Silian_mv.addObject(NormalExcelConstants.EXPORT_FIELDS,Silian_exportFields);
+        return Silian_mv;
     }
 
     /**
@@ -144,11 +144,11 @@ public class JeecgController<T, S extends IService<T>> {
      *
      * @return
      */
-    private String getId(T item) {
+    private String getId(T Silian_item) {
         try {
-            return PropertyUtils.getProperty(item, "id").toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return PropertyUtils.getProperty(Silian_item, "id").toString();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
     }
@@ -160,41 +160,41 @@ public class JeecgController<T, S extends IService<T>> {
      * @param response
      * @return
      */
-    protected Result<?> importExcel(HttpServletRequest request, HttpServletResponse response, Class<T> clazz) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+    protected Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response, Class<T> Silian_clazz) {
+        MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+        Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
+        for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
             // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
+            MultipartFile Silian_file = Silian_entity.getValue();
+            ImportParams Silian_params = new ImportParams();
+            Silian_params.setTitleRows(2);
+            Silian_params.setHeadRows(1);
+            Silian_params.setNeedSave(true);
             try {
-                List<T> list = ExcelImportUtil.importExcel(file.getInputStream(), clazz, params);
+                List<T> Silian_list = ExcelImportUtil.importExcel(Silian_file.getInputStream(), Silian_clazz, Silian_params);
                 //update-begin-author:taoyan date:20190528 for:批量插入数据
-                long start = System.currentTimeMillis();
-                service.saveBatch(list);
+                long Silian_start = System.currentTimeMillis();
+                service.saveBatch(Silian_list);
                 //400条 saveBatch消耗时间1592毫秒  循环插入消耗时间1947毫秒
                 //1200条  saveBatch消耗时间3687毫秒 循环插入消耗时间5212毫秒
-                log.info("消耗时间" + (System.currentTimeMillis() - start) + "毫秒");
+                log.info("消耗时间" + (System.currentTimeMillis() - Silian_start) + "毫秒");
                 //update-end-author:taoyan date:20190528 for:批量插入数据
-                return Result.ok("文件导入成功！数据行数：" + list.size());
-            } catch (Exception e) {
+                return Result.ok("文件导入成功！数据行数：" + Silian_list.size());
+            } catch (Exception Silian_e) {
                 //update-begin-author:taoyan date:20211124 for: 导入数据重复增加提示
-                String msg = e.getMessage();
-                log.error(msg, e);
-                if(msg!=null && msg.indexOf("Duplicate entry")>=0){
+                String Silian_msg = Silian_e.getMessage();
+                log.error(Silian_msg, Silian_e);
+                if(Silian_msg!=null && Silian_msg.indexOf("Duplicate entry")>=0){
                     return Result.error("文件导入失败:有重复数据！");
                 }else{
-                    return Result.error("文件导入失败:" + e.getMessage());
+                    return Result.error("文件导入失败:" + Silian_e.getMessage());
                 }
                 //update-end-author:taoyan date:20211124 for: 导入数据重复增加提示
             } finally {
                 try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Silian_file.getInputStream().close();
+                } catch (IOException Silian_e) {
+                    Silian_e.printStackTrace();
                 }
             }
         }

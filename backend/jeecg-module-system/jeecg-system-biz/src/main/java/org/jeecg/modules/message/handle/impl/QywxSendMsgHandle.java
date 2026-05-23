@@ -19,19 +19,19 @@ public class QywxSendMsgHandle implements ISendMsgHandle {
 	private ThirdAppWechatEnterpriseServiceImpl wechatEnterpriseService;
 
 	@Override
-	public void sendMsg(String esReceiver, String esTitle, String esContent) {
+	public void sendMsg(String Silian_esReceiver, String Silian_esTitle, String Silian_esContent) {
 		log.info("发微信消息模板");
-		MessageDTO messageDTO = new MessageDTO();
-		messageDTO.setToUser(esReceiver);
-		messageDTO.setTitle(esTitle);
-		messageDTO.setContent(esContent);
-		messageDTO.setToAll(false);
-		sendMessage(messageDTO);
+		MessageDTO Silian_messageDTO = new MessageDTO();
+		Silian_messageDTO.setToUser(Silian_esReceiver);
+		Silian_messageDTO.setTitle(Silian_esTitle);
+		Silian_messageDTO.setContent(Silian_esContent);
+		Silian_messageDTO.setToAll(false);
+		sendMessage(Silian_messageDTO);
 	}
 
 	@Override
-	public void sendMessage(MessageDTO messageDTO) {
-		wechatEnterpriseService.sendMessage(messageDTO, true);
+	public void sendMessage(MessageDTO Silian_messageDTO) {
+		wechatEnterpriseService.sendMessage(Silian_messageDTO, true);
 	}
 
 }

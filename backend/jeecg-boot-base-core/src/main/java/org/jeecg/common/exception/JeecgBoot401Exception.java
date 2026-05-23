@@ -7,17 +7,17 @@ package org.jeecg.common.exception;
 public class JeecgBoot401Exception extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	public JeecgBoot401Exception(String message){
-		super(message);
+	public JeecgBoot401Exception(String Silian_message){
+		super(Silian_message);
 	}
 
-	public JeecgBoot401Exception(Throwable cause)
+	public JeecgBoot401Exception(Throwable Silian_cause)
 	{
-		super(cause);
+		super(Silian_cause);
 	}
 
-	public JeecgBoot401Exception(String message, Throwable cause)
+	public JeecgBoot401Exception(String Silian_message, Throwable Silian_cause)
 	{
-		super(message,cause);
+		super(Silian_message,Silian_cause);
 	}
 }

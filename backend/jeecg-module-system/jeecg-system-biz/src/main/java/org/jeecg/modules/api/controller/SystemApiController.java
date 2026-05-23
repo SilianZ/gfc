@@ -42,8 +42,8 @@ public class SystemApiController {
      * @param message 使用构造器赋值参数 如果不设置category(消息类型)则默认为2 发送系统消息
      */
     @PostMapping("/sendSysAnnouncement")
-    public void sendSysAnnouncement(@RequestBody MessageDTO message){
-        sysBaseApi.sendSysAnnouncement(message);
+    public void sendSysAnnouncement(@RequestBody MessageDTO Silian_message){
+        sysBaseApi.sendSysAnnouncement(Silian_message);
     }
 
     /**
@@ -51,8 +51,8 @@ public class SystemApiController {
      * @param message 使用构造器赋值参数
      */
     @PostMapping("/sendBusAnnouncement")
-    public void sendBusAnnouncement(@RequestBody BusMessageDTO message){
-        sysBaseApi.sendBusAnnouncement(message);
+    public void sendBusAnnouncement(@RequestBody BusMessageDTO Silian_message){
+        sysBaseApi.sendBusAnnouncement(Silian_message);
     }
 
     /**
@@ -60,8 +60,8 @@ public class SystemApiController {
      * @param message 使用构造器赋值参数
      */
     @PostMapping("/sendTemplateAnnouncement")
-    public void sendTemplateAnnouncement(@RequestBody TemplateMessageDTO message){
-        sysBaseApi.sendTemplateAnnouncement(message);
+    public void sendTemplateAnnouncement(@RequestBody TemplateMessageDTO Silian_message){
+        sysBaseApi.sendTemplateAnnouncement(Silian_message);
     }
 
     /**
@@ -69,8 +69,8 @@ public class SystemApiController {
      * @param message 使用构造器赋值参数
      */
     @PostMapping("/sendBusTemplateAnnouncement")
-    public void sendBusTemplateAnnouncement(@RequestBody BusTemplateMessageDTO message){
-        sysBaseApi.sendBusTemplateAnnouncement(message);
+    public void sendBusTemplateAnnouncement(@RequestBody BusTemplateMessageDTO Silian_message){
+        sysBaseApi.sendBusTemplateAnnouncement(Silian_message);
     }
 
     /**
@@ -79,16 +79,16 @@ public class SystemApiController {
      * @return
      */
     @PostMapping("/parseTemplateByCode")
-    public String parseTemplateByCode(@RequestBody TemplateDTO templateDTO){
-        return sysBaseApi.parseTemplateByCode(templateDTO);
+    public String parseTemplateByCode(@RequestBody TemplateDTO Silian_templateDTO){
+        return sysBaseApi.parseTemplateByCode(Silian_templateDTO);
     }
 
     /**
      * 根据业务类型busType及业务busId修改消息已读
      */
     @GetMapping("/updateSysAnnounReadFlag")
-    public void updateSysAnnounReadFlag(@RequestParam("busType") String busType, @RequestParam("busId")String busId){
-        sysBaseApi.updateSysAnnounReadFlag(busType, busId);
+    public void updateSysAnnounReadFlag(@RequestParam("busType") String Silian_busType, @RequestParam("busId")String Silian_busId){
+        sysBaseApi.updateSysAnnounReadFlag(Silian_busType, Silian_busId);
     }
 
     /**
@@ -97,8 +97,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getUserByName")
-    public LoginUser getUserByName(@RequestParam("username") String username){
-        return sysBaseApi.getUserByName(username);
+    public LoginUser getUserByName(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getUserByName(Silian_username);
     }
 
     /**
@@ -107,8 +107,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getUserById")
-    LoginUser getUserById(@RequestParam("id") String id){
-        return sysBaseApi.getUserById(id);
+    LoginUser getUserById(@RequestParam("id") String Silian_id){
+        return sysBaseApi.getUserById(Silian_id);
     }
 
     /**
@@ -117,8 +117,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getRolesByUsername")
-    List<String> getRolesByUsername(@RequestParam("username") String username){
-        return sysBaseApi.getRolesByUsername(username);
+    List<String> getRolesByUsername(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getRolesByUsername(Silian_username);
     }
 
     /**
@@ -127,8 +127,8 @@ public class SystemApiController {
      * @return 部门 id
      */
     @GetMapping("/getDepartIdsByUsername")
-    List<String> getDepartIdsByUsername(@RequestParam("username") String username){
-        return sysBaseApi.getDepartIdsByUsername(username);
+    List<String> getDepartIdsByUsername(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getDepartIdsByUsername(Silian_username);
     }
 
     /**
@@ -137,8 +137,8 @@ public class SystemApiController {
      * @return 部门 name
      */
     @GetMapping("/getDepartNamesByUsername")
-    List<String> getDepartNamesByUsername(@RequestParam("username") String username){
-        return sysBaseApi.getDepartNamesByUsername(username);
+    List<String> getDepartNamesByUsername(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getDepartNamesByUsername(Silian_username);
     }
 
 
@@ -148,8 +148,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryDictItemsByCode")
-    List<DictModel> queryDictItemsByCode(@RequestParam("code") String code){
-        return sysBaseApi.queryDictItemsByCode(code);
+    List<DictModel> queryDictItemsByCode(@RequestParam("code") String Silian_code){
+        return sysBaseApi.queryDictItemsByCode(Silian_code);
     }
 
     /**
@@ -158,8 +158,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryEnableDictItemsByCode")
-    List<DictModel> queryEnableDictItemsByCode(@RequestParam("code") String code){
-        return sysBaseApi.queryEnableDictItemsByCode(code);
+    List<DictModel> queryEnableDictItemsByCode(@RequestParam("code") String Silian_code){
+        return sysBaseApi.queryEnableDictItemsByCode(Silian_code);
     }
 
 
@@ -202,11 +202,11 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryAllRole")
-    public List<ComboModel> queryAllRole(@RequestParam(name = "roleIds",required = false)String[] roleIds){
-        if(roleIds==null || roleIds.length==0){
+    public List<ComboModel> queryAllRole(@RequestParam(name = "roleIds",required = false)String[] Silian_roleIds){
+        if(Silian_roleIds==null || Silian_roleIds.length==0){
             return sysBaseApi.queryAllRole();
         }else{
-            return sysBaseApi.queryAllRole(roleIds);
+            return sysBaseApi.queryAllRole(Silian_roleIds);
         }
     }
 
@@ -216,8 +216,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getRoleIdsByUsername")
-    public List<String> getRoleIdsByUsername(@RequestParam("username")String username){
-        return sysBaseApi.getRoleIdsByUsername(username);
+    public List<String> getRoleIdsByUsername(@RequestParam("username")String Silian_username){
+        return sysBaseApi.getRoleIdsByUsername(Silian_username);
     }
 
     /**
@@ -226,8 +226,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getDepartIdsByOrgCode")
-    public String getDepartIdsByOrgCode(@RequestParam("orgCode")String orgCode){
-        return sysBaseApi.getDepartIdsByOrgCode(orgCode);
+    public String getDepartIdsByOrgCode(@RequestParam("orgCode")String Silian_orgCode){
+        return sysBaseApi.getDepartIdsByOrgCode(Silian_orgCode);
     }
 
     /**
@@ -246,8 +246,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getDynamicDbSourceById")
-    DynamicDataSourceModel getDynamicDbSourceById(@RequestParam("dbSourceId")String dbSourceId){
-        return sysBaseApi.getDynamicDbSourceById(dbSourceId);
+    DynamicDataSourceModel getDynamicDbSourceById(@RequestParam("dbSourceId")String Silian_dbSourceId){
+        return sysBaseApi.getDynamicDbSourceById(Silian_dbSourceId);
     }
 
 
@@ -258,8 +258,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getDeptHeadByDepId")
-    public List<String> getDeptHeadByDepId(@RequestParam("deptId") String deptId){
-        return sysBaseApi.getDeptHeadByDepId(deptId);
+    public List<String> getDeptHeadByDepId(@RequestParam("deptId") String Silian_deptId){
+        return sysBaseApi.getDeptHeadByDepId(Silian_deptId);
     }
 
     /**
@@ -268,8 +268,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getParentDepartId")
-    public DictModel getParentDepartId(@RequestParam("departId")String departId){
-        return sysBaseApi.getParentDepartId(departId);
+    public DictModel getParentDepartId(@RequestParam("departId")String Silian_departId){
+        return sysBaseApi.getParentDepartId(Silian_departId);
     }
 
     /**
@@ -279,8 +279,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getDynamicDbSourceByCode")
-    public DynamicDataSourceModel getDynamicDbSourceByCode(@RequestParam("dbSourceCode") String dbSourceCode){
-        return sysBaseApi.getDynamicDbSourceByCode(dbSourceCode);
+    public DynamicDataSourceModel getDynamicDbSourceByCode(@RequestParam("dbSourceCode") String Silian_dbSourceCode){
+        return sysBaseApi.getDynamicDbSourceByCode(Silian_dbSourceCode);
     }
 
     /**
@@ -289,8 +289,8 @@ public class SystemApiController {
      * @param cmd
      */
     @GetMapping("/sendWebSocketMsg")
-    public void sendWebSocketMsg(String[] userIds, String cmd){
-        sysBaseApi.sendWebSocketMsg(userIds, cmd);
+    public void sendWebSocketMsg(String[] Silian_userIds, String Silian_cmd){
+        sysBaseApi.sendWebSocketMsg(Silian_userIds, Silian_cmd);
     }
 
 
@@ -300,8 +300,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryAllUserByIds")
-    public List<LoginUser> queryAllUserByIds(@RequestParam("userIds") String[] userIds){
-        return sysBaseApi.queryAllUserByIds(userIds);
+    public List<LoginUser> queryAllUserByIds(@RequestParam("userIds") String[] Silian_userIds){
+        return sysBaseApi.queryAllUserByIds(Silian_userIds);
     }
 
     /**
@@ -318,8 +318,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryAllUser")
-    public JSONObject queryAllUser(@RequestParam(name="userIds",required=false)String userIds, @RequestParam(name="pageNo",required=false) Integer pageNo,@RequestParam(name="pageSize",required=false) int pageSize){
-        return sysBaseApi.queryAllUser(userIds, pageNo, pageSize);
+    public JSONObject queryAllUser(@RequestParam(name="userIds",required=false)String Silian_userIds, @RequestParam(name="pageNo",required=false) Integer Silian_pageNo,@RequestParam(name="pageSize",required=false) int Silian_pageSize){
+        return sysBaseApi.queryAllUser(Silian_userIds, Silian_pageNo, Silian_pageSize);
     }
 
 
@@ -331,8 +331,8 @@ public class SystemApiController {
      * @param userId
      */
     @GetMapping("/meetingSignWebsocket")
-    public void meetingSignWebsocket(@RequestParam("userId")String userId){
-        sysBaseApi.meetingSignWebsocket(userId);
+    public void meetingSignWebsocket(@RequestParam("userId")String Silian_userId){
+        sysBaseApi.meetingSignWebsocket(Silian_userId);
     }
 
     /**
@@ -341,8 +341,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryUserByNames")
-    public List<LoginUser> queryUserByNames(@RequestParam("userNames")String[] userNames){
-        return sysBaseApi.queryUserByNames(userNames);
+    public List<LoginUser> queryUserByNames(@RequestParam("userNames")String[] Silian_userNames){
+        return sysBaseApi.queryUserByNames(Silian_userNames);
     }
 
     /**
@@ -351,8 +351,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getUserRoleSet")
-    public Set<String> getUserRoleSet(@RequestParam("username")String username){
-        return sysBaseApi.getUserRoleSet(username);
+    public Set<String> getUserRoleSet(@RequestParam("username")String Silian_username){
+        return sysBaseApi.getUserRoleSet(Silian_username);
     }
 
     /**
@@ -361,8 +361,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getUserPermissionSet")
-    public Set<String> getUserPermissionSet(@RequestParam("username") String username){
-        return sysBaseApi.getUserPermissionSet(username);
+    public Set<String> getUserPermissionSet(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getUserPermissionSet(Silian_username);
     }
 
     //-----
@@ -373,8 +373,8 @@ public class SystemApiController {
      * @return
      */
     @PostMapping("/hasOnlineAuth")
-    public boolean hasOnlineAuth(@RequestBody OnlineAuthDTO onlineAuthDTO){
-        return sysBaseApi.hasOnlineAuth(onlineAuthDTO);
+    public boolean hasOnlineAuth(@RequestBody OnlineAuthDTO Silian_onlineAuthDTO){
+        return sysBaseApi.hasOnlineAuth(Silian_onlineAuthDTO);
     }
 
     /**
@@ -383,8 +383,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryUserRoles")
-    public Set<String> queryUserRoles(@RequestParam("username") String username){
-        return sysUserService.getUserRolesSet(username);
+    public Set<String> queryUserRoles(@RequestParam("username") String Silian_username){
+        return sysUserService.getUserRolesSet(Silian_username);
     }
 
 
@@ -394,16 +394,16 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryUserAuths")
-    public Set<String> queryUserAuths(@RequestParam("username") String username){
-        return sysUserService.getUserPermissionsSet(username);
+    public Set<String> queryUserAuths(@RequestParam("username") String Silian_username){
+        return sysUserService.getUserPermissionsSet(Silian_username);
     }
 
     /**
      * 通过部门id获取部门全部信息
      */
     @GetMapping("/selectAllById")
-    public SysDepartModel selectAllById(@RequestParam("id") String id){
-        return sysBaseApi.selectAllById(id);
+    public SysDepartModel selectAllById(@RequestParam("id") String Silian_id){
+        return sysBaseApi.selectAllById(Silian_id);
     }
 
     /**
@@ -412,8 +412,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryDeptUsersByUserId")
-    public List<String> queryDeptUsersByUserId(@RequestParam("userId") String userId){
-        return sysBaseApi.queryDeptUsersByUserId(userId);
+    public List<String> queryDeptUsersByUserId(@RequestParam("userId") String Silian_userId){
+        return sysBaseApi.queryDeptUsersByUserId(Silian_userId);
     }
 
 
@@ -422,8 +422,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryPermissionDataRule")
-    public List<SysPermissionDataRuleModel> queryPermissionDataRule(@RequestParam("component") String component, @RequestParam("requestPath")String requestPath, @RequestParam("username") String username){
-        return sysBaseApi.queryPermissionDataRule(component, requestPath, username);
+    public List<SysPermissionDataRuleModel> queryPermissionDataRule(@RequestParam("component") String Silian_component, @RequestParam("requestPath")String Silian_requestPath, @RequestParam("username") String Silian_username){
+        return sysBaseApi.queryPermissionDataRule(Silian_component, Silian_requestPath, Silian_username);
     }
 
     /**
@@ -432,8 +432,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getCacheUser")
-    public SysUserCacheInfo getCacheUser(@RequestParam("username") String username){
-        return sysBaseApi.getCacheUser(username);
+    public SysUserCacheInfo getCacheUser(@RequestParam("username") String Silian_username){
+        return sysBaseApi.getCacheUser(Silian_username);
     }
 
     /**
@@ -443,8 +443,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/translateDict")
-    public String translateDict(@RequestParam("code") String code, @RequestParam("key") String key){
-        return sysBaseApi.translateDict(code, key);
+    public String translateDict(@RequestParam("code") String Silian_code, @RequestParam("key") String Silian_key){
+        return sysBaseApi.translateDict(Silian_code, Silian_key);
     }
 
 
@@ -464,8 +464,8 @@ public class SystemApiController {
      * @return
      */
     @RequestMapping("/queryUsersByIds")
-    List<JSONObject> queryUsersByIds(@RequestParam("ids") String ids){
-        return this.sysBaseApi.queryUsersByIds(ids);
+    List<JSONObject> queryUsersByIds(@RequestParam("ids") String Silian_ids){
+        return this.sysBaseApi.queryUsersByIds(Silian_ids);
     }
 
     /**
@@ -484,8 +484,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryDepartsByIds")
-    List<JSONObject> queryDepartsByIds(@RequestParam("ids") String ids){
-        return this.sysBaseApi.queryDepartsByIds(ids);
+    List<JSONObject> queryDepartsByIds(@RequestParam("ids") String Silian_ids){
+        return this.sysBaseApi.queryDepartsByIds(Silian_ids);
     }
 
     /**
@@ -495,16 +495,16 @@ public class SystemApiController {
      * @param content
      */
     @GetMapping("/sendEmailMsg")
-    public void sendEmailMsg(@RequestParam("email")String email,@RequestParam("title")String title,@RequestParam("content")String content){
-         this.sysBaseApi.sendEmailMsg(email,title,content);
+    public void sendEmailMsg(@RequestParam("email")String Silian_email,@RequestParam("title")String Silian_title,@RequestParam("content")String Silian_content){
+         this.sysBaseApi.sendEmailMsg(Silian_email,Silian_title,Silian_content);
     };
     /**
      * 41 获取公司下级部门和公司下所有用户信息
      * @param orgCode
      */
     @GetMapping("/getDeptUserByOrgCode")
-    List<Map> getDeptUserByOrgCode(@RequestParam("orgCode")String orgCode){
-       return this.sysBaseApi.getDeptUserByOrgCode(orgCode);
+    List<Map> getDeptUserByOrgCode(@RequestParam("orgCode")String Silian_orgCode){
+       return this.sysBaseApi.getDeptUserByOrgCode(Silian_orgCode);
     }
 
     /**
@@ -514,8 +514,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/loadCategoryDictItem")
-    public List<String> loadCategoryDictItem(@RequestParam("ids") String ids) {
-        return sysBaseApi.loadCategoryDictItem(ids);
+    public List<String> loadCategoryDictItem(@RequestParam("ids") String Silian_ids) {
+        return sysBaseApi.loadCategoryDictItem(Silian_ids);
     }
 
     /**
@@ -526,12 +526,12 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/loadDictItem")
-    public List<String> loadDictItem(@RequestParam("dictCode") String dictCode, @RequestParam("keys") String keys) {
-        if(!dictQueryBlackListHandler.isPass(dictCode)){
+    public List<String> loadDictItem(@RequestParam("dictCode") String Silian_dictCode, @RequestParam("keys") String Silian_keys) {
+        if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return sysBaseApi.loadDictItem(dictCode, keys);
+        return sysBaseApi.loadDictItem(Silian_dictCode, Silian_keys);
     }
 
     /**
@@ -542,12 +542,12 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getDictItems")
-    public List<DictModel> getDictItems(@RequestParam("dictCode") String dictCode) {
-        if(!dictQueryBlackListHandler.isPass(dictCode)){
+    public List<DictModel> getDictItems(@RequestParam("dictCode") String Silian_dictCode) {
+        if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return sysBaseApi.getDictItems(dictCode);
+        return sysBaseApi.getDictItems(Silian_dictCode);
     }
 
     /**
@@ -557,8 +557,8 @@ public class SystemApiController {
      * @return key = dictCode ； value=对应的字典项
      */
     @RequestMapping("/getManyDictItems")
-    public Map<String, List<DictModel>> getManyDictItems(@RequestParam("dictCodeList") List<String> dictCodeList) {
-        return sysBaseApi.getManyDictItems(dictCodeList);
+    public Map<String, List<DictModel>> getManyDictItems(@RequestParam("dictCodeList") List<String> Silian_dictCodeList) {
+        return sysBaseApi.getManyDictItems(Silian_dictCodeList);
     }
 
     /**
@@ -570,12 +570,12 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/loadDictItemByKeyword")
-    public List<DictModel> loadDictItemByKeyword(@RequestParam("dictCode") String dictCode, @RequestParam("keyword") String keyword, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        if(!dictQueryBlackListHandler.isPass(dictCode)){
+    public List<DictModel> loadDictItemByKeyword(@RequestParam("dictCode") String Silian_dictCode, @RequestParam("keyword") String Silian_keyword, @RequestParam(value = "pageSize", required = false) Integer Silian_pageSize) {
+        if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return sysBaseApi.loadDictItemByKeyword(dictCode, keyword, pageSize);
+        return sysBaseApi.loadDictItemByKeyword(Silian_dictCode, Silian_keyword, Silian_pageSize);
     }
 
     /**
@@ -585,8 +585,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/translateManyDict")
-    public Map<String, List<DictModel>> translateManyDict(@RequestParam("dictCodes") String dictCodes, @RequestParam("keys") String keys){
-        return this.sysBaseApi.translateManyDict(dictCodes, keys);
+    public Map<String, List<DictModel>> translateManyDict(@RequestParam("dictCodes") String Silian_dictCodes, @RequestParam("keys") String Silian_keys){
+        return this.sysBaseApi.translateManyDict(Silian_dictCodes, Silian_keys);
     }
 
 
@@ -598,13 +598,13 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryTableDictItemsByCode")
-    List<DictModel> queryTableDictItemsByCode(@RequestParam("table") String table, @RequestParam("text") String text, @RequestParam("code") String code){
-        String str = table+","+text+","+code;
-        if(!dictQueryBlackListHandler.isPass(str)){
+    List<DictModel> queryTableDictItemsByCode(@RequestParam("table") String Silian_table, @RequestParam("text") String Silian_text, @RequestParam("code") String Silian_code){
+        String Silian_str = Silian_table+","+Silian_text+","+Silian_code;
+        if(!dictQueryBlackListHandler.isPass(Silian_str)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return sysBaseApi.queryTableDictItemsByCode(table, text, code);
+        return sysBaseApi.queryTableDictItemsByCode(Silian_table, Silian_text, Silian_code);
     }
 
     /**
@@ -616,16 +616,16 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/queryFilterTableDictInfo")
-    List<DictModel> queryFilterTableDictInfo(@RequestParam("table") String table, @RequestParam("text") String text, @RequestParam("code") String code, @RequestParam("filterSql") String filterSql){
-        String str = table+","+text+","+code;
-        if(!dictQueryBlackListHandler.isPass(str)){
+    List<DictModel> queryFilterTableDictInfo(@RequestParam("table") String Silian_table, @RequestParam("text") String Silian_text, @RequestParam("code") String Silian_code, @RequestParam("filterSql") String filterSql){
+        String Silian_str = Silian_table+","+Silian_text+","+Silian_code;
+        if(!dictQueryBlackListHandler.isPass(Silian_str)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        String[] arr = new String[]{table, text, code};
-        SqlInjectionUtil.filterContent(arr);
+        String[] Silian_arr = new String[]{Silian_table, Silian_text, Silian_code};
+        SqlInjectionUtil.filterContent(Silian_arr);
         SqlInjectionUtil.specialFilterContentForDictSql(filterSql);
-        return sysBaseApi.queryFilterTableDictInfo(table, text, code, filterSql);
+        return sysBaseApi.queryFilterTableDictInfo(Silian_table, Silian_text, Silian_code, filterSql);
     }
 
     /**
@@ -639,13 +639,13 @@ public class SystemApiController {
      */
     @Deprecated
     @GetMapping("/queryTableDictByKeys")
-    public List<String> queryTableDictByKeys(@RequestParam("table") String table, @RequestParam("text") String text, @RequestParam("code") String code, @RequestParam("keyArray") String[] keyArray){
-        String str = table+","+text+","+code;
-        if(!dictQueryBlackListHandler.isPass(str)){
+    public List<String> queryTableDictByKeys(@RequestParam("table") String Silian_table, @RequestParam("text") String Silian_text, @RequestParam("code") String Silian_code, @RequestParam("keyArray") String[] Silian_keyArray){
+        String Silian_str = Silian_table+","+Silian_text+","+Silian_code;
+        if(!dictQueryBlackListHandler.isPass(Silian_str)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return sysBaseApi.queryTableDictByKeys(table, text, code, keyArray);
+        return sysBaseApi.queryTableDictByKeys(Silian_table, Silian_text, Silian_code, Silian_keyArray);
     }
 
 
@@ -658,15 +658,15 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/translateDictFromTable")
-    public String translateDictFromTable(@RequestParam("table") String table, @RequestParam("text") String text, @RequestParam("code") String code, @RequestParam("key") String key){
-        String str = table+","+text+","+code;
-        if(!dictQueryBlackListHandler.isPass(str)){
+    public String translateDictFromTable(@RequestParam("table") String Silian_table, @RequestParam("text") String Silian_text, @RequestParam("code") String Silian_code, @RequestParam("key") String Silian_key){
+        String Silian_str = Silian_table+","+Silian_text+","+Silian_code;
+        if(!dictQueryBlackListHandler.isPass(Silian_str)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        String[] arr = new String[]{table, text, code, key};
-        SqlInjectionUtil.filterContent(arr);
-        return sysBaseApi.translateDictFromTable(table, text, code, key);
+        String[] Silian_arr = new String[]{Silian_table, Silian_text, Silian_code, Silian_key};
+        SqlInjectionUtil.filterContent(Silian_arr);
+        return sysBaseApi.translateDictFromTable(Silian_table, Silian_text, Silian_code, Silian_key);
     }
 
 
@@ -681,13 +681,13 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/translateDictFromTableByKeys")
-    public List<DictModel> translateDictFromTableByKeys(@RequestParam("table") String table, @RequestParam("text") String text, @RequestParam("code") String code, @RequestParam("keys") String keys) {
-        String str = table+","+text+","+code;
-        if(!dictQueryBlackListHandler.isPass(str)){
+    public List<DictModel> translateDictFromTableByKeys(@RequestParam("table") String Silian_table, @RequestParam("text") String Silian_text, @RequestParam("code") String Silian_code, @RequestParam("keys") String Silian_keys) {
+        String Silian_str = Silian_table+","+Silian_text+","+Silian_code;
+        if(!dictQueryBlackListHandler.isPass(Silian_str)){
             log.error(dictQueryBlackListHandler.getError());
             return null;
         }
-        return this.sysBaseApi.translateDictFromTableByKeys(table, text, code, keys);
+        return this.sysBaseApi.translateDictFromTableByKeys(Silian_table, Silian_text, Silian_code, Silian_keys);
     }
 
     /**
@@ -695,8 +695,8 @@ public class SystemApiController {
      * @param message
      */
     @PostMapping("/sendTemplateMessage")
-    public void sendTemplateMessage(@RequestBody MessageDTO message){
-        sysBaseApi.sendTemplateMessage(message);
+    public void sendTemplateMessage(@RequestBody MessageDTO Silian_message){
+        sysBaseApi.sendTemplateMessage(Silian_message);
     }
 
     /**
@@ -705,8 +705,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/getTemplateContent")
-    public String getTemplateContent(@RequestParam("code") String code){
-        return this.sysBaseApi.getTemplateContent(code);
+    public String getTemplateContent(@RequestParam("code") String Silian_code){
+        return this.sysBaseApi.getTemplateContent(Silian_code);
     }
 
     /**
@@ -714,16 +714,16 @@ public class SystemApiController {
      * @param dataLogDto
      */
     @PostMapping("/saveDataLog")
-    public void saveDataLog(@RequestBody DataLogDTO dataLogDto){
-        this.sysBaseApi.saveDataLog(dataLogDto);
+    public void saveDataLog(@RequestBody DataLogDTO Silian_dataLogDto){
+        this.sysBaseApi.saveDataLog(Silian_dataLogDto);
     }
 
     @PostMapping("/addSysFiles")
-    public void addSysFiles(@RequestBody SysFilesModel sysFilesModel){this.sysBaseApi.addSysFiles(sysFilesModel);}
+    public void addSysFiles(@RequestBody SysFilesModel Silian_sysFilesModel){this.sysBaseApi.addSysFiles(Silian_sysFilesModel);}
 
     @GetMapping("/getFileUrl")
-    public String getFileUrl(@RequestParam(name="fileId") String fileId){
-        return this.sysBaseApi.getFileUrl(fileId);
+    public String getFileUrl(@RequestParam(name="fileId") String Silian_fileId){
+        return this.sysBaseApi.getFileUrl(Silian_fileId);
     }
 
     /**
@@ -732,8 +732,8 @@ public class SystemApiController {
      * @return
      */
     @PutMapping("/updateAvatar")
-    public void updateAvatar(@RequestBody LoginUser loginUser){
-        this.sysBaseApi.updateAvatar(loginUser);
+    public void updateAvatar(@RequestBody LoginUser Silian_loginUser){
+        this.sysBaseApi.updateAvatar(Silian_loginUser);
     }
 
     /**
@@ -742,8 +742,8 @@ public class SystemApiController {
      * @return
      */
     @GetMapping("/sendAppChatSocket")
-    public void sendAppChatSocket(@RequestParam(name="userId") String userId){
-        this.sysBaseApi.sendAppChatSocket(userId);
+    public void sendAppChatSocket(@RequestParam(name="userId") String Silian_userId){
+        this.sysBaseApi.sendAppChatSocket(Silian_userId);
     }
 
 
@@ -754,14 +754,14 @@ public class SystemApiController {
      * @return
      */
     @ExceptionHandler(java.sql.SQLException.class)
-    public Result<?> handleSQLException(Exception e){
-        String msg = e.getMessage();
-        String extractvalue = "extractvalue";
-        String updatexml = "updatexml";
-        if(msg!=null && (msg.toLowerCase().indexOf(extractvalue)>=0 || msg.toLowerCase().indexOf(updatexml)>=0)){
+    public Result<?> handleSQLException(Exception Silian_e){
+        String Silian_msg = Silian_e.getMessage();
+        String Silian_extractvalue = "extractvalue";
+        String Silian_updatexml = "updatexml";
+        if(Silian_msg!=null && (Silian_msg.toLowerCase().indexOf(Silian_extractvalue)>=0 || Silian_msg.toLowerCase().indexOf(Silian_updatexml)>=0)){
             return Result.error("校验失败，sql解析异常！");
         }
-        return Result.error("校验失败，sql解析异常！" + msg);
+        return Result.error("校验失败，sql解析异常！" + Silian_msg);
     }
-    
+
 }

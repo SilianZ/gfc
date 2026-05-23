@@ -27,15 +27,15 @@ public class BigScreenTemplatController extends JeecgController<JeecgDemo, IJeec
      * @return
      */
     @RequestMapping("/html")
-    public ModelAndView ftl(ModelAndView modelAndView) {
-        modelAndView.setViewName("demo3");
-        List<String> userList = new ArrayList<String>();
-        userList.add("admin");
-        userList.add("user1");
-        userList.add("user2");
+    public ModelAndView ftl(ModelAndView Silian_modelAndView) {
+        Silian_modelAndView.setViewName("demo3");
+        List<String> Silian_userList = new ArrayList<String>();
+        Silian_userList.add("admin");
+        Silian_userList.add("user1");
+        Silian_userList.add("user2");
         log.info("--------------test--------------");
-        modelAndView.addObject("userList", userList);
-        return modelAndView;
+        Silian_modelAndView.addObject("userList", Silian_userList);
+        return Silian_modelAndView;
     }
 
     /**
@@ -44,9 +44,9 @@ public class BigScreenTemplatController extends JeecgController<JeecgDemo, IJeec
      * @return
      */
     @RequestMapping("/index1")
-    public ModelAndView index1(ModelAndView modelAndView) {
-        modelAndView.setViewName("/bigscreen/template1/index");
-        return modelAndView;
+    public ModelAndView index1(ModelAndView Silian_modelAndView) {
+        Silian_modelAndView.setViewName("/bigscreen/template1/index");
+        return Silian_modelAndView;
     }
 
     /**
@@ -55,9 +55,9 @@ public class BigScreenTemplatController extends JeecgController<JeecgDemo, IJeec
      * @return
      */
     @RequestMapping("/index2")
-    public ModelAndView index2(ModelAndView modelAndView) {
-        modelAndView.setViewName("/bigscreen/template2/index");
-        return modelAndView;
+    public ModelAndView index2(ModelAndView Silian_modelAndView) {
+        Silian_modelAndView.setViewName("/bigscreen/template2/index");
+        return Silian_modelAndView;
     }
 
 }

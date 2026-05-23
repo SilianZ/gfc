@@ -49,7 +49,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMinePlanService> {
 	@Autowired
 	private IBizMinePlanService bizMinePlanService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -62,16 +62,16 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	//@AutoLog(value = "原材料开采计划-分页列表查询")
 	@ApiOperation(value="原材料开采计划-分页列表查询", notes="原材料开采计划-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<BizMinePlan>> queryPageList(BizMinePlan bizMinePlan,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<BizMinePlan> queryWrapper = QueryGenerator.initQueryWrapper(bizMinePlan, req.getParameterMap());
-		Page<BizMinePlan> page = new Page<BizMinePlan>(pageNo, pageSize);
-		IPage<BizMinePlan> pageList = bizMinePlanService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<BizMinePlan>> queryPageList(BizMinePlan Silian_bizMinePlan,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<BizMinePlan> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizMinePlan, Silian_req.getParameterMap());
+		Page<BizMinePlan> Silian_page = new Page<BizMinePlan>(Silian_pageNo, Silian_pageSize);
+		IPage<BizMinePlan> Silian_pageList = bizMinePlanService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -82,11 +82,11 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	@ApiOperation(value="原材料开采计划-添加", notes="原材料开采计划-添加")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_plan:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody BizMinePlan bizMinePlan) {
-		bizMinePlanService.save(bizMinePlan);
+	public Result<String> add(@RequestBody BizMinePlan Silian_bizMinePlan) {
+		bizMinePlanService.save(Silian_bizMinePlan);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -97,11 +97,11 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	@ApiOperation(value="原材料开采计划-编辑", notes="原材料开采计划-编辑")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_plan:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody BizMinePlan bizMinePlan) {
-		bizMinePlanService.updateById(bizMinePlan);
+	public Result<String> edit(@RequestBody BizMinePlan Silian_bizMinePlan) {
+		bizMinePlanService.updateById(Silian_bizMinePlan);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -112,11 +112,11 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	@ApiOperation(value="原材料开采计划-通过id删除", notes="原材料开采计划-通过id删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_plan:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		bizMinePlanService.removeById(id);
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		bizMinePlanService.removeById(Silian_id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -127,11 +127,11 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	@ApiOperation(value="原材料开采计划-批量删除", notes="原材料开采计划-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_plan:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.bizMinePlanService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.bizMinePlanService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -141,12 +141,12 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
 	//@AutoLog(value = "原材料开采计划-通过id查询")
 	@ApiOperation(value="原材料开采计划-通过id查询", notes="原材料开采计划-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<BizMinePlan> queryById(@RequestParam(name="id",required=true) String id) {
-		BizMinePlan bizMinePlan = bizMinePlanService.getById(id);
-		if(bizMinePlan==null) {
+	public Result<BizMinePlan> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		BizMinePlan Silian_bizMinePlan = bizMinePlanService.getById(Silian_id);
+		if(Silian_bizMinePlan==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(bizMinePlan);
+		return Result.OK(Silian_bizMinePlan);
 	}
 
     /**
@@ -157,8 +157,8 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
     */
     //@RequiresPermissions("org.jeecg.modules:biz_mine_plan:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizMinePlan bizMinePlan) {
-        return super.exportXls(request, bizMinePlan, BizMinePlan.class, "原材料开采计划");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizMinePlan Silian_bizMinePlan) {
+        return super.exportXls(Silian_request, Silian_bizMinePlan, BizMinePlan.class, "原材料开采计划");
     }
 
     /**
@@ -170,8 +170,8 @@ public class BizMinePlanController extends JeecgController<BizMinePlan, IBizMine
     */
     //@RequiresPermissions("biz_mine_plan:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizMinePlan.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, BizMinePlan.class);
     }
 
 }

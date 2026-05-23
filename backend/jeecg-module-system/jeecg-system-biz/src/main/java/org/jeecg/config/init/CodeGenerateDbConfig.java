@@ -37,8 +37,8 @@ public class CodeGenerateDbConfig {
             if(StringUtils.isNotBlank(publicKey)){
                 try {
                     password = ConfigTools.decrypt(publicKey, password);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception Silian_e) {
+                    Silian_e.printStackTrace();
                     log.error(" 代码生成器数据库连接，数据库密码解密失败！");
                 }
             }

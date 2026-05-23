@@ -47,7 +47,7 @@ public class SysDictItemController {
 
 	@Autowired
 	private ISysDictItemService sysDictItemService;
-	
+
 	/**
 	 * @功能：查询字典数据
 	 * @param sysDictItem
@@ -57,18 +57,18 @@ public class SysDictItemController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<IPage<SysDictItem>> queryPageList(SysDictItem sysDictItem,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
-		Result<IPage<SysDictItem>> result = new Result<IPage<SysDictItem>>();
-		QueryWrapper<SysDictItem> queryWrapper = QueryGenerator.initQueryWrapper(sysDictItem, req.getParameterMap());
-		queryWrapper.orderByAsc("sort_order");
-		Page<SysDictItem> page = new Page<SysDictItem>(pageNo, pageSize);
-		IPage<SysDictItem> pageList = sysDictItemService.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+	public Result<IPage<SysDictItem>> queryPageList(SysDictItem Silian_sysDictItem,@RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,HttpServletRequest Silian_req) {
+		Result<IPage<SysDictItem>> Silian_result = new Result<IPage<SysDictItem>>();
+		QueryWrapper<SysDictItem> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysDictItem, Silian_req.getParameterMap());
+		Silian_queryWrapper.orderByAsc("sort_order");
+		Page<SysDictItem> Silian_page = new Page<SysDictItem>(Silian_pageNo, Silian_pageSize);
+		IPage<SysDictItem> Silian_pageList = sysDictItemService.page(Silian_page, Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
-	
+
 	/**
 	 * @功能：新增
 	 * @return
@@ -76,19 +76,19 @@ public class SysDictItemController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@CacheEvict(value= {CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDictItem> add(@RequestBody SysDictItem sysDictItem) {
-		Result<SysDictItem> result = new Result<SysDictItem>();
+	public Result<SysDictItem> add(@RequestBody SysDictItem Silian_sysDictItem) {
+		Result<SysDictItem> Silian_result = new Result<SysDictItem>();
 		try {
-			sysDictItem.setCreateTime(new Date());
-			sysDictItemService.save(sysDictItem);
-			result.success("保存成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
+			Silian_sysDictItem.setCreateTime(new Date());
+			sysDictItemService.save(Silian_sysDictItem);
+			Silian_result.success("保存成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	 * @功能：编辑
 	 * @param sysDictItem
@@ -97,22 +97,22 @@ public class SysDictItemController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/edit",  method = { RequestMethod.PUT,RequestMethod.POST })
 	@CacheEvict(value={CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDictItem> edit(@RequestBody SysDictItem sysDictItem) {
-		Result<SysDictItem> result = new Result<SysDictItem>();
-		SysDictItem sysdict = sysDictItemService.getById(sysDictItem.getId());
-		if(sysdict==null) {
-			result.error500("未找到对应实体");
+	public Result<SysDictItem> edit(@RequestBody SysDictItem Silian_sysDictItem) {
+		Result<SysDictItem> Silian_result = new Result<SysDictItem>();
+		SysDictItem Silian_sysdict = sysDictItemService.getById(Silian_sysDictItem.getId());
+		if(Silian_sysdict==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			sysDictItem.setUpdateTime(new Date());
-			boolean ok = sysDictItemService.updateById(sysDictItem);
+			Silian_sysDictItem.setUpdateTime(new Date());
+			boolean Silian_ok = sysDictItemService.updateById(Silian_sysDictItem);
 			//TODO 返回false说明什么？
-			if(ok) {
-				result.success("编辑成功!");
+			if(Silian_ok) {
+				Silian_result.success("编辑成功!");
 			}
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	 * @功能：删除字典数据
 	 * @param id
@@ -121,20 +121,20 @@ public class SysDictItemController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	@CacheEvict(value={CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDictItem> delete(@RequestParam(name="id",required=true) String id) {
-		Result<SysDictItem> result = new Result<SysDictItem>();
-		SysDictItem joinSystem = sysDictItemService.getById(id);
-		if(joinSystem==null) {
-			result.error500("未找到对应实体");
+	public Result<SysDictItem> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		Result<SysDictItem> Silian_result = new Result<SysDictItem>();
+		SysDictItem Silian_joinSystem = sysDictItemService.getById(Silian_id);
+		if(Silian_joinSystem==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			boolean ok = sysDictItemService.removeById(id);
-			if(ok) {
-				result.success("删除成功!");
+			boolean Silian_ok = sysDictItemService.removeById(Silian_id);
+			if(Silian_ok) {
+				Silian_result.success("删除成功!");
 			}
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	 * @功能：批量删除字典数据
 	 * @param ids
@@ -143,15 +143,15 @@ public class SysDictItemController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	@CacheEvict(value={CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDictItem> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<SysDictItem> result = new Result<SysDictItem>();
-		if(ids==null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
+	public Result<SysDictItem> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		Result<SysDictItem> Silian_result = new Result<SysDictItem>();
+		if(Silian_ids==null || "".equals(Silian_ids.trim())) {
+			Silian_result.error500("参数不识别！");
 		}else {
-			this.sysDictItemService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
+			this.sysDictItemService.removeByIds(Arrays.asList(Silian_ids.split(",")));
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -162,17 +162,17 @@ public class SysDictItemController {
 	 */
 	@RequestMapping(value = "/dictItemCheck", method = RequestMethod.GET)
 	@ApiOperation("字典重复校验接口")
-	public Result<Object> doDictItemCheck(SysDictItem sysDictItem, HttpServletRequest request) {
-		Long num = Long.valueOf(0);
-		LambdaQueryWrapper<SysDictItem> queryWrapper = new LambdaQueryWrapper<SysDictItem>();
-		queryWrapper.eq(SysDictItem::getItemValue,sysDictItem.getItemValue());
-		queryWrapper.eq(SysDictItem::getDictId,sysDictItem.getDictId());
-		if (StringUtils.isNotBlank(sysDictItem.getId())) {
+	public Result<Object> doDictItemCheck(SysDictItem Silian_sysDictItem, HttpServletRequest Silian_request) {
+		Long Silian_num = Long.valueOf(0);
+		LambdaQueryWrapper<SysDictItem> Silian_queryWrapper = new LambdaQueryWrapper<SysDictItem>();
+		Silian_queryWrapper.eq(SysDictItem::getItemValue,Silian_sysDictItem.getItemValue());
+		Silian_queryWrapper.eq(SysDictItem::getDictId,Silian_sysDictItem.getDictId());
+		if (StringUtils.isNotBlank(Silian_sysDictItem.getId())) {
 			// 编辑页面校验
-			queryWrapper.ne(SysDictItem::getId,sysDictItem.getId());
+			Silian_queryWrapper.ne(SysDictItem::getId,Silian_sysDictItem.getId());
 		}
-		num = sysDictItemService.count(queryWrapper);
-		if (num == 0) {
+		Silian_num = sysDictItemService.count(Silian_queryWrapper);
+		if (Silian_num == 0) {
 			// 该值可用
 			return Result.ok("该值可用！");
 		} else {
@@ -181,5 +181,5 @@ public class SysDictItemController {
 			return Result.error("该值不可用，系统中已存在！");
 		}
 	}
-	
+
 }

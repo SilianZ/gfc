@@ -39,40 +39,40 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 	private ISysDepartService sysDepartService;
 	@Autowired
 	private SysUserMapper sysUserMapper;
-	
+
 
 	/**
 	 * 根据用户id查询部门信息
 	 */
 	@Override
-	public List<DepartIdModel> queryDepartIdsOfUser(String userId) {
-		LambdaQueryWrapper<SysUserDepart> queryUserDep = new LambdaQueryWrapper<SysUserDepart>();
-		LambdaQueryWrapper<SysDepart> queryDep = new LambdaQueryWrapper<SysDepart>();
+	public List<DepartIdModel> queryDepartIdsOfUser(String Silian_userId) {
+		LambdaQueryWrapper<SysUserDepart> Silian_queryUserDep = new LambdaQueryWrapper<SysUserDepart>();
+		LambdaQueryWrapper<SysDepart> Silian_queryDep = new LambdaQueryWrapper<SysDepart>();
 		try {
-            queryUserDep.eq(SysUserDepart::getUserId, userId);
-			List<String> depIdList = new ArrayList<>();
-			List<DepartIdModel> depIdModelList = new ArrayList<>();
-			List<SysUserDepart> userDepList = this.list(queryUserDep);
-			if(userDepList != null && userDepList.size() > 0) {
-			for(SysUserDepart userDepart : userDepList) {
-					depIdList.add(userDepart.getDepId());
+            Silian_queryUserDep.eq(SysUserDepart::getUserId, Silian_userId);
+			List<String> Silian_depIdList = new ArrayList<>();
+			List<DepartIdModel> Silian_depIdModelList = new ArrayList<>();
+			List<SysUserDepart> Silian_userDepList = this.list(Silian_queryUserDep);
+			if(Silian_userDepList != null && Silian_userDepList.size() > 0) {
+			for(SysUserDepart Silian_userDepart : Silian_userDepList) {
+					Silian_depIdList.add(Silian_userDepart.getDepId());
 				}
-			queryDep.in(SysDepart::getId, depIdList);
-			List<SysDepart> depList = sysDepartService.list(queryDep);
+			Silian_queryDep.in(SysDepart::getId, Silian_depIdList);
+			List<SysDepart> Silian_depList = sysDepartService.list(Silian_queryDep);
 			//jeecg-boot/issues/3906
-			if(depList != null && depList.size() > 0) {
-				for(SysDepart depart : depList) {
-					depIdModelList.add(new DepartIdModel().convertByUserDepart(depart));
+			if(Silian_depList != null && Silian_depList.size() > 0) {
+				for(SysDepart Silian_depart : Silian_depList) {
+					Silian_depIdModelList.add(new DepartIdModel().convertByUserDepart(Silian_depart));
 				}
 			}
-			return depIdModelList;
+			return Silian_depIdModelList;
 			}
-		}catch(Exception e) {
-			e.fillInStackTrace();
+		}catch(Exception Silian_e) {
+			Silian_e.fillInStackTrace();
 		}
 		return null;
-		
-		
+
+
 	}
 
 
@@ -80,23 +80,23 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 	 * 根据部门id查询用户信息
 	 */
 	@Override
-	public List<SysUser> queryUserByDepId(String depId) {
-		LambdaQueryWrapper<SysUserDepart> queryUserDep = new LambdaQueryWrapper<SysUserDepart>();
-		queryUserDep.eq(SysUserDepart::getDepId, depId);
-		List<String> userIdList = new ArrayList<>();
-		List<SysUserDepart> uDepList = this.list(queryUserDep);
-		if(uDepList != null && uDepList.size() > 0) {
-			for(SysUserDepart uDep : uDepList) {
-				userIdList.add(uDep.getUserId());
+	public List<SysUser> queryUserByDepId(String Silian_depId) {
+		LambdaQueryWrapper<SysUserDepart> Silian_queryUserDep = new LambdaQueryWrapper<SysUserDepart>();
+		Silian_queryUserDep.eq(SysUserDepart::getDepId, Silian_depId);
+		List<String> Silian_userIdList = new ArrayList<>();
+		List<SysUserDepart> Silian_uDepList = this.list(Silian_queryUserDep);
+		if(Silian_uDepList != null && Silian_uDepList.size() > 0) {
+			for(SysUserDepart Silian_uDep : Silian_uDepList) {
+				Silian_userIdList.add(Silian_uDep.getUserId());
 			}
-			List<SysUser> userList = (List<SysUser>) sysUserMapper.selectBatchIds(userIdList);
+			List<SysUser> Silian_userList = (List<SysUser>) sysUserMapper.selectBatchIds(Silian_userIdList);
 			//update-begin-author:taoyan date:201905047 for:接口调用查询返回结果不能返回密码相关信息
-			for (SysUser sysUser : userList) {
-				sysUser.setSalt("");
-				sysUser.setPassword("");
+			for (SysUser Silian_sysUser : Silian_userList) {
+				Silian_sysUser.setSalt("");
+				Silian_sysUser.setPassword("");
 			}
 			//update-end-author:taoyan date:201905047 for:接口调用查询返回结果不能返回密码相关信息
-			return userList;
+			return Silian_userList;
 		}
 		return new ArrayList<SysUser>();
 	}
@@ -105,95 +105,95 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 	 * 根据部门code，查询当前部门和下级部门的 用户信息
 	 */
 	@Override
-	public List<SysUser> queryUserByDepCode(String depCode,String realname) {
+	public List<SysUser> queryUserByDepCode(String Silian_depCode,String Silian_realname) {
 		//update-begin-author:taoyan date:20210422 for: 根据部门选择用户接口代码优化
-		if(oConvertUtils.isNotEmpty(realname)){
-			realname = realname.trim();
+		if(oConvertUtils.isNotEmpty(Silian_realname)){
+			Silian_realname = Silian_realname.trim();
 		}
-		List<SysUser> userList = this.baseMapper.queryDepartUserList(depCode, realname);
-		Map<String, SysUser> map = new HashMap(5);
-		for (SysUser sysUser : userList) {
+		List<SysUser> Silian_userList = this.baseMapper.queryDepartUserList(Silian_depCode, Silian_realname);
+		Map<String, SysUser> Silian_map = new HashMap(5);
+		for (SysUser Silian_sysUser : Silian_userList) {
 			// 返回的用户数据去掉密码信息
-			sysUser.setSalt("");
-			sysUser.setPassword("");
-			map.put(sysUser.getId(), sysUser);
+			Silian_sysUser.setSalt("");
+			Silian_sysUser.setPassword("");
+			Silian_map.put(Silian_sysUser.getId(), Silian_sysUser);
 		}
-		return new ArrayList<SysUser>(map.values());
+		return new ArrayList<SysUser>(Silian_map.values());
 		//update-end-author:taoyan date:20210422 for: 根据部门选择用户接口代码优化
 
 	}
 
 	@Override
-	public IPage<SysUser> queryDepartUserPageList(String departId, String username, String realname, int pageSize, int pageNo,String id) {
-		IPage<SysUser> pageList = null;
+	public IPage<SysUser> queryDepartUserPageList(String Silian_departId, String Silian_username, String Silian_realname, int Silian_pageSize, int Silian_pageNo,String Silian_id) {
+		IPage<SysUser> Silian_pageList = null;
 		// 部门ID不存在 直接查询用户表即可
-		Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
-		if(oConvertUtils.isEmpty(departId)){
-			LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
+		Page<SysUser> Silian_page = new Page<SysUser>(Silian_pageNo, Silian_pageSize);
+		if(oConvertUtils.isEmpty(Silian_departId)){
+			LambdaQueryWrapper<SysUser> Silian_query = new LambdaQueryWrapper<>();
             //update-begin---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
-            query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
+            Silian_query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
             //update-end---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
-			if(oConvertUtils.isNotEmpty(username)){
-				query.like(SysUser::getUsername, username);
+			if(oConvertUtils.isNotEmpty(Silian_username)){
+				Silian_query.like(SysUser::getUsername, Silian_username);
 			}
             //update-begin---author:wangshuai ---date:20220608  for：[VUEN-1238]邮箱回复时，发送到显示的为用户id------------
-            if(oConvertUtils.isNotEmpty(id)){
-                query.eq(SysUser::getId, id);
+            if(oConvertUtils.isNotEmpty(Silian_id)){
+                Silian_query.eq(SysUser::getId, Silian_id);
             }
             //update-end---author:wangshuai ---date:20220608  for：[VUEN-1238]邮箱回复时，发送到显示的为用户id------------
             //update-begin---author:wangshuai ---date:20220902  for：[VUEN-2121]临时用户不能直接显示------------
-            query.ne(SysUser::getUsername,"_reserve_user_external");
+            Silian_query.ne(SysUser::getUsername,"_reserve_user_external");
             //update-end---author:wangshuai ---date:20220902  for：[VUEN-2121]临时用户不能直接显示------------
-            pageList = sysUserMapper.selectPage(page, query);
+            Silian_pageList = sysUserMapper.selectPage(Silian_page, Silian_query);
 		}else{
 			// 有部门ID 需要走自定义sql
-			SysDepart sysDepart = sysDepartService.getById(departId);
-			pageList = this.baseMapper.queryDepartUserPageList(page, sysDepart.getOrgCode(), username, realname);
+			SysDepart Silian_sysDepart = sysDepartService.getById(Silian_departId);
+			Silian_pageList = this.baseMapper.queryDepartUserPageList(Silian_page, Silian_sysDepart.getOrgCode(), Silian_username, Silian_realname);
 		}
-		List<SysUser> userList = pageList.getRecords();
-		if(userList!=null && userList.size()>0){
-			List<String> userIds = userList.stream().map(SysUser::getId).collect(Collectors.toList());
-			Map<String, SysUser> map = new HashMap(5);
-			if(userIds!=null && userIds.size()>0){
+		List<SysUser> Silian_userList = Silian_pageList.getRecords();
+		if(Silian_userList!=null && Silian_userList.size()>0){
+			List<String> Silian_userIds = Silian_userList.stream().map(SysUser::getId).collect(Collectors.toList());
+			Map<String, SysUser> Silian_map = new HashMap(5);
+			if(Silian_userIds!=null && Silian_userIds.size()>0){
 				// 查部门名称
-				Map<String,String>  useDepNames = this.getDepNamesByUserIds(userIds);
-				userList.forEach(item->{
+				Map<String,String>  Silian_useDepNames = this.getDepNamesByUserIds(Silian_userIds);
+				Silian_userList.forEach(Silian_item->{
 					//TODO 临时借用这个字段用于页面展示
-					item.setOrgCodeTxt(useDepNames.get(item.getId()));
-					item.setSalt("");
-					item.setPassword("");
+					Silian_item.setOrgCodeTxt(Silian_useDepNames.get(Silian_item.getId()));
+					Silian_item.setSalt("");
+					Silian_item.setPassword("");
 					// 去重
-					map.put(item.getId(), item);
+					Silian_map.put(Silian_item.getId(), Silian_item);
 				});
 			}
-			pageList.setRecords(new ArrayList<SysUser>(map.values()));
+			Silian_pageList.setRecords(new ArrayList<SysUser>(Silian_map.values()));
 		}
-		return pageList;
+		return Silian_pageList;
 	}
 
     @Override
-    public IPage<SysUser> getUserInformation(String departId, String keyword, Integer pageSize, Integer pageNo) {
-        IPage<SysUser> pageList = null;
+    public IPage<SysUser> getUserInformation(String Silian_departId, String Silian_keyword, Integer Silian_pageSize, Integer Silian_pageNo) {
+        IPage<SysUser> Silian_pageList = null;
         // 部门ID不存在 直接查询用户表即可
-        Page<SysUser> page = new Page<>(pageNo, pageSize);
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        if(oConvertUtils.isEmpty(departId)){
-            LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
-            query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
-            query.ne(SysUser::getUsername,"_reserve_user_external");
+        Page<SysUser> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        if(oConvertUtils.isEmpty(Silian_departId)){
+            LambdaQueryWrapper<SysUser> Silian_query = new LambdaQueryWrapper<>();
+            Silian_query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
+            Silian_query.ne(SysUser::getUsername,"_reserve_user_external");
             //排除自己
-            query.ne(SysUser::getId,sysUser.getId());
+            Silian_query.ne(SysUser::getId,Silian_sysUser.getId());
             //这个语法可以将or用括号包起来，避免数据查不到
-            query.and((wrapper) -> wrapper.like(SysUser::getUsername, keyword).or().like(SysUser::getRealname,keyword));
-            pageList = sysUserMapper.selectPage(page, query);
+            Silian_query.and((Silian_wrapper) -> Silian_wrapper.like(SysUser::getUsername, Silian_keyword).or().like(SysUser::getRealname,Silian_keyword));
+            Silian_pageList = sysUserMapper.selectPage(Silian_page, Silian_query);
         }else{
             // 有部门ID 需要走自定义sql
-            SysDepart sysDepart = sysDepartService.getById(departId);
+            SysDepart Silian_sysDepart = sysDepartService.getById(Silian_departId);
             //update-begin---author:wangshuai ---date:20220908  for：部门排除自己------------
-            pageList = this.baseMapper.getUserInformation(page, sysDepart.getOrgCode(), keyword,sysUser.getId());
+            Silian_pageList = this.baseMapper.getUserInformation(Silian_page, Silian_sysDepart.getOrgCode(), Silian_keyword,Silian_sysUser.getId());
             //update-end---author:wangshuai ---date:20220908  for：部门排除自己--------------
         }
-        return pageList;
+        return Silian_pageList;
     }
 
 	/**
@@ -201,19 +201,19 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 	 * @param userIds
 	 * @return
 	 */
-	private Map<String, String> getDepNamesByUserIds(List<String> userIds) {
-		List<SysUserDepVo> list = sysUserMapper.getDepNamesByUserIds(userIds);
+	private Map<String, String> getDepNamesByUserIds(List<String> Silian_userIds) {
+		List<SysUserDepVo> Silian_list = sysUserMapper.getDepNamesByUserIds(Silian_userIds);
 
-		Map<String, String> res = new HashMap(5);
-		list.forEach(item -> {
-					if (res.get(item.getUserId()) == null) {
-						res.put(item.getUserId(), item.getDepartName());
+		Map<String, String> Silian_res = new HashMap(5);
+		Silian_list.forEach(Silian_item -> {
+					if (Silian_res.get(Silian_item.getUserId()) == null) {
+						Silian_res.put(Silian_item.getUserId(), Silian_item.getDepartName());
 					} else {
-						res.put(item.getUserId(), res.get(item.getUserId()) + "," + item.getDepartName());
+						Silian_res.put(Silian_item.getUserId(), Silian_res.get(Silian_item.getUserId()) + "," + Silian_item.getDepartName());
 					}
 				}
 		);
-		return res;
+		return Silian_res;
 	}
 
 }

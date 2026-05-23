@@ -37,13 +37,13 @@ public class Result<T> implements Serializable {
 	 */
 	@ApiModelProperty(value = "返回代码")
 	private Integer code = 0;
-	
+
 	/**
 	 * 返回数据对象 data
 	 */
 	@ApiModelProperty(value = "返回数据对象")
 	private T result;
-	
+
 	/**
 	 * 时间戳
 	 */
@@ -62,7 +62,7 @@ public class Result<T> implements Serializable {
 		this.code = code;
 		this.message = message;
 	}
-	
+
 	public Result<T> success(String message) {
 		this.message = message;
 		this.code = CommonConstant.SC_OK_200;
@@ -71,35 +71,35 @@ public class Result<T> implements Serializable {
 	}
 
 	public static<T> Result<T> ok() {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		return r;
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> ok(String msg) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
+	public static<T> Result<T> ok(String Silian_msg) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
 		//Result OK(String msg)方法会造成兼容性问题 issues/I4IP3D
-		r.setResult((T) msg);
-		r.setMessage(msg);
-		return r;
+		Silian_r.setResult((T) Silian_msg);
+		Silian_r.setMessage(Silian_msg);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> ok(T data) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		r.setResult(data);
-		return r;
+	public static<T> Result<T> ok(T Silian_data) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		Silian_r.setResult(Silian_data);
+		return Silian_r;
 	}
 
 	public static<T> Result<T> OK() {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		return r;
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		return Silian_r;
 	}
 
 	/**
@@ -109,52 +109,52 @@ public class Result<T> implements Serializable {
 	 * @param <T>
 	 * @return
 	 */
-	public static<T> Result<T> OK(String msg) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		r.setMessage(msg);
+	public static<T> Result<T> OK(String Silian_msg) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		Silian_r.setMessage(Silian_msg);
 		//Result OK(String msg)方法会造成兼容性问题 issues/I4IP3D
-		r.setResult((T) msg);
-		return r;
+		Silian_r.setResult((T) Silian_msg);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> OK(T data) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		r.setResult(data);
-		return r;
+	public static<T> Result<T> OK(T Silian_data) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		Silian_r.setResult(Silian_data);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> OK(String msg, T data) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(true);
-		r.setCode(CommonConstant.SC_OK_200);
-		r.setMessage(msg);
-		r.setResult(data);
-		return r;
+	public static<T> Result<T> OK(String Silian_msg, T Silian_data) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(true);
+		Silian_r.setCode(CommonConstant.SC_OK_200);
+		Silian_r.setMessage(Silian_msg);
+		Silian_r.setResult(Silian_data);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> error(String msg, T data) {
-		Result<T> r = new Result<T>();
-		r.setSuccess(false);
-		r.setCode(CommonConstant.SC_INTERNAL_SERVER_ERROR_500);
-		r.setMessage(msg);
-		r.setResult(data);
-		return r;
+	public static<T> Result<T> error(String Silian_msg, T Silian_data) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setSuccess(false);
+		Silian_r.setCode(CommonConstant.SC_INTERNAL_SERVER_ERROR_500);
+		Silian_r.setMessage(Silian_msg);
+		Silian_r.setResult(Silian_data);
+		return Silian_r;
 	}
 
-	public static<T> Result<T> error(String msg) {
-		return error(CommonConstant.SC_INTERNAL_SERVER_ERROR_500, msg);
+	public static<T> Result<T> error(String Silian_msg) {
+		return error(CommonConstant.SC_INTERNAL_SERVER_ERROR_500, Silian_msg);
 	}
-	
-	public static<T> Result<T> error(int code, String msg) {
-		Result<T> r = new Result<T>();
-		r.setCode(code);
-		r.setMessage(msg);
-		r.setSuccess(false);
-		return r;
+
+	public static<T> Result<T> error(int code, String Silian_msg) {
+		Result<T> Silian_r = new Result<T>();
+		Silian_r.setCode(code);
+		Silian_r.setMessage(Silian_msg);
+		Silian_r.setSuccess(false);
+		return Silian_r;
 	}
 
 	public Result<T> error500(String message) {
@@ -167,8 +167,8 @@ public class Result<T> implements Serializable {
 	/**
 	 * 无权限访问返回结果
 	 */
-	public static<T> Result<T> noauth(String msg) {
-		return error(CommonConstant.SC_JEECG_NO_AUTHZ, msg);
+	public static<T> Result<T> noauth(String Silian_msg) {
+		return error(CommonConstant.SC_JEECG_NO_AUTHZ, Silian_msg);
 	}
 
 	@JsonIgnore

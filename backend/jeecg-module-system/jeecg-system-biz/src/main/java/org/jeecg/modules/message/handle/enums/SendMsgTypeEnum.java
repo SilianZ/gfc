@@ -54,9 +54,9 @@ public enum SendMsgTypeEnum {
 		if (oConvertUtils.isEmpty(type)) {
 			return null;
 		}
-		for (SendMsgTypeEnum val : values()) {
-			if (val.getType().equals(type)) {
-				return val;
+		for (SendMsgTypeEnum Silian_val : values()) {
+			if (Silian_val.getType().equals(type)) {
+				return Silian_val;
 			}
 		}
 		return null;

@@ -82,15 +82,15 @@ public class BizStockController
     // @AutoLog(value = "股票投资-分页列表查询")
     @ApiOperation(value = "股票投资-分页列表查询", notes = "股票投资-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<BizStock>> queryPageList(BizStock bizStock,
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            HttpServletRequest req) {
-        QueryWrapper<BizStock> queryWrapper = QueryGenerator.initQueryWrapper(bizStock,
-                req.getParameterMap());
-        Page<BizStock> page = new Page<BizStock>(pageNo, pageSize);
-        IPage<BizStock> pageList = bizStockService.page(page, queryWrapper);
-        return Result.OK(pageList);
+    public Result<IPage<BizStock>> queryPageList(BizStock Silian_bizStock,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            HttpServletRequest Silian_req) {
+        QueryWrapper<BizStock> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizStock,
+                Silian_req.getParameterMap());
+        Page<BizStock> Silian_page = new Page<BizStock>(Silian_pageNo, Silian_pageSize);
+        IPage<BizStock> Silian_pageList = bizStockService.page(Silian_page, Silian_queryWrapper);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -104,60 +104,60 @@ public class BizStockController
     // @RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> add(@RequestBody BizStock bizStock) {
+    public Result<String> add(@RequestBody BizStock Silian_bizStock) {
 
 
 
 
-        log.info("开始初始化查询条件构造器，搜索对象类型：{}", bizStock);
+        log.info("开始初始化查询条件构造器，搜索对象类型：{}", Silian_bizStock);
 
 
         try {
             log.info("12356896074578697");
-            Integer yearc=bizStock.getYearCode();
-            log.info("YearCode: {}", yearc);
-            
-            log.info("Start Year :::: {}", bizFiscalYearService.getById(yearc));
+            Integer Silian_yearc=Silian_bizStock.getYearCode();
+            log.info("YearCode: {}", Silian_yearc);
+
+            log.info("Start Year :::: {}", bizFiscalYearService.getById(Silian_yearc));
             log.info("Active Year :::: {}", bizFiscalYearService.getActiveYearCode());
             log.info("Max Year Code:::: {}", bizFiscalYearService.getMaxYearCode());
             log.info("Process Count :::: {}", bizFiscalYearService.getProcessCount());
-            log.info("Use yearCode to query the Bizfiscal year: {}", bizFiscalYearService.getByYearCode(yearc));
+            log.info("Use yearCode to query the Bizfiscal year: {}", bizFiscalYearService.getByYearCode(Silian_yearc));
 
-            
-            BizFiscalYear startyear=bizFiscalYearService.getByYearCode(yearc);
+
+            BizFiscalYear Silian_startyear=bizFiscalYearService.getByYearCode(Silian_yearc);
             // 检查是否在5分钟内投资
-            Date starttime=startyear.getStartTime();
+            Date Silian_starttime=Silian_startyear.getStartTime();
 
-            Date now = new Date();
+            Date Silian_now = new Date();
 
-            boolean isWithinFiveMinutes = now.after(starttime) && now.before(new Date(starttime.getTime() + 5 * 60000));
+            boolean Silian_isWithinFiveMinutes = Silian_now.after(Silian_starttime) && Silian_now.before(new Date(Silian_starttime.getTime() + 5 * 60000));
 
-            if(!isWithinFiveMinutes){
+            if(!Silian_isWithinFiveMinutes){
                 throw new Exception("已过当前财年投资时间");
             }
 
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizStock.getSellerId());
+            BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizStock.getSellerId());
             //判断投资总额是否超标
-            Double acct=buyerBalance.getCashAcct();
-            if(acct * 0.10 < bizStock.getTransPrice()){
+            Double Silian_acct=Silian_buyerBalance.getCashAcct();
+            if(Silian_acct * 0.10 < Silian_bizStock.getTransPrice()){
                 throw new Exception("投资金额超过10%");
             }
 
             // 减少买方现金余额
-            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
-                    - (bizStock.getTransPrice() == null ? 0 : bizStock.getTransPrice()));
-            if (buyerBalance.getCashAcct() < 0) {
+            Silian_buyerBalance.setCashAcct((Silian_buyerBalance.getCashAcct() == null ? 0 : Silian_buyerBalance.getCashAcct())
+                    - (Silian_bizStock.getTransPrice() == null ? 0 : Silian_bizStock.getTransPrice()));
+            if (Silian_buyerBalance.getCashAcct() < 0) {
                 throw new Exception("存入方现金余额不足");
             }
 
-            bizSubjectBalanceService.updateById(buyerBalance);
-            bizStockService.save(bizStock);
+            bizSubjectBalanceService.updateById(Silian_buyerBalance);
+            bizStockService.save(Silian_bizStock);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             // 回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("交易：" + e.getMessage());
+            return Result.error("交易：" + Silian_e.getMessage());
         }
         return Result.OK("添加成功！");
     }
@@ -175,37 +175,37 @@ public class BizStockController
     //@RequiresPermissions("org.jeecg.modules:biz_finance_management:delete")
     @DeleteMapping(value = "/delete")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> delete(@RequestParam(name="id",required=true) String id) {
+    public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
 
         try{
 
-            BizStock bizStock = bizStockService.getById(id);
+            BizStock Silian_bizStock = bizStockService.getById(Silian_id);
 
-            Integer now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
-            
-            if(now==bizStock.getYearCode()){//无法在第0财年提款
+            Integer Silian_now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
+
+            if(Silian_now==Silian_bizStock.getYearCode()){//无法在第0财年提款
                 throw new Exception("股票投资为t+1模式,无法在当前财年提款");
             }
 
             //计算收益
-            Double Inc=bizFiscalYearService.getByYearCode(now).getStockInc();
+            Double Silian_Inc=bizFiscalYearService.getByYearCode(Silian_now).getStockInc();
 
-            log.info("Here is the Increase: {}", Inc);
-            
+            log.info("Here is the Increase: {}", Silian_Inc);
+
             //增加投资方资金
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizStock.getSellerId());
+            BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizStock.getSellerId());
 
-            buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizStock.getTransPrice() * (1.00 + Inc));
+            Silian_buyerBalance.setCashAcct(Silian_buyerBalance.getCashAcct() + Silian_bizStock.getTransPrice() * (1.00 + Silian_Inc));
 
-            bizSubjectBalanceService.updateById(buyerBalance);
-            bizStockService.removeById(id);
+            bizSubjectBalanceService.updateById(Silian_buyerBalance);
+            bizStockService.removeById(Silian_id);
 
-        }catch (Exception e){
-            
-            e.printStackTrace();
+        }catch (Exception Silian_e){
+
+            Silian_e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return  Result.error("提现失败：" + e.getMessage());
+            return  Result.error("提现失败：" + Silian_e.getMessage());
 
         }
         return Result.OK("提现成功!");

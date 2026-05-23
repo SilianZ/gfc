@@ -29,91 +29,91 @@ import javax.servlet.http.HttpServletRequest;
 public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> implements ISysRolePermissionService {
 
 	@Override
-	public void saveRolePermission(String roleId, String permissionIds) {
-		String ip = "";
+	public void saveRolePermission(String Silian_roleId, String Silian_permissionIds) {
+		String Silian_ip = "";
 		try {
 			//获取request
-			HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+			HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
 			//获取IP地址
-			ip = IpUtils.getIpAddr(request);
-		} catch (Exception e) {
-			ip = "127.0.0.1";
+			Silian_ip = IpUtils.getIpAddr(Silian_request);
+		} catch (Exception Silian_e) {
+			Silian_ip = "127.0.0.1";
 		}
-		LambdaQueryWrapper<SysRolePermission> query = new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, roleId);
-		this.remove(query);
-		List<SysRolePermission> list = new ArrayList<SysRolePermission>();
-        String[] arr = permissionIds.split(",");
-		for (String p : arr) {
-			if(oConvertUtils.isNotEmpty(p)) {
-				SysRolePermission rolepms = new SysRolePermission(roleId, p);
-				rolepms.setOperateDate(new Date());
-				rolepms.setOperateIp(ip);
-				list.add(rolepms);
+		LambdaQueryWrapper<SysRolePermission> Silian_query = new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, Silian_roleId);
+		this.remove(Silian_query);
+		List<SysRolePermission> Silian_list = new ArrayList<SysRolePermission>();
+        String[] Silian_arr = Silian_permissionIds.split(",");
+		for (String Silian_p : Silian_arr) {
+			if(oConvertUtils.isNotEmpty(Silian_p)) {
+				SysRolePermission Silian_rolepms = new SysRolePermission(Silian_roleId, Silian_p);
+				Silian_rolepms.setOperateDate(new Date());
+				Silian_rolepms.setOperateIp(Silian_ip);
+				Silian_list.add(Silian_rolepms);
 			}
 		}
-		this.saveBatch(list);
+		this.saveBatch(Silian_list);
 	}
 
 	@Override
-	public void saveRolePermission(String roleId, String permissionIds, String lastPermissionIds) {
-		String ip = "";
+	public void saveRolePermission(String Silian_roleId, String Silian_permissionIds, String Silian_lastPermissionIds) {
+		String Silian_ip = "";
 		try {
 			//获取request
-			HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+			HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
 			//获取IP地址
-			ip = IpUtils.getIpAddr(request);
-		} catch (Exception e) {
-			ip = "127.0.0.1";
+			Silian_ip = IpUtils.getIpAddr(Silian_request);
+		} catch (Exception Silian_e) {
+			Silian_ip = "127.0.0.1";
 		}
-		List<String> add = getDiff(lastPermissionIds,permissionIds);
-		if(add!=null && add.size()>0) {
-			List<SysRolePermission> list = new ArrayList<SysRolePermission>();
-			for (String p : add) {
-				if(oConvertUtils.isNotEmpty(p)) {
-					SysRolePermission rolepms = new SysRolePermission(roleId, p);
-					rolepms.setOperateDate(new Date());
-					rolepms.setOperateIp(ip);
-					list.add(rolepms);
+		List<String> Silian_add = getDiff(Silian_lastPermissionIds,Silian_permissionIds);
+		if(Silian_add!=null && Silian_add.size()>0) {
+			List<SysRolePermission> Silian_list = new ArrayList<SysRolePermission>();
+			for (String Silian_p : Silian_add) {
+				if(oConvertUtils.isNotEmpty(Silian_p)) {
+					SysRolePermission Silian_rolepms = new SysRolePermission(Silian_roleId, Silian_p);
+					Silian_rolepms.setOperateDate(new Date());
+					Silian_rolepms.setOperateIp(Silian_ip);
+					Silian_list.add(Silian_rolepms);
 				}
 			}
-			this.saveBatch(list);
+			this.saveBatch(Silian_list);
 		}
-		
-		List<String> delete = getDiff(permissionIds,lastPermissionIds);
-		if(delete!=null && delete.size()>0) {
-			for (String permissionId : delete) {
-				this.remove(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, roleId).eq(SysRolePermission::getPermissionId, permissionId));
+
+		List<String> Silian_delete = getDiff(Silian_permissionIds,Silian_lastPermissionIds);
+		if(Silian_delete!=null && Silian_delete.size()>0) {
+			for (String Silian_permissionId : Silian_delete) {
+				this.remove(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, Silian_roleId).eq(SysRolePermission::getPermissionId, Silian_permissionId));
 			}
 		}
 	}
-	
+
 	/**
 	 * 从diff中找出main中没有的元素
 	 * @param main
 	 * @param diff
 	 * @return
 	 */
-	private List<String> getDiff(String main,String diff){
-		if(oConvertUtils.isEmpty(diff)) {
+	private List<String> getDiff(String Silian_main,String Silian_diff){
+		if(oConvertUtils.isEmpty(Silian_diff)) {
 			return null;
 		}
-		if(oConvertUtils.isEmpty(main)) {
-			return Arrays.asList(diff.split(","));
+		if(oConvertUtils.isEmpty(Silian_main)) {
+			return Arrays.asList(Silian_diff.split(","));
 		}
-		
-		String[] mainArr = main.split(",");
-		String[] diffArr = diff.split(",");
-		Map<String, Integer> map = new HashMap(5);
-		for (String string : mainArr) {
-			map.put(string, 1);
+
+		String[] Silian_mainArr = Silian_main.split(",");
+		String[] Silian_diffArr = Silian_diff.split(",");
+		Map<String, Integer> Silian_map = new HashMap(5);
+		for (String Silian_string : Silian_mainArr) {
+			Silian_map.put(Silian_string, 1);
 		}
-		List<String> res = new ArrayList<String>();
-		for (String key : diffArr) {
-			if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
-				res.add(key);
+		List<String> Silian_res = new ArrayList<String>();
+		for (String Silian_key : Silian_diffArr) {
+			if(oConvertUtils.isNotEmpty(Silian_key) && !Silian_map.containsKey(Silian_key)) {
+				Silian_res.add(Silian_key);
 			}
 		}
-		return res;
+		return Silian_res;
 	}
 
 }

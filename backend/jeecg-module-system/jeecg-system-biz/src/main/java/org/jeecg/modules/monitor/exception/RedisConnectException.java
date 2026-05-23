@@ -8,7 +8,7 @@ public class RedisConnectException extends Exception {
 
     private static final long serialVersionUID = 1639374111871115063L;
 
-    public RedisConnectException(String message) {
-        super(message);
+    public RedisConnectException(String Silian_message) {
+        super(Silian_message);
     }
 }

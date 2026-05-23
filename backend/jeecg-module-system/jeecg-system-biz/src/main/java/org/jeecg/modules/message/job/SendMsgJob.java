@@ -30,39 +30,39 @@ public class SendMsgJob implements Job {
 	private ISysBaseAPI sysBaseAPI;
 
 	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+	public void execute(JobExecutionContext Silian_jobExecutionContext) throws JobExecutionException {
 
 		log.info(String.format(" Jeecg-Boot 发送消息任务 SendMsgJob !  时间:" + DateUtils.getTimestamp()));
 
 		// 1.读取消息中心数据，只查询未发送的和发送失败不超过次数的
-		QueryWrapper<SysMessage> queryWrapper = new QueryWrapper<SysMessage>();
-		queryWrapper.eq("es_send_status", SendMsgStatusEnum.WAIT.getCode())
-				.or(i -> i.eq("es_send_status", SendMsgStatusEnum.FAIL.getCode()).lt("es_send_num", 6));
-		List<SysMessage> sysMessages = sysMessageService.list(queryWrapper);
-		System.out.println(sysMessages);
+		QueryWrapper<SysMessage> Silian_queryWrapper = new QueryWrapper<SysMessage>();
+		Silian_queryWrapper.eq("es_send_status", SendMsgStatusEnum.WAIT.getCode())
+				.or(Silian_i -> Silian_i.eq("es_send_status", SendMsgStatusEnum.FAIL.getCode()).lt("es_send_num", 6));
+		List<SysMessage> Silian_sysMessages = sysMessageService.list(Silian_queryWrapper);
+		System.out.println(Silian_sysMessages);
 		// 2.根据不同的类型走不通的发送实现类
-		for (SysMessage sysMessage : sysMessages) {
+		for (SysMessage Silian_sysMessage : Silian_sysMessages) {
 			//update-begin-author:taoyan date:2022-7-8 for: 模板消息发送测试调用方法修改
-			Integer sendNum = sysMessage.getEsSendNum();
+			Integer Silian_sendNum = Silian_sysMessage.getEsSendNum();
 			try {
-				MessageDTO md = new MessageDTO();
-				md.setTitle(sysMessage.getEsTitle());
-				md.setContent(sysMessage.getEsContent());
-				md.setToUser(sysMessage.getEsReceiver());
-				md.setType(sysMessage.getEsType());
-				md.setToAll(false);
-				sysBaseAPI.sendTemplateMessage(md);
+				MessageDTO Silian_md = new MessageDTO();
+				Silian_md.setTitle(Silian_sysMessage.getEsTitle());
+				Silian_md.setContent(Silian_sysMessage.getEsContent());
+				Silian_md.setToUser(Silian_sysMessage.getEsReceiver());
+				Silian_md.setType(Silian_sysMessage.getEsType());
+				Silian_md.setToAll(false);
+				sysBaseAPI.sendTemplateMessage(Silian_md);
 				//发送消息成功
-				sysMessage.setEsSendStatus(SendMsgStatusEnum.SUCCESS.getCode());
+				Silian_sysMessage.setEsSendStatus(SendMsgStatusEnum.SUCCESS.getCode());
 				//update-end-author:taoyan date:2022-7-8 for: 模板消息发送测试调用方法修改
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception Silian_e) {
+				Silian_e.printStackTrace();
 				// 发送消息出现异常
-				sysMessage.setEsSendStatus(SendMsgStatusEnum.FAIL.getCode());
+				Silian_sysMessage.setEsSendStatus(SendMsgStatusEnum.FAIL.getCode());
 			}
-			sysMessage.setEsSendNum(++sendNum);
+			Silian_sysMessage.setEsSendNum(++Silian_sendNum);
 			// 发送结果回写到数据库
-			sysMessageService.updateById(sysMessage);
+			sysMessageService.updateById(Silian_sysMessage);
 		}
 
 	}

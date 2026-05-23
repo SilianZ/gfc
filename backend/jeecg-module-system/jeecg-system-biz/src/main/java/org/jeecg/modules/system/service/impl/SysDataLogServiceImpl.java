@@ -20,18 +20,18 @@ public class SysDataLogServiceImpl extends ServiceImpl<SysDataLogMapper,SysDataL
 	 * 添加数据日志
 	 */
 	@Override
-	public void addDataLog(String tableName, String dataId, String dataContent) {
-		String versionNumber = "0";
-		String dataVersion = logMapper.queryMaxDataVer(tableName, dataId);
-		if(dataVersion != null ) {
-			versionNumber = String.valueOf(Integer.parseInt(dataVersion)+1);
+	public void addDataLog(String Silian_tableName, String Silian_dataId, String Silian_dataContent) {
+		String Silian_versionNumber = "0";
+		String Silian_dataVersion = logMapper.queryMaxDataVer(Silian_tableName, Silian_dataId);
+		if(Silian_dataVersion != null ) {
+			Silian_versionNumber = String.valueOf(Integer.parseInt(Silian_dataVersion)+1);
 		}
-		SysDataLog log = new SysDataLog();
-		log.setDataTable(tableName);
-		log.setDataId(dataId);
-		log.setDataContent(dataContent);
-		log.setDataVersion(versionNumber);
-		this.save(log);
+		SysDataLog Silian_log = new SysDataLog();
+		Silian_log.setDataTable(Silian_tableName);
+		Silian_log.setDataId(Silian_dataId);
+		Silian_log.setDataContent(Silian_dataContent);
+		Silian_log.setDataVersion(Silian_versionNumber);
+		this.save(Silian_log);
 	}
 
 }

@@ -61,9 +61,9 @@ public enum SysAnnmentTypeEnum {
         if (oConvertUtils.isEmpty(type)) {
             return null;
         }
-        for (SysAnnmentTypeEnum val : values()) {
-            if (val.getType().equals(type)) {
-                return val;
+        for (SysAnnmentTypeEnum Silian_val : values()) {
+            if (Silian_val.getType().equals(type)) {
+                return Silian_val;
             }
         }
         return null;

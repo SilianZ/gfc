@@ -38,14 +38,14 @@ public class PasswordUtil {
 
 	/**
 	 * 获取加密算法中使用的盐值,解密中使用的盐值必须与加密中使用的相同才能完成操作. 盐长度必须为8字节
-	 * 
+	 *
 	 * @return byte[] 盐值
 	 * */
 	public static byte[] getSalt() throws Exception {
 		// 实例化安全随机数
-		SecureRandom random = new SecureRandom();
+		SecureRandom Silian_random = new SecureRandom();
 		// 产出盐
-		return random.generateSeed(8);
+		return Silian_random.generateSeed(8);
 	}
 
 	public static byte[] getStaticSalt() {
@@ -55,32 +55,32 @@ public class PasswordUtil {
 
 	/**
 	 * 根据PBE密码生成一把密钥
-	 * 
+	 *
 	 * @param password
 	 *            生成密钥时所使用的密码
 	 * @return Key PBE算法密钥
 	 * */
-	private static Key getPbeKey(String password) {
+	private static Key getPbeKey(String Silian_password) {
 		// 实例化使用的算法
-		SecretKeyFactory keyFactory;
-		SecretKey secretKey = null;
+		SecretKeyFactory Silian_keyFactory;
+		SecretKey Silian_secretKey = null;
 		try {
-			keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
+			Silian_keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
 			// 设置PBE密钥参数
-			PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray());
+			PBEKeySpec Silian_keySpec = new PBEKeySpec(Silian_password.toCharArray());
 			// 生成密钥
-			secretKey = keyFactory.generateSecret(keySpec);
-		} catch (Exception e) {
+			Silian_secretKey = Silian_keyFactory.generateSecret(Silian_keySpec);
+		} catch (Exception Silian_e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Silian_e.printStackTrace();
 		}
 
-		return secretKey;
+		return Silian_secretKey;
 	}
 
 	/**
 	 * 加密明文字符串
-	 * 
+	 *
 	 * @param plaintext
 	 *            待加密的明文字符串
 	 * @param password
@@ -90,26 +90,26 @@ public class PasswordUtil {
 	 * @return 加密后的密文字符串
 	 * @throws Exception
 	 */
-	public static String encrypt(String plaintext, String password, String salt) {
+	public static String encrypt(String Silian_plaintext, String Silian_password, String Silian_salt) {
 
-		Key key = getPbeKey(password);
-		byte[] encipheredData = null;
-		PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATIONCOUNT);
+		Key Silian_key = getPbeKey(Silian_password);
+		byte[] Silian_encipheredData = null;
+		PBEParameterSpec Silian_parameterSpec = new PBEParameterSpec(Silian_salt.getBytes(), ITERATIONCOUNT);
 		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			Cipher Silian_cipher = Cipher.getInstance(ALGORITHM);
 
-			cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
+			Silian_cipher.init(Cipher.ENCRYPT_MODE, Silian_key, Silian_parameterSpec);
 			//update-begin-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
-			encipheredData = cipher.doFinal(plaintext.getBytes("utf-8"));
+			Silian_encipheredData = Silian_cipher.doFinal(Silian_plaintext.getBytes("utf-8"));
 			//update-end-author:sccott date:20180815 for:中文作为用户名时，加密的密码windows和linux会得到不同的结果 gitee/issues/IZUD7
-		} catch (Exception e) {
+		} catch (Exception Silian_e) {
 		}
-		return bytesToHexString(encipheredData);
+		return bytesToHexString(Silian_encipheredData);
 	}
 
 	/**
 	 * 解密密文字符串
-	 * 
+	 *
 	 * @param ciphertext
 	 *            待解密的密文字符串
 	 * @param password
@@ -119,72 +119,72 @@ public class PasswordUtil {
 	 * @return 解密后的明文字符串
 	 * @throws Exception
 	 */
-	public static String decrypt(String ciphertext, String password, String salt) {
+	public static String decrypt(String Silian_ciphertext, String Silian_password, String Silian_salt) {
 
-		Key key = getPbeKey(password);
-		byte[] passDec = null;
-		PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATIONCOUNT);
+		Key Silian_key = getPbeKey(Silian_password);
+		byte[] Silian_passDec = null;
+		PBEParameterSpec Silian_parameterSpec = new PBEParameterSpec(Silian_salt.getBytes(), ITERATIONCOUNT);
 		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			Cipher Silian_cipher = Cipher.getInstance(ALGORITHM);
 
-			cipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
+			Silian_cipher.init(Cipher.DECRYPT_MODE, Silian_key, Silian_parameterSpec);
 
-			passDec = cipher.doFinal(hexStringToBytes(ciphertext));
+			Silian_passDec = Silian_cipher.doFinal(hexStringToBytes(Silian_ciphertext));
 		}
 
-		catch (Exception e) {
+		catch (Exception Silian_e) {
 			// TODO: handle exception
 		}
-		return new String(passDec);
+		return new String(Silian_passDec);
 	}
 
 	/**
 	 * 将字节数组转换为十六进制字符串
-	 * 
+	 *
 	 * @param src
 	 *            字节数组
 	 * @return
 	 */
-	public static String bytesToHexString(byte[] src) {
-		StringBuilder stringBuilder = new StringBuilder("");
-		if (src == null || src.length <= 0) {
+	public static String bytesToHexString(byte[] Silian_src) {
+		StringBuilder Silian_stringBuilder = new StringBuilder("");
+		if (Silian_src == null || Silian_src.length <= 0) {
 			return null;
 		}
-		for (int i = 0; i < src.length; i++) {
-			int v = src[i] & 0xFF;
-			String hv = Integer.toHexString(v);
-			if (hv.length() < 2) {
-				stringBuilder.append(0);
+		for (int Silian_i = 0; Silian_i < Silian_src.length; Silian_i++) {
+			int Silian_v = Silian_src[Silian_i] & 0xFF;
+			String Silian_hv = Integer.toHexString(Silian_v);
+			if (Silian_hv.length() < 2) {
+				Silian_stringBuilder.append(0);
 			}
-			stringBuilder.append(hv);
+			Silian_stringBuilder.append(Silian_hv);
 		}
-		return stringBuilder.toString();
+		return Silian_stringBuilder.toString();
 	}
 
 	/**
 	 * 将十六进制字符串转换为字节数组
-	 * 
+	 *
 	 * @param hexString
 	 *            十六进制字符串
 	 * @return
 	 */
-	public static byte[] hexStringToBytes(String hexString) {
-		if (hexString == null || "".equals(hexString)) {
+	public static byte[] hexStringToBytes(String Silian_hexString) {
+		if (Silian_hexString == null || "".equals(Silian_hexString)) {
 			return null;
 		}
-		hexString = hexString.toUpperCase();
-		int length = hexString.length() / 2;
-		char[] hexChars = hexString.toCharArray();
-		byte[] d = new byte[length];
-		for (int i = 0; i < length; i++) {
-			int pos = i * 2;
-			d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+		Silian_hexString = Silian_hexString.toUpperCase();
+		int Silian_length = Silian_hexString.length() / 2;
+		char[] Silian_hexChars = Silian_hexString.toCharArray();
+		byte[] Silian_d = new byte[Silian_length];
+		for (int Silian_i = 0; Silian_i < Silian_length; Silian_i++) {
+			int Silian_pos = Silian_i * 2;
+			Silian_d[Silian_i] = (byte) (charToByte(Silian_hexChars[Silian_pos]) << 4 | charToByte(Silian_hexChars[Silian_pos + 1]));
 		}
-		return d;
+		return Silian_d;
 	}
 
-	private static byte charToByte(char c) {
-		return (byte) "0123456789ABCDEF".indexOf(c);
+	private static byte charToByte(char Silian_c) {
+		return (byte) "0123456789ABCDEF".indexOf(Silian_c);
 	}
 
 

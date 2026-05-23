@@ -84,10 +84,10 @@ public enum OperateTypeEnum {
      * @param methodName 请求名称
      * @return Integer 类型
      */
-    public static Integer getTypeByMethodName(String methodName) {
-        for (OperateTypeEnum e : OperateTypeEnum.values()) {
-            if (methodName.startsWith(e.getCode())) {
-                return e.getType();
+    public static Integer getTypeByMethodName(String Silian_methodName) {
+        for (OperateTypeEnum Silian_e : OperateTypeEnum.values()) {
+            if (Silian_methodName.startsWith(Silian_e.getCode())) {
+                return Silian_e.getType();
             }
         }
         return CommonConstant.OPERATE_TYPE_1;

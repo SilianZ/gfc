@@ -33,122 +33,122 @@ import java.util.List;
 @Service
 @Slf4j
 public class SysThirdAccountServiceImpl extends ServiceImpl<SysThirdAccountMapper, SysThirdAccount> implements ISysThirdAccountService {
-    
+
     @Autowired
     private  SysThirdAccountMapper sysThirdAccountMapper;
-    
+
     @Autowired
     private SysUserMapper sysUserMapper;
     @Autowired
     private SysRoleMapper sysRoleMapper;
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
-    
+
     @Override
-    public void updateThirdUserId(SysUser sysUser,String thirdUserUuid) {
+    public void updateThirdUserId(SysUser Silian_sysUser,String Silian_thirdUserUuid) {
         //修改第三方登录账户表使其进行添加用户id
-        LambdaQueryWrapper<SysThirdAccount> query = new LambdaQueryWrapper<>();
-        query.eq(SysThirdAccount::getThirdUserUuid,thirdUserUuid);
-        SysThirdAccount account = sysThirdAccountMapper.selectOne(query);
-        SysThirdAccount sysThirdAccount = new SysThirdAccount();
-        sysThirdAccount.setSysUserId(sysUser.getId());
+        LambdaQueryWrapper<SysThirdAccount> Silian_query = new LambdaQueryWrapper<>();
+        Silian_query.eq(SysThirdAccount::getThirdUserUuid,Silian_thirdUserUuid);
+        SysThirdAccount Silian_account = sysThirdAccountMapper.selectOne(Silian_query);
+        SysThirdAccount Silian_sysThirdAccount = new SysThirdAccount();
+        Silian_sysThirdAccount.setSysUserId(Silian_sysUser.getId());
         //根据当前用户id和登录方式查询第三方登录表
-        LambdaQueryWrapper<SysThirdAccount> thirdQuery = new LambdaQueryWrapper<>();
-        thirdQuery.eq(SysThirdAccount::getSysUserId,sysUser.getId());
-        thirdQuery.eq(SysThirdAccount::getThirdType,account.getThirdType());
-        SysThirdAccount sysThirdAccounts = sysThirdAccountMapper.selectOne(thirdQuery);
-        if(sysThirdAccounts!=null){
-            sysThirdAccount.setThirdUserId(sysThirdAccounts.getThirdUserId());
-            sysThirdAccountMapper.deleteById(sysThirdAccounts.getId());
+        LambdaQueryWrapper<SysThirdAccount> Silian_thirdQuery = new LambdaQueryWrapper<>();
+        Silian_thirdQuery.eq(SysThirdAccount::getSysUserId,Silian_sysUser.getId());
+        Silian_thirdQuery.eq(SysThirdAccount::getThirdType,Silian_account.getThirdType());
+        SysThirdAccount Silian_sysThirdAccounts = sysThirdAccountMapper.selectOne(Silian_thirdQuery);
+        if(Silian_sysThirdAccounts!=null){
+            Silian_sysThirdAccount.setThirdUserId(Silian_sysThirdAccounts.getThirdUserId());
+            sysThirdAccountMapper.deleteById(Silian_sysThirdAccounts.getId());
         }
         //更新用户账户表sys_user_id
-        sysThirdAccountMapper.update(sysThirdAccount,query);
+        sysThirdAccountMapper.update(Silian_sysThirdAccount,Silian_query);
     }
-    
+
     @Override
-    public SysUser createUser(String phone, String thirdUserUuid) {
+    public SysUser createUser(String Silian_phone, String Silian_thirdUserUuid) {
        //先查询第三方，获取登录方式
-        LambdaQueryWrapper<SysThirdAccount> query = new LambdaQueryWrapper<>();
-        query.eq(SysThirdAccount::getThirdUserUuid,thirdUserUuid);
-        SysThirdAccount account = sysThirdAccountMapper.selectOne(query);
+        LambdaQueryWrapper<SysThirdAccount> Silian_query = new LambdaQueryWrapper<>();
+        Silian_query.eq(SysThirdAccount::getThirdUserUuid,Silian_thirdUserUuid);
+        SysThirdAccount Silian_account = sysThirdAccountMapper.selectOne(Silian_query);
         //通过用户名查询数据库是否已存在
-        SysUser userByName = sysUserMapper.getUserByName(thirdUserUuid);
-        if(null!=userByName){
+        SysUser Silian_userByName = sysUserMapper.getUserByName(Silian_thirdUserUuid);
+        if(null!=Silian_userByName){
             //如果账号存在的话，则自动加上一个时间戳
-            String format = DateUtils.yyyymmddhhmmss.get().format(new Date());
-            thirdUserUuid = thirdUserUuid + format;
+            String Silian_format = DateUtils.yyyymmddhhmmss.get().format(new Date());
+            Silian_thirdUserUuid = Silian_thirdUserUuid + Silian_format;
         }
         //添加用户
-        SysUser user = new SysUser();
-        user.setActivitiSync(CommonConstant.ACT_SYNC_0);
-        user.setDelFlag(CommonConstant.DEL_FLAG_0);
-        user.setStatus(1);
-        user.setUsername(thirdUserUuid);
-        user.setPhone(phone);
+        SysUser Silian_user = new SysUser();
+        Silian_user.setActivitiSync(CommonConstant.ACT_SYNC_0);
+        Silian_user.setDelFlag(CommonConstant.DEL_FLAG_0);
+        Silian_user.setStatus(1);
+        Silian_user.setUsername(Silian_thirdUserUuid);
+        Silian_user.setPhone(Silian_phone);
         //设置初始密码
-        String salt = oConvertUtils.randomGen(8);
-        user.setSalt(salt);
-        String passwordEncode = PasswordUtil.encrypt(user.getUsername(), "123456", salt);
-        user.setPassword(passwordEncode);
-        user.setRealname(account.getRealname());
-        user.setAvatar(account.getAvatar());
-        String s = this.saveThirdUser(user);
+        String Silian_salt = oConvertUtils.randomGen(8);
+        Silian_user.setSalt(Silian_salt);
+        String Silian_passwordEncode = PasswordUtil.encrypt(Silian_user.getUsername(), "123456", Silian_salt);
+        Silian_user.setPassword(Silian_passwordEncode);
+        Silian_user.setRealname(Silian_account.getRealname());
+        Silian_user.setAvatar(Silian_account.getAvatar());
+        String Silian_s = this.saveThirdUser(Silian_user);
         //更新用户第三方账户表的userId
-        SysThirdAccount sysThirdAccount = new SysThirdAccount();
-        sysThirdAccount.setSysUserId(s);
-        sysThirdAccountMapper.update(sysThirdAccount,query);
-        return user;
+        SysThirdAccount Silian_sysThirdAccount = new SysThirdAccount();
+        Silian_sysThirdAccount.setSysUserId(Silian_s);
+        sysThirdAccountMapper.update(Silian_sysThirdAccount,Silian_query);
+        return Silian_user;
     }
-    
-    public String saveThirdUser(SysUser sysUser) {
+
+    public String saveThirdUser(SysUser Silian_sysUser) {
         //保存用户
-        String userid = UUIDGenerator.generate();
-        sysUser.setId(userid);
-        sysUserMapper.insert(sysUser);
+        String Silian_userid = UUIDGenerator.generate();
+        Silian_sysUser.setId(Silian_userid);
+        sysUserMapper.insert(Silian_sysUser);
         //获取第三方角色
-        SysRole sysRole = sysRoleMapper.selectOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, "third_role"));
+        SysRole Silian_sysRole = sysRoleMapper.selectOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, "third_role"));
         //保存用户角色
-        SysUserRole userRole = new SysUserRole();
-        userRole.setRoleId(sysRole.getId());
-        userRole.setUserId(userid);
-        sysUserRoleMapper.insert(userRole);
-        return userid;
+        SysUserRole Silian_userRole = new SysUserRole();
+        Silian_userRole.setRoleId(Silian_sysRole.getId());
+        Silian_userRole.setUserId(Silian_userid);
+        sysUserRoleMapper.insert(Silian_userRole);
+        return Silian_userid;
     }
 
     @Override
-    public SysThirdAccount getOneBySysUserId(String sysUserId, String thirdType) {
-        LambdaQueryWrapper<SysThirdAccount> queryWrapper = new LambdaQueryWrapper<>();
-        log.info("getSysUserId: {} ,getThirdType: {}",sysUserId,thirdType);
-        queryWrapper.eq(SysThirdAccount::getSysUserId, sysUserId);
-        queryWrapper.eq(SysThirdAccount::getThirdType, thirdType);
-        return super.getOne(queryWrapper);
+    public SysThirdAccount getOneBySysUserId(String Silian_sysUserId, String Silian_thirdType) {
+        LambdaQueryWrapper<SysThirdAccount> Silian_queryWrapper = new LambdaQueryWrapper<>();
+        log.info("getSysUserId: {} ,getThirdType: {}",Silian_sysUserId,Silian_thirdType);
+        Silian_queryWrapper.eq(SysThirdAccount::getSysUserId, Silian_sysUserId);
+        Silian_queryWrapper.eq(SysThirdAccount::getThirdType, Silian_thirdType);
+        return super.getOne(Silian_queryWrapper);
     }
 
     @Override
-    public SysThirdAccount getOneByThirdUserId(String thirdUserId, String thirdType) {
-        LambdaQueryWrapper<SysThirdAccount> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysThirdAccount::getThirdUserId, thirdUserId);
-        queryWrapper.eq(SysThirdAccount::getThirdType, thirdType);
-        return super.getOne(queryWrapper);
+    public SysThirdAccount getOneByThirdUserId(String Silian_thirdUserId, String Silian_thirdType) {
+        LambdaQueryWrapper<SysThirdAccount> Silian_queryWrapper = new LambdaQueryWrapper<>();
+        Silian_queryWrapper.eq(SysThirdAccount::getThirdUserId, Silian_thirdUserId);
+        Silian_queryWrapper.eq(SysThirdAccount::getThirdType, Silian_thirdType);
+        return super.getOne(Silian_queryWrapper);
     }
 
     @Override
-    public List<SysThirdAccount> listThirdUserIdByUsername(String[] sysUsernameArr, String thirdType) {
-        return sysThirdAccountMapper.selectThirdIdsByUsername(sysUsernameArr, thirdType);
+    public List<SysThirdAccount> listThirdUserIdByUsername(String[] Silian_sysUsernameArr, String Silian_thirdType) {
+        return sysThirdAccountMapper.selectThirdIdsByUsername(Silian_sysUsernameArr, Silian_thirdType);
     }
 
     @Override
-    public SysThirdAccount saveThirdUser(ThirdLoginModel tlm) {
-        SysThirdAccount user = new SysThirdAccount();
-        user.setDelFlag(CommonConstant.DEL_FLAG_0);
-        user.setStatus(1);
-        user.setThirdType(tlm.getSource());
-        user.setAvatar(tlm.getAvatar());
-        user.setRealname(tlm.getUsername());
-        user.setThirdUserUuid(tlm.getUuid());
-        user.setThirdUserId(tlm.getUuid());
-        super.save(user);
-        return user;
+    public SysThirdAccount saveThirdUser(ThirdLoginModel Silian_tlm) {
+        SysThirdAccount Silian_user = new SysThirdAccount();
+        Silian_user.setDelFlag(CommonConstant.DEL_FLAG_0);
+        Silian_user.setStatus(1);
+        Silian_user.setThirdType(Silian_tlm.getSource());
+        Silian_user.setAvatar(Silian_tlm.getAvatar());
+        Silian_user.setRealname(Silian_tlm.getUsername());
+        Silian_user.setThirdUserUuid(Silian_tlm.getUuid());
+        Silian_user.setThirdUserId(Silian_tlm.getUuid());
+        super.save(Silian_user);
+        return Silian_user;
     }
 
 }

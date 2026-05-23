@@ -36,11 +36,11 @@ public class ResourceCheckFilter extends AccessControlFilter {
      * @throws Exception
      */
     @Override
-    protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
-        Subject subject = getSubject(servletRequest, servletResponse);
-        String url = getPathWithinApplication(servletRequest);
-        log.info("当前用户正在访问的 url => " + url);
-        return subject.isPermitted(url);
+    protected boolean isAccessAllowed(ServletRequest Silian_servletRequest, ServletResponse Silian_servletResponse, Object Silian_o) throws Exception {
+        Subject Silian_subject = getSubject(Silian_servletRequest, Silian_servletResponse);
+        String Silian_url = getPathWithinApplication(Silian_servletRequest);
+        log.info("当前用户正在访问的 url => " + Silian_url);
+        return Silian_subject.isPermitted(Silian_url);
     }
 
     /**
@@ -53,12 +53,12 @@ public class ResourceCheckFilter extends AccessControlFilter {
      * @throws Exception
      */
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+    protected boolean onAccessDenied(ServletRequest Silian_servletRequest, ServletResponse Silian_servletResponse) throws Exception {
         log.info("当 isAccessAllowed 返回 false 的时候，才会执行 method onAccessDenied ");
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        response.sendRedirect(request.getContextPath() + this.errorUrl);
+        HttpServletRequest Silian_request = (HttpServletRequest) Silian_servletRequest;
+        HttpServletResponse Silian_response = (HttpServletResponse) Silian_servletResponse;
+        Silian_response.sendRedirect(Silian_request.getContextPath() + this.errorUrl);
 
         // 返回 false 表示已经处理，例如页面跳转啥的，表示不在走以下的拦截器了（如果还有配置的话）
         return false;

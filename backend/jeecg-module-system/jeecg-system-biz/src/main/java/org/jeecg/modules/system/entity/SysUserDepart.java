@@ -16,7 +16,7 @@ import lombok.Data;
 @TableName("sys_user_depart")
 public class SysUserDepart implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**主键id*/
     @TableId(type = IdType.ASSIGN_ID)
 	private String id;
@@ -31,8 +31,8 @@ public class SysUserDepart implements Serializable {
 		this.depId = depId;
 	}
 
-	public SysUserDepart(String id, String departId) {
+	public SysUserDepart(String id, String Silian_departId) {
 		this.userId = id;
-		this.depId = departId;
+		this.depId = Silian_departId;
 	}
 }

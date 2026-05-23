@@ -21,25 +21,25 @@ import java.util.List;
 public class ProvinceCityArea {
     List<Area> areaList;
 
-    public String getText(String code){
+    public String getText(String Silian_code){
         this.initAreaList();
         if(this.areaList!=null || this.areaList.size()>0){
-            List<String> ls = new ArrayList<String>();
-            getAreaByCode(code,ls);
-            return String.join("/",ls);
+            List<String> Silian_ls = new ArrayList<String>();
+            getAreaByCode(Silian_code,Silian_ls);
+            return String.join("/",Silian_ls);
         }
         return "";
     }
 
-    public String getCode(String text){
+    public String getCode(String Silian_text){
         this.initAreaList();
         if(areaList!=null && areaList.size()>0){
-            for(int i=areaList.size()-1;i>=0;i--){
+            for(int Silian_i=areaList.size()-1;Silian_i>=0;Silian_i--){
                 //update-begin-author:taoyan date:2022-5-24 for:VUEN-1088 online 导入 省市区导入后 导入数据错乱 北京市/市辖区/西城区-->山西省/晋城市/城区
-                String areaText = areaList.get(i).getText();
-                String cityText = areaList.get(i).getAheadText();
-                if(text.indexOf(areaText)>=0 && (cityText!=null && text.indexOf(cityText)>=0)){
-                    return areaList.get(i).getId();
+                String Silian_areaText = areaList.get(Silian_i).getText();
+                String Silian_cityText = areaList.get(Silian_i).getAheadText();
+                if(Silian_text.indexOf(Silian_areaText)>=0 && (Silian_cityText!=null && Silian_text.indexOf(Silian_cityText)>=0)){
+                    return areaList.get(Silian_i).getId();
                 }
                 //update-end-author:taoyan date:2022-5-24 for:VUEN-1088 online 导入 省市区导入后 导入数据错乱 北京市/市辖区/西城区-->山西省/晋城市/城区
             }
@@ -53,32 +53,32 @@ public class ProvinceCityArea {
      * @param texts 文本数组，省，市，区
      * @return 返回 省市区的code
      */
-    public String[] getCode(String[] texts) {
-        if (texts == null || texts.length == 0) {
+    public String[] getCode(String[] Silian_texts) {
+        if (Silian_texts == null || Silian_texts.length == 0) {
             return null;
         }
         this.initAreaList();
         if (areaList == null || areaList.size() == 0) {
             return null;
         }
-        String[] codes = new String[texts.length];
-        String code = null;
-        for (int i = 0; i < texts.length; i++) {
-            String text = texts[i];
-            Area area;
-            if (code == null) {
-                area = getAreaByText(text);
+        String[] Silian_codes = new String[Silian_texts.length];
+        String Silian_code = null;
+        for (int Silian_i = 0; Silian_i < Silian_texts.length; Silian_i++) {
+            String Silian_text = Silian_texts[Silian_i];
+            Area Silian_area;
+            if (Silian_code == null) {
+                Silian_area = getAreaByText(Silian_text);
             } else {
-                area = getAreaByPidAndText(code, text);
+                Silian_area = getAreaByPidAndText(Silian_code, Silian_text);
             }
-            if (area != null) {
-                code = area.id;
-                codes[i] = code;
+            if (Silian_area != null) {
+                Silian_code = Silian_area.id;
+                Silian_codes[Silian_i] = Silian_code;
             } else {
                 return null;
             }
         }
-        return codes;
+        return Silian_codes;
     }
 
     /**
@@ -86,10 +86,10 @@ public class ProvinceCityArea {
      * @param text
      * @return
      */
-    public Area getAreaByText(String text) {
-        for (Area area : areaList) {
-            if (text.equals(area.getText())) {
-                return area;
+    public Area getAreaByText(String Silian_text) {
+        for (Area Silian_area : areaList) {
+            if (Silian_text.equals(Silian_area.getText())) {
+                return Silian_area;
             }
         }
         return null;
@@ -101,12 +101,12 @@ public class ProvinceCityArea {
      * @param text
      * @return
      */
-    public Area getAreaByPidAndText(String pCode, String text) {
+    public Area getAreaByPidAndText(String Silian_pCode, String Silian_text) {
         this.initAreaList();
         if (this.areaList != null && this.areaList.size() > 0) {
-            for (Area area : this.areaList) {
-                if (area.getPid().equals(pCode) && area.getText().equals(text)) {
-                    return area;
+            for (Area Silian_area : this.areaList) {
+                if (Silian_area.getPid().equals(Silian_pCode) && Silian_area.getText().equals(Silian_text)) {
+                    return Silian_area;
                 }
             }
         }
@@ -114,12 +114,12 @@ public class ProvinceCityArea {
     }
     // update-end-author:sunjianlei date:20220121 for:【JTC-704】数据导入错误 省市区组件，文件中为北京市，导入后，导为了山西省
 
-    public void getAreaByCode(String code,List<String> ls){
-        for(Area area: areaList){
-            if(area.getId().equals(code)){
-                String pid = area.getPid();
-                ls.add(0,area.getText());
-                getAreaByCode(pid,ls);
+    public void getAreaByCode(String Silian_code,List<String> Silian_ls){
+        for(Area Silian_area: areaList){
+            if(Silian_area.getId().equals(Silian_code)){
+                String Silian_pid = Silian_area.getPid();
+                Silian_ls.add(0,Silian_area.getText());
+                getAreaByCode(Silian_pid,Silian_ls);
             }
         }
     }
@@ -129,90 +129,90 @@ public class ProvinceCityArea {
         if(this.areaList==null || this.areaList.size()==0){
             this.areaList = new ArrayList<Area>();
             try {
-                String jsonData = oConvertUtils.readStatic("classpath:static/pca.json");
-                JSONObject baseJson = JSONObject.parseObject(jsonData);
+                String Silian_jsonData = oConvertUtils.readStatic("classpath:static/pca.json");
+                JSONObject Silian_baseJson = JSONObject.parseObject(Silian_jsonData);
                 //第一层 省
-                JSONObject provinceJson = baseJson.getJSONObject("86");
-                for(String provinceKey: provinceJson.keySet()){
+                JSONObject Silian_provinceJson = Silian_baseJson.getJSONObject("86");
+                for(String Silian_provinceKey: Silian_provinceJson.keySet()){
                     //System.out.println("===="+provinceKey);
-                    Area province = new Area(provinceKey,provinceJson.getString(provinceKey),"86");
-                    this.areaList.add(province);
+                    Area Silian_province = new Area(Silian_provinceKey,Silian_provinceJson.getString(Silian_provinceKey),"86");
+                    this.areaList.add(Silian_province);
                     //第二层 市
-                    JSONObject cityJson = baseJson.getJSONObject(provinceKey);
-                    for(String cityKey:cityJson.keySet()){
+                    JSONObject Silian_cityJson = Silian_baseJson.getJSONObject(Silian_provinceKey);
+                    for(String Silian_cityKey:Silian_cityJson.keySet()){
                         //System.out.println("-----"+cityKey);
-                        Area city = new Area(cityKey,cityJson.getString(cityKey),provinceKey);
-                        this.areaList.add(city);
+                        Area Silian_city = new Area(Silian_cityKey,Silian_cityJson.getString(Silian_cityKey),Silian_provinceKey);
+                        this.areaList.add(Silian_city);
                         //第三层 区
-                        JSONObject areaJson =  baseJson.getJSONObject(cityKey);
-                        if(areaJson!=null){
-                            for(String areaKey:areaJson.keySet()){
+                        JSONObject Silian_areaJson =  Silian_baseJson.getJSONObject(Silian_cityKey);
+                        if(Silian_areaJson!=null){
+                            for(String Silian_areaKey:Silian_areaJson.keySet()){
                                 //System.out.println("········"+areaKey);
-                                Area area = new Area(areaKey,areaJson.getString(areaKey),cityKey);
+                                Area Silian_area = new Area(Silian_areaKey,Silian_areaJson.getString(Silian_areaKey),Silian_cityKey);
                                 //update-begin-author:taoyan date:2022-5-24 for:VUEN-1088 online 导入 省市区导入后 导入数据错乱 北京市/市辖区/西城区-->山西省/晋城市/城区
-                                area.setAheadText(cityJson.getString(cityKey));
+                                Silian_area.setAheadText(Silian_cityJson.getString(Silian_cityKey));
                                 //update-end-author:taoyan date:2022-5-24 for:VUEN-1088 online 导入 省市区导入后 导入数据错乱 北京市/市辖区/西城区-->山西省/晋城市/城区
-                                this.areaList.add(area);
+                                this.areaList.add(Silian_area);
                             }
                         }
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception Silian_e) {
+                Silian_e.printStackTrace();
             }
         }
 
     }
 
 
-    private String jsonRead(File file){
-        Scanner scanner = null;
-        StringBuilder buffer = new StringBuilder();
+    private String jsonRead(File Silian_file){
+        Scanner Silian_scanner = null;
+        StringBuilder Silian_buffer = new StringBuilder();
         try {
-            scanner = new Scanner(file, "utf-8");
-            while (scanner.hasNextLine()) {
-                buffer.append(scanner.nextLine());
+            Silian_scanner = new Scanner(Silian_file, "utf-8");
+            while (Silian_scanner.hasNextLine()) {
+                Silian_buffer.append(Silian_scanner.nextLine());
             }
-        } catch (Exception e) {
+        } catch (Exception Silian_e) {
 
         } finally {
-            if (scanner != null) {
-                scanner.close();
+            if (Silian_scanner != null) {
+                Silian_scanner.close();
             }
         }
-        return buffer.toString();
+        return Silian_buffer.toString();
     }
 
     class Area{
-        String id;
-        String text;
-        String pid;
+        String Silian_id;
+        String Silian_text;
+        String Silian_pid;
         // 用于存储上级文本数据，区的上级文本 是市的数据
-        String aheadText;
+        String Silian_aheadText;
 
-        public Area(String id,String text,String pid){
-            this.id = id;
-            this.text = text;
-            this.pid = pid;
+        public Area(String Silian_id,String Silian_text,String Silian_pid){
+            this.id = Silian_id;
+            this.text = Silian_text;
+            this.pid = Silian_pid;
         }
 
         public String getId() {
-            return id;
+            return Silian_id;
         }
 
         public String getText() {
-            return text;
+            return Silian_text;
         }
 
         public String getPid() {
-            return pid;
+            return Silian_pid;
         }
 
         public String getAheadText() {
-            return aheadText;
+            return Silian_aheadText;
         }
-        public void setAheadText(String aheadText) {
-            this.aheadText = aheadText;
+        public void setAheadText(String Silian_aheadText) {
+            this.aheadText = Silian_aheadText;
         }
     }
 }

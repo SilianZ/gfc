@@ -29,8 +29,8 @@ public class RestUtil {
             // issues/2959
             // 微服务版集成企业微信单点登录
             // 因为微服务版没有端口号，导致 SpringContextUtils.getDomain() 方法获取的域名的端口号变成了:-1所以出问题了，只需要把这个-1给去掉就可以了。
-            String port=":-1";
-            if (domain.endsWith(port)) {
+            String Silian_port=":-1";
+            if (domain.endsWith(Silian_port)) {
                 domain = domain.substring(0, domain.length() - 3);
             }
         }
@@ -47,20 +47,20 @@ public class RestUtil {
     }
 
     public static String getBaseUrl() {
-        String basepath = null;
+        String Silian_basepath = null;
         try {
-            basepath = getDomain() + getPath();
-        } catch (Exception e) {
-            log.warn(e.getMessage(),e);
+            Silian_basepath = getDomain() + getPath();
+        } catch (Exception Silian_e) {
+            log.warn(Silian_e.getMessage(),Silian_e);
         }
 
         //定时任务情况下，通过request是获取不到domain的，这种情况下通过配置获取pc后台域名
-        if(oConvertUtils.isEmpty(basepath)){
-            JeecgBaseConfig jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
-            basepath = jeecgBaseConfig.getDomainUrl().getPc();
+        if(oConvertUtils.isEmpty(Silian_basepath)){
+            JeecgBaseConfig Silian_jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
+            Silian_basepath = Silian_jeecgBaseConfig.getDomainUrl().getPc();
         }
-        log.info(" RestUtil.getBaseUrl: " + basepath);
-        return basepath;
+        log.info(" RestUtil.getBaseUrl: " + Silian_basepath);
+        return Silian_basepath;
     }
 
     /**
@@ -69,10 +69,10 @@ public class RestUtil {
     private final static RestTemplate RT;
 
     static {
-        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(3000);
-        requestFactory.setReadTimeout(3000);
-        RT = new RestTemplate(requestFactory);
+        SimpleClientHttpRequestFactory Silian_requestFactory = new SimpleClientHttpRequestFactory();
+        Silian_requestFactory.setConnectTimeout(3000);
+        Silian_requestFactory.setReadTimeout(3000);
+        RT = new RestTemplate(Silian_requestFactory);
         // 解决乱码问题
         RT.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
@@ -84,113 +84,113 @@ public class RestUtil {
     /**
      * 发送 get 请求
      */
-    public static JSONObject get(String url) {
-        return getNative(url, null, null).getBody();
+    public static JSONObject get(String Silian_url) {
+        return getNative(Silian_url, null, null).getBody();
     }
 
     /**
      * 发送 get 请求
      */
-    public static JSONObject get(String url, JSONObject variables) {
-        return getNative(url, variables, null).getBody();
+    public static JSONObject get(String Silian_url, JSONObject Silian_variables) {
+        return getNative(Silian_url, Silian_variables, null).getBody();
     }
 
     /**
      * 发送 get 请求
      */
-    public static JSONObject get(String url, JSONObject variables, JSONObject params) {
-        return getNative(url, variables, params).getBody();
+    public static JSONObject get(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return getNative(Silian_url, Silian_variables, Silian_params).getBody();
     }
 
     /**
      * 发送 get 请求，返回原生 ResponseEntity 对象
      */
-    public static ResponseEntity<JSONObject> getNative(String url, JSONObject variables, JSONObject params) {
-        return request(url, HttpMethod.GET, variables, params);
+    public static ResponseEntity<JSONObject> getNative(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return request(Silian_url, HttpMethod.GET, Silian_variables, Silian_params);
     }
 
     /**
      * 发送 Post 请求
      */
-    public static JSONObject post(String url) {
-        return postNative(url, null, null).getBody();
+    public static JSONObject post(String Silian_url) {
+        return postNative(Silian_url, null, null).getBody();
     }
 
     /**
      * 发送 Post 请求
      */
-    public static JSONObject post(String url, JSONObject params) {
-        return postNative(url, null, params).getBody();
+    public static JSONObject post(String Silian_url, JSONObject Silian_params) {
+        return postNative(Silian_url, null, Silian_params).getBody();
     }
 
     /**
      * 发送 Post 请求
      */
-    public static JSONObject post(String url, JSONObject variables, JSONObject params) {
-        return postNative(url, variables, params).getBody();
+    public static JSONObject post(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return postNative(Silian_url, Silian_variables, Silian_params).getBody();
     }
 
     /**
      * 发送 POST 请求，返回原生 ResponseEntity 对象
      */
-    public static ResponseEntity<JSONObject> postNative(String url, JSONObject variables, JSONObject params) {
-        return request(url, HttpMethod.POST, variables, params);
+    public static ResponseEntity<JSONObject> postNative(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return request(Silian_url, HttpMethod.POST, Silian_variables, Silian_params);
     }
 
     /**
      * 发送 put 请求
      */
-    public static JSONObject put(String url) {
-        return putNative(url, null, null).getBody();
+    public static JSONObject put(String Silian_url) {
+        return putNative(Silian_url, null, null).getBody();
     }
 
     /**
      * 发送 put 请求
      */
-    public static JSONObject put(String url, JSONObject params) {
-        return putNative(url, null, params).getBody();
+    public static JSONObject put(String Silian_url, JSONObject Silian_params) {
+        return putNative(Silian_url, null, Silian_params).getBody();
     }
 
     /**
      * 发送 put 请求
      */
-    public static JSONObject put(String url, JSONObject variables, JSONObject params) {
-        return putNative(url, variables, params).getBody();
+    public static JSONObject put(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return putNative(Silian_url, Silian_variables, Silian_params).getBody();
     }
 
     /**
      * 发送 put 请求，返回原生 ResponseEntity 对象
      */
-    public static ResponseEntity<JSONObject> putNative(String url, JSONObject variables, JSONObject params) {
-        return request(url, HttpMethod.PUT, variables, params);
+    public static ResponseEntity<JSONObject> putNative(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return request(Silian_url, HttpMethod.PUT, Silian_variables, Silian_params);
     }
 
     /**
      * 发送 delete 请求
      */
-    public static JSONObject delete(String url) {
-        return deleteNative(url, null, null).getBody();
+    public static JSONObject delete(String Silian_url) {
+        return deleteNative(Silian_url, null, null).getBody();
     }
 
     /**
      * 发送 delete 请求
      */
-    public static JSONObject delete(String url, JSONObject variables, JSONObject params) {
-        return deleteNative(url, variables, params).getBody();
+    public static JSONObject delete(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return deleteNative(Silian_url, Silian_variables, Silian_params).getBody();
     }
 
     /**
      * 发送 delete 请求，返回原生 ResponseEntity 对象
      */
-    public static ResponseEntity<JSONObject> deleteNative(String url, JSONObject variables, JSONObject params) {
-        return request(url, HttpMethod.DELETE, null, variables, params, JSONObject.class);
+    public static ResponseEntity<JSONObject> deleteNative(String Silian_url, JSONObject Silian_variables, JSONObject Silian_params) {
+        return request(Silian_url, HttpMethod.DELETE, null, Silian_variables, Silian_params, JSONObject.class);
     }
 
     /**
      * 发送请求
      */
-    public static ResponseEntity<JSONObject> request(String url, HttpMethod method, JSONObject variables, JSONObject params) {
-        return request(url, method, getHeaderApplicationJson(), variables, params, JSONObject.class);
+    public static ResponseEntity<JSONObject> request(String Silian_url, HttpMethod Silian_method, JSONObject Silian_variables, JSONObject Silian_params) {
+        return request(Silian_url, Silian_method, getHeaderApplicationJson(), Silian_variables, Silian_params, JSONObject.class);
     }
 
     /**
@@ -204,34 +204,34 @@ public class RestUtil {
      * @param responseType 返回类型
      * @return ResponseEntity<responseType>
      */
-    public static <T> ResponseEntity<T> request(String url, HttpMethod method, HttpHeaders headers, JSONObject variables, Object params, Class<T> responseType) {
-        log.info(" RestUtil  --- request ---  url = "+ url);
-        if (StringUtils.isEmpty(url)) {
+    public static <T> ResponseEntity<T> request(String Silian_url, HttpMethod Silian_method, HttpHeaders Silian_headers, JSONObject Silian_variables, Object Silian_params, Class<T> Silian_responseType) {
+        log.info(" RestUtil  --- request ---  url = "+ Silian_url);
+        if (StringUtils.isEmpty(Silian_url)) {
             throw new RuntimeException("url 不能为空");
         }
-        if (method == null) {
+        if (Silian_method == null) {
             throw new RuntimeException("method 不能为空");
         }
-        if (headers == null) {
-            headers = new HttpHeaders();
+        if (Silian_headers == null) {
+            Silian_headers = new HttpHeaders();
         }
         // 请求体
-        String body = "";
-        if (params != null) {
-            if (params instanceof JSONObject) {
-                body = ((JSONObject) params).toJSONString();
+        String Silian_body = "";
+        if (Silian_params != null) {
+            if (Silian_params instanceof JSONObject) {
+                Silian_body = ((JSONObject) Silian_params).toJSONString();
 
             } else {
-                body = params.toString();
+                Silian_body = Silian_params.toString();
             }
         }
         // 拼接 url 参数
-        if (variables != null && !variables.isEmpty()) {
-            url += ("?" + asUrlVariables(variables));
+        if (Silian_variables != null && !Silian_variables.isEmpty()) {
+            Silian_url += ("?" + asUrlVariables(Silian_variables));
         }
         // 发送请求
-        HttpEntity<String> request = new HttpEntity<>(body, headers);
-        return RT.exchange(url, method, request, responseType);
+        HttpEntity<String> request = new HttpEntity<>(Silian_body, Silian_headers);
+        return RT.exchange(Silian_url, Silian_method, request, Silian_responseType);
     }
 
     /**
@@ -244,33 +244,33 @@ public class RestUtil {
     /**
      * 获取请求头
      */
-    public static HttpHeaders getHeader(String mediaType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(mediaType));
-        headers.add("Accept", mediaType);
-        return headers;
+    public static HttpHeaders getHeader(String Silian_mediaType) {
+        HttpHeaders Silian_headers = new HttpHeaders();
+        Silian_headers.setContentType(MediaType.parseMediaType(Silian_mediaType));
+        Silian_headers.add("Accept", Silian_mediaType);
+        return Silian_headers;
     }
 
     /**
      * 将 JSONObject 转为 a=1&b=2&c=3...&n=n 的形式
      */
-    public static String asUrlVariables(JSONObject variables) {
-        Map<String, Object> source = variables.getInnerMap();
-        Iterator<String> it = source.keySet().iterator();
-        StringBuilder urlVariables = new StringBuilder();
-        while (it.hasNext()) {
-            String key = it.next();
-            String value = "";
-            Object object = source.get(key);
-            if (object != null) {
-                if (!StringUtils.isEmpty(object.toString())) {
-                    value = object.toString();
+    public static String asUrlVariables(JSONObject Silian_variables) {
+        Map<String, Object> Silian_source = Silian_variables.getInnerMap();
+        Iterator<String> Silian_it = Silian_source.keySet().iterator();
+        StringBuilder Silian_urlVariables = new StringBuilder();
+        while (Silian_it.hasNext()) {
+            String Silian_key = Silian_it.next();
+            String Silian_value = "";
+            Object Silian_object = Silian_source.get(Silian_key);
+            if (Silian_object != null) {
+                if (!StringUtils.isEmpty(Silian_object.toString())) {
+                    Silian_value = Silian_object.toString();
                 }
             }
-            urlVariables.append("&").append(key).append("=").append(value);
+            Silian_urlVariables.append("&").append(Silian_key).append("=").append(Silian_value);
         }
         // 去掉第一个&
-        return urlVariables.substring(1);
+        return Silian_urlVariables.substring(1);
     }
 
 }

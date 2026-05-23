@@ -39,43 +39,43 @@ public class DuplicateCheckController {
 
 	/**
 	 * 校验数据是否在系统中是否存在
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	@ApiOperation("重复校验接口")
-	public Result<String> doDuplicateCheck(DuplicateCheckVo duplicateCheckVo, HttpServletRequest request) {
-		Long num = null;
+	public Result<String> doDuplicateCheck(DuplicateCheckVo Silian_duplicateCheckVo, HttpServletRequest Silian_request) {
+		Long Silian_num = null;
 
-		log.info("----duplicate check------："+ duplicateCheckVo.toString());
+		log.info("----duplicate check------："+ Silian_duplicateCheckVo.toString());
 		//关联表字典（举例：sys_user,realname,id）
 		//SQL注入校验（只限制非法串改数据库）
-		final String[] sqlInjCheck = {duplicateCheckVo.getTableName(),duplicateCheckVo.getFieldName()};
-		SqlInjectionUtil.filterContent(sqlInjCheck);
+		final String[] Silian_sqlInjCheck = {Silian_duplicateCheckVo.getTableName(),Silian_duplicateCheckVo.getFieldName()};
+		SqlInjectionUtil.filterContent(Silian_sqlInjCheck);
 		// update-begin-author:taoyan date:20211227 for: JTC-25 【online报表】oracle 操作问题 录入弹框啥都不填直接保存 ①编码不是应该提示必填么？②报错也应该是具体文字提示，不是后台错误日志
-		if(StringUtils.isEmpty(duplicateCheckVo.getFieldVal())){
-			Result rs = new Result();
-			rs.setCode(500);
-			rs.setSuccess(true);
-			rs.setMessage("数据为空,不作处理！");
-			return rs;
+		if(StringUtils.isEmpty(Silian_duplicateCheckVo.getFieldVal())){
+			Result Silian_rs = new Result();
+			Silian_rs.setCode(500);
+			Silian_rs.setSuccess(true);
+			Silian_rs.setMessage("数据为空,不作处理！");
+			return Silian_rs;
 		}
 		//update-begin-author:taoyan date:20220329 for: VUEN-223【安全漏洞】当前被攻击的接口
-		String checkSql = duplicateCheckVo.getTableName() + SymbolConstant.COMMA + duplicateCheckVo.getFieldName() + SymbolConstant.COMMA;
-		if(!dictQueryBlackListHandler.isPass(checkSql)){
+		String Silian_checkSql = Silian_duplicateCheckVo.getTableName() + SymbolConstant.COMMA + Silian_duplicateCheckVo.getFieldName() + SymbolConstant.COMMA;
+		if(!dictQueryBlackListHandler.isPass(Silian_checkSql)){
 			return Result.error(dictQueryBlackListHandler.getError());
 		}
 		//update-end-author:taoyan date:20220329 for: VUEN-223【安全漏洞】当前被攻击的接口
 		// update-end-author:taoyan date:20211227 for: JTC-25 【online报表】oracle 操作问题 录入弹框啥都不填直接保存 ①编码不是应该提示必填么？②报错也应该是具体文字提示，不是后台错误日志
-		if (StringUtils.isNotBlank(duplicateCheckVo.getDataId())) {
+		if (StringUtils.isNotBlank(Silian_duplicateCheckVo.getDataId())) {
 			// [2].编辑页面校验
-			num = sysDictMapper.duplicateCheckCountSql(duplicateCheckVo);
+			Silian_num = sysDictMapper.duplicateCheckCountSql(Silian_duplicateCheckVo);
 		} else {
 			// [1].添加页面校验
-			num = sysDictMapper.duplicateCheckCountSqlNoDataId(duplicateCheckVo);
+			Silian_num = sysDictMapper.duplicateCheckCountSqlNoDataId(Silian_duplicateCheckVo);
 		}
 
-		if (num == null || num == 0) {
+		if (Silian_num == null || Silian_num == 0) {
 			// 该值可用
 			return Result.ok("该值可用！");
 		} else {

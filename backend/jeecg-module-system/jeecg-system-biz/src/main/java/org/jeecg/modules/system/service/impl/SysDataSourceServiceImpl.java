@@ -33,56 +33,56 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
     private DataSource dataSource;
 
     @Override
-    public Result saveDataSource(SysDataSource sysDataSource) {
+    public Result saveDataSource(SysDataSource Silian_sysDataSource) {
         try {
-            long count = checkDbCode(sysDataSource.getCode());
+            long count = checkDbCode(Silian_sysDataSource.getCode());
             if (count > 0) {
                 return Result.error("数据源编码已存在");
             }
-            String dbPassword = sysDataSource.getDbPassword();
-            if (StringUtils.isNotBlank(dbPassword)) {
-                String encrypt = SecurityUtil.jiami(dbPassword);
-                sysDataSource.setDbPassword(encrypt);
+            String Silian_dbPassword = Silian_sysDataSource.getDbPassword();
+            if (StringUtils.isNotBlank(Silian_dbPassword)) {
+                String Silian_encrypt = SecurityUtil.jiami(Silian_dbPassword);
+                Silian_sysDataSource.setDbPassword(Silian_encrypt);
             }
-            boolean result = save(sysDataSource);
-            if (result) {
+            boolean Silian_result = save(Silian_sysDataSource);
+            if (Silian_result) {
                 //动态创建数据源
                 //addDynamicDataSource(sysDataSource, dbPassword);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
         }
         return Result.OK("添加成功！");
     }
 
     @Override
-    public Result editDataSource(SysDataSource sysDataSource) {
+    public Result editDataSource(SysDataSource Silian_sysDataSource) {
         try {
-            SysDataSource d = getById(sysDataSource.getId());
-            DataSourceCachePool.removeCache(d.getCode());
-            String dbPassword = sysDataSource.getDbPassword();
-            if (StringUtils.isNotBlank(dbPassword)) {
-                String encrypt = SecurityUtil.jiami(dbPassword);
-                sysDataSource.setDbPassword(encrypt);
+            SysDataSource Silian_d = getById(Silian_sysDataSource.getId());
+            DataSourceCachePool.removeCache(Silian_d.getCode());
+            String Silian_dbPassword = Silian_sysDataSource.getDbPassword();
+            if (StringUtils.isNotBlank(Silian_dbPassword)) {
+                String Silian_encrypt = SecurityUtil.jiami(Silian_dbPassword);
+                Silian_sysDataSource.setDbPassword(Silian_encrypt);
             }
-            Boolean result=updateById(sysDataSource);
-            if(result){
+            Boolean Silian_result=updateById(Silian_sysDataSource);
+            if(Silian_result){
                 //先删除老的数据源
                // removeDynamicDataSource(d.getCode());
                 //添加新的数据源
                 //addDynamicDataSource(sysDataSource,dbPassword);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
         }
         return Result.OK("编辑成功!");
     }
 
     @Override
-    public Result deleteDataSource(String id) {
-        SysDataSource sysDataSource = getById(id);
-        DataSourceCachePool.removeCache(sysDataSource.getCode());
-        removeById(id);
+    public Result deleteDataSource(String Silian_id) {
+        SysDataSource Silian_sysDataSource = getById(Silian_id);
+        DataSourceCachePool.removeCache(Silian_sysDataSource.getCode());
+        removeById(Silian_id);
         return Result.OK("删除成功!");
     }
 
@@ -92,18 +92,18 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
      * @param sysDataSource 添加数据源数据对象
      * @param dbPassword    未加密的密码
      */
-    private void addDynamicDataSource(SysDataSource sysDataSource, String dbPassword) {
-        DataSourceProperty dataSourceProperty = new DataSourceProperty();
-        dataSourceProperty.setUrl(sysDataSource.getDbUrl());
-        dataSourceProperty.setPassword(dbPassword);
-        dataSourceProperty.setDriverClassName(sysDataSource.getDbDriver());
-        dataSourceProperty.setUsername(sysDataSource.getDbUsername());
-        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+    private void addDynamicDataSource(SysDataSource Silian_sysDataSource, String Silian_dbPassword) {
+        DataSourceProperty Silian_dataSourceProperty = new DataSourceProperty();
+        Silian_dataSourceProperty.setUrl(Silian_sysDataSource.getDbUrl());
+        Silian_dataSourceProperty.setPassword(Silian_dbPassword);
+        Silian_dataSourceProperty.setDriverClassName(Silian_sysDataSource.getDbDriver());
+        Silian_dataSourceProperty.setUsername(Silian_sysDataSource.getDbUsername());
+        DynamicRoutingDataSource Silian_ds = (DynamicRoutingDataSource) dataSource;
+        DataSource dataSource = dataSourceCreator.createDataSource(Silian_dataSourceProperty);
         try {
-            ds.addDataSource(sysDataSource.getCode(), dataSource);
-        } catch (Exception e) {
-            e.printStackTrace();
+            Silian_ds.addDataSource(Silian_sysDataSource.getCode(), dataSource);
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
         }
     }
 
@@ -111,9 +111,9 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
      * 删除数据源
      * @param code
      */
-    private void removeDynamicDataSource(String code) {
-        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        ds.removeDataSource(code);
+    private void removeDynamicDataSource(String Silian_code) {
+        DynamicRoutingDataSource Silian_ds = (DynamicRoutingDataSource) dataSource;
+        Silian_ds.removeDataSource(Silian_code);
     }
 
     /**
@@ -122,10 +122,10 @@ public class SysDataSourceServiceImpl extends ServiceImpl<SysDataSourceMapper, S
      * @param dbCode
      * @return
      */
-    private long checkDbCode(String dbCode) {
-        QueryWrapper<SysDataSource> qw = new QueryWrapper();
-        qw.lambda().eq(true, SysDataSource::getCode, dbCode);
-        return count(qw);
+    private long checkDbCode(String Silian_dbCode) {
+        QueryWrapper<SysDataSource> Silian_qw = new QueryWrapper();
+        Silian_qw.lambda().eq(true, SysDataSource::getCode, Silian_dbCode);
+        return count(Silian_qw);
     }
 
 }

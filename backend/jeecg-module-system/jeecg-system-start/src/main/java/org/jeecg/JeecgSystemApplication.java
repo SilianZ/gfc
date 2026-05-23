@@ -22,21 +22,21 @@ import java.net.UnknownHostException;
 public class JeecgSystemApplication extends SpringBootServletInitializer {
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(JeecgSystemApplication.class);
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder Silian_application) {
+        return Silian_application.sources(JeecgSystemApplication.class);
     }
 
-    public static void main(String[] args) throws UnknownHostException {
-        ConfigurableApplicationContext application = SpringApplication.run(JeecgSystemApplication.class, args);
-        Environment env = application.getEnvironment();
-        String ip = InetAddress.getLocalHost().getHostAddress();
-        String port = env.getProperty("server.port");
-        String path = oConvertUtils.getString(env.getProperty("server.servlet.context-path"));
+    public static void main(String[] Silian_args) throws UnknownHostException {
+        ConfigurableApplicationContext Silian_application = SpringApplication.run(JeecgSystemApplication.class, Silian_args);
+        Environment Silian_env = Silian_application.getEnvironment();
+        String Silian_ip = InetAddress.getLocalHost().getHostAddress();
+        String Silian_port = Silian_env.getProperty("server.port");
+        String Silian_path = oConvertUtils.getString(Silian_env.getProperty("server.servlet.context-path"));
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application Jeecg-Boot is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:" + port + path + "/\n\t" +
-                "External: \thttp://" + ip + ":" + port + path + "/\n\t" +
-                "Swagger文档: \thttp://" + ip + ":" + port + path + "/doc.html\n" +
+                "Local: \t\thttp://localhost:" + Silian_port + Silian_path + "/\n\t" +
+                "External: \thttp://" + Silian_ip + ":" + Silian_port + Silian_path + "/\n\t" +
+                "Swagger文档: \thttp://" + Silian_ip + ":" + Silian_port + Silian_path + "/doc.html\n" +
                 "----------------------------------------------------------");
 
     }

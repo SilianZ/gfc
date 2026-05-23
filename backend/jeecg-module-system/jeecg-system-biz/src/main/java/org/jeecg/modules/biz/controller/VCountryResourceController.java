@@ -49,7 +49,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class VCountryResourceController extends JeecgController<VCountryResource, IVCountryResourceService> {
 	@Autowired
 	private IVCountryResourceService vCountryResourceService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -62,17 +62,17 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	//@AutoLog(value = "资源视图-分页列表查询")
 	@ApiOperation(value="资源视图-分页列表查询", notes="资源视图-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<VCountryResource>> queryPageList(VCountryResource vCountryResource,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<VCountryResource> queryWrapper = QueryGenerator.initQueryWrapper(vCountryResource, req.getParameterMap());
-		queryWrapper.eq("post", "TEM");
-		Page<VCountryResource> page = new Page<VCountryResource>(pageNo, pageSize);
-		IPage<VCountryResource> pageList = vCountryResourceService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<VCountryResource>> queryPageList(VCountryResource Silian_vCountryResource,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<VCountryResource> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_vCountryResource, Silian_req.getParameterMap());
+		Silian_queryWrapper.eq("post", "TEM");
+		Page<VCountryResource> Silian_page = new Page<VCountryResource>(Silian_pageNo, Silian_pageSize);
+		IPage<VCountryResource> Silian_pageList = vCountryResourceService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -83,11 +83,11 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	@ApiOperation(value="资源视图-添加", notes="资源视图-添加")
 	//@RequiresPermissions("org.jeecg.modules:v_country_resource:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody VCountryResource vCountryResource) {
-		vCountryResourceService.save(vCountryResource);
+	public Result<String> add(@RequestBody VCountryResource Silian_vCountryResource) {
+		vCountryResourceService.save(Silian_vCountryResource);
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -98,11 +98,11 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	@ApiOperation(value="资源视图-编辑", notes="资源视图-编辑")
 	//@RequiresPermissions("org.jeecg.modules:v_country_resource:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody VCountryResource vCountryResource) {
-		vCountryResourceService.updateById(vCountryResource);
+	public Result<String> edit(@RequestBody VCountryResource Silian_vCountryResource) {
+		vCountryResourceService.updateById(Silian_vCountryResource);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -113,11 +113,11 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	@ApiOperation(value="资源视图-通过id删除", notes="资源视图-通过id删除")
 	//@RequiresPermissions("org.jeecg.modules:v_country_resource:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		vCountryResourceService.removeById(id);
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		vCountryResourceService.removeById(Silian_id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -128,11 +128,11 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	@ApiOperation(value="资源视图-批量删除", notes="资源视图-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:v_country_resource:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.vCountryResourceService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.vCountryResourceService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -142,12 +142,12 @@ public class VCountryResourceController extends JeecgController<VCountryResource
 	//@AutoLog(value = "资源视图-通过id查询")
 	@ApiOperation(value="资源视图-通过id查询", notes="资源视图-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<VCountryResource> queryById(@RequestParam(name="id",required=true) String id) {
-		VCountryResource vCountryResource = vCountryResourceService.getById(id);
-		if(vCountryResource==null) {
+	public Result<VCountryResource> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		VCountryResource Silian_vCountryResource = vCountryResourceService.getById(Silian_id);
+		if(Silian_vCountryResource==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(vCountryResource);
+		return Result.OK(Silian_vCountryResource);
 	}
 
     /**
@@ -158,8 +158,8 @@ public class VCountryResourceController extends JeecgController<VCountryResource
     */
     //@RequiresPermissions("org.jeecg.modules:v_country_resource:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, VCountryResource vCountryResource) {
-        return super.exportXls(request, vCountryResource, VCountryResource.class, "资源视图");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, VCountryResource Silian_vCountryResource) {
+        return super.exportXls(Silian_request, Silian_vCountryResource, VCountryResource.class, "资源视图");
     }
 
     /**
@@ -171,8 +171,8 @@ public class VCountryResourceController extends JeecgController<VCountryResource
     */
     //@RequiresPermissions("v_country_resource:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, VCountryResource.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, VCountryResource.class);
     }
 
 }

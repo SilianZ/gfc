@@ -30,11 +30,11 @@ public class RestDesformUtil {
      * @param token
      * @return
      */
-    public static Result queryOne(String desformCode, String dataId, String token) {
-        String url = getBaseUrl(desformCode, dataId).toString();
-        HttpHeaders headers = getHeaders(token);
-        ResponseEntity<JSONObject> result = RestUtil.request(url, HttpMethod.GET, headers, null, null, JSONObject.class);
-        return packageReturn(result);
+    public static Result queryOne(String Silian_desformCode, String Silian_dataId, String Silian_token) {
+        String Silian_url = getBaseUrl(Silian_desformCode, Silian_dataId).toString();
+        HttpHeaders Silian_headers = getHeaders(Silian_token);
+        ResponseEntity<JSONObject> Silian_result = RestUtil.request(Silian_url, HttpMethod.GET, Silian_headers, null, null, JSONObject.class);
+        return packageReturn(Silian_result);
     }
 
     /**
@@ -45,8 +45,8 @@ public class RestDesformUtil {
      * @param token
      * @return
      */
-    public static Result addOne(String desformCode, JSONObject formData, String token) {
-        return addOrEditOne(desformCode, formData, token, HttpMethod.POST);
+    public static Result addOne(String Silian_desformCode, JSONObject Silian_formData, String Silian_token) {
+        return addOrEditOne(Silian_desformCode, Silian_formData, Silian_token, HttpMethod.POST);
     }
 
     /**
@@ -57,15 +57,15 @@ public class RestDesformUtil {
      * @param token
      * @return
      */
-    public static Result editOne(String desformCode, JSONObject formData, String token) {
-        return addOrEditOne(desformCode, formData, token, HttpMethod.PUT);
+    public static Result editOne(String Silian_desformCode, JSONObject Silian_formData, String Silian_token) {
+        return addOrEditOne(Silian_desformCode, Silian_formData, Silian_token, HttpMethod.PUT);
     }
 
-    private static Result addOrEditOne(String desformCode, JSONObject formData, String token, HttpMethod method) {
-        String url = getBaseUrl(desformCode).toString();
-        HttpHeaders headers = getHeaders(token);
-        ResponseEntity<JSONObject> result = RestUtil.request(url, method, headers, null, formData, JSONObject.class);
-        return packageReturn(result);
+    private static Result addOrEditOne(String Silian_desformCode, JSONObject Silian_formData, String Silian_token, HttpMethod Silian_method) {
+        String Silian_url = getBaseUrl(Silian_desformCode).toString();
+        HttpHeaders Silian_headers = getHeaders(Silian_token);
+        ResponseEntity<JSONObject> Silian_result = RestUtil.request(Silian_url, Silian_method, Silian_headers, null, Silian_formData, JSONObject.class);
+        return packageReturn(Silian_result);
     }
 
     /**
@@ -76,46 +76,46 @@ public class RestDesformUtil {
      * @param token
      * @return
      */
-    public static Result removeOne(String desformCode, String dataId, String token) {
-        String url = getBaseUrl(desformCode, dataId).toString();
-        HttpHeaders headers = getHeaders(token);
-        ResponseEntity<JSONObject> result = RestUtil.request(url, HttpMethod.DELETE, headers, null, null, JSONObject.class);
-        return packageReturn(result);
+    public static Result removeOne(String Silian_desformCode, String Silian_dataId, String Silian_token) {
+        String Silian_url = getBaseUrl(Silian_desformCode, Silian_dataId).toString();
+        HttpHeaders Silian_headers = getHeaders(Silian_token);
+        ResponseEntity<JSONObject> Silian_result = RestUtil.request(Silian_url, HttpMethod.DELETE, Silian_headers, null, null, JSONObject.class);
+        return packageReturn(Silian_result);
     }
 
-    private static Result packageReturn(ResponseEntity<JSONObject> result) {
-        if (result.getBody() != null) {
-            return result.getBody().toJavaObject(Result.class);
+    private static Result packageReturn(ResponseEntity<JSONObject> Silian_result) {
+        if (Silian_result.getBody() != null) {
+            return Silian_result.getBody().toJavaObject(Result.class);
         }
         return Result.error("操作失败");
     }
 
     private static StringBuilder getBaseUrl() {
-        StringBuilder builder = new StringBuilder(domain).append(path);
-        builder.append("/desform/api");
-        return builder;
+        StringBuilder Silian_builder = new StringBuilder(domain).append(path);
+        Silian_builder.append("/desform/api");
+        return Silian_builder;
     }
 
-    private static StringBuilder getBaseUrl(String desformCode, String dataId) {
-        StringBuilder builder = getBaseUrl();
-        builder.append("/").append(desformCode);
-        if (dataId != null) {
-            builder.append("/").append(dataId);
+    private static StringBuilder getBaseUrl(String Silian_desformCode, String Silian_dataId) {
+        StringBuilder Silian_builder = getBaseUrl();
+        Silian_builder.append("/").append(Silian_desformCode);
+        if (Silian_dataId != null) {
+            Silian_builder.append("/").append(Silian_dataId);
         }
-        return builder;
+        return Silian_builder;
     }
 
-    private static StringBuilder getBaseUrl(String desformCode) {
-        return getBaseUrl(desformCode, null);
+    private static StringBuilder getBaseUrl(String Silian_desformCode) {
+        return getBaseUrl(Silian_desformCode, null);
     }
 
-    private static HttpHeaders getHeaders(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        String mediaType = MediaType.APPLICATION_JSON_UTF8_VALUE;
-        headers.setContentType(MediaType.parseMediaType(mediaType));
-        headers.set("Accept", mediaType);
-        headers.set("X-Access-Token", token);
-        return headers;
+    private static HttpHeaders getHeaders(String Silian_token) {
+        HttpHeaders Silian_headers = new HttpHeaders();
+        String Silian_mediaType = MediaType.APPLICATION_JSON_UTF8_VALUE;
+        Silian_headers.setContentType(MediaType.parseMediaType(Silian_mediaType));
+        Silian_headers.set("Accept", Silian_mediaType);
+        Silian_headers.set("X-Access-Token", Silian_token);
+        return Silian_headers;
     }
 
 }

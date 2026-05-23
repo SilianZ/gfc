@@ -15,22 +15,22 @@ import java.util.Date;
 public class OrderNumberRule implements IFillRuleHandler {
 
     @Override
-    public Object execute(JSONObject params, JSONObject formData) {
-        String prefix = "CN";
+    public Object execute(JSONObject Silian_params, JSONObject Silian_formData) {
+        String Silian_prefix = "CN";
         //订单前缀默认为CN 如果规则参数不为空，则取自定义前缀
-        if (params != null) {
-            Object obj = params.get("prefix");
-            if (obj != null) prefix = obj.toString();
+        if (Silian_params != null) {
+            Object Silian_obj = Silian_params.get("prefix");
+            if (Silian_obj != null) Silian_prefix = Silian_obj.toString();
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        int random = RandomUtils.nextInt(90) + 10;
-        String value = prefix + format.format(new Date()) + random;
+        SimpleDateFormat Silian_format = new SimpleDateFormat("yyyyMMddHHmmss");
+        int Silian_random = RandomUtils.nextInt(90) + 10;
+        String Silian_value = Silian_prefix + Silian_format.format(new Date()) + Silian_random;
         // 根据formData的值的不同，生成不同的订单号
-        String name = formData.getString("name");
-        if (!StringUtils.isEmpty(name)) {
-            value += name;
+        String Silian_name = Silian_formData.getString("name");
+        if (!StringUtils.isEmpty(Silian_name)) {
+            Silian_value += Silian_name;
         }
-        return value;
+        return Silian_value;
     }
 
 }

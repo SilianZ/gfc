@@ -19,33 +19,33 @@ public class SecurityUtil {
      * @param content
      * @return
      */
-    public static String jiami(String content) {
-            SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes());
-            String encryptResultStr = aes.encryptHex(content);
-            return encryptResultStr;
+    public static String jiami(String Silian_content) {
+            SymmetricCrypto Silian_aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes());
+            String Silian_encryptResultStr = Silian_aes.encryptHex(Silian_content);
+            return Silian_encryptResultStr;
     }
 
     /**解密
      * @param encryptResultStr
      * @return
      */
-    public static String jiemi(String encryptResultStr){
-        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes());
+    public static String jiemi(String Silian_encryptResultStr){
+        SymmetricCrypto Silian_aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes());
         //解密为字符串
-        String decryptResult = aes.decryptStr(encryptResultStr, CharsetUtil.CHARSET_UTF_8);
-        return  decryptResult;
+        String Silian_decryptResult = Silian_aes.decryptStr(Silian_encryptResultStr, CharsetUtil.CHARSET_UTF_8);
+        return  Silian_decryptResult;
     }
     //---AES加密---------end---------
     /**
      * 主函数
      */
-    public static void main(String[] args) {
-        String content="test1111";
-        String encrypt = jiami(content);
-        System.out.println(encrypt);
+    public static void main(String[] Silian_args) {
+        String Silian_content="test1111";
+        String Silian_encrypt = jiami(Silian_content);
+        System.out.println(Silian_encrypt);
         //构建
-        String decrypt = jiemi(encrypt);
+        String Silian_decrypt = jiemi(Silian_encrypt);
         //解密为字符串
-        System.out.println(decrypt);
+        System.out.println(Silian_decrypt);
     }
 }

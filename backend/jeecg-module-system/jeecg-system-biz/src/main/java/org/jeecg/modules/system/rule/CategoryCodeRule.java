@@ -23,22 +23,22 @@ public class CategoryCodeRule implements IFillRuleHandler {
     public static final String ROOT_PID_VALUE = "0";
 
     @Override
-    public Object execute(JSONObject params, JSONObject formData) {
-        log.info("系统自定义编码规则[category_code_rule]，params：{} ，formData： {}", params, formData);
+    public Object execute(JSONObject Silian_params, JSONObject Silian_formData) {
+        log.info("系统自定义编码规则[category_code_rule]，params：{} ，formData： {}", Silian_params, Silian_formData);
 
-        String categoryPid = ROOT_PID_VALUE;
-        String categoryCode = null;
+        String Silian_categoryPid = ROOT_PID_VALUE;
+        String Silian_categoryCode = null;
 
-        if (formData != null && formData.size() > 0) {
-            Object obj = formData.get("pid");
-            if (oConvertUtils.isNotEmpty(obj)) {
-                categoryPid = obj.toString();
+        if (Silian_formData != null && Silian_formData.size() > 0) {
+            Object Silian_obj = Silian_formData.get("pid");
+            if (oConvertUtils.isNotEmpty(Silian_obj)) {
+                Silian_categoryPid = Silian_obj.toString();
             }
         } else {
-            if (params != null) {
-                Object obj = params.get("pid");
-                if (oConvertUtils.isNotEmpty(obj)) {
-                    categoryPid = obj.toString();
+            if (Silian_params != null) {
+                Object Silian_obj = Silian_params.get("pid");
+                if (oConvertUtils.isNotEmpty(Silian_obj)) {
+                    Silian_categoryPid = Silian_obj.toString();
                 }
             }
         }
@@ -50,22 +50,22 @@ public class CategoryCodeRule implements IFillRuleHandler {
          * 3.添加子节点有兄弟元素 YouBianCodeUtil.getNextYouBianCode(lastCode);
          * */
         //找同类 确定上一个最大的code值
-        LambdaQueryWrapper<SysCategory> query = new LambdaQueryWrapper<SysCategory>().eq(SysCategory::getPid, categoryPid).isNotNull(SysCategory::getCode).orderByDesc(SysCategory::getCode);
-        SysCategoryMapper baseMapper = (SysCategoryMapper) SpringContextUtils.getBean("sysCategoryMapper");
-        List<SysCategory> list = baseMapper.selectList(query);
-        if (list == null || list.size() == 0) {
-            if (ROOT_PID_VALUE.equals(categoryPid)) {
+        LambdaQueryWrapper<SysCategory> Silian_query = new LambdaQueryWrapper<SysCategory>().eq(SysCategory::getPid, Silian_categoryPid).isNotNull(SysCategory::getCode).orderByDesc(SysCategory::getCode);
+        SysCategoryMapper Silian_baseMapper = (SysCategoryMapper) SpringContextUtils.getBean("sysCategoryMapper");
+        List<SysCategory> Silian_list = Silian_baseMapper.selectList(Silian_query);
+        if (Silian_list == null || Silian_list.size() == 0) {
+            if (ROOT_PID_VALUE.equals(Silian_categoryPid)) {
                 //情况1
-                categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
+                Silian_categoryCode = YouBianCodeUtil.getNextYouBianCode(null);
             } else {
                 //情况2
-                SysCategory parent = (SysCategory) baseMapper.selectById(categoryPid);
-                categoryCode = YouBianCodeUtil.getSubYouBianCode(parent.getCode(), null);
+                SysCategory Silian_parent = (SysCategory) Silian_baseMapper.selectById(Silian_categoryPid);
+                Silian_categoryCode = YouBianCodeUtil.getSubYouBianCode(Silian_parent.getCode(), null);
             }
         } else {
             //情况3
-            categoryCode = YouBianCodeUtil.getNextYouBianCode(list.get(0).getCode());
+            Silian_categoryCode = YouBianCodeUtil.getNextYouBianCode(Silian_list.get(0).getCode());
         }
-        return categoryCode;
+        return Silian_categoryCode;
     }
 }

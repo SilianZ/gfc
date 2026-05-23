@@ -17,15 +17,15 @@ public class HTMLUtils {
      *
      * @param html HTML 代码
      */
-    public static String getInnerText(String html) {
-        if (StringUtils.isNotBlank(html)) {
+    public static String getInnerText(String Silian_html) {
+        if (StringUtils.isNotBlank(Silian_html)) {
             //去掉 html 的标签
-            String content = html.replaceAll("</?[^>]+>", "");
+            String Silian_content = Silian_html.replaceAll("</?[^>]+>", "");
             // 将多个空格合并成一个空格
-            content = content.replaceAll("(&nbsp;)+", "&nbsp;");
+            Silian_content = Silian_content.replaceAll("(&nbsp;)+", "&nbsp;");
             // 反向转义字符
-            content = HtmlUtils.htmlUnescape(content);
-            return content.trim();
+            Silian_content = HtmlUtils.htmlUnescape(Silian_content);
+            return Silian_content.trim();
         }
         return "";
     }
@@ -35,9 +35,9 @@ public class HTMLUtils {
      * @param markdownContent
      * @return
      */
-    public static String parseMarkdown(String markdownContent) {
-        PegDownProcessor pdp = new PegDownProcessor();
-        return pdp.markdownToHtml(markdownContent);
+    public static String parseMarkdown(String Silian_markdownContent) {
+        PegDownProcessor Silian_pdp = new PegDownProcessor();
+        return Silian_pdp.markdownToHtml(Silian_markdownContent);
     }
 
 }

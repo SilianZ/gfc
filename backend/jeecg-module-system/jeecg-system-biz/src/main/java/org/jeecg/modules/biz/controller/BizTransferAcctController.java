@@ -79,14 +79,14 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     //@AutoLog(value = "账户转账-分页列表查询")
     @ApiOperation(value = "账户转账-分页列表查询", notes = "账户转账-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<BizTransferAcct>> queryPageList(BizTransferAcct bizTransferAcct,
-                                                        @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                        HttpServletRequest req) {
-        QueryWrapper<BizTransferAcct> queryWrapper = QueryGenerator.initQueryWrapper(bizTransferAcct, req.getParameterMap());
-        Page<BizTransferAcct> page = new Page<BizTransferAcct>(pageNo, pageSize);
-        IPage<BizTransferAcct> pageList = bizTransferAcctService.page(page, queryWrapper);
-        return Result.OK(pageList);
+    public Result<IPage<BizTransferAcct>> queryPageList(BizTransferAcct Silian_bizTransferAcct,
+                                                        @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                                        HttpServletRequest Silian_req) {
+        QueryWrapper<BizTransferAcct> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizTransferAcct, Silian_req.getParameterMap());
+        Page<BizTransferAcct> Silian_page = new Page<BizTransferAcct>(Silian_pageNo, Silian_pageSize);
+        IPage<BizTransferAcct> Silian_pageList = bizTransferAcctService.page(Silian_page, Silian_queryWrapper);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -100,54 +100,54 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     //@RequiresPermissions("org.jeecg.modules:biz_transfer_acct:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> add(@RequestBody BizTransferAcct bizTransferAcct) {
+    public Result<String> add(@RequestBody BizTransferAcct Silian_bizTransferAcct) {
         try {
             //设置所属财年
-            bizTransferAcct.setYearCode(bizFiscalYearService.getActiveYearCode());
+            Silian_bizTransferAcct.setYearCode(bizFiscalYearService.getActiveYearCode());
             //收取转账税收（如有）
-            bizBankConfigService.collectTaxes(bizTransferAcct.getTaxAmount(),
-                    sysDepartService.queryDepartsByUsername(bizTransferAcct.getPayeeId()).get(0).getId());
+            bizBankConfigService.collectTaxes(Silian_bizTransferAcct.getTaxAmount(),
+                    sysDepartService.queryDepartsByUsername(Silian_bizTransferAcct.getPayeeId()).get(0).getId());
             //付款方账户
-            BizSubjectBalance payerBalance = bizSubjectBalanceService.getByUserId(bizTransferAcct.getPayerId());
+            BizSubjectBalance Silian_payerBalance = bizSubjectBalanceService.getByUserId(Silian_bizTransferAcct.getPayerId());
             //收款方账户
-            BizSubjectBalance payeeBalance = bizSubjectBalanceService.getByUserId(bizTransferAcct.getPayeeId());
-            if ("YBZZ".equals(bizTransferAcct.getPayType())) {//一般转账，走现金账户，考虑税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() - bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() + bizTransferAcct.getTotalAmount() - bizTransferAcct.getTaxAmount());
-                if (payerBalance.getCashAcct() < 0) {
+            BizSubjectBalance Silian_payeeBalance = bizSubjectBalanceService.getByUserId(Silian_bizTransferAcct.getPayeeId());
+            if ("YBZZ".equals(Silian_bizTransferAcct.getPayType())) {//一般转账，走现金账户，考虑税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() - Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() + Silian_bizTransferAcct.getTotalAmount() - Silian_bizTransferAcct.getTaxAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
-            } else if ("JCZZ".equals(bizTransferAcct.getPayType())) {//借出转账，付款方减少现金，增加债权，收款方增加现金，增加债务，借出不考虑税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() -  bizTransferAcct.getTotalAmount());
-                payerBalance.setDebtClaimAcct(payerBalance.getDebtClaimAcct() + bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() +  bizTransferAcct.getTotalAmount());
-                payeeBalance.setDebtLiabilityAcct(payeeBalance.getDebtLiabilityAcct() +  bizTransferAcct.getTotalAmount());
-                if (payerBalance.getCashAcct() < 0) {
+            } else if ("JCZZ".equals(Silian_bizTransferAcct.getPayType())) {//借出转账，付款方减少现金，增加债权，收款方增加现金，增加债务，借出不考虑税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() -  Silian_bizTransferAcct.getTotalAmount());
+                Silian_payerBalance.setDebtClaimAcct(Silian_payerBalance.getDebtClaimAcct() + Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() +  Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setDebtLiabilityAcct(Silian_payeeBalance.getDebtLiabilityAcct() +  Silian_bizTransferAcct.getTotalAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
-            } else if ("HKZZ".equals(bizTransferAcct.getPayType())) {//还款转账，付款方减少现金，减少债务，收款方增加现金，减少债权，考虑收入税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() -  bizTransferAcct.getTotalAmount());
-                payerBalance.setDebtLiabilityAcct(payerBalance.getDebtLiabilityAcct() - bizTransferAcct.getPrincipal());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() +  bizTransferAcct.getTotalAmount() - bizTransferAcct.getTaxAmount());
-                payeeBalance.setDebtClaimAcct(payeeBalance.getDebtClaimAcct() -  bizTransferAcct.getPrincipal());
-                if (payerBalance.getCashAcct() < 0) {
+            } else if ("HKZZ".equals(Silian_bizTransferAcct.getPayType())) {//还款转账，付款方减少现金，减少债务，收款方增加现金，减少债权，考虑收入税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() -  Silian_bizTransferAcct.getTotalAmount());
+                Silian_payerBalance.setDebtLiabilityAcct(Silian_payerBalance.getDebtLiabilityAcct() - Silian_bizTransferAcct.getPrincipal());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() +  Silian_bizTransferAcct.getTotalAmount() - Silian_bizTransferAcct.getTaxAmount());
+                Silian_payeeBalance.setDebtClaimAcct(Silian_payeeBalance.getDebtClaimAcct() -  Silian_bizTransferAcct.getPrincipal());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
             }else{
-                payerBalance.setCashAcct(payerBalance.getCashAcct() - bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() + bizTransferAcct.getTotalAmount() - bizTransferAcct.getTaxAmount());
-                if (payerBalance.getCashAcct() < 0) {
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() - Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() + Silian_bizTransferAcct.getTotalAmount() - Silian_bizTransferAcct.getTaxAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
             }
-            bizSubjectBalanceService.updateById(payerBalance);
-            bizSubjectBalanceService.updateById(payeeBalance);
-            bizTransferAcctService.save(bizTransferAcct);
-        } catch (Exception e) {
-            e.printStackTrace();
+            bizSubjectBalanceService.updateById(Silian_payerBalance);
+            bizSubjectBalanceService.updateById(Silian_payeeBalance);
+            bizTransferAcctService.save(Silian_bizTransferAcct);
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("转账失败:" + e.getMessage());
+            return Result.error("转账失败:" + Silian_e.getMessage());
         }
         return Result.OK("转账成功！");
     }
@@ -162,8 +162,8 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     @ApiOperation(value = "账户转账-编辑", notes = "账户转账-编辑")
     //@RequiresPermissions("org.jeecg.modules:biz_transfer_acct:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody BizTransferAcct bizTransferAcct) {
-        bizTransferAcctService.updateById(bizTransferAcct);
+    public Result<String> edit(@RequestBody BizTransferAcct Silian_bizTransferAcct) {
+        bizTransferAcctService.updateById(Silian_bizTransferAcct);
         return Result.OK("编辑成功!");
     }
 
@@ -178,53 +178,53 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     //@RequiresPermissions("org.jeecg.modules:biz_transfer_acct:delete")
     @DeleteMapping(value = "/delete")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<String> delete(@RequestParam(name = "id", required = true) String Silian_id) {
         try {
-            BizTransferAcct bizTransferAcct = bizTransferAcctService.getById(id);
+            BizTransferAcct Silian_bizTransferAcct = bizTransferAcctService.getById(Silian_id);
             //撤销转账税收（如有）
-            bizBankConfigService.offTaxes(bizTransferAcct.getTaxAmount(),
-                    sysDepartService.queryDepartsByUsername(bizTransferAcct.getPayeeId()).get(0).getId());
+            bizBankConfigService.offTaxes(Silian_bizTransferAcct.getTaxAmount(),
+                    sysDepartService.queryDepartsByUsername(Silian_bizTransferAcct.getPayeeId()).get(0).getId());
             //付款方账户
-            BizSubjectBalance payerBalance = bizSubjectBalanceService.getByUserId(bizTransferAcct.getPayerId());
+            BizSubjectBalance Silian_payerBalance = bizSubjectBalanceService.getByUserId(Silian_bizTransferAcct.getPayerId());
             //收款方账户
-            BizSubjectBalance payeeBalance = bizSubjectBalanceService.getByUserId(bizTransferAcct.getPayeeId());
-            if ("YBZZ".equals(bizTransferAcct.getPayType())) {//一般转账，走现金账户，考虑税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() + bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() - bizTransferAcct.getTotalAmount() + bizTransferAcct.getTaxAmount());
-                if (payerBalance.getCashAcct() < 0) {
+            BizSubjectBalance Silian_payeeBalance = bizSubjectBalanceService.getByUserId(Silian_bizTransferAcct.getPayeeId());
+            if ("YBZZ".equals(Silian_bizTransferAcct.getPayType())) {//一般转账，走现金账户，考虑税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() + Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() - Silian_bizTransferAcct.getTotalAmount() + Silian_bizTransferAcct.getTaxAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
-            } else if ("JCZZ".equals(bizTransferAcct.getPayType())) {//借出转账，付款方减少现金，增加债权，收款方增加现金，增加债务，借出不考虑税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() +  bizTransferAcct.getTotalAmount());
-                payerBalance.setDebtClaimAcct(payerBalance.getDebtClaimAcct() - bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() - bizTransferAcct.getTotalAmount());
-                payeeBalance.setDebtLiabilityAcct(payeeBalance.getDebtLiabilityAcct() -  bizTransferAcct.getTotalAmount());
-                if (payerBalance.getCashAcct() < 0) {
+            } else if ("JCZZ".equals(Silian_bizTransferAcct.getPayType())) {//借出转账，付款方减少现金，增加债权，收款方增加现金，增加债务，借出不考虑税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() +  Silian_bizTransferAcct.getTotalAmount());
+                Silian_payerBalance.setDebtClaimAcct(Silian_payerBalance.getDebtClaimAcct() - Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() - Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setDebtLiabilityAcct(Silian_payeeBalance.getDebtLiabilityAcct() -  Silian_bizTransferAcct.getTotalAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
-            } else if ("HKZZ".equals(bizTransferAcct.getPayType())) {//还款转账，付款方减少现金，减少债务，收款方增加现金，减少债权，考虑收入税收
-                payerBalance.setCashAcct(payerBalance.getCashAcct() +  bizTransferAcct.getTotalAmount());
-                payerBalance.setDebtLiabilityAcct(payerBalance.getDebtLiabilityAcct() + bizTransferAcct.getPrincipal());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() -  bizTransferAcct.getTotalAmount() + bizTransferAcct.getTaxAmount());
-                payeeBalance.setDebtClaimAcct(payeeBalance.getDebtClaimAcct() +  bizTransferAcct.getPrincipal());
-                if (payerBalance.getCashAcct() < 0) {
+            } else if ("HKZZ".equals(Silian_bizTransferAcct.getPayType())) {//还款转账，付款方减少现金，减少债务，收款方增加现金，减少债权，考虑收入税收
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() +  Silian_bizTransferAcct.getTotalAmount());
+                Silian_payerBalance.setDebtLiabilityAcct(Silian_payerBalance.getDebtLiabilityAcct() + Silian_bizTransferAcct.getPrincipal());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() -  Silian_bizTransferAcct.getTotalAmount() + Silian_bizTransferAcct.getTaxAmount());
+                Silian_payeeBalance.setDebtClaimAcct(Silian_payeeBalance.getDebtClaimAcct() +  Silian_bizTransferAcct.getPrincipal());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
             }else{
-                payerBalance.setCashAcct(payerBalance.getCashAcct() + bizTransferAcct.getTotalAmount());
-                payeeBalance.setCashAcct(payeeBalance.getCashAcct() - bizTransferAcct.getTotalAmount() + bizTransferAcct.getTaxAmount());
-                if (payerBalance.getCashAcct() < 0) {
+                Silian_payerBalance.setCashAcct(Silian_payerBalance.getCashAcct() + Silian_bizTransferAcct.getTotalAmount());
+                Silian_payeeBalance.setCashAcct(Silian_payeeBalance.getCashAcct() - Silian_bizTransferAcct.getTotalAmount() + Silian_bizTransferAcct.getTaxAmount());
+                if (Silian_payerBalance.getCashAcct() < 0) {
                     throw new RuntimeException("付款方账户余额不足！");
                 }
             }
-            bizSubjectBalanceService.updateById(payerBalance);
-            bizSubjectBalanceService.updateById(payeeBalance);
-            bizTransferAcctService.removeById(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+            bizSubjectBalanceService.updateById(Silian_payerBalance);
+            bizSubjectBalanceService.updateById(Silian_payeeBalance);
+            bizTransferAcctService.removeById(Silian_id);
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("转账撤销失败:" + e.getMessage());
+            return Result.error("转账撤销失败:" + Silian_e.getMessage());
         }
         return Result.OK("转账撤销成功!");
     }
@@ -239,8 +239,8 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     @ApiOperation(value = "账户转账-批量删除", notes = "账户转账-批量删除")
     //@RequiresPermissions("org.jeecg.modules:biz_transfer_acct:deleteBatch")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.bizTransferAcctService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.bizTransferAcctService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.OK("批量删除成功!");
     }
 
@@ -253,12 +253,12 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
     //@AutoLog(value = "账户转账-通过id查询")
     @ApiOperation(value = "账户转账-通过id查询", notes = "账户转账-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<BizTransferAcct> queryById(@RequestParam(name = "id", required = true) String id) {
-        BizTransferAcct bizTransferAcct = bizTransferAcctService.getById(id);
-        if (bizTransferAcct == null) {
+    public Result<BizTransferAcct> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        BizTransferAcct Silian_bizTransferAcct = bizTransferAcctService.getById(Silian_id);
+        if (Silian_bizTransferAcct == null) {
             return Result.error("未找到对应数据");
         }
-        return Result.OK(bizTransferAcct);
+        return Result.OK(Silian_bizTransferAcct);
     }
 
     /**
@@ -269,8 +269,8 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
      */
     //@RequiresPermissions("org.jeecg.modules:biz_transfer_acct:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizTransferAcct bizTransferAcct) {
-        return super.exportXls(request, bizTransferAcct, BizTransferAcct.class, "账户转账");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizTransferAcct Silian_bizTransferAcct) {
+        return super.exportXls(Silian_request, Silian_bizTransferAcct, BizTransferAcct.class, "账户转账");
     }
 
     /**
@@ -282,8 +282,8 @@ public class BizTransferAcctController extends JeecgController<BizTransferAcct, 
      */
     //@RequiresPermissions("biz_transfer_acct:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizTransferAcct.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, BizTransferAcct.class);
     }
 
 }

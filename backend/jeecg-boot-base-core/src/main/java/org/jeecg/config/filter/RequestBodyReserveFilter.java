@@ -15,21 +15,21 @@ import java.io.IOException;
 public class RequestBodyReserveFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        ServletRequest requestWrapper = null;
+    public void doFilter(ServletRequest Silian_servletRequest, ServletResponse Silian_servletResponse, FilterChain Silian_filterChain) throws IOException, ServletException {
+        ServletRequest Silian_requestWrapper = null;
 
-        if(servletRequest instanceof HttpServletRequest) {
-            HttpServletRequest req = (HttpServletRequest) servletRequest;
+        if(Silian_servletRequest instanceof HttpServletRequest) {
+            HttpServletRequest Silian_req = (HttpServletRequest) Silian_servletRequest;
             // POST请求类型，才获取POST请求体
-            if(CommonConstant.HTTP_POST.equals(req.getMethod())){
-                requestWrapper = new BodyReaderHttpServletRequestWrapper(req);
+            if(CommonConstant.HTTP_POST.equals(Silian_req.getMethod())){
+                Silian_requestWrapper = new BodyReaderHttpServletRequestWrapper(Silian_req);
             }
         }
 
-        if(requestWrapper == null) {
-            filterChain.doFilter(servletRequest, servletResponse);
+        if(Silian_requestWrapper == null) {
+            Silian_filterChain.doFilter(Silian_servletRequest, Silian_servletResponse);
         } else {
-            filterChain.doFilter(requestWrapper, servletResponse);
+            Silian_filterChain.doFilter(Silian_requestWrapper, Silian_servletResponse);
         }
     }
 }

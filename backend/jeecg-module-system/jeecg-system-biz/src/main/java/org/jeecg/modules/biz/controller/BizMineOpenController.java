@@ -58,7 +58,7 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	 private ISysDepartService sysDepartService;
 	 @Autowired
 	 private ISysUserService sysUserService;
-	
+
 	/**
 	 * 分页列表查询
 	 *
@@ -71,16 +71,16 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	//@AutoLog(value = "资源开采-分页列表查询")
 	@ApiOperation(value="资源开采-分页列表查询", notes="资源开采-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<BizMineOpen>> queryPageList(BizMineOpen bizMineOpen,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<BizMineOpen> queryWrapper = QueryGenerator.initQueryWrapper(bizMineOpen, req.getParameterMap());
-		Page<BizMineOpen> page = new Page<BizMineOpen>(pageNo, pageSize);
-		IPage<BizMineOpen> pageList = bizMineOpenService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<BizMineOpen>> queryPageList(BizMineOpen Silian_bizMineOpen,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<BizMineOpen> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizMineOpen, Silian_req.getParameterMap());
+		Page<BizMineOpen> Silian_page = new Page<BizMineOpen>(Silian_pageNo, Silian_pageSize);
+		IPage<BizMineOpen> Silian_pageList = bizMineOpenService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -92,20 +92,20 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_open:add")
 	@PostMapping(value = "/add")
 	@Transactional(rollbackFor = Exception.class)
-	public Result<String> add(@RequestBody BizMineOpen bizMineOpen) {
-		String message = "";
+	public Result<String> add(@RequestBody BizMineOpen Silian_bizMineOpen) {
+		String Silian_message = "";
 		try {
 			//设置所属财年
-			bizMineOpen.setYearCode(bizFiscalYearService.getActiveYearCode());
+			Silian_bizMineOpen.setYearCode(bizFiscalYearService.getActiveYearCode());
 			//每个财年个工厂仅能一次开采
-			LambdaQueryWrapper<BizMineOpen> query = new LambdaQueryWrapper<>();
-			query.eq(BizMineOpen::getYearCode, bizMineOpen.getYearCode());
-			query.eq(BizMineOpen::getFactoryId, bizMineOpen.getFactoryId());
-			List<BizMineOpen> mineOpenList = bizMineOpenService.list(query);
-			if (mineOpenList != null && mineOpenList.size() > 0) {
+			LambdaQueryWrapper<BizMineOpen> Silian_query = new LambdaQueryWrapper<>();
+			Silian_query.eq(BizMineOpen::getYearCode, Silian_bizMineOpen.getYearCode());
+			Silian_query.eq(BizMineOpen::getFactoryId, Silian_bizMineOpen.getFactoryId());
+			List<BizMineOpen> Silian_mineOpenList = bizMineOpenService.list(Silian_query);
+			if (Silian_mineOpenList != null && Silian_mineOpenList.size() > 0) {
 				throw new Exception("本财年该工厂已经开采原材料，请勿重复开采！");
 			}
-			BizMinePlan plan = bizMinePlanService.getByPlanCode(bizMineOpen.getPlanCode());
+			BizMinePlan Silian_plan = bizMinePlanService.getByPlanCode(Silian_bizMineOpen.getPlanCode());
 			/**20230930去除该限制
 			SysDepart depart = sysDepartService.queryDepartsByUsername(sysUserService.getUserByName(bizMineOpen.getUserId()).getUsername()).get(0);
 			switch (depart.getAddress()) {
@@ -123,27 +123,27 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 					break;
 			}**/
 			//开采成功，增加团队材料库存
-			BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bizMineOpen.getUserId());
-			balance.setSteelAcct(balance.getSteelAcct() + plan.getGtProduction());
-			balance.setSilicaAcct(balance.getSilicaAcct() + plan.getGsProduction());
-			balance.setCrudeAcct(balance.getCrudeAcct() + plan.getSyProduction());
-			balance.setPlasticsAcct(balance.getPlasticsAcct() + plan.getSlProduction());
+			BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bizMineOpen.getUserId());
+			Silian_balance.setSteelAcct(Silian_balance.getSteelAcct() + Silian_plan.getGtProduction());
+			Silian_balance.setSilicaAcct(Silian_balance.getSilicaAcct() + Silian_plan.getGsProduction());
+			Silian_balance.setCrudeAcct(Silian_balance.getCrudeAcct() + Silian_plan.getSyProduction());
+			Silian_balance.setPlasticsAcct(Silian_balance.getPlasticsAcct() + Silian_plan.getSlProduction());
 			//减少团队现金余额
-			balance.setCashAcct(balance.getCashAcct() - 10);
-			if(balance.getCashAcct() < 0){
+			Silian_balance.setCashAcct(Silian_balance.getCashAcct() - 10);
+			if(Silian_balance.getCashAcct() < 0){
 				throw new Exception("现金余额不足，无法开采资源");
 			}
-			bizMineOpenService.save(bizMineOpen);
-			bizSubjectBalanceService.updateById(balance);
-		}catch (Exception e){
-			e.printStackTrace();
+			bizMineOpenService.save(Silian_bizMineOpen);
+			bizSubjectBalanceService.updateById(Silian_balance);
+		}catch (Exception Silian_e){
+			Silian_e.printStackTrace();
 			//回滚事务
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return Result.error("资源开采失败:" + e.getMessage());
+			return Result.error("资源开采失败:" + Silian_e.getMessage());
 		}
-		return Result.OK("资源开采成功，"+message);
+		return Result.OK("资源开采成功，"+Silian_message);
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -154,11 +154,11 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	@ApiOperation(value="资源开采-编辑", notes="资源开采-编辑")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_open:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody BizMineOpen bizMineOpen) {
-		bizMineOpenService.updateById(bizMineOpen);
+	public Result<String> edit(@RequestBody BizMineOpen Silian_bizMineOpen) {
+		bizMineOpenService.updateById(Silian_bizMineOpen);
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -170,48 +170,48 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_open:delete")
 	@Transactional(rollbackFor = Exception.class)
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
 		try {
-			BizMineOpen bizMineOpen = bizMineOpenService.getById(id);
+			BizMineOpen Silian_bizMineOpen = bizMineOpenService.getById(Silian_id);
 			//资源开采计划及限制制
-			BizMinePlan plan = bizMinePlanService.getByPlanCode(bizMineOpen.getPlanCode());
-			SysDepart depart = sysDepartService.queryDepartsByUsername(sysUserService.getUserByName(bizMineOpen.getUserId()).getUsername()).get(0);
-			switch (depart.getAddress()) {
+			BizMinePlan Silian_plan = bizMinePlanService.getByPlanCode(Silian_bizMineOpen.getPlanCode());
+			SysDepart Silian_depart = sysDepartService.queryDepartsByUsername(sysUserService.getUserByName(Silian_bizMineOpen.getUserId()).getUsername()).get(0);
+			switch (Silian_depart.getAddress()) {
 				case "GT":
-					plan.setGtProduction(0.00);
+					Silian_plan.setGtProduction(0.00);
 					break;
 				case "GS":
-					plan.setGsProduction(0.00);
+					Silian_plan.setGsProduction(0.00);
 					break;
 				case "SY":
-					plan.setSyProduction(0.00);
+					Silian_plan.setSyProduction(0.00);
 					break;
 			}
 			//撤销开采，减少团队材料库存
-			BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bizMineOpen.getUserId());
-			balance.setSteelAcct(balance.getSteelAcct() - plan.getGtProduction());
-			balance.setSilicaAcct(balance.getSilicaAcct() - plan.getGsProduction());
-			balance.setCrudeAcct(balance.getCrudeAcct() - plan.getSyProduction());
-			balance.setPlasticsAcct(balance.getPlasticsAcct() - plan.getSlProduction());
+			BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bizMineOpen.getUserId());
+			Silian_balance.setSteelAcct(Silian_balance.getSteelAcct() - Silian_plan.getGtProduction());
+			Silian_balance.setSilicaAcct(Silian_balance.getSilicaAcct() - Silian_plan.getGsProduction());
+			Silian_balance.setCrudeAcct(Silian_balance.getCrudeAcct() - Silian_plan.getSyProduction());
+			Silian_balance.setPlasticsAcct(Silian_balance.getPlasticsAcct() - Silian_plan.getSlProduction());
 			//增加团队现金余额
-			balance.setCashAcct(balance.getCashAcct() + 10);
-			if (balance.getSteelAcct() < 0 || balance.getSilicaAcct() < 0 || balance.getCrudeAcct() < 0 || balance.getPlasticsAcct() < 0) {
+			Silian_balance.setCashAcct(Silian_balance.getCashAcct() + 10);
+			if (Silian_balance.getSteelAcct() < 0 || Silian_balance.getSilicaAcct() < 0 || Silian_balance.getCrudeAcct() < 0 || Silian_balance.getPlasticsAcct() < 0) {
 				throw new Exception("删除失败，团队原材料库存不足！");
 			}
-			if(balance.getCashAcct() < 0){
+			if(Silian_balance.getCashAcct() < 0){
 				throw new  Exception("删除失败，团队现金余额不足！");
 			}
-			bizSubjectBalanceService.updateById(balance);
-			bizMineOpenService.removeById(id);
-		}catch (Exception e){
-			e.printStackTrace();
+			bizSubjectBalanceService.updateById(Silian_balance);
+			bizMineOpenService.removeById(Silian_id);
+		}catch (Exception Silian_e){
+			Silian_e.printStackTrace();
 			//回滚事务
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return Result.error("撤销失败："+e.getMessage());
+			return Result.error("撤销失败："+Silian_e.getMessage());
 		}
 		return Result.OK("撤销开采计划成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -222,11 +222,11 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	@ApiOperation(value="资源开采-批量删除", notes="资源开采-批量删除")
 	//@RequiresPermissions("org.jeecg.modules:biz_mine_open:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.bizMineOpenService.removeByIds(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.bizMineOpenService.removeByIds(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -236,12 +236,12 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
 	//@AutoLog(value = "资源开采-通过id查询")
 	@ApiOperation(value="资源开采-通过id查询", notes="资源开采-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<BizMineOpen> queryById(@RequestParam(name="id",required=true) String id) {
-		BizMineOpen bizMineOpen = bizMineOpenService.getById(id);
-		if(bizMineOpen==null) {
+	public Result<BizMineOpen> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		BizMineOpen Silian_bizMineOpen = bizMineOpenService.getById(Silian_id);
+		if(Silian_bizMineOpen==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(bizMineOpen);
+		return Result.OK(Silian_bizMineOpen);
 	}
 
     /**
@@ -252,8 +252,8 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
     */
     //@RequiresPermissions("org.jeecg.modules:biz_mine_open:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizMineOpen bizMineOpen) {
-        return super.exportXls(request, bizMineOpen, BizMineOpen.class, "资源开采");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizMineOpen Silian_bizMineOpen) {
+        return super.exportXls(Silian_request, Silian_bizMineOpen, BizMineOpen.class, "资源开采");
     }
 
     /**
@@ -265,8 +265,8 @@ public class BizMineOpenController extends JeecgController<BizMineOpen, IBizMine
     */
     //@RequiresPermissions("biz_mine_open:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, BizMineOpen.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, BizMineOpen.class);
     }
 
 }

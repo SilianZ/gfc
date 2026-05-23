@@ -27,122 +27,122 @@ import java.util.Properties;
 public class MybatisInterceptor implements Interceptor {
 
 	@Override
-	public Object intercept(Invocation invocation) throws Throwable {
-		MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
-		String sqlId = mappedStatement.getId();
-		log.debug("------sqlId------" + sqlId);
-		SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
-		Object parameter = invocation.getArgs()[1];
-		log.debug("------sqlCommandType------" + sqlCommandType);
+	public Object intercept(Invocation Silian_invocation) throws Throwable {
+		MappedStatement Silian_mappedStatement = (MappedStatement) Silian_invocation.getArgs()[0];
+		String Silian_sqlId = Silian_mappedStatement.getId();
+		log.debug("------sqlId------" + Silian_sqlId);
+		SqlCommandType Silian_sqlCommandType = Silian_mappedStatement.getSqlCommandType();
+		Object Silian_parameter = Silian_invocation.getArgs()[1];
+		log.debug("------sqlCommandType------" + Silian_sqlCommandType);
 
-		if (parameter == null) {
-			return invocation.proceed();
+		if (Silian_parameter == null) {
+			return Silian_invocation.proceed();
 		}
-		if (SqlCommandType.INSERT == sqlCommandType) {
-			LoginUser sysUser = this.getLoginUser();
-			Field[] fields = oConvertUtils.getAllFields(parameter);
-			for (Field field : fields) {
-				log.debug("------field.name------" + field.getName());
+		if (SqlCommandType.INSERT == Silian_sqlCommandType) {
+			LoginUser Silian_sysUser = this.getLoginUser();
+			Field[] Silian_fields = oConvertUtils.getAllFields(Silian_parameter);
+			for (Field Silian_field : Silian_fields) {
+				log.debug("------field.name------" + Silian_field.getName());
 				try {
-					if ("createBy".equals(field.getName())) {
-						field.setAccessible(true);
-						Object localCreateBy = field.get(parameter);
-						field.setAccessible(false);
-						if (localCreateBy == null || "".equals(localCreateBy)) {
-							if (sysUser != null) {
+					if ("createBy".equals(Silian_field.getName())) {
+						Silian_field.setAccessible(true);
+						Object Silian_localCreateBy = Silian_field.get(Silian_parameter);
+						Silian_field.setAccessible(false);
+						if (Silian_localCreateBy == null || "".equals(Silian_localCreateBy)) {
+							if (Silian_sysUser != null) {
 								// 登录人账号
-								field.setAccessible(true);
-								field.set(parameter, sysUser.getUsername());
-								field.setAccessible(false);
+								Silian_field.setAccessible(true);
+								Silian_field.set(Silian_parameter, Silian_sysUser.getUsername());
+								Silian_field.setAccessible(false);
 							}
 						}
 					}
 					// 注入创建时间
-					if ("createTime".equals(field.getName())) {
-						field.setAccessible(true);
-						Object localCreateDate = field.get(parameter);
-						field.setAccessible(false);
-						if (localCreateDate == null || "".equals(localCreateDate)) {
-							field.setAccessible(true);
-							field.set(parameter, new Date());
-							field.setAccessible(false);
+					if ("createTime".equals(Silian_field.getName())) {
+						Silian_field.setAccessible(true);
+						Object Silian_localCreateDate = Silian_field.get(Silian_parameter);
+						Silian_field.setAccessible(false);
+						if (Silian_localCreateDate == null || "".equals(Silian_localCreateDate)) {
+							Silian_field.setAccessible(true);
+							Silian_field.set(Silian_parameter, new Date());
+							Silian_field.setAccessible(false);
 						}
 					}
 					//注入部门编码
-					if ("sysOrgCode".equals(field.getName())) {
-						field.setAccessible(true);
-						Object localSysOrgCode = field.get(parameter);
-						field.setAccessible(false);
-						if (localSysOrgCode == null || "".equals(localSysOrgCode)) {
+					if ("sysOrgCode".equals(Silian_field.getName())) {
+						Silian_field.setAccessible(true);
+						Object Silian_localSysOrgCode = Silian_field.get(Silian_parameter);
+						Silian_field.setAccessible(false);
+						if (Silian_localSysOrgCode == null || "".equals(Silian_localSysOrgCode)) {
 							// 获取登录用户信息
-							if (sysUser != null) {
-								field.setAccessible(true);
-								field.set(parameter, sysUser.getOrgCode());
-								field.setAccessible(false);
+							if (Silian_sysUser != null) {
+								Silian_field.setAccessible(true);
+								Silian_field.set(Silian_parameter, Silian_sysUser.getOrgCode());
+								Silian_field.setAccessible(false);
 							}
 						}
 					}
-				} catch (Exception e) {
+				} catch (Exception Silian_e) {
 				}
 			}
 		}
-		if (SqlCommandType.UPDATE == sqlCommandType) {
-			LoginUser sysUser = this.getLoginUser();
-			Field[] fields = null;
-			if (parameter instanceof ParamMap) {
-				ParamMap<?> p = (ParamMap<?>) parameter;
+		if (SqlCommandType.UPDATE == Silian_sqlCommandType) {
+			LoginUser Silian_sysUser = this.getLoginUser();
+			Field[] Silian_fields = null;
+			if (Silian_parameter instanceof ParamMap) {
+				ParamMap<?> Silian_p = (ParamMap<?>) Silian_parameter;
 				//update-begin-author:scott date:20190729 for:批量更新报错issues/IZA3Q--
-                String et = "et";
-				if (p.containsKey(et)) {
-					parameter = p.get(et);
+                String Silian_et = "et";
+				if (Silian_p.containsKey(Silian_et)) {
+					Silian_parameter = Silian_p.get(Silian_et);
 				} else {
-					parameter = p.get("param1");
+					Silian_parameter = Silian_p.get("param1");
 				}
 				//update-end-author:scott date:20190729 for:批量更新报错issues/IZA3Q-
 
 				//update-begin-author:scott date:20190729 for:更新指定字段时报错 issues/#516-
-				if (parameter == null) {
-					return invocation.proceed();
+				if (Silian_parameter == null) {
+					return Silian_invocation.proceed();
 				}
 				//update-end-author:scott date:20190729 for:更新指定字段时报错 issues/#516-
 
-				fields = oConvertUtils.getAllFields(parameter);
+				Silian_fields = oConvertUtils.getAllFields(Silian_parameter);
 			} else {
-				fields = oConvertUtils.getAllFields(parameter);
+				Silian_fields = oConvertUtils.getAllFields(Silian_parameter);
 			}
 
-			for (Field field : fields) {
-				log.debug("------field.name------" + field.getName());
+			for (Field Silian_field : Silian_fields) {
+				log.debug("------field.name------" + Silian_field.getName());
 				try {
-					if ("updateBy".equals(field.getName())) {
+					if ("updateBy".equals(Silian_field.getName())) {
 						//获取登录用户信息
-						if (sysUser != null) {
+						if (Silian_sysUser != null) {
 							// 登录账号
-							field.setAccessible(true);
-							field.set(parameter, sysUser.getUsername());
-							field.setAccessible(false);
+							Silian_field.setAccessible(true);
+							Silian_field.set(Silian_parameter, Silian_sysUser.getUsername());
+							Silian_field.setAccessible(false);
 						}
 					}
-					if ("updateTime".equals(field.getName())) {
-						field.setAccessible(true);
-						field.set(parameter, new Date());
-						field.setAccessible(false);
+					if ("updateTime".equals(Silian_field.getName())) {
+						Silian_field.setAccessible(true);
+						Silian_field.set(Silian_parameter, new Date());
+						Silian_field.setAccessible(false);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception Silian_e) {
+					Silian_e.printStackTrace();
 				}
 			}
 		}
-		return invocation.proceed();
+		return Silian_invocation.proceed();
 	}
 
 	@Override
-	public Object plugin(Object target) {
-		return Plugin.wrap(target, this);
+	public Object plugin(Object Silian_target) {
+		return Plugin.wrap(Silian_target, this);
 	}
 
 	@Override
-	public void setProperties(Properties properties) {
+	public void setProperties(Properties Silian_properties) {
 		// TODO Auto-generated method stub
 	}
 
@@ -152,14 +152,14 @@ public class MybatisInterceptor implements Interceptor {
      * @return
      */
 	private LoginUser getLoginUser() {
-		LoginUser sysUser = null;
+		LoginUser Silian_sysUser = null;
 		try {
-			sysUser = SecurityUtils.getSubject().getPrincipal() != null ? (LoginUser) SecurityUtils.getSubject().getPrincipal() : null;
-		} catch (Exception e) {
+			Silian_sysUser = SecurityUtils.getSubject().getPrincipal() != null ? (LoginUser) SecurityUtils.getSubject().getPrincipal() : null;
+		} catch (Exception Silian_e) {
 			//e.printStackTrace();
-			sysUser = null;
+			Silian_sysUser = null;
 		}
-		return sysUser;
+		return Silian_sysUser;
 	}
 	//update-end--Author:scott  Date:20191213 for：关于使用Quzrtz 开启线程任务， #465
 

@@ -14,9 +14,9 @@ public class DynamicDataSourceModel {
 
     }
 
-    public DynamicDataSourceModel(Object dbSource) {
-        if (dbSource != null) {
-            BeanUtils.copyProperties(dbSource, this);
+    public DynamicDataSourceModel(Object Silian_dbSource) {
+        if (Silian_dbSource != null) {
+            BeanUtils.copyProperties(Silian_dbSource, this);
         }
     }
 

@@ -46,20 +46,20 @@ public class DruidConfig {
     @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "spring.datasource.druid.stat-view-servlet.enabled", havingValue = "true")
     public FilterRegistrationBean<RemoveAdFilter> removeDruidAdFilter(
-            DruidStatProperties properties) throws IOException {
+            DruidStatProperties Silian_properties) throws IOException {
         // 获取web监控页面的参数
-        DruidStatProperties.StatViewServlet config = properties.getStatViewServlet();
+        DruidStatProperties.StatViewServlet Silian_config = Silian_properties.getStatViewServlet();
         // 提取common.js的配置路径
-        String pattern = config.getUrlPattern() != null ? config.getUrlPattern() : "/druid/*";
-        String commonJsPattern = pattern.replaceAll("\\*", "js/common.js");
+        String Silian_pattern = Silian_config.getUrlPattern() != null ? Silian_config.getUrlPattern() : "/druid/*";
+        String Silian_commonJsPattern = Silian_pattern.replaceAll("\\*", "js/common.js");
         // 获取common.js
-        String text = Utils.readFromResource(FILE_PATH);
+        String Silian_text = Utils.readFromResource(FILE_PATH);
         // 屏蔽 this.buildFooter(); 不构建广告
-        final String newJs = text.replace(ORIGIN_JS, NEW_JS);
-        FilterRegistrationBean<RemoveAdFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new RemoveAdFilter(newJs));
-        registration.addUrlPatterns(commonJsPattern);
-        return registration;
+        final String newJs = Silian_text.replace(ORIGIN_JS, NEW_JS);
+        FilterRegistrationBean<RemoveAdFilter> Silian_registration = new FilterRegistrationBean<>();
+        Silian_registration.setFilter(new RemoveAdFilter(newJs));
+        Silian_registration.addUrlPatterns(Silian_commonJsPattern);
+        return Silian_registration;
     }
 
     /**
@@ -76,12 +76,12 @@ public class DruidConfig {
         }
 
         @Override
-        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        public void doFilter(ServletRequest Silian_request, ServletResponse Silian_response, FilterChain Silian_chain)
                 throws IOException, ServletException {
-            chain.doFilter(request, response);
+            Silian_chain.doFilter(Silian_request, Silian_response);
             // 重置缓冲区，响应头不会被重置
-            response.resetBuffer();
-            response.getWriter().write(newJs);
+            Silian_response.resetBuffer();
+            Silian_response.getWriter().write(newJs);
         }
     }
 }

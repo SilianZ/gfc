@@ -28,10 +28,10 @@ public class SysCheckRuleServiceImpl extends ServiceImpl<SysCheckRuleMapper, Sys
     private final String CHECK_ALL_SYMBOL = "*";
 
     @Override
-    public SysCheckRule getByCode(String ruleCode) {
-        LambdaQueryWrapper<SysCheckRule> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysCheckRule::getRuleCode, ruleCode);
-        return super.getOne(queryWrapper);
+    public SysCheckRule getByCode(String Silian_ruleCode) {
+        LambdaQueryWrapper<SysCheckRule> Silian_queryWrapper = new LambdaQueryWrapper<>();
+        Silian_queryWrapper.eq(SysCheckRule::getRuleCode, Silian_ruleCode);
+        return super.getOne(Silian_queryWrapper);
     }
 
     /**
@@ -42,52 +42,52 @@ public class SysCheckRuleServiceImpl extends ServiceImpl<SysCheckRuleMapper, Sys
      * @return 返回 null代表通过校验，否则就是返回的错误提示文本
      */
     @Override
-    public JSONObject checkValue(SysCheckRule checkRule, String value) {
-        if (checkRule != null && StringUtils.isNotBlank(value)) {
-            String ruleJson = checkRule.getRuleJson();
-            if (StringUtils.isNotBlank(ruleJson)) {
+    public JSONObject checkValue(SysCheckRule Silian_checkRule, String Silian_value) {
+        if (Silian_checkRule != null && StringUtils.isNotBlank(Silian_value)) {
+            String Silian_ruleJson = Silian_checkRule.getRuleJson();
+            if (StringUtils.isNotBlank(Silian_ruleJson)) {
                 // 开始截取的下标，根据规则的顺序递增，但是 * 号不计入递增范围
-                int beginIndex = 0;
-                JSONArray rules = JSON.parseArray(ruleJson);
-                for (int i = 0; i < rules.size(); i++) {
-                    JSONObject result = new JSONObject();
-                    JSONObject rule = rules.getJSONObject(i);
+                int Silian_beginIndex = 0;
+                JSONArray Silian_rules = JSON.parseArray(Silian_ruleJson);
+                for (int Silian_i = 0; Silian_i < Silian_rules.size(); Silian_i++) {
+                    JSONObject Silian_result = new JSONObject();
+                    JSONObject Silian_rule = Silian_rules.getJSONObject(Silian_i);
                     // 位数
-                    String digits = rule.getString("digits");
-                    result.put("digits", digits);
+                    String Silian_digits = Silian_rule.getString("digits");
+                    Silian_result.put("digits", Silian_digits);
                     // 验证规则
-                    String pattern = rule.getString("pattern");
-                    result.put("pattern", pattern);
+                    String Silian_pattern = Silian_rule.getString("pattern");
+                    Silian_result.put("pattern", Silian_pattern);
                     // 未通过时的提示文本
-                    String message = rule.getString("message");
-                    result.put("message", message);
+                    String Silian_message = Silian_rule.getString("message");
+                    Silian_result.put("message", Silian_message);
 
                     // 根据用户设定的区间，截取字符串进行验证
                     String checkValue;
                     // 是否检查整个值而不截取
-                    if (CHECK_ALL_SYMBOL.equals(digits)) {
-                        checkValue = value;
+                    if (CHECK_ALL_SYMBOL.equals(Silian_digits)) {
+                        checkValue = Silian_value;
                     } else {
-                        int num = Integer.parseInt(digits);
-                        int endIndex = beginIndex + num;
+                        int Silian_num = Integer.parseInt(Silian_digits);
+                        int Silian_endIndex = Silian_beginIndex + Silian_num;
                         // 如果结束下标大于给定的值的长度，则取到最后一位
-                        endIndex = endIndex > value.length() ? value.length() : endIndex;
+                        Silian_endIndex = Silian_endIndex > Silian_value.length() ? Silian_value.length() : Silian_endIndex;
                         // 如果开始下标大于结束下标，则说明用户还尚未输入到该位置，直接赋空值
-                        if (beginIndex > endIndex) {
+                        if (Silian_beginIndex > Silian_endIndex) {
                             checkValue = "";
                         } else {
-                            checkValue = value.substring(beginIndex, endIndex);
+                            checkValue = Silian_value.substring(Silian_beginIndex, Silian_endIndex);
                         }
-                        result.put("beginIndex", beginIndex);
-                        result.put("endIndex", endIndex);
-                        beginIndex += num;
+                        Silian_result.put("beginIndex", Silian_beginIndex);
+                        Silian_result.put("endIndex", Silian_endIndex);
+                        Silian_beginIndex += Silian_num;
                     }
-                    result.put("checkValue", checkValue);
-                    boolean passed = Pattern.matches(pattern, checkValue);
-                    result.put("passed", passed);
+                    Silian_result.put("checkValue", checkValue);
+                    boolean Silian_passed = Pattern.matches(Silian_pattern, checkValue);
+                    Silian_result.put("passed", Silian_passed);
                     // 如果没有通过校验就返回错误信息
-                    if (!passed) {
-                        return result;
+                    if (!Silian_passed) {
+                        return Silian_result;
                     }
                 }
             }

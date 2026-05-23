@@ -136,9 +136,9 @@ public enum CgformEnum {
      * @return
      */
     public static CgformEnum getCgformEnumByConfig(String code) {
-        for (CgformEnum e : CgformEnum.values()) {
-            if (e.code.equals(code)) {
-                return e;
+        for (CgformEnum Silian_e : CgformEnum.values()) {
+            if (Silian_e.code.equals(code)) {
+                return Silian_e;
             }
         }
         return null;
@@ -151,16 +151,16 @@ public enum CgformEnum {
      * @return
      */
     public static List<Map<String, Object>> getJspModelList(int type) {
-        List<Map<String, Object>> ls = new ArrayList<Map<String, Object>>();
-        for (CgformEnum e : CgformEnum.values()) {
-            if (e.type == type) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("code", e.code);
-                map.put("note", e.note);
-                ls.add(map);
+        List<Map<String, Object>> Silian_ls = new ArrayList<Map<String, Object>>();
+        for (CgformEnum Silian_e : CgformEnum.values()) {
+            if (Silian_e.type == type) {
+                Map<String, Object> Silian_map = new HashMap<String, Object>();
+                Silian_map.put("code", Silian_e.code);
+                Silian_map.put("note", Silian_e.note);
+                Silian_ls.add(Silian_map);
             }
         }
-        return ls;
+        return Silian_ls;
     }
 
 

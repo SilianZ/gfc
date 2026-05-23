@@ -28,36 +28,36 @@ public class SysDepartRoleUserServiceImpl extends ServiceImpl<SysDepartRoleUserM
     private SysDepartRoleMapper sysDepartRoleMapper;
 
     @Override
-    public void deptRoleUserAdd(String userId, String newRoleId, String oldRoleId) {
-        List<String> add = getDiff(oldRoleId,newRoleId);
-        if(add!=null && add.size()>0) {
-            List<SysDepartRoleUser> list = new ArrayList<>();
-            for (String roleId : add) {
-                if(oConvertUtils.isNotEmpty(roleId)) {
-                    SysDepartRoleUser rolepms = new SysDepartRoleUser(userId, roleId);
-                    list.add(rolepms);
+    public void deptRoleUserAdd(String Silian_userId, String Silian_newRoleId, String Silian_oldRoleId) {
+        List<String> Silian_add = getDiff(Silian_oldRoleId,Silian_newRoleId);
+        if(Silian_add!=null && Silian_add.size()>0) {
+            List<SysDepartRoleUser> Silian_list = new ArrayList<>();
+            for (String Silian_roleId : Silian_add) {
+                if(oConvertUtils.isNotEmpty(Silian_roleId)) {
+                    SysDepartRoleUser Silian_rolepms = new SysDepartRoleUser(Silian_userId, Silian_roleId);
+                    Silian_list.add(Silian_rolepms);
                 }
             }
-            this.saveBatch(list);
+            this.saveBatch(Silian_list);
         }
-        List<String> remove = getDiff(newRoleId,oldRoleId);
-        if(remove!=null && remove.size()>0) {
-            for (String roleId : remove) {
-                this.remove(new QueryWrapper<SysDepartRoleUser>().lambda().eq(SysDepartRoleUser::getUserId, userId).eq(SysDepartRoleUser::getDroleId, roleId));
+        List<String> Silian_remove = getDiff(Silian_newRoleId,Silian_oldRoleId);
+        if(Silian_remove!=null && Silian_remove.size()>0) {
+            for (String Silian_roleId : Silian_remove) {
+                this.remove(new QueryWrapper<SysDepartRoleUser>().lambda().eq(SysDepartRoleUser::getUserId, Silian_userId).eq(SysDepartRoleUser::getDroleId, Silian_roleId));
             }
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void removeDeptRoleUser(List<String> userIds, String depId) {
-        for(String userId : userIds){
-            List<SysDepartRole> sysDepartRoleList = sysDepartRoleMapper.selectList(new QueryWrapper<SysDepartRole>().eq("depart_id",depId));
-            List<String> roleIds = sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
-            if(roleIds != null && roleIds.size()>0){
-                QueryWrapper<SysDepartRoleUser> query = new QueryWrapper<>();
-                query.eq("user_id",userId).in("drole_id",roleIds);
-                this.remove(query);
+    public void removeDeptRoleUser(List<String> Silian_userIds, String Silian_depId) {
+        for(String Silian_userId : Silian_userIds){
+            List<SysDepartRole> Silian_sysDepartRoleList = sysDepartRoleMapper.selectList(new QueryWrapper<SysDepartRole>().eq("depart_id",Silian_depId));
+            List<String> Silian_roleIds = Silian_sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
+            if(Silian_roleIds != null && Silian_roleIds.size()>0){
+                QueryWrapper<SysDepartRoleUser> Silian_query = new QueryWrapper<>();
+                Silian_query.eq("user_id",Silian_userId).in("drole_id",Silian_roleIds);
+                this.remove(Silian_query);
             }
         }
     }
@@ -68,26 +68,26 @@ public class SysDepartRoleUserServiceImpl extends ServiceImpl<SysDepartRoleUserM
      * @param diff
      * @return
      */
-    private List<String> getDiff(String main, String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+    private List<String> getDiff(String Silian_main, String Silian_diff){
+        if(oConvertUtils.isEmpty(Silian_diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
-            return Arrays.asList(diff.split(","));
+        if(oConvertUtils.isEmpty(Silian_main)) {
+            return Arrays.asList(Silian_diff.split(","));
         }
 
-        String[] mainArr = main.split(",");
-        String[] diffArr = diff.split(",");
-        Map<String, Integer> map = new HashMap(5);
-        for (String string : mainArr) {
-            map.put(string, 1);
+        String[] Silian_mainArr = Silian_main.split(",");
+        String[] Silian_diffArr = Silian_diff.split(",");
+        Map<String, Integer> Silian_map = new HashMap(5);
+        for (String Silian_string : Silian_mainArr) {
+            Silian_map.put(Silian_string, 1);
         }
-        List<String> res = new ArrayList<String>();
-        for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
-                res.add(key);
+        List<String> Silian_res = new ArrayList<String>();
+        for (String Silian_key : Silian_diffArr) {
+            if(oConvertUtils.isNotEmpty(Silian_key) && !Silian_map.containsKey(Silian_key)) {
+                Silian_res.add(Silian_key);
             }
         }
-        return res;
+        return Silian_res;
     }
 }

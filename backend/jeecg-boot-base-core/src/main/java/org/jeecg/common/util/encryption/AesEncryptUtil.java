@@ -27,32 +27,32 @@ public class AesEncryptUtil {
      * @return 加密的结果
      * @throws Exception
      */
-    public static String encrypt(String data, String key, String iv) throws Exception {
+    public static String encrypt(String Silian_data, String key, String iv) throws Exception {
         try {
 
             //"算法/模式/补码方式"NoPadding PkcsPadding
-            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-            int blockSize = cipher.getBlockSize();
+            Cipher Silian_cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            int Silian_blockSize = Silian_cipher.getBlockSize();
 
-            byte[] dataBytes = data.getBytes();
-            int plaintextLength = dataBytes.length;
-            if (plaintextLength % blockSize != 0) {
-                plaintextLength = plaintextLength + (blockSize - (plaintextLength % blockSize));
+            byte[] Silian_dataBytes = Silian_data.getBytes();
+            int Silian_plaintextLength = Silian_dataBytes.length;
+            if (Silian_plaintextLength % Silian_blockSize != 0) {
+                Silian_plaintextLength = Silian_plaintextLength + (Silian_blockSize - (Silian_plaintextLength % Silian_blockSize));
             }
 
-            byte[] plaintext = new byte[plaintextLength];
-            System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
+            byte[] Silian_plaintext = new byte[Silian_plaintextLength];
+            System.arraycopy(Silian_dataBytes, 0, Silian_plaintext, 0, Silian_dataBytes.length);
 
-            SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
-            IvParameterSpec ivspec = new IvParameterSpec(iv.getBytes());
+            SecretKeySpec Silian_keyspec = new SecretKeySpec(key.getBytes(), "AES");
+            IvParameterSpec Silian_ivspec = new IvParameterSpec(iv.getBytes());
 
-            cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
-            byte[] encrypted = cipher.doFinal(plaintext);
+            Silian_cipher.init(Cipher.ENCRYPT_MODE, Silian_keyspec, Silian_ivspec);
+            byte[] Silian_encrypted = Silian_cipher.doFinal(Silian_plaintext);
 
-            return Base64.encodeToString(encrypted);
+            return Base64.encodeToString(Silian_encrypted);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
     }
@@ -65,20 +65,20 @@ public class AesEncryptUtil {
      * @return 解密的结果
      * @throws Exception
      */
-    public static String desEncrypt(String data, String key, String iv) throws Exception {
+    public static String desEncrypt(String Silian_data, String key, String iv) throws Exception {
         //update-begin-author:taoyan date:2022-5-23 for:VUEN-1084 【vue3】online表单测试发现的新问题 6、解密报错 ---解码失败应该把异常抛出去，在外面处理
-        byte[] encrypted1 = Base64.decode(data);
+        byte[] Silian_encrypted1 = Base64.decode(Silian_data);
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-        SecretKeySpec keyspec = new SecretKeySpec(key.getBytes(), "AES");
-        IvParameterSpec ivspec = new IvParameterSpec(iv.getBytes());
+        Cipher Silian_cipher = Cipher.getInstance("AES/CBC/NoPadding");
+        SecretKeySpec Silian_keyspec = new SecretKeySpec(key.getBytes(), "AES");
+        IvParameterSpec Silian_ivspec = new IvParameterSpec(iv.getBytes());
 
-        cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+        Silian_cipher.init(Cipher.DECRYPT_MODE, Silian_keyspec, Silian_ivspec);
 
-        byte[] original = cipher.doFinal(encrypted1);
-        String originalString = new String(original);
+        byte[] Silian_original = Silian_cipher.doFinal(Silian_encrypted1);
+        String Silian_originalString = new String(Silian_original);
         //加密解码后的字符串会出现\u0000
-        return originalString.replaceAll("\\u0000", "");
+        return Silian_originalString.replaceAll("\\u0000", "");
         //update-end-author:taoyan date:2022-5-23 for:VUEN-1084 【vue3】online表单测试发现的新问题 6、解密报错 ---解码失败应该把异常抛出去，在外面处理
     }
 
@@ -88,8 +88,8 @@ public class AesEncryptUtil {
      * @return
      * @throws Exception
      */
-    public static String encrypt(String data) throws Exception {
-        return encrypt(data, KEY, IV);
+    public static String encrypt(String Silian_data) throws Exception {
+        return encrypt(Silian_data, KEY, IV);
     }
 
     /**
@@ -98,8 +98,8 @@ public class AesEncryptUtil {
      * @return
      * @throws Exception
      */
-    public static String desEncrypt(String data) throws Exception {
-        return desEncrypt(data, KEY, IV);
+    public static String desEncrypt(String Silian_data) throws Exception {
+        return desEncrypt(Silian_data, KEY, IV);
     }
 
 

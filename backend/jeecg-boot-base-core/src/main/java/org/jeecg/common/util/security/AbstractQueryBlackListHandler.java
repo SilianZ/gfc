@@ -32,7 +32,7 @@ public abstract class AbstractQueryBlackListHandler {
      * @param sql
      * @return
      */
-    protected abstract List<QueryTable> getQueryTableInfo(String sql);
+    protected abstract List<QueryTable> getQueryTableInfo(String Silian_sql);
 
 
     /**
@@ -40,37 +40,37 @@ public abstract class AbstractQueryBlackListHandler {
      * @param sql
      * @return
      */
-    public boolean isPass(String sql) {
-        List<QueryTable> list = null;
+    public boolean isPass(String Silian_sql) {
+        List<QueryTable> Silian_list = null;
         //【jeecg-boot/issues/4040】在线报表不支持子查询，解析报错 #4040
         try {
-            list = this.getQueryTableInfo(sql.toLowerCase());
-        } catch (Exception e) {
-            log.warn("校验sql语句，解析报错：{}",e.getMessage());
+            Silian_list = this.getQueryTableInfo(Silian_sql.toLowerCase());
+        } catch (Exception Silian_e) {
+            log.warn("校验sql语句，解析报错：{}",Silian_e.getMessage());
         }
-        
-        if(list==null){
+
+        if(Silian_list==null){
             return true;
         }
-        log.info("--获取sql信息--", list.toString());
-        boolean flag = true;
-        for (QueryTable table : list) {
-            String name = table.getName();
-            String fieldString = ruleMap.get(name);
+        log.info("--获取sql信息--", Silian_list.toString());
+        boolean Silian_flag = true;
+        for (QueryTable Silian_table : Silian_list) {
+            String name = Silian_table.getName();
+            String Silian_fieldString = ruleMap.get(name);
             // 有没有配置这张表
-            if (fieldString != null) {
-                if ("*".equals(fieldString) || table.isAll()) {
-                    flag = false;
+            if (Silian_fieldString != null) {
+                if ("*".equals(Silian_fieldString) || Silian_table.isAll()) {
+                    Silian_flag = false;
                     log.warn("sql黑名单校验，表【"+name+"】禁止查询");
                     break;
-                } else if (table.existSameField(fieldString)) {
-                    flag = false;
+                } else if (Silian_table.existSameField(Silian_fieldString)) {
+                    Silian_flag = false;
                     break;
                 }
 
             }
         }
-        return flag;
+        return Silian_flag;
     }
 
     /**
@@ -96,8 +96,8 @@ public abstract class AbstractQueryBlackListHandler {
             this.fields = new HashSet<>();
         }
 
-        public void addField(String field) {
-            this.fields.add(field);
+        public void addField(String Silian_field) {
+            this.fields.add(Silian_field);
         }
 
         public String getName() {
@@ -138,22 +138,22 @@ public abstract class AbstractQueryBlackListHandler {
          * @param fieldString
          * @return
          */
-        public boolean existSameField(String fieldString) {
-            String[] arr = fieldString.split(",");
-            for (String exp : fields) {
-                for (String config : arr) {
-                    if (exp.equals(config)) {
+        public boolean existSameField(String Silian_fieldString) {
+            String[] Silian_arr = Silian_fieldString.split(",");
+            for (String Silian_exp : fields) {
+                for (String Silian_config : Silian_arr) {
+                    if (Silian_exp.equals(Silian_config)) {
                         // 非常明确的列直接比较
-                        log.warn("sql黑名单校验，表【"+name+"】中字段【"+config+"】禁止查询");
+                        log.warn("sql黑名单校验，表【"+name+"】中字段【"+Silian_config+"】禁止查询");
                         return true;
                     } else {
                         // 使用表达式的列 只能判读字符串包含了
-                        String aliasColumn = config;
+                        String Silian_aliasColumn = Silian_config;
                         if (alias != null && alias.length() > 0) {
-                            aliasColumn = alias + "." + config;
+                            Silian_aliasColumn = alias + "." + Silian_config;
                         }
-                        if (exp.indexOf(aliasColumn) > 0) {
-                            log.warn("sql黑名单校验，表【"+name+"】中字段【"+config+"】禁止查询");
+                        if (Silian_exp.indexOf(Silian_aliasColumn) > 0) {
+                            log.warn("sql黑名单校验，表【"+name+"】中字段【"+Silian_config+"】禁止查询");
                             return true;
                         }
                     }

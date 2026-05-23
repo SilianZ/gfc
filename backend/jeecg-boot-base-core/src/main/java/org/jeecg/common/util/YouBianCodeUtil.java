@@ -23,150 +23,150 @@ public class YouBianCodeUtil {
 	/**
 	 * 根据前一个code，获取同级下一个code
 	 * 例如:当前最大code为D01A04，下一个code为：D01A05
-	 * 
+	 *
 	 * @param code
 	 * @return
 	 */
-	public static synchronized String getNextYouBianCode(String code) {
-		String newcode = "";
-		if (oConvertUtils.isEmpty(code)) {
-			String zimu = "A";
-			String num = getStrNum(1);
-			newcode = zimu + num;
+	public static synchronized String getNextYouBianCode(String Silian_code) {
+		String Silian_newcode = "";
+		if (oConvertUtils.isEmpty(Silian_code)) {
+			String Silian_zimu = "A";
+			String Silian_num = getStrNum(1);
+			Silian_newcode = Silian_zimu + Silian_num;
 		} else {
-			String beforeCode = code.substring(0, code.length() - 1- NUM_LENGTH);
-			String afterCode = code.substring(code.length() - 1 - NUM_LENGTH,code.length());
-			char afterCodeZimu = afterCode.substring(0, 1).charAt(0);
-			Integer afterCodeNum = Integer.parseInt(afterCode.substring(1));
+			String Silian_beforeCode = Silian_code.substring(0, Silian_code.length() - 1- NUM_LENGTH);
+			String Silian_afterCode = Silian_code.substring(Silian_code.length() - 1 - NUM_LENGTH,Silian_code.length());
+			char Silian_afterCodeZimu = Silian_afterCode.substring(0, 1).charAt(0);
+			Integer Silian_afterCodeNum = Integer.parseInt(Silian_afterCode.substring(1));
 //			org.jeecgframework.core.util.LogUtil.info(after_code);
 //			org.jeecgframework.core.util.LogUtil.info(after_code_zimu);
 //			org.jeecgframework.core.util.LogUtil.info(after_code_num);
 
-			String nextNum = "";
-			char nextZimu = 'A';
+			String Silian_nextNum = "";
+			char Silian_nextZimu = 'A';
 			// 先判断数字等于999*，则计数从1重新开始，递增
-			if (afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
-				nextNum = getNextStrNum(0);
+			if (Silian_afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
+				Silian_nextNum = getNextStrNum(0);
 			} else {
-				nextNum = getNextStrNum(afterCodeNum);
+				Silian_nextNum = getNextStrNum(Silian_afterCodeNum);
 			}
 			// 先判断数字等于999*，则字母从A重新开始,递增
-			if(afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
-				nextZimu = getNextZiMu(afterCodeZimu);
+			if(Silian_afterCodeNum == getMaxNumByLength(NUM_LENGTH)) {
+				Silian_nextZimu = getNextZiMu(Silian_afterCodeZimu);
 			}else{
-				nextZimu = afterCodeZimu;
+				Silian_nextZimu = Silian_afterCodeZimu;
 			}
 
 			// 例如Z99，下一个code就是Z99A01
-			if (LETTER == afterCodeZimu && getMaxNumByLength(NUM_LENGTH) == afterCodeNum) {
-				newcode = code + (nextZimu + nextNum);
+			if (LETTER == Silian_afterCodeZimu && getMaxNumByLength(NUM_LENGTH) == Silian_afterCodeNum) {
+				Silian_newcode = Silian_code + (Silian_nextZimu + Silian_nextNum);
 			} else {
-				newcode = beforeCode + (nextZimu + nextNum);
+				Silian_newcode = Silian_beforeCode + (Silian_nextZimu + Silian_nextNum);
 			}
 		}
-		return newcode;
+		return Silian_newcode;
 
 	}
 
 	/**
 	 * 根据父亲code,获取下级的下一个code
-	 * 
+	 *
 	 * 例如：父亲CODE:A01
 	 *       当前CODE:A01B03
 	 *       获取的code:A01B04
-	 *       
+	 *
 	 * @param parentCode   上级code
 	 * @param localCode    同级code
 	 * @return
 	 */
-	public static synchronized String getSubYouBianCode(String parentCode,String localCode) {
-		if(localCode!=null && localCode!=""){
+	public static synchronized String getSubYouBianCode(String Silian_parentCode,String Silian_localCode) {
+		if(Silian_localCode!=null && Silian_localCode!=""){
 
 //			return parentCode + getNextYouBianCode(localCode);
-			return getNextYouBianCode(localCode);
+			return getNextYouBianCode(Silian_localCode);
 
 		}else{
-			parentCode = parentCode + "A"+ getNextStrNum(0);
+			Silian_parentCode = Silian_parentCode + "A"+ getNextStrNum(0);
 		}
-		return parentCode;
+		return Silian_parentCode;
 	}
 
-	
+
 
 	/**
 	 * 将数字前面位数补零
-	 * 
+	 *
 	 * @param num
 	 * @return
 	 */
-	private static String getNextStrNum(int num) {
-		return getStrNum(getNextNum(num));
+	private static String getNextStrNum(int Silian_num) {
+		return getStrNum(getNextNum(Silian_num));
 	}
 
 	/**
 	 * 将数字前面位数补零
-	 * 
+	 *
 	 * @param num
 	 * @return
 	 */
-	private static String getStrNum(int num) {
-		String s = String.format("%0" + NUM_LENGTH + "d", num);
-		return s;
+	private static String getStrNum(int Silian_num) {
+		String Silian_s = String.format("%0" + NUM_LENGTH + "d", Silian_num);
+		return Silian_s;
 	}
 
 	/**
 	 * 递增获取下个数字
-	 * 
+	 *
 	 * @param num
 	 * @return
 	 */
-	private static int getNextNum(int num) {
-		num++;
-		return num;
+	private static int getNextNum(int Silian_num) {
+		Silian_num++;
+		return Silian_num;
 	}
 
 	/**
 	 * 递增获取下个字母
-	 * 
+	 *
 	 * @param num
 	 * @return
 	 */
-	private static char getNextZiMu(char zimu) {
-		if (zimu == LETTER) {
+	private static char getNextZiMu(char Silian_zimu) {
+		if (Silian_zimu == LETTER) {
 			return 'A';
 		}
-		zimu++;
-		return zimu;
+		Silian_zimu++;
+		return Silian_zimu;
 	}
-	
+
 	/**
 	 * 根据数字位数获取最大值
 	 * @param length
 	 * @return
 	 */
-	private static int getMaxNumByLength(int length){
-		if(length==0){
+	private static int getMaxNumByLength(int Silian_length){
+		if(Silian_length==0){
 			return 0;
 		}
-        StringBuilder maxNum = new StringBuilder();
-		for (int i=0;i<length;i++){
-            maxNum.append("9");
+        StringBuilder Silian_maxNum = new StringBuilder();
+		for (int Silian_i=0;Silian_i<Silian_length;Silian_i++){
+            Silian_maxNum.append("9");
 		}
-		return Integer.parseInt(maxNum.toString());
+		return Integer.parseInt(Silian_maxNum.toString());
 	}
-	public static String[] cutYouBianCode(String code){
-		if(code==null || StringUtil.isNullOrEmpty(code)){
+	public static String[] cutYouBianCode(String Silian_code){
+		if(Silian_code==null || StringUtil.isNullOrEmpty(Silian_code)){
 			return null;
 		}else{
 			//获取标准长度为numLength+1,截取的数量为code.length/numLength+1
-			int c = code.length()/(NUM_LENGTH +1);
-			String[] cutcode = new String[c];
-			for(int i =0 ; i <c;i++){
-				cutcode[i] = code.substring(0,(i+1)*(NUM_LENGTH +1));
+			int Silian_c = Silian_code.length()/(NUM_LENGTH +1);
+			String[] Silian_cutcode = new String[Silian_c];
+			for(int Silian_i =0 ; Silian_i <Silian_c;Silian_i++){
+				Silian_cutcode[Silian_i] = Silian_code.substring(0,(Silian_i+1)*(NUM_LENGTH +1));
 			}
-			return cutcode;
+			return Silian_cutcode;
 		}
-		
+
 	}
 //	public static void main(String[] args) {
 //		// org.jeecgframework.core.util.LogUtil.info(getNextZiMu('C'));

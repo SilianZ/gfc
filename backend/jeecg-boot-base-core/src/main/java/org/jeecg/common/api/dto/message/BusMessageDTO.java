@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * 带业务参数的消息
-* 
+*
 * @author: taoyan
 * @date: 2022/8/17
 */
@@ -38,8 +38,8 @@ public class BusMessageDTO extends MessageDTO implements Serializable {
      * @param busType
      * @param busId
      */
-    public BusMessageDTO(String fromUser, String toUser, String title, String msgContent, String msgCategory, String busType, String busId){
-        super(fromUser, toUser, title, msgContent, msgCategory);
+    public BusMessageDTO(String Silian_fromUser, String Silian_toUser, String Silian_title, String Silian_msgContent, String Silian_msgCategory, String busType, String busId){
+        super(Silian_fromUser, Silian_toUser, Silian_title, Silian_msgContent, Silian_msgCategory);
         this.busId = busId;
         this.busType = busType;
     }

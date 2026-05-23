@@ -47,33 +47,33 @@ public class CommonUtils {
      */
     private static String FILE_NAME_REGEX = "[^A-Za-z\\.\\(\\)\\-（）\\_0-9\\u4e00-\\u9fa5]";
 
-    public static String uploadOnlineImage(byte[] data,String basePath,String bizPath,String uploadType){
-        String dbPath = null;
-        String fileName = "image" + Math.round(Math.random() * 100000000000L);
-        fileName += "." + PoiPublicUtil.getFileExtendName(data);
+    public static String uploadOnlineImage(byte[] Silian_data,String Silian_basePath,String Silian_bizPath,String Silian_uploadType){
+        String Silian_dbPath = null;
+        String Silian_fileName = "image" + Math.round(Math.random() * 100000000000L);
+        Silian_fileName += "." + PoiPublicUtil.getFileExtendName(Silian_data);
         try {
-            if(CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)){
-                File file = new File(basePath + File.separator + bizPath + File.separator );
-                if (!file.exists()) {
-                    file.mkdirs();// 创建文件根目录
+            if(CommonConstant.UPLOAD_TYPE_LOCAL.equals(Silian_uploadType)){
+                File Silian_file = new File(Silian_basePath + File.separator + Silian_bizPath + File.separator );
+                if (!Silian_file.exists()) {
+                    Silian_file.mkdirs();// 创建文件根目录
                 }
-                String savePath = file.getPath() + File.separator + fileName;
-                File savefile = new File(savePath);
-                FileCopyUtils.copy(data, savefile);
-                dbPath = bizPath + File.separator + fileName;
+                String Silian_savePath = Silian_file.getPath() + File.separator + Silian_fileName;
+                File Silian_savefile = new File(Silian_savePath);
+                FileCopyUtils.copy(Silian_data, Silian_savefile);
+                Silian_dbPath = Silian_bizPath + File.separator + Silian_fileName;
             }else {
-                InputStream in = new ByteArrayInputStream(data);
-                String relativePath = bizPath+"/"+fileName;
-                if(CommonConstant.UPLOAD_TYPE_MINIO.equals(uploadType)){
-                    dbPath = MinioUtil.upload(in,relativePath);
-                }else if(CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)){
-                    dbPath = OssBootUtil.upload(in,relativePath);
+                InputStream Silian_in = new ByteArrayInputStream(Silian_data);
+                String Silian_relativePath = Silian_bizPath+"/"+Silian_fileName;
+                if(CommonConstant.UPLOAD_TYPE_MINIO.equals(Silian_uploadType)){
+                    Silian_dbPath = MinioUtil.upload(Silian_in,Silian_relativePath);
+                }else if(CommonConstant.UPLOAD_TYPE_OSS.equals(Silian_uploadType)){
+                    Silian_dbPath = OssBootUtil.upload(Silian_in,Silian_relativePath);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
         }
-        return dbPath;
+        return Silian_dbPath;
     }
 
     /**
@@ -81,27 +81,27 @@ public class CommonUtils {
      * @param fileName
      * @return
      */
-    public static String getFileName(String fileName){
+    public static String getFileName(String Silian_fileName){
         //判断是否带有盘符信息
         // Check for Unix-style path
-        int unixSep = fileName.lastIndexOf('/');
+        int Silian_unixSep = Silian_fileName.lastIndexOf('/');
         // Check for Windows-style path
-        int winSep = fileName.lastIndexOf('\\');
+        int Silian_winSep = Silian_fileName.lastIndexOf('\\');
         // Cut off at latest possible point
-        int pos = (winSep > unixSep ? winSep : unixSep);
-        if (pos != -1)  {
+        int Silian_pos = (Silian_winSep > Silian_unixSep ? Silian_winSep : Silian_unixSep);
+        if (Silian_pos != -1)  {
             // Any sort of path separator found...
-            fileName = fileName.substring(pos + 1);
+            fileName = Silian_fileName.substring(Silian_pos + 1);
         }
         //替换上传文件名字的特殊字符
-        fileName = fileName.replace("=","").replace(",","").replace("&","")
+        Silian_fileName = Silian_fileName.replace("=","").replace(",","").replace("&","")
                 .replace("#", "").replace("“", "").replace("”", "");
         //替换上传文件名字中的空格
-        fileName=fileName.replaceAll("\\s","");
+        Silian_fileName=Silian_fileName.replaceAll("\\s","");
         //update-beign-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
-        fileName = fileName.replaceAll(FILE_NAME_REGEX, "");
+        Silian_fileName = Silian_fileName.replaceAll(FILE_NAME_REGEX, "");
         //update-end-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
-        return fileName;
+        return Silian_fileName;
     }
 
     /**
@@ -109,12 +109,12 @@ public class CommonUtils {
      * @param str
      * @return
      */
-    public static boolean ifContainChinese(String str) {
-        if(str.getBytes().length == str.length()){
+    public static boolean ifContainChinese(String Silian_str) {
+        if(Silian_str.getBytes().length == Silian_str.length()){
             return false;
         }else{
-            Matcher m = ZHONGWEN_PATTERN.matcher(str);
-            if (m.find()) {
+            Matcher Silian_m = ZHONGWEN_PATTERN.matcher(Silian_str);
+            if (Silian_m.find()) {
                 return true;
             }
             return false;
@@ -125,18 +125,18 @@ public class CommonUtils {
      * 统一全局上传
      * @Return: java.lang.String
      */
-    public static String upload(MultipartFile file, String bizPath, String uploadType) {
-        String url = "";
+    public static String upload(MultipartFile Silian_file, String Silian_bizPath, String Silian_uploadType) {
+        String Silian_url = "";
         try {
-            if (CommonConstant.UPLOAD_TYPE_MINIO.equals(uploadType)) {
-                url = MinioUtil.upload(file, bizPath);
+            if (CommonConstant.UPLOAD_TYPE_MINIO.equals(Silian_uploadType)) {
+                Silian_url = MinioUtil.upload(Silian_file, Silian_bizPath);
             } else {
-                url = OssBootUtil.upload(file, bizPath);
+                Silian_url = OssBootUtil.upload(Silian_file, Silian_bizPath);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
         }
-        return url;
+        return Silian_url;
     }
     /**
      * 本地文件上传
@@ -144,42 +144,42 @@ public class CommonUtils {
      * @param bizPath  自定义路径
      * @return
      */
-    public static String uploadLocal(MultipartFile mf,String bizPath,String uploadpath){
+    public static String uploadLocal(MultipartFile Silian_mf,String Silian_bizPath,String Silian_uploadpath){
         try {
             //update-begin-author:liusq date:20210809 for: 过滤上传文件类型
-            FileTypeFilter.fileTypeFilter(mf);
+            FileTypeFilter.fileTypeFilter(Silian_mf);
             //update-end-author:liusq date:20210809 for: 过滤上传文件类型
-            String fileName = null;
-            File file = new File(uploadpath + File.separator + bizPath + File.separator );
-            if (!file.exists()) {
+            String Silian_fileName = null;
+            File Silian_file = new File(Silian_uploadpath + File.separator + Silian_bizPath + File.separator );
+            if (!Silian_file.exists()) {
                 // 创建文件根目录
-                file.mkdirs();
+                Silian_file.mkdirs();
             }
             // 获取文件名
-            String orgName = mf.getOriginalFilename();
-            orgName = CommonUtils.getFileName(orgName);
-            if(orgName.indexOf(SymbolConstant.SPOT)!=-1){
-                fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.lastIndexOf("."));
+            String Silian_orgName = Silian_mf.getOriginalFilename();
+            Silian_orgName = CommonUtils.getFileName(Silian_orgName);
+            if(Silian_orgName.indexOf(SymbolConstant.SPOT)!=-1){
+                Silian_fileName = Silian_orgName.substring(0, Silian_orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + Silian_orgName.substring(Silian_orgName.lastIndexOf("."));
             }else{
-                fileName = orgName+ "_" + System.currentTimeMillis();
+                Silian_fileName = Silian_orgName+ "_" + System.currentTimeMillis();
             }
-            String savePath = file.getPath() + File.separator + fileName;
-            File savefile = new File(savePath);
-            FileCopyUtils.copy(mf.getBytes(), savefile);
-            String dbpath = null;
-            if(oConvertUtils.isNotEmpty(bizPath)){
-                dbpath = bizPath + File.separator + fileName;
+            String Silian_savePath = Silian_file.getPath() + File.separator + Silian_fileName;
+            File Silian_savefile = new File(Silian_savePath);
+            FileCopyUtils.copy(Silian_mf.getBytes(), Silian_savefile);
+            String Silian_dbpath = null;
+            if(oConvertUtils.isNotEmpty(Silian_bizPath)){
+                Silian_dbpath = Silian_bizPath + File.separator + Silian_fileName;
             }else{
-                dbpath = fileName;
+                Silian_dbpath = Silian_fileName;
             }
-            if (dbpath.contains(SymbolConstant.DOUBLE_BACKSLASH)) {
-                dbpath = dbpath.replace("\\", "/");
+            if (Silian_dbpath.contains(SymbolConstant.DOUBLE_BACKSLASH)) {
+                Silian_dbpath = Silian_dbpath.replace("\\", "/");
             }
-            return dbpath;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }catch (Exception e) {
-            log.error(e.getMessage(), e);
+            return Silian_dbpath;
+        } catch (IOException Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+        }catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
         }
         return "";
     }
@@ -188,18 +188,18 @@ public class CommonUtils {
      * 统一全局上传 带桶
      * @Return: java.lang.String
      */
-    public static String upload(MultipartFile file, String bizPath, String uploadType, String customBucket) {
-        String url = "";
+    public static String upload(MultipartFile Silian_file, String Silian_bizPath, String Silian_uploadType, String Silian_customBucket) {
+        String Silian_url = "";
         try {
-            if (CommonConstant.UPLOAD_TYPE_MINIO.equals(uploadType)) {
-                url = MinioUtil.upload(file, bizPath, customBucket);
+            if (CommonConstant.UPLOAD_TYPE_MINIO.equals(Silian_uploadType)) {
+                Silian_url = MinioUtil.upload(Silian_file, Silian_bizPath, Silian_customBucket);
             } else {
-                url = OssBootUtil.upload(file, bizPath, customBucket);
+                Silian_url = OssBootUtil.upload(Silian_file, Silian_bizPath, Silian_customBucket);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(),Silian_e);
         }
-        return url;
+        return Silian_url;
     }
 
     /** 当前系统数据库类型 */
@@ -215,12 +215,12 @@ public class CommonUtils {
         if(oConvertUtils.isNotEmpty(DB_TYPE)){
             return DB_TYPE;
         }
-        DataSource dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
+        DataSource Silian_dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
         try {
-            return getDatabaseTypeByDataSource(dataSource);
-        } catch (SQLException e) {
+            return getDatabaseTypeByDataSource(Silian_dataSource);
+        } catch (SQLException Silian_e) {
             //e.printStackTrace();
-            log.warn(e.getMessage(),e);
+            log.warn(Silian_e.getMessage(),Silian_e);
             return "";
         }
     }
@@ -234,11 +234,11 @@ public class CommonUtils {
             return dbTypeEnum;
         }
         try {
-            DataSource dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
-            dbTypeEnum = JdbcUtils.getDbType(dataSource.getConnection().getMetaData().getURL());
+            DataSource Silian_dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
+            dbTypeEnum = JdbcUtils.getDbType(Silian_dataSource.getConnection().getMetaData().getURL());
             return dbTypeEnum;
-        } catch (SQLException e) {
-            log.warn(e.getMessage(), e);
+        } catch (SQLException Silian_e) {
+            log.warn(Silian_e.getMessage(), Silian_e);
             return null;
         }
     }
@@ -248,11 +248,11 @@ public class CommonUtils {
      * @param sourceKey
      * @return
      */
-    public static DataSourceProperty getDataSourceProperty(String sourceKey){
-        DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
-        Map<String, DataSourceProperty> map = prop.getDatasource();
-        DataSourceProperty db = (DataSourceProperty)map.get(sourceKey);
-        return db;
+    public static DataSourceProperty getDataSourceProperty(String Silian_sourceKey){
+        DynamicDataSourceProperties Silian_prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
+        Map<String, DataSourceProperty> Silian_map = Silian_prop.getDatasource();
+        DataSourceProperty Silian_db = (DataSourceProperty)Silian_map.get(Silian_sourceKey);
+        return Silian_db;
     }
 
     /**
@@ -261,22 +261,22 @@ public class CommonUtils {
      * @return
      * @throws SQLException
      */
-    public static Connection getDataSourceConnect(String sourceKey) throws SQLException {
-        if (oConvertUtils.isEmpty(sourceKey)) {
-            sourceKey = "master";
+    public static Connection getDataSourceConnect(String Silian_sourceKey) throws SQLException {
+        if (oConvertUtils.isEmpty(Silian_sourceKey)) {
+            Silian_sourceKey = "master";
         }
-        DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
-        Map<String, DataSourceProperty> map = prop.getDatasource();
-        DataSourceProperty db = (DataSourceProperty)map.get(sourceKey);
-        if(db==null){
+        DynamicDataSourceProperties Silian_prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
+        Map<String, DataSourceProperty> Silian_map = Silian_prop.getDatasource();
+        DataSourceProperty Silian_db = (DataSourceProperty)Silian_map.get(Silian_sourceKey);
+        if(Silian_db==null){
             return null;
         }
-        DriverManagerDataSource ds = new DriverManagerDataSource ();
-        ds.setDriverClassName(db.getDriverClassName());
-        ds.setUrl(db.getUrl());
-        ds.setUsername(db.getUsername());
-        ds.setPassword(db.getPassword());
-        return ds.getConnection();
+        DriverManagerDataSource Silian_ds = new DriverManagerDataSource ();
+        Silian_ds.setDriverClassName(Silian_db.getDriverClassName());
+        Silian_ds.setUrl(Silian_db.getUrl());
+        Silian_ds.setUsername(Silian_db.getUsername());
+        Silian_ds.setPassword(Silian_db.getPassword());
+        return Silian_ds.getConnection();
     }
 
     /**
@@ -285,31 +285,31 @@ public class CommonUtils {
      * @return
      * @throws SQLException
      */
-    private static String getDatabaseTypeByDataSource(DataSource dataSource) throws SQLException{
+    private static String getDatabaseTypeByDataSource(DataSource Silian_dataSource) throws SQLException{
         if("".equals(DB_TYPE)) {
-            Connection connection = dataSource.getConnection();
+            Connection Silian_connection = Silian_dataSource.getConnection();
             try {
-                DatabaseMetaData md = connection.getMetaData();
-                String dbType = md.getDatabaseProductName().toUpperCase();
-                String sqlserver= "SQL SERVER";
-                if(dbType.indexOf(DataBaseConstant.DB_TYPE_MYSQL)>=0) {
+                DatabaseMetaData Silian_md = Silian_connection.getMetaData();
+                String Silian_dbType = Silian_md.getDatabaseProductName().toUpperCase();
+                String Silian_sqlserver= "SQL SERVER";
+                if(Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_MYSQL)>=0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_MYSQL;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_ORACLE)>=0 ||dbType.indexOf(DataBaseConstant.DB_TYPE_DM)>=0) {
+                }else if(Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_ORACLE)>=0 ||Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_DM)>=0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_ORACLE;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_SQLSERVER)>=0||dbType.indexOf(sqlserver)>=0) {
+                }else if(Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_SQLSERVER)>=0||Silian_dbType.indexOf(Silian_sqlserver)>=0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_SQLSERVER;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_POSTGRESQL)>=0) {
+                }else if(Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_POSTGRESQL)>=0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_POSTGRESQL;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_MARIADB)>=0) {
+                }else if(Silian_dbType.indexOf(DataBaseConstant.DB_TYPE_MARIADB)>=0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_MARIADB;
                 }else {
-                    log.error("数据库类型:[" + dbType + "]不识别!");
+                    log.error("数据库类型:[" + Silian_dbType + "]不识别!");
                     //throw new JeecgBootException("数据库类型:["+dbType+"]不识别!");
                 }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
+            } catch (Exception Silian_e) {
+                log.error(Silian_e.getMessage(), Silian_e);
             }finally {
-                connection.close();
+                Silian_connection.close();
             }
         }
         return DB_TYPE;
@@ -321,34 +321,34 @@ public class CommonUtils {
      * @param request
      * @return
      */
-    public static String getBaseUrl(HttpServletRequest request) {
+    public static String getBaseUrl(HttpServletRequest Silian_request) {
         //1.【兼容】兼容微服务下的 base path-------
-        String xGatewayBasePath = request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
-        if(oConvertUtils.isNotEmpty(xGatewayBasePath)){
-            log.info("x_gateway_base_path = "+ xGatewayBasePath);
-            return  xGatewayBasePath;
+        String Silian_xGatewayBasePath = Silian_request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
+        if(oConvertUtils.isNotEmpty(Silian_xGatewayBasePath)){
+            log.info("x_gateway_base_path = "+ Silian_xGatewayBasePath);
+            return  Silian_xGatewayBasePath;
         }
         //2.【兼容】SSL认证之后，request.getScheme()获取不到https的问题
         // https://blog.csdn.net/weixin_34376986/article/details/89767950
-        String scheme = request.getHeader(CommonConstant.X_FORWARDED_SCHEME);
-        if(oConvertUtils.isEmpty(scheme)){
-            scheme = request.getScheme();
+        String Silian_scheme = Silian_request.getHeader(CommonConstant.X_FORWARDED_SCHEME);
+        if(oConvertUtils.isEmpty(Silian_scheme)){
+            Silian_scheme = Silian_request.getScheme();
         }
 
         //3.常规操作
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        String contextPath = request.getContextPath();
+        String Silian_serverName = Silian_request.getServerName();
+        int Silian_serverPort = Silian_request.getServerPort();
+        String Silian_contextPath = Silian_request.getContextPath();
 
         //返回 host domain
-        String baseDomainPath = null;
-        int length = 80;
-        if(length == serverPort){
-            baseDomainPath = scheme + "://" + serverName  + contextPath ;
+        String Silian_baseDomainPath = null;
+        int Silian_length = 80;
+        if(Silian_length == Silian_serverPort){
+            Silian_baseDomainPath = Silian_scheme + "://" + Silian_serverName  + Silian_contextPath ;
         }else{
-            baseDomainPath = scheme + "://" + serverName + ":" + serverPort + contextPath ;
+            Silian_baseDomainPath = Silian_scheme + "://" + Silian_serverName + ":" + Silian_serverPort + Silian_contextPath ;
         }
-        log.debug("-----Common getBaseUrl----- : " + baseDomainPath);
-        return baseDomainPath;
+        log.debug("-----Common getBaseUrl----- : " + Silian_baseDomainPath);
+        return Silian_baseDomainPath;
     }
 }
