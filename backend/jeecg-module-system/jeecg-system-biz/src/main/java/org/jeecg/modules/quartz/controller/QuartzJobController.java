@@ -55,7 +55,7 @@ public class QuartzJobController {
 
 	/**
 	 * 分页列表查询
-	 * 
+	 *
 	 * @param quartzJob
 	 * @param pageNo
 	 * @param pageSize
@@ -63,41 +63,41 @@ public class QuartzJobController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<?> queryPageList(QuartzJob quartzJob, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
-		QueryWrapper<QuartzJob> queryWrapper = QueryGenerator.initQueryWrapper(quartzJob, req.getParameterMap());
-		Page<QuartzJob> page = new Page<QuartzJob>(pageNo, pageSize);
-		IPage<QuartzJob> pageList = quartzJobService.page(page, queryWrapper);
-        return Result.ok(pageList);
+	public Result<?> queryPageList(QuartzJob Silian_quartzJob, @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize, HttpServletRequest Silian_req) {
+		QueryWrapper<QuartzJob> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_quartzJob, Silian_req.getParameterMap());
+		Page<QuartzJob> Silian_page = new Page<QuartzJob>(Silian_pageNo, Silian_pageSize);
+		IPage<QuartzJob> Silian_pageList = quartzJobService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
 
 	}
 
 	/**
 	 * 添加定时任务
-	 * 
+	 *
 	 * @param quartzJob
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result<?> add(@RequestBody QuartzJob quartzJob) {
-		quartzJobService.saveAndScheduleJob(quartzJob);
+	public Result<?> add(@RequestBody QuartzJob Silian_quartzJob) {
+		quartzJobService.saveAndScheduleJob(Silian_quartzJob);
 		return Result.ok("创建定时任务成功");
 	}
 
 	/**
 	 * 更新定时任务
-	 * 
+	 *
 	 * @param quartzJob
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@RequestMapping(value = "/edit", method ={RequestMethod.PUT, RequestMethod.POST})
-	public Result<?> eidt(@RequestBody QuartzJob quartzJob) {
+	public Result<?> eidt(@RequestBody QuartzJob Silian_quartzJob) {
 		try {
-			quartzJobService.editAndScheduleJob(quartzJob);
-		} catch (SchedulerException e) {
-			log.error(e.getMessage(),e);
+			quartzJobService.editAndScheduleJob(Silian_quartzJob);
+		} catch (SchedulerException Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 			return Result.error("更新定时任务失败!");
 		}
 	    return Result.ok("更新定时任务成功!");
@@ -105,158 +105,158 @@ public class QuartzJobController {
 
 	/**
 	 * 通过id删除
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-		QuartzJob quartzJob = quartzJobService.getById(id);
-		if (quartzJob == null) {
+	public Result<?> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+		QuartzJob Silian_quartzJob = quartzJobService.getById(Silian_id);
+		if (Silian_quartzJob == null) {
 			return Result.error("未找到对应实体");
 		}
-		quartzJobService.deleteAndStopJob(quartzJob);
+		quartzJobService.deleteAndStopJob(Silian_quartzJob);
         return Result.ok("删除成功!");
 
 	}
 
 	/**
 	 * 批量删除
-	 * 
+	 *
 	 * @param ids
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-	public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-		if (ids == null || "".equals(ids.trim())) {
+	public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+		if (Silian_ids == null || "".equals(Silian_ids.trim())) {
 			return Result.error("参数不识别！");
 		}
-		for (String id : Arrays.asList(ids.split(SymbolConstant.COMMA))) {
-			QuartzJob job = quartzJobService.getById(id);
-			quartzJobService.deleteAndStopJob(job);
+		for (String Silian_id : Arrays.asList(Silian_ids.split(SymbolConstant.COMMA))) {
+			QuartzJob Silian_job = quartzJobService.getById(Silian_id);
+			quartzJobService.deleteAndStopJob(Silian_job);
 		}
         return Result.ok("删除定时任务成功!");
 	}
 
 	/**
 	 * 暂停定时任务
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@GetMapping(value = "/pause")
 	@ApiOperation(value = "停止定时任务")
-	public Result<Object> pauseJob(@RequestParam(name = "id") String id) {
-		QuartzJob job = quartzJobService.getById(id);
-		if (job == null) {
+	public Result<Object> pauseJob(@RequestParam(name = "id") String Silian_id) {
+		QuartzJob Silian_job = quartzJobService.getById(Silian_id);
+		if (Silian_job == null) {
 			return Result.error("定时任务不存在！");
 		}
-		quartzJobService.pause(job);
+		quartzJobService.pause(Silian_job);
 		return Result.ok("停止定时任务成功");
 	}
 
 	/**
 	 * 启动定时任务
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	//@RequiresRoles("admin")
 	@GetMapping(value = "/resume")
 	@ApiOperation(value = "启动定时任务")
-	public Result<Object> resumeJob(@RequestParam(name = "id") String id) {
-		QuartzJob job = quartzJobService.getById(id);
-		if (job == null) {
+	public Result<Object> resumeJob(@RequestParam(name = "id") String Silian_id) {
+		QuartzJob Silian_job = quartzJobService.getById(Silian_id);
+		if (Silian_job == null) {
 			return Result.error("定时任务不存在！");
 		}
-		quartzJobService.resumeJob(job);
+		quartzJobService.resumeJob(Silian_job);
 		//scheduler.resumeJob(JobKey.jobKey(job.getJobClassName().trim()));
 		return Result.ok("启动定时任务成功");
 	}
 
 	/**
 	 * 通过id查询
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value = "/queryById", method = RequestMethod.GET)
-	public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
-		QuartzJob quartzJob = quartzJobService.getById(id);
-        return Result.ok(quartzJob);
+	public Result<?> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+		QuartzJob Silian_quartzJob = quartzJobService.getById(Silian_id);
+        return Result.ok(Silian_quartzJob);
 	}
 
 	/**
 	 * 导出excel
-	 * 
+	 *
 	 * @param request
 	 * @param quartzJob
 	 */
 	@RequestMapping(value = "/exportXls")
-	public ModelAndView exportXls(HttpServletRequest request, QuartzJob quartzJob) {
+	public ModelAndView exportXls(HttpServletRequest Silian_request, QuartzJob Silian_quartzJob) {
 		// Step.1 组装查询条件
-		QueryWrapper<QuartzJob> queryWrapper = QueryGenerator.initQueryWrapper(quartzJob, request.getParameterMap());
+		QueryWrapper<QuartzJob> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_quartzJob, Silian_request.getParameterMap());
 		// Step.2 AutoPoi 导出Excel
-		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-		List<QuartzJob> pageList = quartzJobService.list(queryWrapper);
+		ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
+		List<QuartzJob> Silian_pageList = quartzJobService.list(Silian_queryWrapper);
 		// 导出文件名称
-		mv.addObject(NormalExcelConstants.FILE_NAME, "定时任务列表");
-		mv.addObject(NormalExcelConstants.CLASS, QuartzJob.class);
+		Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "定时任务列表");
+		Silian_mv.addObject(NormalExcelConstants.CLASS, QuartzJob.class);
         //获取当前登录用户
         //update-begin---author:wangshuai ---date:20211227  for：[JTC-116]导出人写死了------------
-        LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("定时任务列表数据", "导出人:"+user.getRealname(), "导出信息"));
+        LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("定时任务列表数据", "导出人:"+Silian_user.getRealname(), "导出信息"));
         //update-end---author:wangshuai ---date:20211227  for：[JTC-116]导出人写死了------------
-        mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-		return mv;
+        Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+		return Silian_mv;
 	}
 
 	/**
 	 * 通过excel导入数据
-	 * 
+	 *
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-	public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+	public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) throws IOException {
+		MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+		Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
 		// 错误信息
-		List<String> errorMessage = new ArrayList<>();
-		int successLines = 0, errorLines = 0;
-		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+		List<String> Silian_errorMessage = new ArrayList<>();
+		int Silian_successLines = 0, Silian_errorLines = 0;
+		for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
             // 获取上传文件对象
-			MultipartFile file = entity.getValue();
-			ImportParams params = new ImportParams();
-			params.setTitleRows(2);
-			params.setHeadRows(1);
-			params.setNeedSave(true);
+			MultipartFile Silian_file = Silian_entity.getValue();
+			ImportParams Silian_params = new ImportParams();
+			Silian_params.setTitleRows(2);
+			Silian_params.setHeadRows(1);
+			Silian_params.setNeedSave(true);
 			try {
-				List<QuartzJob> listQuartzJobs = ExcelImportUtil.importExcel(file.getInputStream(), QuartzJob.class, params);
+				List<QuartzJob> Silian_listQuartzJobs = ExcelImportUtil.importExcel(Silian_file.getInputStream(), QuartzJob.class, Silian_params);
 				//add-begin-author:taoyan date:20210909 for:导入定时任务，并不会被启动和调度，需要手动点击启动，才会加入调度任务中 #2986
-				for(QuartzJob job: listQuartzJobs){
-					job.setStatus(CommonConstant.STATUS_DISABLE);
+				for(QuartzJob Silian_job: Silian_listQuartzJobs){
+					Silian_job.setStatus(CommonConstant.STATUS_DISABLE);
 				}
-				List<String> list = ImportExcelUtil.importDateSave(listQuartzJobs, IQuartzJobService.class, errorMessage,CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME);
+				List<String> Silian_list = ImportExcelUtil.importDateSave(Silian_listQuartzJobs, IQuartzJobService.class, Silian_errorMessage,CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME);
 				//add-end-author:taoyan date:20210909 for:导入定时任务，并不会被启动和调度，需要手动点击启动，才会加入调度任务中 #2986
-				errorLines+=list.size();
-				successLines+=(listQuartzJobs.size()-errorLines);
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+				Silian_errorLines+=Silian_list.size();
+				Silian_successLines+=(Silian_listQuartzJobs.size()-Silian_errorLines);
+			} catch (Exception Silian_e) {
+				log.error(Silian_e.getMessage(), Silian_e);
 				return Result.error("文件导入失败！");
 			} finally {
 				try {
-					file.getInputStream().close();
-				} catch (IOException e) {
-					e.printStackTrace();
+					Silian_file.getInputStream().close();
+				} catch (IOException Silian_e) {
+					Silian_e.printStackTrace();
 				}
 			}
 		}
-		return ImportExcelUtil.imporReturnRes(errorLines,successLines,errorMessage);
+		return ImportExcelUtil.imporReturnRes(Silian_errorLines,Silian_successLines,Silian_errorMessage);
 	}
 
 	/**
@@ -266,16 +266,16 @@ public class QuartzJobController {
 	 */
 	//@RequiresRoles("admin")
 	@GetMapping("/execute")
-	public Result<?> execute(@RequestParam(name = "id", required = true) String id) {
-		QuartzJob quartzJob = quartzJobService.getById(id);
-		if (quartzJob == null) {
+	public Result<?> execute(@RequestParam(name = "id", required = true) String Silian_id) {
+		QuartzJob Silian_quartzJob = quartzJobService.getById(Silian_id);
+		if (Silian_quartzJob == null) {
 			return Result.error("未找到对应实体");
 		}
 		try {
-			quartzJobService.execute(quartzJob);
-		} catch (Exception e) {
+			quartzJobService.execute(Silian_quartzJob);
+		} catch (Exception Silian_e) {
 			//e.printStackTrace();
-			log.info("定时任务 立即执行失败>>"+e.getMessage());
+			log.info("定时任务 立即执行失败>>"+Silian_e.getMessage());
 			return Result.error("执行失败!");
 		}
 		return Result.ok("执行成功!");

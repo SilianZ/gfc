@@ -19,7 +19,7 @@ import java.util.List;
 public class SysDepartRoleServiceImpl extends ServiceImpl<SysDepartRoleMapper, SysDepartRole> implements ISysDepartRoleService {
 
     @Override
-    public List<SysDepartRole> queryDeptRoleByDeptAndUser(String orgCode, String userId) {
-        return this.baseMapper.queryDeptRoleByDeptAndUser(orgCode,userId);
+    public List<SysDepartRole> queryDeptRoleByDeptAndUser(String Silian_orgCode, String Silian_userId) {
+        return this.baseMapper.queryDeptRoleByDeptAndUser(Silian_orgCode,Silian_userId);
     }
 }

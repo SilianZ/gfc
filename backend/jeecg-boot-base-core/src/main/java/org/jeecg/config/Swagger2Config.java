@@ -51,10 +51,10 @@ public class Swagger2Config implements WebMvcConfigurer {
      * @param registry
      */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    public void addResourceHandlers(ResourceHandlerRegistry Silian_registry) {
+        Silian_registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        Silian_registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+        Silian_registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     /**
@@ -94,11 +94,11 @@ public class Swagger2Config implements WebMvcConfigurer {
      * @return
      */
     private List<Parameter> setHeaderToken() {
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<>();
-        tokenPar.name(CommonConstant.X_ACCESS_TOKEN).description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
-        pars.add(tokenPar.build());
-        return pars;
+        ParameterBuilder Silian_tokenPar = new ParameterBuilder();
+        List<Parameter> Silian_pars = new ArrayList<>();
+        Silian_tokenPar.name(CommonConstant.X_ACCESS_TOKEN).description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        Silian_pars.add(Silian_tokenPar.build());
+        return Silian_pars;
     }
 
     /**
@@ -135,11 +135,11 @@ public class Swagger2Config implements WebMvcConfigurer {
     }
 
     private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
+        AuthorizationScope Silian_authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] Silian_authorizationScopes = new AuthorizationScope[1];
+        Silian_authorizationScopes[0] = Silian_authorizationScope;
         return new ArrayList(
-                Collections.singleton(new SecurityReference(CommonConstant.X_ACCESS_TOKEN, authorizationScopes)));
+                Collections.singleton(new SecurityReference(CommonConstant.X_ACCESS_TOKEN, Silian_authorizationScopes)));
     }
 
     /**
@@ -151,29 +151,29 @@ public class Swagger2Config implements WebMvcConfigurer {
         return new BeanPostProcessor() {
 
             @Override
-            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
-                    customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+            public Object postProcessAfterInitialization(Object Silian_bean, String Silian_beanName) throws BeansException {
+                if (Silian_bean instanceof WebMvcRequestHandlerProvider || Silian_bean instanceof WebFluxRequestHandlerProvider) {
+                    customizeSpringfoxHandlerMappings(getHandlerMappings(Silian_bean));
                 }
-                return bean;
+                return Silian_bean;
             }
 
-            private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
-                List<T> copy = mappings.stream()
-                        .filter(mapping -> mapping.getPatternParser() == null)
+            private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> Silian_mappings) {
+                List<T> Silian_copy = Silian_mappings.stream()
+                        .filter(Silian_mapping -> Silian_mapping.getPatternParser() == null)
                         .collect(Collectors.toList());
-                mappings.clear();
-                mappings.addAll(copy);
+                Silian_mappings.clear();
+                Silian_mappings.addAll(Silian_copy);
             }
 
             @SuppressWarnings("unchecked")
-            private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
+            private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object Silian_bean) {
                 try {
-                    Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-                    field.setAccessible(true);
-                    return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    throw new IllegalStateException(e);
+                    Field Silian_field = ReflectionUtils.findField(Silian_bean.getClass(), "handlerMappings");
+                    Silian_field.setAccessible(true);
+                    return (List<RequestMappingInfoHandlerMapping>) Silian_field.get(Silian_bean);
+                } catch (IllegalArgumentException | IllegalAccessException Silian_e) {
+                    throw new IllegalStateException(Silian_e);
                 }
             }
         };

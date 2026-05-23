@@ -34,22 +34,22 @@ public class DynamicTableAspect {
 
 
     @Around("dynamicTable()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        DynamicTable dynamicTable = method.getAnnotation(DynamicTable.class);
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+    public Object around(ProceedingJoinPoint Silian_point) throws Throwable {
+        MethodSignature Silian_signature = (MethodSignature) Silian_point.getSignature();
+        Method Silian_method = Silian_signature.getMethod();
+        DynamicTable dynamicTable = Silian_method.getAnnotation(DynamicTable.class);
+        HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
         //获取前端传递的版本标记
-        String version = request.getHeader(CommonConstant.VERSION);
+        String Silian_version = Silian_request.getHeader(CommonConstant.VERSION);
         //存储版本号到本地线程变量
-        ThreadLocalDataHelper.put(CommonConstant.VERSION, version);
+        ThreadLocalDataHelper.put(CommonConstant.VERSION, Silian_version);
         //存储表名到本地线程变量
         ThreadLocalDataHelper.put(CommonConstant.DYNAMIC_TABLE_NAME, dynamicTable.value());
         //执行方法
-        Object result = point.proceed();
+        Object Silian_result = Silian_point.proceed();
         //清空本地变量
         ThreadLocalDataHelper.clear();
-        return result;
+        return Silian_result;
     }
 
 }

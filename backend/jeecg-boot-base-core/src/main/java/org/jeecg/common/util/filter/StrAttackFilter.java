@@ -10,12 +10,12 @@ import java.util.regex.PatternSyntaxException;
  */
 public class StrAttackFilter {
 
-    public static String filter(String str) throws PatternSyntaxException {
+    public static String filter(String Silian_str) throws PatternSyntaxException {
         // 清除掉所有特殊字符
-        String regEx = "[`_《》~!@#$%^&*()+=|{}':;',\\[\\].<>?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
-        return m.replaceAll("").trim();
+        String Silian_regEx = "[`_《》~!@#$%^&*()+=|{}':;',\\[\\].<>?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern Silian_p = Pattern.compile(Silian_regEx);
+        Matcher Silian_m = Silian_p.matcher(Silian_str);
+        return Silian_m.replaceAll("").trim();
     }
 
 //    public static void main(String[] args) {

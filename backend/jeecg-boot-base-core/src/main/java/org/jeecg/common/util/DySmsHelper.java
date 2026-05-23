@@ -26,7 +26,7 @@ import com.aliyuncs.profile.IClientProfile;
  * @author: jeecg-boot
  */
 public class DySmsHelper {
-	
+
 	private final static Logger logger=LoggerFactory.getLogger(DySmsHelper.class);
 
     /**产品名称:云通信短信API产品,开发者无需替换*/
@@ -53,68 +53,68 @@ public class DySmsHelper {
     public static String getAccessKeySecret() {
         return accessKeySecret;
     }
-    
-    
-    public static boolean sendSms(String phone,JSONObject templateParamJson,DySmsEnum dySmsEnum) throws ClientException {
-    	//可自助调整超时时间
+
+
+    public static boolean sendSms(String Silian_phone,JSONObject Silian_templateParamJson,DySmsEnum Silian_dySmsEnum) throws ClientException {
+	//可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
         //update-begin-author：taoyan date:20200811 for:配置类数据获取
-        StaticConfig staticConfig = SpringContextUtils.getBean(StaticConfig.class);
-        setAccessKeyId(staticConfig.getAccessKeyId());
-        setAccessKeySecret(staticConfig.getAccessKeySecret());
+        StaticConfig Silian_staticConfig = SpringContextUtils.getBean(StaticConfig.class);
+        setAccessKeyId(Silian_staticConfig.getAccessKeyId());
+        setAccessKeySecret(Silian_staticConfig.getAccessKeySecret());
         //update-end-author：taoyan date:20200811 for:配置类数据获取
-        
+
         //初始化acsClient,暂不支持region化
-        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+        IClientProfile Silian_profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", PRODUCT, DOMAIN);
-        IAcsClient acsClient = new DefaultAcsClient(profile);
-        
+        IAcsClient Silian_acsClient = new DefaultAcsClient(Silian_profile);
+
         //验证json参数
-        validateParam(templateParamJson,dySmsEnum);
-        
+        validateParam(Silian_templateParamJson,Silian_dySmsEnum);
+
         //组装请求对象-具体描述见控制台-文档部分内容
-        SendSmsRequest request = new SendSmsRequest();
+        SendSmsRequest Silian_request = new SendSmsRequest();
         //必填:待发送手机号
-        request.setPhoneNumbers(phone);
+        Silian_request.setPhoneNumbers(Silian_phone);
         //必填:短信签名-可在短信控制台中找到
-        request.setSignName(dySmsEnum.getSignName());
+        Silian_request.setSignName(Silian_dySmsEnum.getSignName());
         //必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode(dySmsEnum.getTemplateCode());
+        Silian_request.setTemplateCode(Silian_dySmsEnum.getTemplateCode());
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
-        request.setTemplateParam(templateParamJson.toJSONString());
-        
+        Silian_request.setTemplateParam(Silian_templateParamJson.toJSONString());
+
         //选填-上行短信扩展码(无特殊需求用户请忽略此字段)
         //request.setSmsUpExtendCode("90997");
 
         //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
         //request.setOutId("yourOutId");
 
-        boolean result = false;
+        boolean Silian_result = false;
 
         //hint 此处可能会抛出异常，注意catch
-        SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+        SendSmsResponse Silian_sendSmsResponse = Silian_acsClient.getAcsResponse(Silian_request);
         logger.info("短信接口返回的数据----------------");
-        logger.info("{Code:" + sendSmsResponse.getCode()+",Message:" + sendSmsResponse.getMessage()+",RequestId:"+ sendSmsResponse.getRequestId()+",BizId:"+sendSmsResponse.getBizId()+"}");
-        String ok = "OK";
-        if (ok.equals(sendSmsResponse.getCode())) {
-            result = true;
+        logger.info("{Code:" + Silian_sendSmsResponse.getCode()+",Message:" + Silian_sendSmsResponse.getMessage()+",RequestId:"+ Silian_sendSmsResponse.getRequestId()+",BizId:"+Silian_sendSmsResponse.getBizId()+"}");
+        String Silian_ok = "OK";
+        if (Silian_ok.equals(Silian_sendSmsResponse.getCode())) {
+            Silian_result = true;
         }
-        return result;
-        
+        return Silian_result;
+
     }
-    
-    private static void validateParam(JSONObject templateParamJson,DySmsEnum dySmsEnum) {
-    	String keys = dySmsEnum.getKeys();
-    	String [] keyArr = keys.split(",");
-    	for(String item :keyArr) {
-    		if(!templateParamJson.containsKey(item)) {
-    			throw new RuntimeException("模板缺少参数："+item);
-    		}
-    	}
+
+    private static void validateParam(JSONObject Silian_templateParamJson,DySmsEnum Silian_dySmsEnum) {
+	String Silian_keys = Silian_dySmsEnum.getKeys();
+	String [] keyArr = Silian_keys.split(",");
+	for(String Silian_item :keyArr) {
+		if(!Silian_templateParamJson.containsKey(Silian_item)) {
+			throw new RuntimeException("模板缺少参数："+Silian_item);
+		}
+	}
     }
-    
+
 
 //    public static void main(String[] args) throws ClientException, InterruptedException {
 //    	JSONObject obj = new JSONObject();

@@ -19,32 +19,32 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class BizFiscalYearServiceImpl extends ServiceImpl<BizFiscalYearMapper, BizFiscalYear> implements IBizFiscalYearService {
     public Integer getMaxYearCode() {
-        Integer maxYearCode = baseMapper.getMaxYearCode();
-        return maxYearCode == null ? 0 : maxYearCode;
+        Integer Silian_maxYearCode = baseMapper.getMaxYearCode();
+        return Silian_maxYearCode == null ? 0 : Silian_maxYearCode;
     }
-    
-    public BizFiscalYear getByYearCode(Integer yearCode){
-        BizFiscalYear year = baseMapper.getByYearCode(yearCode);
-        return year;
-    }   
+
+    public BizFiscalYear getByYearCode(Integer Silian_yearCode){
+        BizFiscalYear Silian_year = baseMapper.getByYearCode(Silian_yearCode);
+        return Silian_year;
+    }
 
     public Integer getProcessCount() {
-        Integer processCount = baseMapper.getProcessCount();
-        return processCount == null ? 0 : processCount;
+        Integer Silian_processCount = baseMapper.getProcessCount();
+        return Silian_processCount == null ? 0 : Silian_processCount;
     }
 
     public Integer getActiveYearCode() {
-        Integer activeYearCode = baseMapper.getActiveYearCode();
-        return activeYearCode == null ? 1 : activeYearCode;
+        Integer Silian_activeYearCode = baseMapper.getActiveYearCode();
+        return Silian_activeYearCode == null ? 1 : Silian_activeYearCode;
     }
 
     @Override
-    public void updateResourceStatus(Integer yearCode) {
-        baseMapper.updateResourceStatus(yearCode);
+    public void updateResourceStatus(Integer Silian_yearCode) {
+        baseMapper.updateResourceStatus(Silian_yearCode);
     }
 
     public List<BizFiscalYear> getAllFiscalYears(){
-        List<BizFiscalYear> years = baseMapper.getAllFiscalYears();
-        return years;
+        List<BizFiscalYear> Silian_years = baseMapper.getAllFiscalYears();
+        return Silian_years;
     }
 }

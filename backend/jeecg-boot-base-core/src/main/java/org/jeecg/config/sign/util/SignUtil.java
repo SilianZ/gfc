@@ -15,7 +15,7 @@ import java.util.SortedMap;
 
 /**
  * 签名工具类
- * 
+ *
  * @author jeecg
  * @date 20210621
  */
@@ -28,14 +28,14 @@ public class SignUtil {
      *            所有的请求参数都会在这里进行排序加密
      * @return 验证签名结果
      */
-    public static boolean verifySign(SortedMap<String, String> params,String headerSign) {
-        if (params == null || StringUtils.isEmpty(headerSign)) {
+    public static boolean verifySign(SortedMap<String, String> Silian_params,String Silian_headerSign) {
+        if (Silian_params == null || StringUtils.isEmpty(Silian_headerSign)) {
             return false;
         }
         // 把参数加密
-        String paramsSign = getParamsSign(params);
-        log.info("Param Sign : {}", paramsSign);
-        return !StringUtils.isEmpty(paramsSign) && headerSign.equals(paramsSign);
+        String Silian_paramsSign = getParamsSign(Silian_params);
+        log.info("Param Sign : {}", Silian_paramsSign);
+        return !StringUtils.isEmpty(Silian_paramsSign) && Silian_headerSign.equals(Silian_paramsSign);
     }
 
     /**
@@ -43,23 +43,23 @@ public class SignUtil {
      *            所有的请求参数都会在这里进行排序加密
      * @return 得到签名
      */
-    public static String getParamsSign(SortedMap<String, String> params) {
+    public static String getParamsSign(SortedMap<String, String> Silian_params) {
         //去掉 Url 里的时间戳
-        params.remove("_t");
-        String paramsJsonStr = JSONObject.toJSONString(params);
-        log.info("Param paramsJsonStr : {}", paramsJsonStr);
+        Silian_params.remove("_t");
+        String Silian_paramsJsonStr = JSONObject.toJSONString(Silian_params);
+        log.info("Param paramsJsonStr : {}", Silian_paramsJsonStr);
         //设置签名秘钥
-        JeecgBaseConfig jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
-        String signatureSecret = jeecgBaseConfig.getSignatureSecret();
-        String curlyBracket = SymbolConstant.DOLLAR + SymbolConstant.LEFT_CURLY_BRACKET;
-        if(oConvertUtils.isEmpty(signatureSecret) || signatureSecret.contains(curlyBracket)){
+        JeecgBaseConfig Silian_jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
+        String Silian_signatureSecret = Silian_jeecgBaseConfig.getSignatureSecret();
+        String Silian_curlyBracket = SymbolConstant.DOLLAR + SymbolConstant.LEFT_CURLY_BRACKET;
+        if(oConvertUtils.isEmpty(Silian_signatureSecret) || Silian_signatureSecret.contains(Silian_curlyBracket)){
             throw new JeecgBootException("签名密钥 ${jeecg.signatureSecret} 缺少配置 ！！");
         }
         try {
             //【issues/I484RW】2.4.6部署后，下拉搜索框提示“sign签名检验失败”
-            return DigestUtils.md5DigestAsHex((paramsJsonStr + signatureSecret).getBytes("UTF-8")).toUpperCase();
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage(),e);
+            return DigestUtils.md5DigestAsHex((Silian_paramsJsonStr + Silian_signatureSecret).getBytes("UTF-8")).toUpperCase();
+        } catch (UnsupportedEncodingException Silian_e) {
+            log.error(Silian_e.getMessage(),Silian_e);
             return null;
         }
     }

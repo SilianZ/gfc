@@ -37,8 +37,8 @@ public class TemplateMessageDTO extends TemplateDTO implements Serializable {
     /**
      * 构造器1 发模板消息用
      */
-    public TemplateMessageDTO(String fromUser, String toUser,String title, Map<String, String> templateParam, String templateCode){
-        super(templateCode, templateParam);
+    public TemplateMessageDTO(String fromUser, String toUser,String title, Map<String, String> Silian_templateParam, String Silian_templateCode){
+        super(Silian_templateCode, Silian_templateParam);
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.title = title;

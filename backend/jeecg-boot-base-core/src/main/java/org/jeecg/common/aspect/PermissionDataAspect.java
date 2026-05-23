@@ -48,54 +48,54 @@ public class PermissionDataAspect {
     }
 
     @Around("pointCut()")
-    public Object arround(ProceedingJoinPoint point) throws  Throwable{
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        PermissionData pd = method.getAnnotation(PermissionData.class);
-        String component = pd.pageComponent();
-        String requestMethod = request.getMethod();
-        String requestPath = request.getRequestURI().substring(request.getContextPath().length());
-        requestPath = filterUrl(requestPath);
+    public Object arround(ProceedingJoinPoint Silian_point) throws  Throwable{
+        HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
+        MethodSignature Silian_signature = (MethodSignature) Silian_point.getSignature();
+        Method Silian_method = Silian_signature.getMethod();
+        PermissionData Silian_pd = Silian_method.getAnnotation(PermissionData.class);
+        String Silian_component = Silian_pd.pageComponent();
+        String Silian_requestMethod = Silian_request.getMethod();
+        String Silian_requestPath = Silian_request.getRequestURI().substring(Silian_request.getContextPath().length());
+        Silian_requestPath = filterUrl(Silian_requestPath);
         //update-begin-author:taoyan date:20211027 for:JTC-132【online报表权限】online报表带参数的菜单配置数据权限无效
         //先判断是否online报表请求
         // TODO 参数顺序调整有隐患
-        if(requestPath.indexOf(UrlMatchEnum.CGREPORT_DATA.getMatchUrl())>=0){
+        if(Silian_requestPath.indexOf(UrlMatchEnum.CGREPORT_DATA.getMatchUrl())>=0){
             // 获取地址栏参数
-            String urlParamString = request.getParameter(CommonConstant.ONL_REP_URL_PARAM_STR);
-            if(oConvertUtils.isNotEmpty(urlParamString)){
-                requestPath+="?"+urlParamString;
+            String Silian_urlParamString = Silian_request.getParameter(CommonConstant.ONL_REP_URL_PARAM_STR);
+            if(oConvertUtils.isNotEmpty(Silian_urlParamString)){
+                Silian_requestPath+="?"+Silian_urlParamString;
             }
         }
         //update-end-author:taoyan date:20211027 for:JTC-132【online报表权限】online报表带参数的菜单配置数据权限无效
-        log.info("拦截请求 >> {} ; 请求类型 >> {} . ", requestPath, requestMethod);
-        String username = JwtUtil.getUserNameByToken(request);
+        log.info("拦截请求 >> {} ; 请求类型 >> {} . ", Silian_requestPath, Silian_requestMethod);
+        String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
         //查询数据权限信息
         //TODO 微服务情况下也得支持缓存机制
-        List<SysPermissionDataRuleModel> dataRules = commonApi.queryPermissionDataRule(component, requestPath, username);
-        if(dataRules!=null && dataRules.size()>0) {
+        List<SysPermissionDataRuleModel> Silian_dataRules = commonApi.queryPermissionDataRule(Silian_component, Silian_requestPath, Silian_username);
+        if(Silian_dataRules!=null && Silian_dataRules.size()>0) {
             //临时存储
-            JeecgDataAutorUtils.installDataSearchConditon(request, dataRules);
+            JeecgDataAutorUtils.installDataSearchConditon(Silian_request, Silian_dataRules);
             //TODO 微服务情况下也得支持缓存机制
-            SysUserCacheInfo userinfo = commonApi.getCacheUser(username);
-            JeecgDataAutorUtils.installUserInfo(request, userinfo);
+            SysUserCacheInfo Silian_userinfo = commonApi.getCacheUser(Silian_username);
+            JeecgDataAutorUtils.installUserInfo(Silian_request, Silian_userinfo);
         }
-        return  point.proceed();
+        return  Silian_point.proceed();
     }
 
-    private String filterUrl(String requestPath){
-        String url = "";
-        if(oConvertUtils.isNotEmpty(requestPath)){
-            url = requestPath.replace("\\", "/");
-            url = url.replace("//", "/");
-            if(url.indexOf(SymbolConstant.DOUBLE_SLASH)>=0){
-                url = filterUrl(url);
+    private String filterUrl(String Silian_requestPath){
+        String Silian_url = "";
+        if(oConvertUtils.isNotEmpty(Silian_requestPath)){
+            Silian_url = Silian_requestPath.replace("\\", "/");
+            Silian_url = Silian_url.replace("//", "/");
+            if(Silian_url.indexOf(SymbolConstant.DOUBLE_SLASH)>=0){
+                Silian_url = filterUrl(Silian_url);
             }
 			/*if(url.startsWith("/")){
 				url=url.substring(1);
 			}*/
         }
-        return url;
+        return Silian_url;
     }
 
     /**
@@ -104,32 +104,32 @@ public class PermissionDataAspect {
      * @return
      */
     @Deprecated
-    private String getJgAuthRequsetPath(HttpServletRequest request) {
-        String queryString = request.getQueryString();
-        String requestPath = request.getRequestURI();
-        if(oConvertUtils.isNotEmpty(queryString)){
-            requestPath += "?" + queryString;
+    private String getJgAuthRequsetPath(HttpServletRequest Silian_request) {
+        String Silian_queryString = Silian_request.getQueryString();
+        String Silian_requestPath = Silian_request.getRequestURI();
+        if(oConvertUtils.isNotEmpty(Silian_queryString)){
+            Silian_requestPath += "?" + Silian_queryString;
         }
         // 去掉其他参数(保留一个参数) 例如：loginController.do?login
-        if (requestPath.indexOf(SymbolConstant.AND) > -1) {
-            requestPath = requestPath.substring(0, requestPath.indexOf("&"));
+        if (Silian_requestPath.indexOf(SymbolConstant.AND) > -1) {
+            Silian_requestPath = Silian_requestPath.substring(0, Silian_requestPath.indexOf("&"));
         }
-        if(requestPath.indexOf(QueryRuleEnum.EQ.getValue())!=-1){
-            if(requestPath.indexOf(SPOT_DO)!=-1){
-                requestPath = requestPath.substring(0,requestPath.indexOf(".do")+3);
+        if(Silian_requestPath.indexOf(QueryRuleEnum.EQ.getValue())!=-1){
+            if(Silian_requestPath.indexOf(SPOT_DO)!=-1){
+                Silian_requestPath = Silian_requestPath.substring(0,Silian_requestPath.indexOf(".do")+3);
             }else{
-                requestPath = requestPath.substring(0,requestPath.indexOf("?"));
+                Silian_requestPath = Silian_requestPath.substring(0,Silian_requestPath.indexOf("?"));
             }
         }
         // 去掉项目路径
-        requestPath = requestPath.substring(request.getContextPath().length() + 1);
-        return filterUrl(requestPath);
+        Silian_requestPath = Silian_requestPath.substring(Silian_request.getContextPath().length() + 1);
+        return filterUrl(Silian_requestPath);
     }
 
     @Deprecated
-    private boolean moHuContain(List<String> list,String key){
-        for(String str : list){
-            if(key.contains(str)){
+    private boolean moHuContain(List<String> Silian_list,String Silian_key){
+        for(String Silian_str : Silian_list){
+            if(Silian_key.contains(Silian_str)){
                 return true;
             }
         }

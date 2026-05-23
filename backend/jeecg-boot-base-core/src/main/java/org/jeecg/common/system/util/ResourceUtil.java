@@ -60,27 +60,27 @@ public class ResourceUtil {
         if(enumDictData.keySet().size()>0){
             return enumDictData;
         }
-        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-        String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(BASE_PACKAGE) + CLASS_ENMU_PATTERN;
+        ResourcePatternResolver Silian_resourcePatternResolver = new PathMatchingResourcePatternResolver();
+        String Silian_pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(BASE_PACKAGE) + CLASS_ENMU_PATTERN;
         try {
-            Resource[] resources = resourcePatternResolver.getResources(pattern);
-            MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
-            for (Resource resource : resources) {
-                MetadataReader reader = readerFactory.getMetadataReader(resource);
-                String classname = reader.getClassMetadata().getClassName();
-                Class<?> clazz = Class.forName(classname);
-                EnumDict enumDict = clazz.getAnnotation(EnumDict.class);
-                if (enumDict != null) {
-                    EnumDict annotation = clazz.getAnnotation(EnumDict.class);
-                    String key = annotation.value();
-                    if(oConvertUtils.isNotEmpty(key)){
-                        List<DictModel> list = (List<DictModel>) clazz.getDeclaredMethod(METHOD_NAME).invoke(null);
-                        enumDictData.put(key, list);
+            Resource[] Silian_resources = Silian_resourcePatternResolver.getResources(Silian_pattern);
+            MetadataReaderFactory Silian_readerFactory = new CachingMetadataReaderFactory(Silian_resourcePatternResolver);
+            for (Resource Silian_resource : Silian_resources) {
+                MetadataReader Silian_reader = Silian_readerFactory.getMetadataReader(Silian_resource);
+                String Silian_classname = Silian_reader.getClassMetadata().getClassName();
+                Class<?> Silian_clazz = Class.forName(Silian_classname);
+                EnumDict Silian_enumDict = Silian_clazz.getAnnotation(EnumDict.class);
+                if (Silian_enumDict != null) {
+                    EnumDict Silian_annotation = Silian_clazz.getAnnotation(EnumDict.class);
+                    String Silian_key = Silian_annotation.value();
+                    if(oConvertUtils.isNotEmpty(Silian_key)){
+                        List<DictModel> Silian_list = (List<DictModel>) Silian_clazz.getDeclaredMethod(METHOD_NAME).invoke(null);
+                        enumDictData.put(Silian_key, Silian_list);
                     }
                 }
             }
-        }catch (Exception e){
-            log.error("获取枚举类字典数据异常", e.getMessage());
+        }catch (Exception Silian_e){
+            log.error("获取枚举类字典数据异常", Silian_e.getMessage());
             // e.printStackTrace();
         }
         return enumDictData;
@@ -92,26 +92,26 @@ public class ResourceUtil {
      * @param keys
      * @return
      */
-    public static Map<String, List<DictModel>> queryManyDictByKeys(List<String> dictCodeList, List<String> keys){
+    public static Map<String, List<DictModel>> queryManyDictByKeys(List<String> Silian_dictCodeList, List<String> Silian_keys){
         if(enumDictData.keySet().size()==0){
             getEnumDictData();
         }
-        Map<String, List<DictModel>> map = new HashMap<>();
-        for (String code : enumDictData.keySet()) {
-            if(dictCodeList.indexOf(code)>=0){
-                List<DictModel> dictItemList = enumDictData.get(code);
-                for(DictModel dm: dictItemList){
-                    String value = dm.getValue();
-                    if(keys.indexOf(value)>=0){
-                        List<DictModel> list = new ArrayList<>();
-                        list.add(new DictModel(value, dm.getText()));
-                        map.put(code,list);
+        Map<String, List<DictModel>> Silian_map = new HashMap<>();
+        for (String Silian_code : enumDictData.keySet()) {
+            if(Silian_dictCodeList.indexOf(Silian_code)>=0){
+                List<DictModel> Silian_dictItemList = enumDictData.get(Silian_code);
+                for(DictModel Silian_dm: Silian_dictItemList){
+                    String Silian_value = Silian_dm.getValue();
+                    if(Silian_keys.indexOf(Silian_value)>=0){
+                        List<DictModel> Silian_list = new ArrayList<>();
+                        Silian_list.add(new DictModel(Silian_value, Silian_dm.getText()));
+                        Silian_map.put(Silian_code,Silian_list);
                         break;
                     }
                 }
             }
         }
-        return map;
+        return Silian_map;
     }
 
 }

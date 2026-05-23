@@ -34,99 +34,99 @@ import java.util.stream.Collectors;
 public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCategory> implements ISysCategoryService {
 
 	@Override
-	public void addSysCategory(SysCategory sysCategory) {
-		String categoryCode = "";
-		String categoryPid = ISysCategoryService.ROOT_PID_VALUE;
-		String parentCode = null;
-		if(oConvertUtils.isNotEmpty(sysCategory.getPid())){
-			categoryPid = sysCategory.getPid();
+	public void addSysCategory(SysCategory Silian_sysCategory) {
+		String Silian_categoryCode = "";
+		String Silian_categoryPid = ISysCategoryService.ROOT_PID_VALUE;
+		String Silian_parentCode = null;
+		if(oConvertUtils.isNotEmpty(Silian_sysCategory.getPid())){
+			Silian_categoryPid = Silian_sysCategory.getPid();
 
 			//PID 不是根节点 说明需要设置父节点 hasChild 为1
-			if(!ISysCategoryService.ROOT_PID_VALUE.equals(categoryPid)){
-				SysCategory parent = baseMapper.selectById(categoryPid);
-				parentCode = parent.getCode();
-				if(parent!=null && !ISysCategoryService.HAS_CHILD.equals(parent.getHasChild())){
-					parent.setHasChild(ISysCategoryService.HAS_CHILD);
-					baseMapper.updateById(parent);
+			if(!ISysCategoryService.ROOT_PID_VALUE.equals(Silian_categoryPid)){
+				SysCategory Silian_parent = baseMapper.selectById(Silian_categoryPid);
+				Silian_parentCode = Silian_parent.getCode();
+				if(Silian_parent!=null && !ISysCategoryService.HAS_CHILD.equals(Silian_parent.getHasChild())){
+					Silian_parent.setHasChild(ISysCategoryService.HAS_CHILD);
+					baseMapper.updateById(Silian_parent);
 				}
 			}
 		}
 		//update-begin--Author:baihailong  Date:20191209 for：分类字典编码规则生成器做成公用配置
-		JSONObject formData = new JSONObject();
-		formData.put("pid",categoryPid);
-		categoryCode = (String) FillRuleUtil.executeRule(FillRuleConstant.CATEGORY,formData);
+		JSONObject Silian_formData = new JSONObject();
+		Silian_formData.put("pid",Silian_categoryPid);
+		Silian_categoryCode = (String) FillRuleUtil.executeRule(FillRuleConstant.CATEGORY,Silian_formData);
 		//update-end--Author:baihailong  Date:20191209 for：分类字典编码规则生成器做成公用配置
-		sysCategory.setCode(categoryCode);
-		sysCategory.setPid(categoryPid);
-		baseMapper.insert(sysCategory);
+		Silian_sysCategory.setCode(Silian_categoryCode);
+		Silian_sysCategory.setPid(Silian_categoryPid);
+		baseMapper.insert(Silian_sysCategory);
 	}
-	
+
 	@Override
-	public void updateSysCategory(SysCategory sysCategory) {
-		if(oConvertUtils.isEmpty(sysCategory.getPid())){
-			sysCategory.setPid(ISysCategoryService.ROOT_PID_VALUE);
+	public void updateSysCategory(SysCategory Silian_sysCategory) {
+		if(oConvertUtils.isEmpty(Silian_sysCategory.getPid())){
+			Silian_sysCategory.setPid(ISysCategoryService.ROOT_PID_VALUE);
 		}else{
 			//如果当前节点父ID不为空 则设置父节点的hasChild 为1
-			SysCategory parent = baseMapper.selectById(sysCategory.getPid());
-			if(parent!=null && !ISysCategoryService.HAS_CHILD.equals(parent.getHasChild())){
-				parent.setHasChild(ISysCategoryService.HAS_CHILD);
-				baseMapper.updateById(parent);
+			SysCategory Silian_parent = baseMapper.selectById(Silian_sysCategory.getPid());
+			if(Silian_parent!=null && !ISysCategoryService.HAS_CHILD.equals(Silian_parent.getHasChild())){
+				Silian_parent.setHasChild(ISysCategoryService.HAS_CHILD);
+				baseMapper.updateById(Silian_parent);
 			}
 		}
-		baseMapper.updateById(sysCategory);
+		baseMapper.updateById(Silian_sysCategory);
 	}
 
 	@Override
-	public List<TreeSelectModel> queryListByCode(String pcode) throws JeecgBootException{
-		String pid = ROOT_PID_VALUE;
-		if(oConvertUtils.isNotEmpty(pcode)) {
-			List<SysCategory> list = baseMapper.selectList(new LambdaQueryWrapper<SysCategory>().eq(SysCategory::getCode, pcode));
-			if(list==null || list.size() ==0) {
-				throw new JeecgBootException("该编码【"+pcode+"】不存在，请核实!");
+	public List<TreeSelectModel> queryListByCode(String Silian_pcode) throws JeecgBootException{
+		String Silian_pid = ROOT_PID_VALUE;
+		if(oConvertUtils.isNotEmpty(Silian_pcode)) {
+			List<SysCategory> Silian_list = baseMapper.selectList(new LambdaQueryWrapper<SysCategory>().eq(SysCategory::getCode, Silian_pcode));
+			if(Silian_list==null || Silian_list.size() ==0) {
+				throw new JeecgBootException("该编码【"+Silian_pcode+"】不存在，请核实!");
 			}
-			if(list.size()>1) {
-				throw new JeecgBootException("该编码【"+pcode+"】存在多个，请核实!");
+			if(Silian_list.size()>1) {
+				throw new JeecgBootException("该编码【"+Silian_pcode+"】存在多个，请核实!");
 			}
-			pid = list.get(0).getId();
+			Silian_pid = Silian_list.get(0).getId();
 		}
-		return baseMapper.queryListByPid(pid,null);
+		return baseMapper.queryListByPid(Silian_pid,null);
 	}
 
 	@Override
-	public List<TreeSelectModel> queryListByPid(String pid) {
-		if(oConvertUtils.isEmpty(pid)) {
-			pid = ROOT_PID_VALUE;
+	public List<TreeSelectModel> queryListByPid(String Silian_pid) {
+		if(oConvertUtils.isEmpty(Silian_pid)) {
+			Silian_pid = ROOT_PID_VALUE;
 		}
-		return baseMapper.queryListByPid(pid,null);
+		return baseMapper.queryListByPid(Silian_pid,null);
 	}
 
 	@Override
-	public List<TreeSelectModel> queryListByPid(String pid, Map<String, String> condition) {
-		if(oConvertUtils.isEmpty(pid)) {
-			pid = ROOT_PID_VALUE;
+	public List<TreeSelectModel> queryListByPid(String Silian_pid, Map<String, String> Silian_condition) {
+		if(oConvertUtils.isEmpty(Silian_pid)) {
+			Silian_pid = ROOT_PID_VALUE;
 		}
-		return baseMapper.queryListByPid(pid,condition);
+		return baseMapper.queryListByPid(Silian_pid,Silian_condition);
 	}
 
 	@Override
-	public String queryIdByCode(String code) {
-		return baseMapper.queryIdByCode(code);
+	public String queryIdByCode(String Silian_code) {
+		return baseMapper.queryIdByCode(Silian_code);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void deleteSysCategory(String ids) {
-		String allIds = this.queryTreeChildIds(ids);
-		String pids = this.queryTreePids(ids);
+	public void deleteSysCategory(String Silian_ids) {
+		String Silian_allIds = this.queryTreeChildIds(Silian_ids);
+		String Silian_pids = this.queryTreePids(Silian_ids);
 		//1.删除时将节点下所有子节点一并删除
-		this.baseMapper.deleteBatchIds(Arrays.asList(allIds.split(",")));
+		this.baseMapper.deleteBatchIds(Arrays.asList(Silian_allIds.split(",")));
 		//2.将父节点中已经没有下级的节点，修改为没有子节点
-		if(oConvertUtils.isNotEmpty(pids)){
-			LambdaUpdateWrapper<SysCategory> updateWrapper = new UpdateWrapper<SysCategory>()
+		if(oConvertUtils.isNotEmpty(Silian_pids)){
+			LambdaUpdateWrapper<SysCategory> Silian_updateWrapper = new UpdateWrapper<SysCategory>()
 					.lambda()
-					.in(SysCategory::getId,Arrays.asList(pids.split(",")))
+					.in(SysCategory::getId,Arrays.asList(Silian_pids.split(",")))
 					.set(SysCategory::getHasChild,"0");
-			this.update(updateWrapper);
+			this.update(Silian_updateWrapper);
 		}
 	}
 
@@ -135,22 +135,22 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 	 * @param ids
 	 * @return
 	 */
-	private String queryTreeChildIds(String ids) {
+	private String queryTreeChildIds(String Silian_ids) {
 		//获取id数组
-		String[] idArr = ids.split(",");
-		StringBuffer sb = new StringBuffer();
-		for (String pidVal : idArr) {
-			if(pidVal != null){
-				if(!sb.toString().contains(pidVal)){
-					if(sb.toString().length() > 0){
-						sb.append(",");
+		String[] Silian_idArr = Silian_ids.split(",");
+		StringBuffer Silian_sb = new StringBuffer();
+		for (String Silian_pidVal : Silian_idArr) {
+			if(Silian_pidVal != null){
+				if(!Silian_sb.toString().contains(Silian_pidVal)){
+					if(Silian_sb.toString().length() > 0){
+						Silian_sb.append(",");
 					}
-					sb.append(pidVal);
-					this.getTreeChildIds(pidVal,sb);
+					Silian_sb.append(Silian_pidVal);
+					this.getTreeChildIds(Silian_pidVal,Silian_sb);
 				}
 			}
 		}
-		return sb.toString();
+		return Silian_sb.toString();
 	}
 
 	/**
@@ -158,32 +158,32 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 	 * @param ids
 	 * @return
 	 */
-	private String queryTreePids(String ids) {
-		StringBuffer sb = new StringBuffer();
+	private String queryTreePids(String Silian_ids) {
+		StringBuffer Silian_sb = new StringBuffer();
 		//获取id数组
-		String[] idArr = ids.split(",");
-		for (String id : idArr) {
-			if(id != null){
-				SysCategory category = this.baseMapper.selectById(id);
+		String[] Silian_idArr = Silian_ids.split(",");
+		for (String Silian_id : Silian_idArr) {
+			if(Silian_id != null){
+				SysCategory Silian_category = this.baseMapper.selectById(Silian_id);
 				//根据id查询pid值
-				String metaPid = category.getPid();
+				String Silian_metaPid = Silian_category.getPid();
 				//查询此节点上一级是否还有其他子节点
-				LambdaQueryWrapper<SysCategory> queryWrapper = new LambdaQueryWrapper<>();
-				queryWrapper.eq(SysCategory::getPid,metaPid);
-				queryWrapper.notIn(SysCategory::getId,Arrays.asList(idArr));
-				List<SysCategory> dataList = this.baseMapper.selectList(queryWrapper);
-                boolean flag = (dataList == null || dataList.size()==0) && !Arrays.asList(idArr).contains(metaPid)
-                        && !sb.toString().contains(metaPid);
-                if(flag){
+				LambdaQueryWrapper<SysCategory> Silian_queryWrapper = new LambdaQueryWrapper<>();
+				Silian_queryWrapper.eq(SysCategory::getPid,Silian_metaPid);
+				Silian_queryWrapper.notIn(SysCategory::getId,Arrays.asList(Silian_idArr));
+				List<SysCategory> Silian_dataList = this.baseMapper.selectList(Silian_queryWrapper);
+                boolean Silian_flag = (Silian_dataList == null || Silian_dataList.size()==0) && !Arrays.asList(Silian_idArr).contains(Silian_metaPid)
+                        && !Silian_sb.toString().contains(Silian_metaPid);
+                if(Silian_flag){
 					//如果当前节点原本有子节点 现在木有了，更新状态
-					sb.append(metaPid).append(",");
+					Silian_sb.append(Silian_metaPid).append(",");
 				}
 			}
 		}
-		if(sb.toString().endsWith(SymbolConstant.COMMA)){
-			sb = sb.deleteCharAt(sb.length() - 1);
+		if(Silian_sb.toString().endsWith(SymbolConstant.COMMA)){
+			Silian_sb = Silian_sb.deleteCharAt(Silian_sb.length() - 1);
 		}
-		return sb.toString();
+		return Silian_sb.toString();
 	}
 
 	/**
@@ -192,47 +192,47 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 	 * @param sb
 	 * @return
 	 */
-	private StringBuffer getTreeChildIds(String pidVal,StringBuffer sb){
-		LambdaQueryWrapper<SysCategory> queryWrapper = new LambdaQueryWrapper<>();
-		queryWrapper.eq(SysCategory::getPid,pidVal);
-		List<SysCategory> dataList = baseMapper.selectList(queryWrapper);
-		if(dataList != null && dataList.size()>0){
-			for(SysCategory category : dataList) {
-				if(!sb.toString().contains(category.getId())){
-					sb.append(",").append(category.getId());
+	private StringBuffer getTreeChildIds(String Silian_pidVal,StringBuffer Silian_sb){
+		LambdaQueryWrapper<SysCategory> Silian_queryWrapper = new LambdaQueryWrapper<>();
+		Silian_queryWrapper.eq(SysCategory::getPid,Silian_pidVal);
+		List<SysCategory> Silian_dataList = baseMapper.selectList(Silian_queryWrapper);
+		if(Silian_dataList != null && Silian_dataList.size()>0){
+			for(SysCategory Silian_category : Silian_dataList) {
+				if(!Silian_sb.toString().contains(Silian_category.getId())){
+					Silian_sb.append(",").append(Silian_category.getId());
 				}
-				this.getTreeChildIds(category.getId(), sb);
+				this.getTreeChildIds(Silian_category.getId(), Silian_sb);
 			}
 		}
-		return sb;
+		return Silian_sb;
 	}
 
 	@Override
-	public List<String> loadDictItem(String ids) {
-		return this.loadDictItem(ids, true);
+	public List<String> loadDictItem(String Silian_ids) {
+		return this.loadDictItem(Silian_ids, true);
 	}
 
 	@Override
-	public List<String> loadDictItem(String ids, boolean delNotExist) {
-		String[] idArray = ids.split(",");
-		LambdaQueryWrapper<SysCategory> query = new LambdaQueryWrapper<>();
-		query.in(SysCategory::getId, Arrays.asList(idArray));
+	public List<String> loadDictItem(String Silian_ids, boolean Silian_delNotExist) {
+		String[] Silian_idArray = Silian_ids.split(",");
+		LambdaQueryWrapper<SysCategory> Silian_query = new LambdaQueryWrapper<>();
+		Silian_query.in(SysCategory::getId, Arrays.asList(Silian_idArray));
 		// 查询数据
-		List<SysCategory> list = super.list(query);
+		List<SysCategory> Silian_list = super.list(Silian_query);
 		// 取出name并返回
-		List<String> textList;
+		List<String> Silian_textList;
 		// update-begin--author:sunjianlei--date:20210514--for：新增delNotExist参数，设为false不删除数据库里不存在的key ----
-		if (delNotExist) {
-			textList = list.stream().map(SysCategory::getName).collect(Collectors.toList());
+		if (Silian_delNotExist) {
+			Silian_textList = Silian_list.stream().map(SysCategory::getName).collect(Collectors.toList());
 		} else {
-			textList = new ArrayList<>();
-			for (String id : idArray) {
-				List<SysCategory> res = list.stream().filter(i -> id.equals(i.getId())).collect(Collectors.toList());
-				textList.add(res.size() > 0 ? res.get(0).getName() : id);
+			Silian_textList = new ArrayList<>();
+			for (String Silian_id : Silian_idArray) {
+				List<SysCategory> Silian_res = Silian_list.stream().filter(Silian_i -> Silian_id.equals(Silian_i.getId())).collect(Collectors.toList());
+				Silian_textList.add(Silian_res.size() > 0 ? Silian_res.get(0).getName() : Silian_id);
 			}
 		}
 		// update-end--author:sunjianlei--date:20210514--for：新增delNotExist参数，设为false不删除数据库里不存在的key ----
-		return textList;
+		return Silian_textList;
 	}
 
 }

@@ -70,19 +70,19 @@ public class SysDictController {
 	private DictQueryBlackListHandler dictQueryBlackListHandler;
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<IPage<SysDict>> queryPageList(SysDict sysDict,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
-		Result<IPage<SysDict>> result = new Result<IPage<SysDict>>();
-		QueryWrapper<SysDict> queryWrapper = QueryGenerator.initQueryWrapper(sysDict, req.getParameterMap());
-		Page<SysDict> page = new Page<SysDict>(pageNo, pageSize);
-		IPage<SysDict> pageList = sysDictService.page(page, queryWrapper);
-		log.debug("查询当前页："+pageList.getCurrent());
-		log.debug("查询当前页数量："+pageList.getSize());
-		log.debug("查询结果数量："+pageList.getRecords().size());
-		log.debug("数据总数："+pageList.getTotal());
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+	public Result<IPage<SysDict>> queryPageList(SysDict Silian_sysDict,@RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,HttpServletRequest Silian_req) {
+		Result<IPage<SysDict>> Silian_result = new Result<IPage<SysDict>>();
+		QueryWrapper<SysDict> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysDict, Silian_req.getParameterMap());
+		Page<SysDict> Silian_page = new Page<SysDict>(Silian_pageNo, Silian_pageSize);
+		IPage<SysDict> Silian_pageList = sysDictService.page(Silian_page, Silian_queryWrapper);
+		log.debug("查询当前页："+Silian_pageList.getCurrent());
+		log.debug("查询当前页数量："+Silian_pageList.getSize());
+		log.debug("查询结果数量："+Silian_pageList.getRecords().size());
+		log.debug("数据总数："+Silian_pageList.getTotal());
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
 
 	/**
@@ -95,24 +95,24 @@ public class SysDictController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/treeList", method = RequestMethod.GET)
-	public Result<List<SysDictTree>> treeList(SysDict sysDict,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
-		Result<List<SysDictTree>> result = new Result<>();
-		LambdaQueryWrapper<SysDict> query = new LambdaQueryWrapper<>();
+	public Result<List<SysDictTree>> treeList(SysDict Silian_sysDict,@RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,HttpServletRequest Silian_req) {
+		Result<List<SysDictTree>> Silian_result = new Result<>();
+		LambdaQueryWrapper<SysDict> Silian_query = new LambdaQueryWrapper<>();
 		// 构造查询条件
-		String dictName = sysDict.getDictName();
-		if(oConvertUtils.isNotEmpty(dictName)) {
-			query.like(true, SysDict::getDictName, dictName);
+		String Silian_dictName = Silian_sysDict.getDictName();
+		if(oConvertUtils.isNotEmpty(Silian_dictName)) {
+			Silian_query.like(true, SysDict::getDictName, Silian_dictName);
 		}
-		query.orderByDesc(true, SysDict::getCreateTime);
-		List<SysDict> list = sysDictService.list(query);
-		List<SysDictTree> treeList = new ArrayList<>();
-		for (SysDict node : list) {
-			treeList.add(new SysDictTree(node));
+		Silian_query.orderByDesc(true, SysDict::getCreateTime);
+		List<SysDict> Silian_list = sysDictService.list(Silian_query);
+		List<SysDictTree> Silian_treeList = new ArrayList<>();
+		for (SysDict Silian_node : Silian_list) {
+			Silian_treeList.add(new SysDictTree(Silian_node));
 		}
-		result.setSuccess(true);
-		result.setResult(treeList);
-		return result;
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_treeList);
+		return Silian_result;
 	}
 
 	/**
@@ -121,10 +121,10 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryAllDictItems", method = RequestMethod.GET)
-	public Result<?> queryAllDictItems(HttpServletRequest request) {
-		Map<String, List<DictModel>> res = new HashMap(5);
-		res = sysDictService.queryAllDictItems();
-		return Result.ok(res);
+	public Result<?> queryAllDictItems(HttpServletRequest Silian_request) {
+		Map<String, List<DictModel>> Silian_res = new HashMap(5);
+		Silian_res = sysDictService.queryAllDictItems();
+		return Result.ok(Silian_res);
 	}
 
 	/**
@@ -133,20 +133,20 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getDictText/{dictCode}/{key}", method = RequestMethod.GET)
-	public Result<String> getDictText(@PathVariable("dictCode") String dictCode, @PathVariable("key") String key) {
-		log.info(" dictCode : "+ dictCode);
-		Result<String> result = new Result<String>();
-		String text = null;
+	public Result<String> getDictText(@PathVariable("dictCode") String Silian_dictCode, @PathVariable("key") String Silian_key) {
+		log.info(" dictCode : "+ Silian_dictCode);
+		Result<String> Silian_result = new Result<String>();
+		String Silian_text = null;
 		try {
-			text = sysDictService.queryDictTextByKey(dictCode, key);
-			 result.setSuccess(true);
-			 result.setResult(text);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
-			return result;
+			Silian_text = sysDictService.queryDictTextByKey(Silian_dictCode, Silian_key);
+			 Silian_result.setSuccess(true);
+			 Silian_result.setResult(Silian_text);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
+			return Silian_result;
 		}
-		return result;
+		return Silian_result;
 	}
 
 
@@ -157,29 +157,29 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getDictItems/{dictCode}", method = RequestMethod.GET)
-	public Result<List<DictModel>> getDictItems(@PathVariable("dictCode") String dictCode, @RequestParam(value = "sign",required = false) String sign,HttpServletRequest request) {
-		log.info(" dictCode : "+ dictCode);
-		Result<List<DictModel>> result = new Result<List<DictModel>>();
+	public Result<List<DictModel>> getDictItems(@PathVariable("dictCode") String Silian_dictCode, @RequestParam(value = "sign",required = false) String Silian_sign,HttpServletRequest Silian_request) {
+		log.info(" dictCode : "+ Silian_dictCode);
+		Result<List<DictModel>> Silian_result = new Result<List<DictModel>>();
 		//update-begin-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
-		if(!dictQueryBlackListHandler.isPass(dictCode)){
-			return result.error500(dictQueryBlackListHandler.getError());
+		if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
+			return Silian_result.error500(dictQueryBlackListHandler.getError());
 		}
 		//update-end-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
 		try {
-			List<DictModel> ls = sysDictService.getDictItems(dictCode);
-			if (ls == null) {
-				result.error500("字典Code格式不正确！");
-				return result;
+			List<DictModel> Silian_ls = sysDictService.getDictItems(Silian_dictCode);
+			if (Silian_ls == null) {
+				Silian_result.error500("字典Code格式不正确！");
+				return Silian_result;
 			}
-			result.setSuccess(true);
-			result.setResult(ls);
-			log.debug(result.toString());
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
-			return result;
+			Silian_result.setSuccess(true);
+			Silian_result.setResult(Silian_ls);
+			log.debug(Silian_result.toString());
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
+			return Silian_result;
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -190,31 +190,31 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loadDict/{dictCode}", method = RequestMethod.GET)
-	public Result<List<DictModel>> loadDict(@PathVariable("dictCode") String dictCode,
-			@RequestParam(name="keyword",required = false) String keyword,
-			@RequestParam(value = "sign",required = false) String sign,
-			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
-		log.info(" 加载字典表数据,加载关键字: "+ keyword);
-		Result<List<DictModel>> result = new Result<List<DictModel>>();
+	public Result<List<DictModel>> loadDict(@PathVariable("dictCode") String Silian_dictCode,
+			@RequestParam(name="keyword",required = false) String Silian_keyword,
+			@RequestParam(value = "sign",required = false) String Silian_sign,
+			@RequestParam(value = "pageSize", required = false) Integer Silian_pageSize) {
+		log.info(" 加载字典表数据,加载关键字: "+ Silian_keyword);
+		Result<List<DictModel>> Silian_result = new Result<List<DictModel>>();
 		//update-begin-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
-		if(!dictQueryBlackListHandler.isPass(dictCode)){
-			return result.error500(dictQueryBlackListHandler.getError());
+		if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
+			return Silian_result.error500(dictQueryBlackListHandler.getError());
 		}
 		//update-end-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
 		try {
-			List<DictModel> ls = sysDictService.loadDict(dictCode, keyword, pageSize);
-			if (ls == null) {
-				result.error500("字典Code格式不正确！");
-				return result;
+			List<DictModel> Silian_ls = sysDictService.loadDict(Silian_dictCode, Silian_keyword, Silian_pageSize);
+			if (Silian_ls == null) {
+				Silian_result.error500("字典Code格式不正确！");
+				return Silian_result;
 			}
-			result.setSuccess(true);
-			result.setResult(ls);
-			log.info(result.toString());
-			return result;
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
-			return result;
+			Silian_result.setSuccess(true);
+			Silian_result.setResult(Silian_ls);
+			log.info(Silian_result.toString());
+			return Silian_result;
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
+			return Silian_result;
 		}
 	}
 
@@ -229,34 +229,34 @@ public class SysDictController {
 	 */
 	@RequestMapping(value = "/loadDictOrderByValue/{dictCode}", method = RequestMethod.GET)
 	public Result<List<DictModel>> loadDictOrderByValue(
-			@PathVariable("dictCode") String dictCode,
-			@RequestParam(name = "keyword") String keyword,
-			@RequestParam(value = "sign", required = false) String sign,
-			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+			@PathVariable("dictCode") String Silian_dictCode,
+			@RequestParam(name = "keyword") String Silian_keyword,
+			@RequestParam(value = "sign", required = false) String Silian_sign,
+			@RequestParam(value = "pageSize", required = false) Integer Silian_pageSize) {
 		// 首次查询查出来用户选中的值，并且不分页
-		Result<List<DictModel>> firstRes = this.loadDict(dictCode, keyword, sign, null);
-		if (!firstRes.isSuccess()) {
-			return firstRes;
+		Result<List<DictModel>> Silian_firstRes = this.loadDict(Silian_dictCode, Silian_keyword, Silian_sign, null);
+		if (!Silian_firstRes.isSuccess()) {
+			return Silian_firstRes;
 		}
 		// 然后再查询出第一页的数据
-		Result<List<DictModel>> result = this.loadDict(dictCode, "", sign, pageSize);
-		if (!result.isSuccess()) {
-			return result;
+		Result<List<DictModel>> Silian_result = this.loadDict(Silian_dictCode, "", Silian_sign, Silian_pageSize);
+		if (!Silian_result.isSuccess()) {
+			return Silian_result;
 		}
 		// 合并两次查询的数据
-		List<DictModel> firstList = firstRes.getResult();
-		List<DictModel> list = result.getResult();
-		for (DictModel firstItem : firstList) {
+		List<DictModel> Silian_firstList = Silian_firstRes.getResult();
+		List<DictModel> Silian_list = Silian_result.getResult();
+		for (DictModel Silian_firstItem : Silian_firstList) {
 			// anyMatch 表示：判断的条件里，任意一个元素匹配成功，返回true
 			// allMatch 表示：判断条件里的元素，所有的都匹配成功，返回true
 			// noneMatch 跟 allMatch 相反，表示：判断条件里的元素，所有的都匹配失败，返回true
-			boolean none = list.stream().noneMatch(item -> item.getValue().equals(firstItem.getValue()));
+			boolean Silian_none = Silian_list.stream().noneMatch(Silian_item -> Silian_item.getValue().equals(Silian_firstItem.getValue()));
 			// 当元素不存在时，再添加到集合里
-			if (none) {
-				list.add(0, firstItem);
+			if (Silian_none) {
+				Silian_list.add(0, Silian_firstItem);
 			}
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -270,35 +270,35 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/loadDictItem/{dictCode}", method = RequestMethod.GET)
-	public Result<List<String>> loadDictItem(@PathVariable("dictCode") String dictCode,@RequestParam(name="key") String keys, @RequestParam(value = "sign",required = false) String sign,@RequestParam(value = "delNotExist",required = false,defaultValue = "true") boolean delNotExist,HttpServletRequest request) {
-		Result<List<String>> result = new Result<>();
+	public Result<List<String>> loadDictItem(@PathVariable("dictCode") String Silian_dictCode,@RequestParam(name="key") String Silian_keys, @RequestParam(value = "sign",required = false) String Silian_sign,@RequestParam(value = "delNotExist",required = false,defaultValue = "true") boolean Silian_delNotExist,HttpServletRequest Silian_request) {
+		Result<List<String>> Silian_result = new Result<>();
 		//update-begin-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
-		if(!dictQueryBlackListHandler.isPass(dictCode)){
-			return result.error500(dictQueryBlackListHandler.getError());
+		if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
+			return Silian_result.error500(dictQueryBlackListHandler.getError());
 		}
 		//update-end-author:taoyan date:20220317 for: VUEN-222【安全机制】字典接口、online报表、online图表等接口，加一些安全机制
 		try {
-			if(dictCode.indexOf(SymbolConstant.COMMA)!=-1) {
-				String[] params = dictCode.split(SymbolConstant.COMMA);
-				if(params.length!=3) {
-					result.error500("字典Code格式不正确！");
-					return result;
+			if(Silian_dictCode.indexOf(SymbolConstant.COMMA)!=-1) {
+				String[] Silian_params = Silian_dictCode.split(SymbolConstant.COMMA);
+				if(Silian_params.length!=3) {
+					Silian_result.error500("字典Code格式不正确！");
+					return Silian_result;
 				}
-				List<String> texts = sysDictService.queryTableDictByKeys(params[0], params[1], params[2], keys, delNotExist);
+				List<String> Silian_texts = sysDictService.queryTableDictByKeys(Silian_params[0], Silian_params[1], Silian_params[2], Silian_keys, Silian_delNotExist);
 
-				result.setSuccess(true);
-				result.setResult(texts);
-				log.info(result.toString());
+				Silian_result.setSuccess(true);
+				Silian_result.setResult(Silian_texts);
+				log.info(Silian_result.toString());
 			}else {
-				result.error500("字典Code格式不正确！");
+				Silian_result.error500("字典Code格式不正确！");
 			}
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
-			return result;
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
+			return Silian_result;
 		}
 
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -309,26 +309,26 @@ public class SysDictController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/loadTreeData", method = RequestMethod.GET)
-	public Result<List<TreeSelectModel>> loadTreeData(@RequestParam(name="pid",required = false) String pid,@RequestParam(name="pidField") String pidField,
-												  @RequestParam(name="tableName") String tbname,
-												  @RequestParam(name="text") String text,
-												  @RequestParam(name="code") String code,
-												  @RequestParam(name="hasChildField") String hasChildField,
-												  @RequestParam(name="converIsLeafVal",defaultValue ="1") int converIsLeafVal,
-												  @RequestParam(name="condition") String condition,
-												  @RequestParam(value = "sign",required = false) String sign,HttpServletRequest request) {
-		Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
-		Map<String, String> query = null;
-		if(oConvertUtils.isNotEmpty(condition)) {
-			query = JSON.parseObject(condition, Map.class);
+	public Result<List<TreeSelectModel>> loadTreeData(@RequestParam(name="pid",required = false) String Silian_pid,@RequestParam(name="pidField") String Silian_pidField,
+												  @RequestParam(name="tableName") String Silian_tbname,
+												  @RequestParam(name="text") String Silian_text,
+												  @RequestParam(name="code") String Silian_code,
+												  @RequestParam(name="hasChildField") String Silian_hasChildField,
+												  @RequestParam(name="converIsLeafVal",defaultValue ="1") int Silian_converIsLeafVal,
+												  @RequestParam(name="condition") String Silian_condition,
+												  @RequestParam(value = "sign",required = false) String Silian_sign,HttpServletRequest Silian_request) {
+		Result<List<TreeSelectModel>> Silian_result = new Result<List<TreeSelectModel>>();
+		Map<String, String> Silian_query = null;
+		if(oConvertUtils.isNotEmpty(Silian_condition)) {
+			Silian_query = JSON.parseObject(Silian_condition, Map.class);
 		}
 		// SQL注入漏洞 sign签名校验(表名,label字段,val字段,条件)
-		String dictCode = tbname+","+text+","+code+","+condition;
-        SqlInjectionUtil.filterContent(dictCode);
-		List<TreeSelectModel> ls = sysDictService.queryTreeList(query,tbname, text, code, pidField, pid,hasChildField,converIsLeafVal);
-		result.setSuccess(true);
-		result.setResult(ls);
-		return result;
+		String Silian_dictCode = Silian_tbname+","+Silian_text+","+Silian_code+","+Silian_condition;
+        SqlInjectionUtil.filterContent(Silian_dictCode);
+		List<TreeSelectModel> Silian_ls = sysDictService.queryTreeList(Silian_query,Silian_tbname, Silian_text, Silian_code, Silian_pidField, Silian_pid,Silian_hasChildField,Silian_converIsLeafVal);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_ls);
+		return Silian_result;
 	}
 
 	/**
@@ -340,23 +340,23 @@ public class SysDictController {
 	 */
 	@Deprecated
 	@GetMapping("/queryTableData")
-	public Result<List<DictModel>> queryTableData(DictQuery query,
-												  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-												  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-												  @RequestParam(value = "sign",required = false) String sign,HttpServletRequest request){
-		Result<List<DictModel>> res = new Result<List<DictModel>>();
+	public Result<List<DictModel>> queryTableData(DictQuery Silian_query,
+												  @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+												  @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+												  @RequestParam(value = "sign",required = false) String Silian_sign,HttpServletRequest Silian_request){
+		Result<List<DictModel>> Silian_res = new Result<List<DictModel>>();
 		// SQL注入漏洞 sign签名校验
-		String dictCode = query.getTable()+","+query.getText()+","+query.getCode();
-		SqlInjectionUtil.filterContent(dictCode);
+		String Silian_dictCode = Silian_query.getTable()+","+Silian_query.getText()+","+Silian_query.getCode();
+		SqlInjectionUtil.filterContent(Silian_dictCode);
 		//update-begin-author:taoyan date:2022-11-4 for: issues/4128 sql injection
-		if(!dictQueryBlackListHandler.isPass(dictCode)){
-			return res.error500(dictQueryBlackListHandler.getError());
+		if(!dictQueryBlackListHandler.isPass(Silian_dictCode)){
+			return Silian_res.error500(dictQueryBlackListHandler.getError());
 		}
 		//update-end-author:taoyan date:2022-11-4 for: issues/4128 sql injection
-		List<DictModel> ls = this.sysDictService.queryDictTablePageList(query,pageSize,pageNo);
-		res.setResult(ls);
-		res.setSuccess(true);
-		return res;
+		List<DictModel> Silian_ls = this.sysDictService.queryDictTablePageList(Silian_query,Silian_pageSize,Silian_pageNo);
+		Silian_res.setResult(Silian_ls);
+		Silian_res.setSuccess(true);
+		return Silian_res;
 	}
 
 	/**
@@ -366,18 +366,18 @@ public class SysDictController {
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result<SysDict> add(@RequestBody SysDict sysDict) {
-		Result<SysDict> result = new Result<SysDict>();
+	public Result<SysDict> add(@RequestBody SysDict Silian_sysDict) {
+		Result<SysDict> Silian_result = new Result<SysDict>();
 		try {
-			sysDict.setCreateTime(new Date());
-			sysDict.setDelFlag(CommonConstant.DEL_FLAG_0);
-			sysDictService.save(sysDict);
-			result.success("保存成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
+			Silian_sysDict.setCreateTime(new Date());
+			Silian_sysDict.setDelFlag(CommonConstant.DEL_FLAG_0);
+			sysDictService.save(Silian_sysDict);
+			Silian_result.success("保存成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -387,19 +387,19 @@ public class SysDictController {
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/edit", method = { RequestMethod.PUT,RequestMethod.POST })
-	public Result<SysDict> edit(@RequestBody SysDict sysDict) {
-		Result<SysDict> result = new Result<SysDict>();
-		SysDict sysdict = sysDictService.getById(sysDict.getId());
-		if(sysdict==null) {
-			result.error500("未找到对应实体");
+	public Result<SysDict> edit(@RequestBody SysDict Silian_sysDict) {
+		Result<SysDict> Silian_result = new Result<SysDict>();
+		SysDict Silian_sysdict = sysDictService.getById(Silian_sysDict.getId());
+		if(Silian_sysdict==null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			sysDict.setUpdateTime(new Date());
-			boolean ok = sysDictService.updateById(sysDict);
-			if(ok) {
-				result.success("编辑成功!");
+			Silian_sysDict.setUpdateTime(new Date());
+			boolean Silian_ok = sysDictService.updateById(Silian_sysDict);
+			if(Silian_ok) {
+				Silian_result.success("编辑成功!");
 			}
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -410,15 +410,15 @@ public class SysDictController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	@CacheEvict(value={CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDict> delete(@RequestParam(name="id",required=true) String id) {
-		Result<SysDict> result = new Result<SysDict>();
-		boolean ok = sysDictService.removeById(id);
-		if(ok) {
-			result.success("删除成功!");
+	public Result<SysDict> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		Result<SysDict> Silian_result = new Result<SysDict>();
+		boolean Silian_ok = sysDictService.removeById(Silian_id);
+		if(Silian_ok) {
+			Silian_result.success("删除成功!");
 		}else{
-			result.error500("删除失败!");
+			Silian_result.error500("删除失败!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -429,15 +429,15 @@ public class SysDictController {
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	@CacheEvict(value= {CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDict> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<SysDict> result = new Result<SysDict>();
-		if(oConvertUtils.isEmpty(ids)) {
-			result.error500("参数不识别！");
+	public Result<SysDict> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		Result<SysDict> Silian_result = new Result<SysDict>();
+		if(oConvertUtils.isEmpty(Silian_ids)) {
+			Silian_result.error500("参数不识别！");
 		}else {
-			sysDictService.removeByIds(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
+			sysDictService.removeByIds(Arrays.asList(Silian_ids.split(",")));
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -446,25 +446,25 @@ public class SysDictController {
 	 */
 	@RequestMapping(value = "/refleshCache")
 	public Result<?> refleshCache() {
-		Result<?> result = new Result<SysDict>();
+		Result<?> Silian_result = new Result<SysDict>();
 		//清空字典缓存
-		Set keys = redisTemplate.keys(CacheConstant.SYS_DICT_CACHE + "*");
-		Set keys7 = redisTemplate.keys(CacheConstant.SYS_ENABLE_DICT_CACHE + "*");
-		Set keys2 = redisTemplate.keys(CacheConstant.SYS_DICT_TABLE_CACHE + "*");
-		Set keys21 = redisTemplate.keys(CacheConstant.SYS_DICT_TABLE_BY_KEYS_CACHE + "*");
-		Set keys3 = redisTemplate.keys(CacheConstant.SYS_DEPARTS_CACHE + "*");
-		Set keys4 = redisTemplate.keys(CacheConstant.SYS_DEPART_IDS_CACHE + "*");
-		Set keys5 = redisTemplate.keys( "jmreport:cache:dict*");
-		Set keys6 = redisTemplate.keys( "jmreport:cache:dictTable*");
-		redisTemplate.delete(keys);
-		redisTemplate.delete(keys2);
-		redisTemplate.delete(keys21);
-		redisTemplate.delete(keys3);
-		redisTemplate.delete(keys4);
-		redisTemplate.delete(keys5);
-		redisTemplate.delete(keys6);
-		redisTemplate.delete(keys7);
-		return result;
+		Set Silian_keys = redisTemplate.keys(CacheConstant.SYS_DICT_CACHE + "*");
+		Set Silian_keys7 = redisTemplate.keys(CacheConstant.SYS_ENABLE_DICT_CACHE + "*");
+		Set Silian_keys2 = redisTemplate.keys(CacheConstant.SYS_DICT_TABLE_CACHE + "*");
+		Set Silian_keys21 = redisTemplate.keys(CacheConstant.SYS_DICT_TABLE_BY_KEYS_CACHE + "*");
+		Set Silian_keys3 = redisTemplate.keys(CacheConstant.SYS_DEPARTS_CACHE + "*");
+		Set Silian_keys4 = redisTemplate.keys(CacheConstant.SYS_DEPART_IDS_CACHE + "*");
+		Set Silian_keys5 = redisTemplate.keys( "jmreport:cache:dict*");
+		Set Silian_keys6 = redisTemplate.keys( "jmreport:cache:dictTable*");
+		redisTemplate.delete(Silian_keys);
+		redisTemplate.delete(Silian_keys2);
+		redisTemplate.delete(Silian_keys21);
+		redisTemplate.delete(Silian_keys3);
+		redisTemplate.delete(Silian_keys4);
+		redisTemplate.delete(Silian_keys5);
+		redisTemplate.delete(Silian_keys6);
+		redisTemplate.delete(Silian_keys7);
+		return Silian_result;
 	}
 
 	/**
@@ -473,33 +473,33 @@ public class SysDictController {
 	 * @param request
 	 */
 	@RequestMapping(value = "/exportXls")
-	public ModelAndView exportXls(SysDict sysDict,HttpServletRequest request) {
+	public ModelAndView exportXls(SysDict Silian_sysDict,HttpServletRequest Silian_request) {
 		// Step.1 组装查询条件
-		QueryWrapper<SysDict> queryWrapper = QueryGenerator.initQueryWrapper(sysDict, request.getParameterMap());
+		QueryWrapper<SysDict> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysDict, Silian_request.getParameterMap());
 		//Step.2 AutoPoi 导出Excel
-		ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-		List<SysDictPage> pageList = new ArrayList<SysDictPage>();
+		ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
+		List<SysDictPage> Silian_pageList = new ArrayList<SysDictPage>();
 
-		List<SysDict> sysDictList = sysDictService.list(queryWrapper);
-		for (SysDict dictMain : sysDictList) {
-			SysDictPage vo = new SysDictPage();
-			BeanUtils.copyProperties(dictMain, vo);
+		List<SysDict> Silian_sysDictList = sysDictService.list(Silian_queryWrapper);
+		for (SysDict Silian_dictMain : Silian_sysDictList) {
+			SysDictPage Silian_vo = new SysDictPage();
+			BeanUtils.copyProperties(Silian_dictMain, Silian_vo);
 			// 查询机票
-			List<SysDictItem> sysDictItemList = sysDictItemService.selectItemsByMainId(dictMain.getId());
-			vo.setSysDictItemList(sysDictItemList);
-			pageList.add(vo);
+			List<SysDictItem> Silian_sysDictItemList = sysDictItemService.selectItemsByMainId(Silian_dictMain.getId());
+			Silian_vo.setSysDictItemList(Silian_sysDictItemList);
+			Silian_pageList.add(Silian_vo);
 		}
 
 		// 导出文件名称
-		mv.addObject(NormalExcelConstants.FILE_NAME, "数据字典");
+		Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "数据字典");
 		// 注解对象Class
-		mv.addObject(NormalExcelConstants.CLASS, SysDictPage.class);
+		Silian_mv.addObject(NormalExcelConstants.CLASS, SysDictPage.class);
 		// 自定义表格参数
-		LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("数据字典列表", "导出人:"+user.getRealname(), "数据字典"));
+		LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("数据字典列表", "导出人:"+Silian_user.getRealname(), "数据字典"));
 		// 导出数据列表
-		mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-		return mv;
+		Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+		return Silian_mv;
 	}
 
 	/**
@@ -511,65 +511,65 @@ public class SysDictController {
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-	public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
- 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+	public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+		MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+		Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
+		for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
             // 获取上传文件对象
-			MultipartFile file = entity.getValue();
-			ImportParams params = new ImportParams();
-			params.setTitleRows(2);
-			params.setHeadRows(2);
-			params.setNeedSave(true);
+			MultipartFile Silian_file = Silian_entity.getValue();
+			ImportParams Silian_params = new ImportParams();
+			Silian_params.setTitleRows(2);
+			Silian_params.setHeadRows(2);
+			Silian_params.setNeedSave(true);
 			try {
 				//导入Excel格式校验，看匹配的字段文本概率
-				Boolean t = ExcelImportCheckUtil.check(file.getInputStream(), SysDictPage.class, params);
-				if(t!=null && !t){
+				Boolean Silian_t = ExcelImportCheckUtil.check(Silian_file.getInputStream(), SysDictPage.class, Silian_params);
+				if(Silian_t!=null && !Silian_t){
 					throw new RuntimeException("导入Excel校验失败 ！");
 				}
-				List<SysDictPage> list = ExcelImportUtil.importExcel(file.getInputStream(), SysDictPage.class, params);
+				List<SysDictPage> Silian_list = ExcelImportUtil.importExcel(Silian_file.getInputStream(), SysDictPage.class, Silian_params);
 				// 错误信息
-				List<String> errorMessage = new ArrayList<>();
-				int successLines = 0, errorLines = 0;
-				for (int i=0;i< list.size();i++) {
-					SysDict po = new SysDict();
-					BeanUtils.copyProperties(list.get(i), po);
-					po.setDelFlag(CommonConstant.DEL_FLAG_0);
+				List<String> Silian_errorMessage = new ArrayList<>();
+				int Silian_successLines = 0, Silian_errorLines = 0;
+				for (int Silian_i=0;Silian_i< Silian_list.size();Silian_i++) {
+					SysDict Silian_po = new SysDict();
+					BeanUtils.copyProperties(Silian_list.get(Silian_i), Silian_po);
+					Silian_po.setDelFlag(CommonConstant.DEL_FLAG_0);
 					try {
-						Integer integer = sysDictService.saveMain(po, list.get(i).getSysDictItemList());
-						if(integer>0){
-							successLines++;
+						Integer Silian_integer = sysDictService.saveMain(Silian_po, Silian_list.get(Silian_i).getSysDictItemList());
+						if(Silian_integer>0){
+							Silian_successLines++;
                         //update-begin---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
-						}else if(integer == -1){
-                            errorLines++;
-                            errorMessage.add("字典名称：" + po.getDictName() + "，对应字典列表的字典项值不能为空，忽略导入。");
+						}else if(Silian_integer == -1){
+                            Silian_errorLines++;
+                            Silian_errorMessage.add("字典名称：" + Silian_po.getDictName() + "，对应字典列表的字典项值不能为空，忽略导入。");
                         }else{
                         //update-end---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
-							errorLines++;
-							int lineNumber = i + 1;
+							Silian_errorLines++;
+							int Silian_lineNumber = Silian_i + 1;
                             //update-begin---author:wangshuai ---date:20220209  for：[JTC-1168]字典编号不能为空------------
-                            if(oConvertUtils.isEmpty(po.getDictCode())){
-                                errorMessage.add("第 " + lineNumber + " 行：字典编码不能为空，忽略导入。");
+                            if(oConvertUtils.isEmpty(Silian_po.getDictCode())){
+                                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：字典编码不能为空，忽略导入。");
                             }else{
-                                errorMessage.add("第 " + lineNumber + " 行：字典编码已经存在，忽略导入。");
+                                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：字典编码已经存在，忽略导入。");
                             }
                             //update-end---author:wangshuai ---date:20220209  for：[JTC-1168]字典编号不能为空------------
                         }
-					}  catch (Exception e) {
-						errorLines++;
-						int lineNumber = i + 1;
-						errorMessage.add("第 " + lineNumber + " 行：字典编码已经存在，忽略导入。");
+					}  catch (Exception Silian_e) {
+						Silian_errorLines++;
+						int Silian_lineNumber = Silian_i + 1;
+						Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：字典编码已经存在，忽略导入。");
 					}
 				}
-				return ImportExcelUtil.imporReturnRes(errorLines,successLines,errorMessage);
-			} catch (Exception e) {
-				log.error(e.getMessage(),e);
-				return Result.error("文件导入失败:"+e.getMessage());
+				return ImportExcelUtil.imporReturnRes(Silian_errorLines,Silian_successLines,Silian_errorMessage);
+			} catch (Exception Silian_e) {
+				log.error(Silian_e.getMessage(),Silian_e);
+				return Result.error("文件导入失败:"+Silian_e.getMessage());
 			} finally {
 				try {
-					file.getInputStream().close();
-				} catch (Exception e) {
-					e.printStackTrace();
+					Silian_file.getInputStream().close();
+				} catch (Exception Silian_e) {
+					Silian_e.printStackTrace();
 				}
 			}
 		}
@@ -583,11 +583,11 @@ public class SysDictController {
 	 */
 	@RequestMapping(value = "/deleteList", method = RequestMethod.GET)
 	public Result<List<SysDict>> deleteList() {
-		Result<List<SysDict>> result = new Result<List<SysDict>>();
-		List<SysDict> list = this.sysDictService.queryDeleteList();
-		result.setSuccess(true);
-		result.setResult(list);
-		return result;
+		Result<List<SysDict>> Silian_result = new Result<List<SysDict>>();
+		List<SysDict> Silian_list = this.sysDictService.queryDeleteList();
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_list);
+		return Silian_result;
 	}
 
 	/**
@@ -596,12 +596,12 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/deletePhysic/{id}", method = RequestMethod.DELETE)
-	public Result<?> deletePhysic(@PathVariable("id") String id) {
+	public Result<?> deletePhysic(@PathVariable("id") String Silian_id) {
 		try {
-			sysDictService.deleteOneDictPhysically(id);
+			sysDictService.deleteOneDictPhysically(Silian_id);
 			return Result.ok("删除成功!");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
 			return Result.error("删除失败!");
 		}
 	}
@@ -612,12 +612,12 @@ public class SysDictController {
 	 * @return
 	 */
 	@RequestMapping(value = "/back/{id}", method = RequestMethod.PUT)
-	public Result<?> back(@PathVariable("id") String id) {
+	public Result<?> back(@PathVariable("id") String Silian_id) {
 		try {
-			sysDictService.updateDictDelFlag(0,id);
+			sysDictService.updateDictDelFlag(0,Silian_id);
 			return Result.ok("操作成功!");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
 			return Result.error("操作失败!");
 		}
 	}
@@ -629,14 +629,14 @@ public class SysDictController {
 	 * @return
 	 */
 	@ExceptionHandler(java.sql.SQLException.class)
-	public Result<?> handleSQLException(Exception e){
-		String msg = e.getMessage();
-		String extractvalue = "extractvalue";
-		String updatexml = "updatexml";
-		if(msg!=null && (msg.toLowerCase().indexOf(extractvalue)>=0 || msg.toLowerCase().indexOf(updatexml)>=0)){
+	public Result<?> handleSQLException(Exception Silian_e){
+		String Silian_msg = Silian_e.getMessage();
+		String Silian_extractvalue = "extractvalue";
+		String Silian_updatexml = "updatexml";
+		if(Silian_msg!=null && (Silian_msg.toLowerCase().indexOf(Silian_extractvalue)>=0 || Silian_msg.toLowerCase().indexOf(Silian_updatexml)>=0)){
 			return Result.error("校验失败，sql解析异常！");
 		}
-		return Result.error("校验失败，sql解析异常！" + msg);
+		return Result.error("校验失败，sql解析异常！" + Silian_msg);
 	}
 
 }

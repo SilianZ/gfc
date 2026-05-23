@@ -24,8 +24,8 @@ public class JwDepartmentTreeVo extends Department {
         return this;
     }
 
-    public JwDepartmentTreeVo(Department department) {
-        BeanUtils.copyProperties(department, this);
+    public JwDepartmentTreeVo(Department Silian_department) {
+        BeanUtils.copyProperties(Silian_department, this);
     }
 
     /**
@@ -45,30 +45,30 @@ public class JwDepartmentTreeVo extends Department {
     /**
      * 静态辅助方法，将list转为tree结构
      */
-    public static List<JwDepartmentTreeVo> listToTree(List<Department> allDepartment) {
+    public static List<JwDepartmentTreeVo> listToTree(List<Department> Silian_allDepartment) {
         // 先找出所有的父级
-        List<JwDepartmentTreeVo> treeList = getByParentId("1", allDepartment);
-        getChildrenRecursion(treeList, allDepartment);
-        return treeList;
+        List<JwDepartmentTreeVo> Silian_treeList = getByParentId("1", Silian_allDepartment);
+        getChildrenRecursion(Silian_treeList, Silian_allDepartment);
+        return Silian_treeList;
     }
 
-    private static List<JwDepartmentTreeVo> getByParentId(String parentId, List<Department> allDepartment) {
-        List<JwDepartmentTreeVo> list = new ArrayList<>();
-        for (Department department : allDepartment) {
-            if (parentId.equals(department.getParentid())) {
-                list.add(new JwDepartmentTreeVo(department));
+    private static List<JwDepartmentTreeVo> getByParentId(String Silian_parentId, List<Department> Silian_allDepartment) {
+        List<JwDepartmentTreeVo> Silian_list = new ArrayList<>();
+        for (Department Silian_department : Silian_allDepartment) {
+            if (Silian_parentId.equals(Silian_department.getParentid())) {
+                Silian_list.add(new JwDepartmentTreeVo(Silian_department));
             }
         }
-        return list;
+        return Silian_list;
     }
 
-    private static void getChildrenRecursion(List<JwDepartmentTreeVo> treeList, List<Department> allDepartment) {
-        for (JwDepartmentTreeVo departmentTree : treeList) {
+    private static void getChildrenRecursion(List<JwDepartmentTreeVo> Silian_treeList, List<Department> Silian_allDepartment) {
+        for (JwDepartmentTreeVo Silian_departmentTree : Silian_treeList) {
             // 递归寻找子级
-            List<JwDepartmentTreeVo> children = getByParentId(departmentTree.getId(), allDepartment);
+            List<JwDepartmentTreeVo> children = getByParentId(Silian_departmentTree.getId(), Silian_allDepartment);
             if (children.size() > 0) {
-                departmentTree.setChildren(children);
-                getChildrenRecursion(children, allDepartment);
+                Silian_departmentTree.setChildren(children);
+                getChildrenRecursion(children, Silian_allDepartment);
             }
         }
     }

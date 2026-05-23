@@ -45,7 +45,7 @@ import java.util.*;
  * <p>
  * 部门表 前端控制器
  * <p>
- * 
+ *
  * @Author: Steve @Since： 2019-01-22
  */
 @RestController
@@ -68,55 +68,55 @@ public class SysDepartController {
 	 */
 	@RequestMapping(value = "/queryMyDeptTreeList", method = RequestMethod.GET)
 	public Result<List<SysDepartTreeModel>> queryMyDeptTreeList() {
-		Result<List<SysDepartTreeModel>> result = new Result<>();
-		LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		Result<List<SysDepartTreeModel>> Silian_result = new Result<>();
+		LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 		try {
-			if(oConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals( CommonConstant.USER_IDENTITY_2 )){
+			if(oConvertUtils.isNotEmpty(Silian_user.getUserIdentity()) && Silian_user.getUserIdentity().equals( CommonConstant.USER_IDENTITY_2 )){
 				//update-begin--Author:liusq  Date:20210624  for:部门查询ids为空后的前端显示问题 issues/I3UD06
-				String departIds = user.getDepartIds();
-				if(StringUtils.isNotBlank(departIds)){
-					List<SysDepartTreeModel> list = sysDepartService.queryMyDeptTreeList(departIds);
-					result.setResult(list);
+				String Silian_departIds = Silian_user.getDepartIds();
+				if(StringUtils.isNotBlank(Silian_departIds)){
+					List<SysDepartTreeModel> Silian_list = sysDepartService.queryMyDeptTreeList(Silian_departIds);
+					Silian_result.setResult(Silian_list);
 				}
 				//update-end--Author:liusq  Date:20210624  for:部门查询ids为空后的前端显示问题 issues/I3UD06
-				result.setMessage(CommonConstant.USER_IDENTITY_2.toString());
-				result.setSuccess(true);
+				Silian_result.setMessage(CommonConstant.USER_IDENTITY_2.toString());
+				Silian_result.setSuccess(true);
 			}else{
-				result.setMessage(CommonConstant.USER_IDENTITY_1.toString());
-				result.setSuccess(true);
+				Silian_result.setMessage(CommonConstant.USER_IDENTITY_1.toString());
+				Silian_result.setSuccess(true);
 			}
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
 	 * 查询数据 查出所有部门,并以树结构数据格式响应给前端
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(value = "/queryTreeList", method = RequestMethod.GET)
-	public Result<List<SysDepartTreeModel>> queryTreeList(@RequestParam(name = "ids", required = false) String ids) {
-		Result<List<SysDepartTreeModel>> result = new Result<>();
+	public Result<List<SysDepartTreeModel>> queryTreeList(@RequestParam(name = "ids", required = false) String Silian_ids) {
+		Result<List<SysDepartTreeModel>> Silian_result = new Result<>();
 		try {
 			// 从内存中读取
 //			List<SysDepartTreeModel> list =FindsDepartsChildrenUtil.getSysDepartTreeList();
 //			if (CollectionUtils.isEmpty(list)) {
 //				list = sysDepartService.queryTreeList();
 //			}
-			if(oConvertUtils.isNotEmpty(ids)){
-				List<SysDepartTreeModel> departList = sysDepartService.queryTreeList(ids);
-				result.setResult(departList);
+			if(oConvertUtils.isNotEmpty(Silian_ids)){
+				List<SysDepartTreeModel> Silian_departList = sysDepartService.queryTreeList(Silian_ids);
+				Silian_result.setResult(Silian_departList);
 			}else{
-				List<SysDepartTreeModel> list = sysDepartService.queryTreeList();
-				result.setResult(list);
+				List<SysDepartTreeModel> Silian_list = sysDepartService.queryTreeList();
+				Silian_result.setResult(Silian_list);
 			}
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -127,16 +127,16 @@ public class SysDepartController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryDepartTreeSync", method = RequestMethod.GET)
-	public Result<List<SysDepartTreeModel>> queryDepartTreeSync(@RequestParam(name = "pid", required = false) String parentId,@RequestParam(name = "ids", required = false) String ids, @RequestParam(name = "primaryKey", required = false) String primaryKey) {
-		Result<List<SysDepartTreeModel>> result = new Result<>();
+	public Result<List<SysDepartTreeModel>> queryDepartTreeSync(@RequestParam(name = "pid", required = false) String Silian_parentId,@RequestParam(name = "ids", required = false) String Silian_ids, @RequestParam(name = "primaryKey", required = false) String Silian_primaryKey) {
+		Result<List<SysDepartTreeModel>> Silian_result = new Result<>();
 		try {
-			List<SysDepartTreeModel> list = sysDepartService.queryTreeListByPid(parentId,ids, primaryKey);
-			result.setResult(list);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			List<SysDepartTreeModel> Silian_list = sysDepartService.queryTreeListByPid(Silian_parentId,Silian_ids, Silian_primaryKey);
+			Silian_result.setResult(Silian_list);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -147,80 +147,80 @@ public class SysDepartController {
 	 */
 	@GetMapping("/queryAllParentId")
 	public Result queryParentIds(
-			@RequestParam(name = "departId", required = false) String departId,
-			@RequestParam(name = "orgCode", required = false) String orgCode
+			@RequestParam(name = "departId", required = false) String Silian_departId,
+			@RequestParam(name = "orgCode", required = false) String Silian_orgCode
 	) {
 		try {
-			JSONObject data;
-			if (oConvertUtils.isNotEmpty(departId)) {
-				data = sysDepartService.queryAllParentIdByDepartId(departId);
-			} else if (oConvertUtils.isNotEmpty(orgCode)) {
-				data = sysDepartService.queryAllParentIdByOrgCode(orgCode);
+			JSONObject Silian_data;
+			if (oConvertUtils.isNotEmpty(Silian_departId)) {
+				Silian_data = sysDepartService.queryAllParentIdByDepartId(Silian_departId);
+			} else if (oConvertUtils.isNotEmpty(Silian_orgCode)) {
+				Silian_data = sysDepartService.queryAllParentIdByOrgCode(Silian_orgCode);
 			} else {
 				return Result.error("departId 和 orgCode 不能都为空！");
 			}
-			return Result.OK(data);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return Result.error(e.getMessage());
+			return Result.OK(Silian_data);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			return Result.error(Silian_e.getMessage());
 		}
 	}
 
 	/**
 	 * 添加新数据 添加用户新建的部门对象数据,并保存到数据库
-	 * 
+	 *
 	 * @param sysDepart
 	 * @return
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
-	public Result<SysDepart> add(@RequestBody SysDepart sysDepart, HttpServletRequest request) {
-		Result<SysDepart> result = new Result<SysDepart>();
-		String username = JwtUtil.getUserNameByToken(request);
+	public Result<SysDepart> add(@RequestBody SysDepart Silian_sysDepart, HttpServletRequest Silian_request) {
+		Result<SysDepart> Silian_result = new Result<SysDepart>();
+		String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
 		try {
-			sysDepart.setCreateBy(username);
-			sysDepartService.saveDepartData(sysDepart, username);
+			Silian_sysDepart.setCreateBy(Silian_username);
+			sysDepartService.saveDepartData(Silian_sysDepart, Silian_username);
 			//清除部门树内存
 			// FindsDepartsChildrenUtil.clearSysDepartTreeList();
 			// FindsDepartsChildrenUtil.clearDepartIdModel();
-			result.success("添加成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			result.error500("操作失败");
+			Silian_result.success("添加成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
 	 * 编辑数据 编辑部门的部分数据,并保存到数据库
-	 * 
+	 *
 	 * @param sysDepart
 	 * @return
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
 	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
-	public Result<SysDepart> edit(@RequestBody SysDepart sysDepart, HttpServletRequest request) {
-		String username = JwtUtil.getUserNameByToken(request);
-		sysDepart.setUpdateBy(username);
-		Result<SysDepart> result = new Result<SysDepart>();
-		SysDepart sysDepartEntity = sysDepartService.getById(sysDepart.getId());
-		if (sysDepartEntity == null) {
-			result.error500("未找到对应实体");
+	public Result<SysDepart> edit(@RequestBody SysDepart Silian_sysDepart, HttpServletRequest Silian_request) {
+		String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
+		Silian_sysDepart.setUpdateBy(Silian_username);
+		Result<SysDepart> Silian_result = new Result<SysDepart>();
+		SysDepart Silian_sysDepartEntity = sysDepartService.getById(Silian_sysDepart.getId());
+		if (Silian_sysDepartEntity == null) {
+			Silian_result.error500("未找到对应实体");
 		} else {
-			boolean ok = sysDepartService.updateDepartDataById(sysDepart, username);
+			boolean Silian_ok = sysDepartService.updateDepartDataById(Silian_sysDepart, Silian_username);
 			// TODO 返回false说明什么？
-			if (ok) {
+			if (Silian_ok) {
 				//清除部门树内存
 				//FindsDepartsChildrenUtil.clearSysDepartTreeList();
 				//FindsDepartsChildrenUtil.clearDepartIdModel();
-				result.success("修改成功!");
+				Silian_result.success("修改成功!");
 			}
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	 /**
      *   通过id删除
     * @param id
@@ -229,49 +229,49 @@ public class SysDepartController {
 	//@RequiresRoles({"admin"})
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
-   public Result<SysDepart> delete(@RequestParam(name="id",required=true) String id) {
+   public Result<SysDepart> delete(@RequestParam(name="id",required=true) String Silian_id) {
 
-       Result<SysDepart> result = new Result<SysDepart>();
-       SysDepart sysDepart = sysDepartService.getById(id);
-       if(sysDepart==null) {
-           result.error500("未找到对应实体");
+       Result<SysDepart> Silian_result = new Result<SysDepart>();
+       SysDepart Silian_sysDepart = sysDepartService.getById(Silian_id);
+       if(Silian_sysDepart==null) {
+           Silian_result.error500("未找到对应实体");
        }else {
-           boolean ok = sysDepartService.delete(id);
-           if(ok) {
+           boolean Silian_ok = sysDepartService.delete(Silian_id);
+           if(Silian_ok) {
 	            //清除部门树内存
-	   		   //FindsDepartsChildrenUtil.clearSysDepartTreeList();
-	   		   // FindsDepartsChildrenUtil.clearDepartIdModel();
-               result.success("删除成功!");
+			   //FindsDepartsChildrenUtil.clearSysDepartTreeList();
+			   // FindsDepartsChildrenUtil.clearDepartIdModel();
+               Silian_result.success("删除成功!");
            }
        }
-       return result;
+       return Silian_result;
    }
 
 
 	/**
 	 * 批量删除 根据前端请求的多个ID,对数据库执行删除相关部门数据的操作
-	 * 
+	 *
 	 * @param ids
 	 * @return
 	 */
 	//@RequiresRoles({"admin"})
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
-	public Result<SysDepart> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+	public Result<SysDepart> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
 
-		Result<SysDepart> result = new Result<SysDepart>();
-		if (ids == null || "".equals(ids.trim())) {
-			result.error500("参数不识别！");
+		Result<SysDepart> Silian_result = new Result<SysDepart>();
+		if (Silian_ids == null || "".equals(Silian_ids.trim())) {
+			Silian_result.error500("参数不识别！");
 		} else {
-			this.sysDepartService.deleteBatchWithChildren(Arrays.asList(ids.split(",")));
-			result.success("删除成功!");
+			this.sysDepartService.deleteBatchWithChildren(Arrays.asList(Silian_ids.split(",")));
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
 	 * 查询数据 添加或编辑页面对该方法发起请求,以树结构形式加载所有部门的名称,方便用户的操作
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(value = "/queryIdTree", method = RequestMethod.GET)
@@ -295,42 +295,42 @@ public class SysDepartController {
 //			result.setSuccess(false);
 //			return result;
 //		}
-		Result<List<DepartIdModel>> result = new Result<>();
+		Result<List<DepartIdModel>> Silian_result = new Result<>();
 		try {
-			List<DepartIdModel> list = sysDepartService.queryDepartIdTreeList();
-			result.setResult(list);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			List<DepartIdModel> Silian_list = sysDepartService.queryDepartIdTreeList();
+			Silian_result.setResult(Silian_list);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
-	 
+
 	/**
 	 * <p>
 	 * 部门搜索功能方法,根据关键字模糊搜索相关部门
 	 * </p>
-	 * 
+	 *
 	 * @param keyWord
 	 * @return
 	 */
 	@RequestMapping(value = "/searchBy", method = RequestMethod.GET)
-	public Result<List<SysDepartTreeModel>> searchBy(@RequestParam(name = "keyWord", required = true) String keyWord,@RequestParam(name = "myDeptSearch", required = false) String myDeptSearch) {
-		Result<List<SysDepartTreeModel>> result = new Result<List<SysDepartTreeModel>>();
+	public Result<List<SysDepartTreeModel>> searchBy(@RequestParam(name = "keyWord", required = true) String Silian_keyWord,@RequestParam(name = "myDeptSearch", required = false) String Silian_myDeptSearch) {
+		Result<List<SysDepartTreeModel>> Silian_result = new Result<List<SysDepartTreeModel>>();
 		//部门查询，myDeptSearch为1时为我的部门查询，登录用户为上级时查只查负责部门下数据
-		LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		String departIds = null;
-		if(oConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals( CommonConstant.USER_IDENTITY_2 )){
-			departIds = user.getDepartIds();
+		LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		String Silian_departIds = null;
+		if(oConvertUtils.isNotEmpty(Silian_user.getUserIdentity()) && Silian_user.getUserIdentity().equals( CommonConstant.USER_IDENTITY_2 )){
+			Silian_departIds = Silian_user.getDepartIds();
 		}
-		List<SysDepartTreeModel> treeList = this.sysDepartService.searchByKeyWord(keyWord,myDeptSearch,departIds);
-		if (treeList == null || treeList.size() == 0) {
-			result.setSuccess(false);
-			result.setMessage("未查询匹配数据！");
-			return result;
+		List<SysDepartTreeModel> Silian_treeList = this.sysDepartService.searchByKeyWord(Silian_keyWord,Silian_myDeptSearch,Silian_departIds);
+		if (Silian_treeList == null || Silian_treeList.size() == 0) {
+			Silian_result.setSuccess(false);
+			Silian_result.setMessage("未查询匹配数据！");
+			return Silian_result;
 		}
-		result.setResult(treeList);
-		return result;
+		Silian_result.setResult(Silian_treeList);
+		return Silian_result;
 	}
 
 
@@ -340,26 +340,26 @@ public class SysDepartController {
      * @param request
      */
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(SysDepart sysDepart,HttpServletRequest request) {
+    public ModelAndView exportXls(SysDepart Silian_sysDepart,HttpServletRequest Silian_request) {
         // Step.1 组装查询条件
-        QueryWrapper<SysDepart> queryWrapper = QueryGenerator.initQueryWrapper(sysDepart, request.getParameterMap());
+        QueryWrapper<SysDepart> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysDepart, Silian_request.getParameterMap());
         //Step.2 AutoPoi 导出Excel
-        ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-        List<SysDepart> pageList = sysDepartService.list(queryWrapper);
+        ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
+        List<SysDepart> Silian_pageList = sysDepartService.list(Silian_queryWrapper);
         //按字典排序
-        Collections.sort(pageList, new Comparator<SysDepart>() {
+        Collections.sort(Silian_pageList, new Comparator<SysDepart>() {
             @Override
-			public int compare(SysDepart arg0, SysDepart arg1) {
-            	return arg0.getOrgCode().compareTo(arg1.getOrgCode());
+			public int compare(SysDepart Silian_arg0, SysDepart Silian_arg1) {
+	return Silian_arg0.getOrgCode().compareTo(Silian_arg1.getOrgCode());
             }
         });
         //导出文件名称
-        mv.addObject(NormalExcelConstants.FILE_NAME, "部门列表");
-        mv.addObject(NormalExcelConstants.CLASS, SysDepart.class);
-        LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("部门列表数据", "导出人:"+user.getRealname(), "导出信息"));
-        mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-        return mv;
+        Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "部门列表");
+        Silian_mv.addObject(NormalExcelConstants.CLASS, SysDepart.class);
+        LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("部门列表数据", "导出人:"+Silian_user.getRealname(), "导出信息"));
+        Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+        return Silian_mv;
     }
 
     /**
@@ -374,76 +374,76 @@ public class SysDepartController {
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
 	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		List<String> errorMessageList = new ArrayList<>();
-		List<SysDepart> listSysDeparts = null;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+		List<String> Silian_errorMessageList = new ArrayList<>();
+		List<SysDepart> Silian_listSysDeparts = null;
+        Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
+        for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
             // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
+            MultipartFile Silian_file = Silian_entity.getValue();
+            ImportParams Silian_params = new ImportParams();
+            Silian_params.setTitleRows(2);
+            Silian_params.setHeadRows(1);
+            Silian_params.setNeedSave(true);
             try {
-            	// orgCode编码长度
-            	int codeLength = YouBianCodeUtil.ZHANWEI_LENGTH;
-                listSysDeparts = ExcelImportUtil.importExcel(file.getInputStream(), SysDepart.class, params);
+	// orgCode编码长度
+	int Silian_codeLength = YouBianCodeUtil.ZHANWEI_LENGTH;
+                Silian_listSysDeparts = ExcelImportUtil.importExcel(Silian_file.getInputStream(), SysDepart.class, Silian_params);
                 //按长度排序
-                Collections.sort(listSysDeparts, new Comparator<SysDepart>() {
+                Collections.sort(Silian_listSysDeparts, new Comparator<SysDepart>() {
                     @Override
-					public int compare(SysDepart arg0, SysDepart arg1) {
-                    	return arg0.getOrgCode().length() - arg1.getOrgCode().length();
+					public int compare(SysDepart Silian_arg0, SysDepart Silian_arg1) {
+	return Silian_arg0.getOrgCode().length() - Silian_arg1.getOrgCode().length();
                     }
                 });
 
-                int num = 0;
-                for (SysDepart sysDepart : listSysDeparts) {
-                	String orgCode = sysDepart.getOrgCode();
-                	if(orgCode.length() > codeLength) {
-                		String parentCode = orgCode.substring(0, orgCode.length()-codeLength);
-                		QueryWrapper<SysDepart> queryWrapper = new QueryWrapper<SysDepart>();
-                		queryWrapper.eq("org_code", parentCode);
-                		try {
-                		SysDepart parentDept = sysDepartService.getOne(queryWrapper);
-                		if(!parentDept.equals(null)) {
-							sysDepart.setParentId(parentDept.getId());
+                int Silian_num = 0;
+                for (SysDepart Silian_sysDepart : Silian_listSysDeparts) {
+	String Silian_orgCode = Silian_sysDepart.getOrgCode();
+	if(Silian_orgCode.length() > Silian_codeLength) {
+		String Silian_parentCode = Silian_orgCode.substring(0, Silian_orgCode.length()-Silian_codeLength);
+		QueryWrapper<SysDepart> Silian_queryWrapper = new QueryWrapper<SysDepart>();
+		Silian_queryWrapper.eq("org_code", Silian_parentCode);
+		try {
+		SysDepart Silian_parentDept = sysDepartService.getOne(Silian_queryWrapper);
+		if(!Silian_parentDept.equals(null)) {
+							Silian_sysDepart.setParentId(Silian_parentDept.getId());
 						} else {
-							sysDepart.setParentId("");
+							Silian_sysDepart.setParentId("");
 						}
-                		}catch (Exception e) {
-                			//没有查找到parentDept
-                		}
-                	}else{
-                		sysDepart.setParentId("");
+		}catch (Exception Silian_e) {
+			//没有查找到parentDept
+		}
+	}else{
+		Silian_sysDepart.setParentId("");
 					}
                     //update-begin---author:liusq   Date:20210223  for：批量导入部门以后，不能追加下一级部门 #2245------------
-					sysDepart.setOrgType(sysDepart.getOrgCode().length()/codeLength+"");
+					Silian_sysDepart.setOrgType(Silian_sysDepart.getOrgCode().length()/Silian_codeLength+"");
                     //update-end---author:liusq   Date:20210223  for：批量导入部门以后，不能追加下一级部门 #2245------------
-					sysDepart.setDelFlag(CommonConstant.DEL_FLAG_0.toString());
+					Silian_sysDepart.setDelFlag(CommonConstant.DEL_FLAG_0.toString());
                     //update-begin---author:wangshuai ---date:20220105  for：[JTC-363]部门导入 机构类别没有时导入失败，赋默认值------------
-					if(oConvertUtils.isEmpty(sysDepart.getOrgCategory())){
-					    sysDepart.setOrgCategory("1");
+					if(oConvertUtils.isEmpty(Silian_sysDepart.getOrgCategory())){
+					    Silian_sysDepart.setOrgCategory("1");
                     }
                     //update-end---author:wangshuai ---date:20220105  for：[JTC-363]部门导入 机构类别没有时导入失败，赋默认值------------
-					ImportExcelUtil.importDateSaveOne(sysDepart, ISysDepartService.class, errorMessageList, num, CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE);
-					num++;
+					ImportExcelUtil.importDateSaveOne(Silian_sysDepart, ISysDepartService.class, Silian_errorMessageList, Silian_num, CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE);
+					Silian_num++;
                 }
 				//清空部门缓存
-				Set keys3 = redisTemplate.keys(CacheConstant.SYS_DEPARTS_CACHE + "*");
-				Set keys4 = redisTemplate.keys(CacheConstant.SYS_DEPART_IDS_CACHE + "*");
-				redisTemplate.delete(keys3);
-				redisTemplate.delete(keys4);
-				return ImportExcelUtil.imporReturnRes(errorMessageList.size(), listSysDeparts.size() - errorMessageList.size(), errorMessageList);
-            } catch (Exception e) {
-                log.error(e.getMessage(),e);
-                return Result.error("文件导入失败:"+e.getMessage());
+				Set Silian_keys3 = redisTemplate.keys(CacheConstant.SYS_DEPARTS_CACHE + "*");
+				Set Silian_keys4 = redisTemplate.keys(CacheConstant.SYS_DEPART_IDS_CACHE + "*");
+				redisTemplate.delete(Silian_keys3);
+				redisTemplate.delete(Silian_keys4);
+				return ImportExcelUtil.imporReturnRes(Silian_errorMessageList.size(), Silian_listSysDeparts.size() - Silian_errorMessageList.size(), Silian_errorMessageList);
+            } catch (Exception Silian_e) {
+                log.error(Silian_e.getMessage(),Silian_e);
+                return Result.error("文件导入失败:"+Silian_e.getMessage());
             } finally {
                 try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    Silian_file.getInputStream().close();
+                } catch (IOException Silian_e) {
+                    Silian_e.printStackTrace();
                 }
             }
         }
@@ -456,18 +456,18 @@ public class SysDepartController {
 	 * @return
 	 */
 	@GetMapping("listAll")
-	public Result<List<SysDepart>> listAll(@RequestParam(name = "id", required = false) String id) {
-		Result<List<SysDepart>> result = new Result<>();
-		LambdaQueryWrapper<SysDepart> query = new LambdaQueryWrapper<SysDepart>();
-		query.orderByAsc(SysDepart::getOrgCode);
-		if(oConvertUtils.isNotEmpty(id)){
-			String[] arr = id.split(",");
-			query.in(SysDepart::getId,arr);
+	public Result<List<SysDepart>> listAll(@RequestParam(name = "id", required = false) String Silian_id) {
+		Result<List<SysDepart>> Silian_result = new Result<>();
+		LambdaQueryWrapper<SysDepart> Silian_query = new LambdaQueryWrapper<SysDepart>();
+		Silian_query.orderByAsc(SysDepart::getOrgCode);
+		if(oConvertUtils.isNotEmpty(Silian_id)){
+			String[] Silian_arr = Silian_id.split(",");
+			Silian_query.in(SysDepart::getId,Silian_arr);
 		}
-		List<SysDepart> ls = this.sysDepartService.list(query);
-		result.setSuccess(true);
-		result.setResult(ls);
-		return result;
+		List<SysDepart> Silian_ls = this.sysDepartService.list(Silian_query);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_ls);
+		return Silian_result;
 	}
 	/**
 	 * 查询数据 查出所有部门,并以树结构数据格式响应给前端
@@ -475,24 +475,24 @@ public class SysDepartController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryTreeByKeyWord", method = RequestMethod.GET)
-	public Result<Map<String,Object>> queryTreeByKeyWord(@RequestParam(name = "keyWord", required = false) String keyWord) {
-		Result<Map<String,Object>> result = new Result<>();
+	public Result<Map<String,Object>> queryTreeByKeyWord(@RequestParam(name = "keyWord", required = false) String Silian_keyWord) {
+		Result<Map<String,Object>> Silian_result = new Result<>();
 		try {
-			Map<String,Object> map=new HashMap(5);
-			List<SysDepartTreeModel> list = sysDepartService.queryTreeByKeyWord(keyWord);
+			Map<String,Object> Silian_map=new HashMap(5);
+			List<SysDepartTreeModel> Silian_list = sysDepartService.queryTreeByKeyWord(Silian_keyWord);
 			//根据keyWord获取用户信息
-			LambdaQueryWrapper<SysUser> queryUser = new LambdaQueryWrapper<SysUser>();
-			queryUser.eq(SysUser::getDelFlag,CommonConstant.DEL_FLAG_0);
-			queryUser.and(i -> i.like(SysUser::getUsername, keyWord).or().like(SysUser::getRealname, keyWord));
-			List<SysUser> sysUsers = this.sysUserService.list(queryUser);
-			map.put("userList",sysUsers);
-			map.put("departList",list);
-			result.setResult(map);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			LambdaQueryWrapper<SysUser> Silian_queryUser = new LambdaQueryWrapper<SysUser>();
+			Silian_queryUser.eq(SysUser::getDelFlag,CommonConstant.DEL_FLAG_0);
+			Silian_queryUser.and(Silian_i -> Silian_i.like(SysUser::getUsername, Silian_keyWord).or().like(SysUser::getRealname, Silian_keyWord));
+			List<SysUser> Silian_sysUsers = this.sysUserService.list(Silian_queryUser);
+			Silian_map.put("userList",Silian_sysUsers);
+			Silian_map.put("departList",Silian_list);
+			Silian_result.setResult(Silian_map);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -502,14 +502,14 @@ public class SysDepartController {
 	 * @return
 	 */
 	@GetMapping("/getDepartName")
-	public Result<SysDepart> getDepartName(@RequestParam(name = "orgCode") String orgCode) {
-		Result<SysDepart> result = new Result<>();
-		LambdaQueryWrapper<SysDepart> query = new LambdaQueryWrapper<>();
-		query.eq(SysDepart::getOrgCode, orgCode);
-		SysDepart sysDepart = sysDepartService.getOne(query);
-		result.setSuccess(true);
-		result.setResult(sysDepart);
-		return result;
+	public Result<SysDepart> getDepartName(@RequestParam(name = "orgCode") String Silian_orgCode) {
+		Result<SysDepart> Silian_result = new Result<>();
+		LambdaQueryWrapper<SysDepart> Silian_query = new LambdaQueryWrapper<>();
+		Silian_query.eq(SysDepart::getOrgCode, Silian_orgCode);
+		SysDepart Silian_sysDepart = sysDepartService.getOne(Silian_query);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_sysDepart);
+		return Silian_result;
 	}
 
 	/**
@@ -519,11 +519,11 @@ public class SysDepartController {
 	 * @return
 	 */
 	@GetMapping("/getUsersByDepartId")
-	public Result<List<SysUser>> getUsersByDepartId(@RequestParam(name = "id") String id) {
-		Result<List<SysUser>> result = new Result<>();
-		List<SysUser> sysUsers = sysUserDepartService.queryUserByDepId(id);
-		result.setSuccess(true);
-		result.setResult(sysUsers);
-		return result;
+	public Result<List<SysUser>> getUsersByDepartId(@RequestParam(name = "id") String Silian_id) {
+		Result<List<SysUser>> Silian_result = new Result<>();
+		List<SysUser> Silian_sysUsers = sysUserDepartService.queryUserByDepId(Silian_id);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_sysUsers);
+		return Silian_result;
 	}
 }

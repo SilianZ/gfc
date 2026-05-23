@@ -52,77 +52,77 @@ public class AutoLogAspect {
     }
 
     @Around("logPointCut()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
-        long beginTime = System.currentTimeMillis();
+    public Object around(ProceedingJoinPoint Silian_point) throws Throwable {
+        long Silian_beginTime = System.currentTimeMillis();
         //执行方法
-        Object result = point.proceed();
+        Object Silian_result = Silian_point.proceed();
         //执行时长(毫秒)
-        long time = System.currentTimeMillis() - beginTime;
+        long Silian_time = System.currentTimeMillis() - Silian_beginTime;
 
         //保存日志
-        saveSysLog(point, time, result);
+        saveSysLog(Silian_point, Silian_time, Silian_result);
 
-        return result;
+        return Silian_result;
     }
 
-    private void saveSysLog(ProceedingJoinPoint joinPoint, long time, Object obj) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
+    private void saveSysLog(ProceedingJoinPoint Silian_joinPoint, long Silian_time, Object Silian_obj) {
+        MethodSignature Silian_signature = (MethodSignature) Silian_joinPoint.getSignature();
+        Method Silian_method = Silian_signature.getMethod();
 
-        LogDTO dto = new LogDTO();
-        AutoLog syslog = method.getAnnotation(AutoLog.class);
-        if(syslog != null){
+        LogDTO Silian_dto = new LogDTO();
+        AutoLog Silian_syslog = Silian_method.getAnnotation(AutoLog.class);
+        if(Silian_syslog != null){
             //update-begin-author:taoyan date:
-            String content = syslog.value();
-            if(syslog.module()== ModuleType.ONLINE){
-                content = getOnlineLogContent(obj, content);
+            String Silian_content = Silian_syslog.value();
+            if(Silian_syslog.module()== ModuleType.ONLINE){
+                Silian_content = getOnlineLogContent(Silian_obj, Silian_content);
             }
             //注解上的描述,操作日志内容
-            dto.setLogType(syslog.logType());
-            dto.setLogContent(content);
+            Silian_dto.setLogType(Silian_syslog.logType());
+            Silian_dto.setLogContent(Silian_content);
         }
 
         //请求的方法名
-        String className = joinPoint.getTarget().getClass().getName();
-        String methodName = signature.getName();
-        dto.setMethod(className + "." + methodName + "()");
+        String Silian_className = Silian_joinPoint.getTarget().getClass().getName();
+        String Silian_methodName = Silian_signature.getName();
+        Silian_dto.setMethod(Silian_className + "." + Silian_methodName + "()");
 
 
         //设置操作类型
-        if (CommonConstant.LOG_TYPE_2 == dto.getLogType()) {
-            dto.setOperateType(getOperateType(methodName, syslog.operateType()));
+        if (CommonConstant.LOG_TYPE_2 == Silian_dto.getLogType()) {
+            Silian_dto.setOperateType(getOperateType(Silian_methodName, Silian_syslog.operateType()));
         }
 
         //获取request
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+        HttpServletRequest Silian_request = SpringContextUtils.getHttpServletRequest();
         //请求的参数
-        dto.setRequestParam(getReqestParams(request,joinPoint));
+        Silian_dto.setRequestParam(getReqestParams(Silian_request,Silian_joinPoint));
         //设置IP地址
-        dto.setIp(IpUtils.getIpAddr(request));
+        Silian_dto.setIp(IpUtils.getIpAddr(Silian_request));
         //获取登录用户信息
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        if(sysUser!=null){
-            dto.setUserid(sysUser.getUsername());
-            dto.setUsername(sysUser.getRealname());
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        if(Silian_sysUser!=null){
+            Silian_dto.setUserid(Silian_sysUser.getUsername());
+            Silian_dto.setUsername(Silian_sysUser.getRealname());
 
         }
         //耗时
-        dto.setCostTime(time);
-        dto.setCreateTime(new Date());
+        Silian_dto.setCostTime(Silian_time);
+        Silian_dto.setCreateTime(new Date());
         //保存系统日志
-        baseCommonService.addLog(dto);
+        baseCommonService.addLog(Silian_dto);
     }
 
 
     /**
      * 获取操作类型
      */
-    private int getOperateType(String methodName,int operateType) {
-        if (operateType > 0) {
-            return operateType;
+    private int getOperateType(String Silian_methodName,int Silian_operateType) {
+        if (Silian_operateType > 0) {
+            return Silian_operateType;
         }
         //update-begin---author:wangshuai ---date:20220331  for：阿里云代码扫描规范(不允许任何魔法值出现在代码中)------------
-        return OperateTypeEnum.getTypeByMethodName(methodName);
+        return OperateTypeEnum.getTypeByMethodName(Silian_methodName);
         //update-end---author:wangshuai ---date:20220331  for：阿里云代码扫描规范(不允许任何魔法值出现在代码中)------------
     }
 
@@ -134,50 +134,50 @@ public class AutoLogAspect {
      * @param joinPoint:  joinPoint
      * @Return: java.lang.String
      */
-    private String getReqestParams(HttpServletRequest request, JoinPoint joinPoint) {
-        String httpMethod = request.getMethod();
-        String params = "";
-        if (CommonConstant.HTTP_POST.equals(httpMethod) || CommonConstant.HTTP_PUT.equals(httpMethod) || CommonConstant.HTTP_PATCH.equals(httpMethod)) {
-            Object[] paramsArray = joinPoint.getArgs();
+    private String getReqestParams(HttpServletRequest Silian_request, JoinPoint Silian_joinPoint) {
+        String Silian_httpMethod = Silian_request.getMethod();
+        String Silian_params = "";
+        if (CommonConstant.HTTP_POST.equals(Silian_httpMethod) || CommonConstant.HTTP_PUT.equals(Silian_httpMethod) || CommonConstant.HTTP_PATCH.equals(Silian_httpMethod)) {
+            Object[] Silian_paramsArray = Silian_joinPoint.getArgs();
             // java.lang.IllegalStateException: It is illegal to call this method if the current request is not in asynchronous mode (i.e. isAsyncStarted() returns false)
             //  https://my.oschina.net/mengzhang6/blog/2395893
-            Object[] arguments  = new Object[paramsArray.length];
-            for (int i = 0; i < paramsArray.length; i++) {
-                if (paramsArray[i] instanceof BindingResult || paramsArray[i] instanceof ServletRequest || paramsArray[i] instanceof ServletResponse || paramsArray[i] instanceof MultipartFile) {
+            Object[] Silian_arguments  = new Object[Silian_paramsArray.length];
+            for (int Silian_i = 0; Silian_i < Silian_paramsArray.length; Silian_i++) {
+                if (Silian_paramsArray[Silian_i] instanceof BindingResult || Silian_paramsArray[Silian_i] instanceof ServletRequest || Silian_paramsArray[Silian_i] instanceof ServletResponse || Silian_paramsArray[Silian_i] instanceof MultipartFile) {
                     //ServletRequest不能序列化，从入参里排除，否则报异常：java.lang.IllegalStateException: It is illegal to call this method if the current request is not in asynchronous mode (i.e. isAsyncStarted() returns false)
                     //ServletResponse不能序列化 从入参里排除，否则报异常：java.lang.IllegalStateException: getOutputStream() has already been called for this response
                     continue;
                 }
-                arguments[i] = paramsArray[i];
+                Silian_arguments[Silian_i] = Silian_paramsArray[Silian_i];
             }
             //update-begin-author:taoyan date:20200724 for:日志数据太长的直接过滤掉
-            PropertyFilter profilter = new PropertyFilter() {
+            PropertyFilter Silian_profilter = new PropertyFilter() {
                 @Override
-                public boolean apply(Object o, String name, Object value) {
-                    int length = 500;
-                    if(value!=null && value.toString().length()>length){
+                public boolean apply(Object Silian_o, String Silian_name, Object Silian_value) {
+                    int Silian_length = 500;
+                    if(Silian_value!=null && Silian_value.toString().length()>Silian_length){
                         return false;
                     }
                     return true;
                 }
             };
-            params = JSONObject.toJSONString(arguments, profilter);
+            Silian_params = JSONObject.toJSONString(Silian_arguments, Silian_profilter);
             //update-end-author:taoyan date:20200724 for:日志数据太长的直接过滤掉
         } else {
-            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-            Method method = signature.getMethod();
+            MethodSignature Silian_signature = (MethodSignature) Silian_joinPoint.getSignature();
+            Method Silian_method = Silian_signature.getMethod();
             // 请求的方法参数值
-            Object[] args = joinPoint.getArgs();
+            Object[] Silian_args = Silian_joinPoint.getArgs();
             // 请求的方法参数名称
-            LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
-            String[] paramNames = u.getParameterNames(method);
-            if (args != null && paramNames != null) {
-                for (int i = 0; i < args.length; i++) {
-                    params += "  " + paramNames[i] + ": " + args[i];
+            LocalVariableTableParameterNameDiscoverer Silian_u = new LocalVariableTableParameterNameDiscoverer();
+            String[] Silian_paramNames = Silian_u.getParameterNames(Silian_method);
+            if (Silian_args != null && Silian_paramNames != null) {
+                for (int Silian_i = 0; Silian_i < Silian_args.length; Silian_i++) {
+                    Silian_params += "  " + Silian_paramNames[Silian_i] + ": " + Silian_args[Silian_i];
                 }
             }
         }
-        return params;
+        return Silian_params;
     }
 
     /**
@@ -186,21 +186,21 @@ public class AutoLogAspect {
      * @param content
      * @return
      */
-    private String getOnlineLogContent(Object obj, String content){
-        if (Result.class.isInstance(obj)){
-            Result res = (Result)obj;
-            String msg = res.getMessage();
-            String tableName = res.getOnlTable();
-            if(oConvertUtils.isNotEmpty(tableName)){
-                content+=",表名:"+tableName;
+    private String getOnlineLogContent(Object Silian_obj, String Silian_content){
+        if (Result.class.isInstance(Silian_obj)){
+            Result Silian_res = (Result)Silian_obj;
+            String Silian_msg = Silian_res.getMessage();
+            String Silian_tableName = Silian_res.getOnlTable();
+            if(oConvertUtils.isNotEmpty(Silian_tableName)){
+                Silian_content+=",表名:"+Silian_tableName;
             }
-            if(res.isSuccess()){
-                content+= ","+(oConvertUtils.isEmpty(msg)?"操作成功":msg);
+            if(Silian_res.isSuccess()){
+                Silian_content+= ","+(oConvertUtils.isEmpty(Silian_msg)?"操作成功":Silian_msg);
             }else{
-                content+= ","+(oConvertUtils.isEmpty(msg)?"操作失败":msg);
+                Silian_content+= ","+(oConvertUtils.isEmpty(Silian_msg)?"操作失败":Silian_msg);
             }
         }
-        return content;
+        return Silian_content;
     }
 
 

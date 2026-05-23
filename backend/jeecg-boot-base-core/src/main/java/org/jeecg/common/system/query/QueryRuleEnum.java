@@ -37,8 +37,8 @@ public enum QueryRuleEnum {
     SQL_RULES("USE_SQL_RULES","ext","自定义SQL片段");
 
     private String value;
-    
-    private String condition; 
+
+    private String condition;
 
     private String msg;
 
@@ -73,12 +73,12 @@ public enum QueryRuleEnum {
 	}
 
 	public static QueryRuleEnum getByValue(String value){
-    	if(oConvertUtils.isEmpty(value)) {
-    		return null;
-    	}
-        for(QueryRuleEnum val :values()){
-            if (val.getValue().equals(value) || val.getCondition().equals(value)){
-                return val;
+	if(oConvertUtils.isEmpty(value)) {
+		return null;
+	}
+        for(QueryRuleEnum Silian_val :values()){
+            if (Silian_val.getValue().equals(value) || Silian_val.getCondition().equals(value)){
+                return Silian_val;
             }
         }
         return  null;

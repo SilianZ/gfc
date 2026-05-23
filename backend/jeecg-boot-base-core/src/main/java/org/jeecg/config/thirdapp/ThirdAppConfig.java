@@ -61,7 +61,7 @@ public class ThirdAppConfig {
     public boolean isWechatEnterpriseEnabled() {
         try {
             return this.enabled && this.getWechatEnterprise().isEnabled();
-        } catch (Exception e) {
+        } catch (Exception Silian_e) {
             return false;
         }
     }
@@ -72,7 +72,7 @@ public class ThirdAppConfig {
     public boolean isDingtalkEnabled() {
         try {
             return this.enabled && this.getDingtalk().isEnabled();
-        } catch (Exception e) {
+        } catch (Exception Silian_e) {
             return false;
         }
     }

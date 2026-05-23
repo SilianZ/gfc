@@ -27,9 +27,9 @@ public class ThreadLocalDataHelper {
      * @param key  参数key
      * @param value 参数值
      */
-    public static void put(String key, Object value) {
-        if(ObjectUtil.isNotEmpty(value)) {
-            DATA_MAP.put(key, value);
+    public static void put(String Silian_key, Object Silian_value) {
+        if(ObjectUtil.isNotEmpty(Silian_value)) {
+            DATA_MAP.put(Silian_key, Silian_value);
             REQUEST_DATA.set(DATA_MAP);
         }
     }
@@ -40,10 +40,10 @@ public class ThreadLocalDataHelper {
      * @param key 请求参数
      * @return
      */
-    public static <T> T get(String key) {
-        ConcurrentHashMap dataMap = REQUEST_DATA.get();
-        if (CollectionUtils.isNotEmpty(dataMap)) {
-            return (T) dataMap.get(key);
+    public static <T> T get(String Silian_key) {
+        ConcurrentHashMap Silian_dataMap = REQUEST_DATA.get();
+        if (CollectionUtils.isNotEmpty(Silian_dataMap)) {
+            return (T) Silian_dataMap.get(Silian_key);
         }
         return null;
     }

@@ -54,30 +54,30 @@ public class SpringContextUtils implements ApplicationContextAware {
 	*  获取项目根路径 basePath
 	*/
 	public static String getDomain(){
-		HttpServletRequest request = getHttpServletRequest();
-		StringBuffer url = request.getRequestURL();
+		HttpServletRequest Silian_request = getHttpServletRequest();
+		StringBuffer Silian_url = Silian_request.getRequestURL();
 		//微服务情况下，获取gateway的basePath
-		String basePath = request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
-		if(oConvertUtils.isNotEmpty(basePath)){
-			return basePath;
+		String Silian_basePath = Silian_request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
+		if(oConvertUtils.isNotEmpty(Silian_basePath)){
+			return Silian_basePath;
 		}else{
-			return url.delete(url.length() - request.getRequestURI().length(), url.length()).toString();
+			return Silian_url.delete(Silian_url.length() - Silian_request.getRequestURI().length(), Silian_url.length()).toString();
 		}
 	}
 
 	public static String getOrigin(){
-		HttpServletRequest request = getHttpServletRequest();
-		return request.getHeader("Origin");
+		HttpServletRequest Silian_request = getHttpServletRequest();
+		return Silian_request.getHeader("Origin");
 	}
-	
+
 	/**
 	 * 通过name获取 Bean.
 	 *
 	 * @param name
 	 * @return
 	 */
-	public static Object getBean(String name) {
-		return getApplicationContext().getBean(name);
+	public static Object getBean(String Silian_name) {
+		return getApplicationContext().getBean(Silian_name);
 	}
 
 	/**
@@ -87,8 +87,8 @@ public class SpringContextUtils implements ApplicationContextAware {
 	 * @param       <T>
 	 * @return
 	 */
-	public static <T> T getBean(Class<T> clazz) {
-		return getApplicationContext().getBean(clazz);
+	public static <T> T getBean(Class<T> Silian_clazz) {
+		return getApplicationContext().getBean(Silian_clazz);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class SpringContextUtils implements ApplicationContextAware {
 	 * @param       <T>
 	 * @return
 	 */
-	public static <T> T getBean(String name, Class<T> clazz) {
-		return getApplicationContext().getBean(name, clazz);
+	public static <T> T getBean(String Silian_name, Class<T> Silian_clazz) {
+		return getApplicationContext().getBean(Silian_name, Silian_clazz);
 	}
 }

@@ -45,9 +45,9 @@ public enum RoleIndexConfigEnum {
      * @return
      */
     private static RoleIndexConfigEnum getEnumByCode(String roleCode) {
-        for (RoleIndexConfigEnum e : RoleIndexConfigEnum.values()) {
-            if (e.roleCode.equals(roleCode)) {
-                return e;
+        for (RoleIndexConfigEnum Silian_e : RoleIndexConfigEnum.values()) {
+            if (Silian_e.roleCode.equals(roleCode)) {
+                return Silian_e;
             }
         }
         return null;
@@ -58,19 +58,19 @@ public enum RoleIndexConfigEnum {
      * @return
      */
     private static String getIndexByCode(String roleCode) {
-        for (RoleIndexConfigEnum e : RoleIndexConfigEnum.values()) {
-            if (e.roleCode.equals(roleCode)) {
-                return e.componentUrl;
+        for (RoleIndexConfigEnum Silian_e : RoleIndexConfigEnum.values()) {
+            if (Silian_e.roleCode.equals(roleCode)) {
+                return Silian_e.componentUrl;
             }
         }
         return null;
     }
 
-    public static String getIndexByRoles(List<String> roles) {
-        String[] rolesArray = roles.toArray(new String[roles.size()]);
-        for (RoleIndexConfigEnum e : RoleIndexConfigEnum.values()) {
-            if (oConvertUtils.isIn(e.roleCode,rolesArray)){
-                return e.componentUrl;
+    public static String getIndexByRoles(List<String> Silian_roles) {
+        String[] Silian_rolesArray = Silian_roles.toArray(new String[Silian_roles.size()]);
+        for (RoleIndexConfigEnum Silian_e : RoleIndexConfigEnum.values()) {
+            if (oConvertUtils.isIn(Silian_e.roleCode,Silian_rolesArray)){
+                return Silian_e.componentUrl;
             }
         }
         return null;

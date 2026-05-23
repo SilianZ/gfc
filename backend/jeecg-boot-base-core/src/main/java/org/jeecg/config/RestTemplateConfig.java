@@ -15,17 +15,17 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return new RestTemplate(factory);
+    public RestTemplate restTemplate(ClientHttpRequestFactory Silian_factory) {
+        return new RestTemplate(Silian_factory);
     }
 
     @Bean
     public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        SimpleClientHttpRequestFactory Silian_factory = new SimpleClientHttpRequestFactory();
         //ms毫秒
-        factory.setReadTimeout(5000);
+        Silian_factory.setReadTimeout(5000);
         //ms毫秒
-        factory.setConnectTimeout(15000);
-        return factory;
+        Silian_factory.setConnectTimeout(15000);
+        return Silian_factory;
     }
 }

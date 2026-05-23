@@ -19,27 +19,27 @@ import java.io.IOException;
 public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> implements IOssFileService {
 
 	@Override
-	public void upload(MultipartFile multipartFile) throws Exception {
-		String fileName = multipartFile.getOriginalFilename();
-		fileName = CommonUtils.getFileName(fileName);
-		OssFile ossFile = new OssFile();
-		ossFile.setFileName(fileName);
-		String url = OssBootUtil.upload(multipartFile,"upload/test");
+	public void upload(MultipartFile Silian_multipartFile) throws Exception {
+		String Silian_fileName = Silian_multipartFile.getOriginalFilename();
+		Silian_fileName = CommonUtils.getFileName(Silian_fileName);
+		OssFile Silian_ossFile = new OssFile();
+		Silian_ossFile.setFileName(Silian_fileName);
+		String Silian_url = OssBootUtil.upload(Silian_multipartFile,"upload/test");
 		//update-begin--Author:scott  Date:20201227 for：JT-361【文件预览】阿里云原生域名可以文件预览，自己映射域名kkfileview提示文件下载失败-------------------
 		// 返回阿里云原生域名前缀URL
-		ossFile.setUrl(OssBootUtil.getOriginalUrl(url));
+		Silian_ossFile.setUrl(OssBootUtil.getOriginalUrl(Silian_url));
 		//update-end--Author:scott  Date:20201227 for：JT-361【文件预览】阿里云原生域名可以文件预览，自己映射域名kkfileview提示文件下载失败-------------------
-		this.save(ossFile);
+		this.save(Silian_ossFile);
 	}
 
 	@Override
-	public boolean delete(OssFile ossFile) {
+	public boolean delete(OssFile Silian_ossFile) {
 		try {
-			this.removeById(ossFile.getId());
-			OssBootUtil.deleteUrl(ossFile.getUrl());
+			this.removeById(Silian_ossFile.getId());
+			OssBootUtil.deleteUrl(Silian_ossFile.getUrl());
 		}
-		catch (Exception ex) {
-			log.error(ex.getMessage(),ex);
+		catch (Exception Silian_ex) {
+			log.error(Silian_ex.getMessage(),Silian_ex);
 			return false;
 		}
 		return true;

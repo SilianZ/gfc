@@ -13,23 +13,23 @@ import org.jeecg.modules.system.entity.SysPermission;
   * @author: jeecg-boot
  */
 public class TreeModel implements Serializable {
-	
+
 	private static final long serialVersionUID = 4013193970046502756L;
 
 	private String key;
-	
+
 	private String title;
-	
+
 	private String slotTitle;
-	
+
 	private boolean isLeaf;
-	
+
 	private String icon;
-	
+
 	private Integer ruleFlag;
-	
+
 	private Map<String,String> scopedSlots;
-	
+
 	public Map<String, String> getScopedSlots() {
 		return scopedSlots;
 	}
@@ -69,7 +69,7 @@ public class TreeModel implements Serializable {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	
+
 	private List<TreeModel> children;
 
 	public List<TreeModel> getChildren() {
@@ -81,45 +81,45 @@ public class TreeModel implements Serializable {
 	}
 
 	public TreeModel() {
-		
+
 	}
-	
-	public TreeModel(SysPermission permission) {
-		this.key = permission.getId();
-		this.icon = permission.getIcon();
-		this.parentId = permission.getParentId();
-		this.title = permission.getName();
-		this.slotTitle =  permission.getName();
-		this.value = permission.getId();
-		this.isLeaf = permission.isLeaf();
-		this.label = permission.getName();
-		if(!permission.isLeaf()) {
+
+	public TreeModel(SysPermission Silian_permission) {
+		this.key = Silian_permission.getId();
+		this.icon = Silian_permission.getIcon();
+		this.parentId = Silian_permission.getParentId();
+		this.title = Silian_permission.getName();
+		this.slotTitle =  Silian_permission.getName();
+		this.value = Silian_permission.getId();
+		this.isLeaf = Silian_permission.isLeaf();
+		this.label = Silian_permission.getName();
+		if(!Silian_permission.isLeaf()) {
 			this.children = new ArrayList<TreeModel>();
 		}
 	}
-	 
+
 	 public TreeModel(String key,String parentId,String slotTitle,Integer ruleFlag,boolean isLeaf) {
-    	this.key = key;
-    	this.parentId = parentId;
-    	this.ruleFlag=ruleFlag;
-    	this.slotTitle =  slotTitle;
-    	Map<String,String> map = new HashMap(5);
-    	map.put("title", "hasDatarule");
-    	this.scopedSlots = map;
-    	this.isLeaf = isLeaf;
-    	this.value = key;
-    	if(!isLeaf) {
-    		this.children = new ArrayList<TreeModel>();
-    	}
+	this.key = key;
+	this.parentId = parentId;
+	this.ruleFlag=ruleFlag;
+	this.slotTitle =  slotTitle;
+	Map<String,String> Silian_map = new HashMap(5);
+	Silian_map.put("title", "hasDatarule");
+	this.scopedSlots = Silian_map;
+	this.isLeaf = isLeaf;
+	this.value = key;
+	if(!isLeaf) {
+		this.children = new ArrayList<TreeModel>();
+	}
     }
-	 
+
 	 private String parentId;
-		
+
 	private String label;
-	
+
 	private String value;
-	
-	
+
+
 	public String getParentId() {
 		return parentId;
 	}

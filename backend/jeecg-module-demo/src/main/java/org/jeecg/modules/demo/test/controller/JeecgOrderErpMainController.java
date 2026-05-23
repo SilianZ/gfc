@@ -48,14 +48,14 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @GetMapping(value = "/orderList")
-    public Result<?> respondePagedData(JeecgOrderMain jeecgOrderMain,
-                                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                       HttpServletRequest req) {
-        QueryWrapper<JeecgOrderMain> queryWrapper = QueryGenerator.initQueryWrapper(jeecgOrderMain, req.getParameterMap());
-        Page<JeecgOrderMain> page = new Page<JeecgOrderMain>(pageNo, pageSize);
-        IPage<JeecgOrderMain> pageList = jeecgOrderMainService.page(page, queryWrapper);
-        return Result.ok(pageList);
+    public Result<?> respondePagedData(JeecgOrderMain Silian_jeecgOrderMain,
+                                       @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                       HttpServletRequest Silian_req) {
+        QueryWrapper<JeecgOrderMain> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_jeecgOrderMain, Silian_req.getParameterMap());
+        Page<JeecgOrderMain> Silian_page = new Page<JeecgOrderMain>(Silian_pageNo, Silian_pageSize);
+        IPage<JeecgOrderMain> Silian_pageList = jeecgOrderMainService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
     }
 
     /**
@@ -65,10 +65,10 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @PostMapping(value = "/add")
-    public Result<?> add(@RequestBody JeecgOrderMainPage jeecgOrderMainPage) {
-        JeecgOrderMain jeecgOrderMain = new JeecgOrderMain();
-        BeanUtils.copyProperties(jeecgOrderMainPage, jeecgOrderMain);
-        jeecgOrderMainService.save(jeecgOrderMain);
+    public Result<?> add(@RequestBody JeecgOrderMainPage Silian_jeecgOrderMainPage) {
+        JeecgOrderMain Silian_jeecgOrderMain = new JeecgOrderMain();
+        BeanUtils.copyProperties(Silian_jeecgOrderMainPage, Silian_jeecgOrderMain);
+        jeecgOrderMainService.save(Silian_jeecgOrderMain);
         return Result.ok("添加成功!");
     }
 
@@ -79,10 +79,10 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-    public Result<?> edit(@RequestBody JeecgOrderMainPage jeecgOrderMainPage) {
-        JeecgOrderMain jeecgOrderMain = new JeecgOrderMain();
-        BeanUtils.copyProperties(jeecgOrderMainPage, jeecgOrderMain);
-        jeecgOrderMainService.updateById(jeecgOrderMain);
+    public Result<?> edit(@RequestBody JeecgOrderMainPage Silian_jeecgOrderMainPage) {
+        JeecgOrderMain Silian_jeecgOrderMain = new JeecgOrderMain();
+        BeanUtils.copyProperties(Silian_jeecgOrderMainPage, Silian_jeecgOrderMain);
+        jeecgOrderMainService.updateById(Silian_jeecgOrderMain);
         return Result.ok("编辑成功!");
     }
 
@@ -93,8 +93,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-        jeecgOrderMainService.delMain(id);
+    public Result<?> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        jeecgOrderMainService.delMain(Silian_id);
         return Result.ok("删除成功!");
     }
 
@@ -105,8 +105,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.jeecgOrderMainService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.jeecgOrderMainService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.ok("批量删除成功!");
     }
 
@@ -117,9 +117,9 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
-        JeecgOrderMain jeecgOrderMain = jeecgOrderMainService.getById(id);
-        return Result.ok(jeecgOrderMain);
+    public Result<?> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        JeecgOrderMain Silian_jeecgOrderMain = jeecgOrderMainService.getById(Silian_id);
+        return Result.ok(Silian_jeecgOrderMain);
     }
 
 
@@ -130,14 +130,14 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @GetMapping(value = "/listOrderCustomerByMainId")
-    public Result<?> queryOrderCustomerListByMainId(JeecgOrderCustomer jeecgOrderCustomer,
-                                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                    HttpServletRequest req) {
-        QueryWrapper<JeecgOrderCustomer> queryWrapper = QueryGenerator.initQueryWrapper(jeecgOrderCustomer, req.getParameterMap());
-        Page<JeecgOrderCustomer> page = new Page<JeecgOrderCustomer>(pageNo, pageSize);
-        IPage<JeecgOrderCustomer> pageList = jeecgOrderCustomerService.page(page, queryWrapper);
-        return Result.ok(pageList);
+    public Result<?> queryOrderCustomerListByMainId(JeecgOrderCustomer Silian_jeecgOrderCustomer,
+                                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                                    HttpServletRequest Silian_req) {
+        QueryWrapper<JeecgOrderCustomer> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_jeecgOrderCustomer, Silian_req.getParameterMap());
+        Page<JeecgOrderCustomer> Silian_page = new Page<JeecgOrderCustomer>(Silian_pageNo, Silian_pageSize);
+        IPage<JeecgOrderCustomer> Silian_pageList = jeecgOrderCustomerService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
     }
 
     /**
@@ -147,14 +147,14 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @GetMapping(value = "/listOrderTicketByMainId")
-    public Result<?> queryOrderTicketListByMainId(JeecgOrderTicket jeecgOrderTicket,
-                                                  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                  HttpServletRequest req) {
-        QueryWrapper<JeecgOrderTicket> queryWrapper = QueryGenerator.initQueryWrapper(jeecgOrderTicket, req.getParameterMap());
-        Page<JeecgOrderTicket> page = new Page<JeecgOrderTicket>(pageNo, pageSize);
-        IPage<JeecgOrderTicket> pageList = jeecgOrderTicketService.page(page, queryWrapper);
-        return Result.ok(pageList);
+    public Result<?> queryOrderTicketListByMainId(JeecgOrderTicket Silian_jeecgOrderTicket,
+                                                  @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                                  HttpServletRequest Silian_req) {
+        QueryWrapper<JeecgOrderTicket> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_jeecgOrderTicket, Silian_req.getParameterMap());
+        Page<JeecgOrderTicket> Silian_page = new Page<JeecgOrderTicket>(Silian_pageNo, Silian_pageSize);
+        IPage<JeecgOrderTicket> Silian_pageList = jeecgOrderTicketService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
     }
 
     /**
@@ -164,8 +164,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @PostMapping(value = "/addCustomer")
-    public Result<?> addCustomer(@RequestBody JeecgOrderCustomer jeecgOrderCustomer) {
-        jeecgOrderCustomerService.save(jeecgOrderCustomer);
+    public Result<?> addCustomer(@RequestBody JeecgOrderCustomer Silian_jeecgOrderCustomer) {
+        jeecgOrderCustomerService.save(Silian_jeecgOrderCustomer);
         return Result.ok("添加成功!");
     }
 
@@ -176,8 +176,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @RequestMapping(value = "/editCustomer", method = {RequestMethod.PUT,RequestMethod.POST})
-    public Result<?> editCustomer(@RequestBody JeecgOrderCustomer jeecgOrderCustomer) {
-        jeecgOrderCustomerService.updateById(jeecgOrderCustomer);
+    public Result<?> editCustomer(@RequestBody JeecgOrderCustomer Silian_jeecgOrderCustomer) {
+        jeecgOrderCustomerService.updateById(Silian_jeecgOrderCustomer);
         return Result.ok("添加成功!");
     }
 
@@ -188,8 +188,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/deleteCustomer")
-    public Result<?> deleteCustomer(@RequestParam(name = "id", required = true) String id) {
-        jeecgOrderCustomerService.removeById(id);
+    public Result<?> deleteCustomer(@RequestParam(name = "id", required = true) String Silian_id) {
+        jeecgOrderCustomerService.removeById(Silian_id);
         return Result.ok("删除成功!");
     }
 
@@ -200,8 +200,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/deleteBatchCustomer")
-    public Result<?> deleteBatchCustomer(@RequestParam(name = "ids", required = true) String ids) {
-        this.jeecgOrderCustomerService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<?> deleteBatchCustomer(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.jeecgOrderCustomerService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.ok("批量删除成功!");
     }
 
@@ -212,8 +212,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @PostMapping(value = "/addTicket")
-    public Result<?> addTicket(@RequestBody JeecgOrderTicket jeecgOrderTicket) {
-        jeecgOrderTicketService.save(jeecgOrderTicket);
+    public Result<?> addTicket(@RequestBody JeecgOrderTicket Silian_jeecgOrderTicket) {
+        jeecgOrderTicketService.save(Silian_jeecgOrderTicket);
         return Result.ok("添加成功!");
     }
 
@@ -224,8 +224,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @RequestMapping(value = "/editTicket", method = {RequestMethod.PUT,RequestMethod.POST})
-    public Result<?> editTicket(@RequestBody JeecgOrderTicket jeecgOrderTicket) {
-        jeecgOrderTicketService.updateById(jeecgOrderTicket);
+    public Result<?> editTicket(@RequestBody JeecgOrderTicket Silian_jeecgOrderTicket) {
+        jeecgOrderTicketService.updateById(Silian_jeecgOrderTicket);
         return Result.ok("编辑成功!");
     }
 
@@ -236,8 +236,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/deleteTicket")
-    public Result<?> deleteTicket(@RequestParam(name = "id", required = true) String id) {
-        jeecgOrderTicketService.removeById(id);
+    public Result<?> deleteTicket(@RequestParam(name = "id", required = true) String Silian_id) {
+        jeecgOrderTicketService.removeById(Silian_id);
         return Result.ok("删除成功!");
     }
 
@@ -248,8 +248,8 @@ public class JeecgOrderErpMainController {
      * @return
      */
     @DeleteMapping(value = "/deleteBatchTicket")
-    public Result<?> deleteBatchTicket(@RequestParam(name = "ids", required = true) String ids) {
-        this.jeecgOrderTicketService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<?> deleteBatchTicket(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.jeecgOrderTicketService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.ok("批量删除成功!");
     }
 

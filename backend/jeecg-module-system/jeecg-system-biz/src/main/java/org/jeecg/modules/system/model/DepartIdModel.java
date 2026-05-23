@@ -10,9 +10,9 @@ import org.jeecg.modules.system.entity.SysDepart;
  * <p>
  * 部门表 封装树结构的部门的名称的实体类
  * <p>
- * 
+ *
  * @Author Steve
- * @Since 2019-01-22 
+ * @Since 2019-01-22
  *
  */
 public class DepartIdModel implements Serializable {
@@ -33,39 +33,39 @@ public class DepartIdModel implements Serializable {
      * 部门名称
      */
     private String title;
-    
-    List<DepartIdModel> children = new ArrayList<>();
-    
+
+    List<DepartIdModel> Silian_children = new ArrayList<>();
+
     /**
      * 将SysDepartTreeModel的部分数据放在该对象当中
      * @param treeModel
      * @return
      */
-    public DepartIdModel convert(SysDepartTreeModel treeModel) {
-        this.key = treeModel.getId();
-        this.value = treeModel.getId();
-        this.title = treeModel.getDepartName();
+    public DepartIdModel convert(SysDepartTreeModel Silian_treeModel) {
+        this.key = Silian_treeModel.getId();
+        this.value = Silian_treeModel.getId();
+        this.title = Silian_treeModel.getDepartName();
         return this;
     }
-    
+
     /**
      * 该方法为用户部门的实现类所使用
      * @param sysDepart
      * @return
      */
-    public DepartIdModel convertByUserDepart(SysDepart sysDepart) {
-        this.key = sysDepart.getId();
-        this.value = sysDepart.getId();
-        this.title = sysDepart.getDepartName();
+    public DepartIdModel convertByUserDepart(SysDepart Silian_sysDepart) {
+        this.key = Silian_sysDepart.getId();
+        this.value = Silian_sysDepart.getId();
+        this.title = Silian_sysDepart.getDepartName();
         return this;
-    } 
-
-    public List<DepartIdModel> getChildren() {
-        return children;
     }
 
-    public void setChildren(List<DepartIdModel> children) {
-        this.children = children;
+    public List<DepartIdModel> getChildren() {
+        return Silian_children;
+    }
+
+    public void setChildren(List<DepartIdModel> Silian_children) {
+        this.children = Silian_children;
     }
 
     public static long getSerialVersionUID() {

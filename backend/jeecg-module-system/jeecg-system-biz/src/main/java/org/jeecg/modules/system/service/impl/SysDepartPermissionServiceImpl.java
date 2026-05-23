@@ -40,41 +40,41 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveDepartPermission(String departId, String permissionIds, String lastPermissionIds) {
-        List<String> add = getDiff(lastPermissionIds,permissionIds);
-        if(add!=null && add.size()>0) {
-            List<SysDepartPermission> list = new ArrayList<SysDepartPermission>();
-            for (String p : add) {
-                if(oConvertUtils.isNotEmpty(p)) {
-                    SysDepartPermission rolepms = new SysDepartPermission(departId, p);
-                    list.add(rolepms);
+    public void saveDepartPermission(String Silian_departId, String Silian_permissionIds, String Silian_lastPermissionIds) {
+        List<String> Silian_add = getDiff(Silian_lastPermissionIds,Silian_permissionIds);
+        if(Silian_add!=null && Silian_add.size()>0) {
+            List<SysDepartPermission> Silian_list = new ArrayList<SysDepartPermission>();
+            for (String Silian_p : Silian_add) {
+                if(oConvertUtils.isNotEmpty(Silian_p)) {
+                    SysDepartPermission Silian_rolepms = new SysDepartPermission(Silian_departId, Silian_p);
+                    Silian_list.add(Silian_rolepms);
                 }
             }
-            this.saveBatch(list);
+            this.saveBatch(Silian_list);
         }
-        List<String> delete = getDiff(permissionIds,lastPermissionIds);
-        if(delete!=null && delete.size()>0) {
-            for (String permissionId : delete) {
-                this.remove(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, departId).eq(SysDepartPermission::getPermissionId, permissionId));
+        List<String> Silian_delete = getDiff(Silian_permissionIds,Silian_lastPermissionIds);
+        if(Silian_delete!=null && Silian_delete.size()>0) {
+            for (String Silian_permissionId : Silian_delete) {
+                this.remove(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, Silian_departId).eq(SysDepartPermission::getPermissionId, Silian_permissionId));
                 //删除部门权限时，删除部门角色中已授权的权限
-                List<SysDepartRole> sysDepartRoleList = sysDepartRoleMapper.selectList(new LambdaQueryWrapper<SysDepartRole>().eq(SysDepartRole::getDepartId,departId));
-                List<String> roleIds = sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
-                if(roleIds != null && roleIds.size()>0){
-                    departRolePermissionMapper.delete(new LambdaQueryWrapper<SysDepartRolePermission>().eq(SysDepartRolePermission::getPermissionId,permissionId));
+                List<SysDepartRole> Silian_sysDepartRoleList = sysDepartRoleMapper.selectList(new LambdaQueryWrapper<SysDepartRole>().eq(SysDepartRole::getDepartId,Silian_departId));
+                List<String> Silian_roleIds = Silian_sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
+                if(Silian_roleIds != null && Silian_roleIds.size()>0){
+                    departRolePermissionMapper.delete(new LambdaQueryWrapper<SysDepartRolePermission>().eq(SysDepartRolePermission::getPermissionId,Silian_permissionId));
                 }
             }
         }
     }
 
     @Override
-    public List<SysPermissionDataRule> getPermRuleListByDeptIdAndPermId(String departId, String permissionId) {
-        SysDepartPermission departPermission = this.getOne(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, departId).eq(SysDepartPermission::getPermissionId, permissionId));
-        if(departPermission != null && oConvertUtils.isNotEmpty(departPermission.getDataRuleIds())){
-            LambdaQueryWrapper<SysPermissionDataRule> query = new LambdaQueryWrapper<SysPermissionDataRule>();
-            query.in(SysPermissionDataRule::getId, Arrays.asList(departPermission.getDataRuleIds().split(",")));
-            query.orderByDesc(SysPermissionDataRule::getCreateTime);
-            List<SysPermissionDataRule> permRuleList = this.ruleMapper.selectList(query);
-            return permRuleList;
+    public List<SysPermissionDataRule> getPermRuleListByDeptIdAndPermId(String Silian_departId, String Silian_permissionId) {
+        SysDepartPermission Silian_departPermission = this.getOne(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, Silian_departId).eq(SysDepartPermission::getPermissionId, Silian_permissionId));
+        if(Silian_departPermission != null && oConvertUtils.isNotEmpty(Silian_departPermission.getDataRuleIds())){
+            LambdaQueryWrapper<SysPermissionDataRule> Silian_query = new LambdaQueryWrapper<SysPermissionDataRule>();
+            Silian_query.in(SysPermissionDataRule::getId, Arrays.asList(Silian_departPermission.getDataRuleIds().split(",")));
+            Silian_query.orderByDesc(SysPermissionDataRule::getCreateTime);
+            List<SysPermissionDataRule> Silian_permRuleList = this.ruleMapper.selectList(Silian_query);
+            return Silian_permRuleList;
         }else{
             return null;
         }
@@ -86,26 +86,26 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
      * @param diff
      * @return
      */
-    private List<String> getDiff(String main,String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+    private List<String> getDiff(String Silian_main,String Silian_diff){
+        if(oConvertUtils.isEmpty(Silian_diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
-            return Arrays.asList(diff.split(","));
+        if(oConvertUtils.isEmpty(Silian_main)) {
+            return Arrays.asList(Silian_diff.split(","));
         }
 
-        String[] mainArr = main.split(",");
-        String[] diffArr = diff.split(",");
-        Map<String, Integer> map = new HashMap(5);
-        for (String string : mainArr) {
-            map.put(string, 1);
+        String[] Silian_mainArr = Silian_main.split(",");
+        String[] Silian_diffArr = Silian_diff.split(",");
+        Map<String, Integer> Silian_map = new HashMap(5);
+        for (String Silian_string : Silian_mainArr) {
+            Silian_map.put(Silian_string, 1);
         }
-        List<String> res = new ArrayList<String>();
-        for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
-                res.add(key);
+        List<String> Silian_res = new ArrayList<String>();
+        for (String Silian_key : Silian_diffArr) {
+            if(oConvertUtils.isNotEmpty(Silian_key) && !Silian_map.containsKey(Silian_key)) {
+                Silian_res.add(Silian_key);
             }
         }
-        return res;
+        return Silian_res;
     }
 }

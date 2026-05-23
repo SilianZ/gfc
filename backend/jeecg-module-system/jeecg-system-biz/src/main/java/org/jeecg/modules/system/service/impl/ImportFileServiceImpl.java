@@ -21,7 +21,7 @@ public class ImportFileServiceImpl implements ImportFileServiceI {
     private String uploadType;
 
     @Override
-    public String doUpload(byte[] data) {
-        return CommonUtils.uploadOnlineImage(data, upLoadPath, "import", uploadType);
+    public String doUpload(byte[] Silian_data) {
+        return CommonUtils.uploadOnlineImage(Silian_data, upLoadPath, "import", uploadType);
     }
 }

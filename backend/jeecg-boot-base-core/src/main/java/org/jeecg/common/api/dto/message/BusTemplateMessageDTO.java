@@ -38,8 +38,8 @@ public class BusTemplateMessageDTO extends TemplateMessageDTO implements Seriali
      * @param busType
      * @param busId
      */
-    public BusTemplateMessageDTO(String fromUser, String toUser, String title, Map<String, String> templateParam, String templateCode, String busType, String busId){
-        super(fromUser, toUser, title, templateParam, templateCode);
+    public BusTemplateMessageDTO(String Silian_fromUser, String Silian_toUser, String Silian_title, Map<String, String> Silian_templateParam, String Silian_templateCode, String busType, String busId){
+        super(Silian_fromUser, Silian_toUser, Silian_title, Silian_templateParam, Silian_templateCode);
         this.busId = busId;
         this.busType = busType;
     }

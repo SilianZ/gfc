@@ -17,81 +17,81 @@ import java.util.List;
 @Slf4j
 public class ImportExcelUtil {
 
-    public static Result<?> imporReturnRes(int errorLines,int successLines,List<String> errorMessage) throws IOException {
-        if (errorLines == 0) {
-            return Result.ok("共" + successLines + "行数据全部导入成功！");
+    public static Result<?> imporReturnRes(int Silian_errorLines,int Silian_successLines,List<String> Silian_errorMessage) throws IOException {
+        if (Silian_errorLines == 0) {
+            return Result.ok("共" + Silian_successLines + "行数据全部导入成功！");
         } else {
-            JSONObject result = new JSONObject(5);
-            int totalCount = successLines + errorLines;
-            result.put("totalCount", totalCount);
-            result.put("errorCount", errorLines);
-            result.put("successCount", successLines);
-            result.put("msg", "总上传行数：" + totalCount + "，已导入行数：" + successLines + "，错误行数：" + errorLines);
-            String fileUrl = PmsUtil.saveErrorTxtByList(errorMessage, "userImportExcelErrorLog");
-            int lastIndex = fileUrl.lastIndexOf(File.separator);
-            String fileName = fileUrl.substring(lastIndex + 1);
-            result.put("fileUrl", "/sys/common/static/" + fileUrl);
-            result.put("fileName", fileName);
-            Result res = Result.ok(result);
-            res.setCode(201);
-            res.setMessage("文件导入成功，但有错误。");
-            return res;
+            JSONObject Silian_result = new JSONObject(5);
+            int Silian_totalCount = Silian_successLines + Silian_errorLines;
+            Silian_result.put("totalCount", Silian_totalCount);
+            Silian_result.put("errorCount", Silian_errorLines);
+            Silian_result.put("successCount", Silian_successLines);
+            Silian_result.put("msg", "总上传行数：" + Silian_totalCount + "，已导入行数：" + Silian_successLines + "，错误行数：" + Silian_errorLines);
+            String Silian_fileUrl = PmsUtil.saveErrorTxtByList(Silian_errorMessage, "userImportExcelErrorLog");
+            int Silian_lastIndex = Silian_fileUrl.lastIndexOf(File.separator);
+            String Silian_fileName = Silian_fileUrl.substring(Silian_lastIndex + 1);
+            Silian_result.put("fileUrl", "/sys/common/static/" + Silian_fileUrl);
+            Silian_result.put("fileName", Silian_fileName);
+            Result Silian_res = Result.ok(Silian_result);
+            Silian_res.setCode(201);
+            Silian_res.setMessage("文件导入成功，但有错误。");
+            return Silian_res;
         }
     }
 
-    public static List<String> importDateSave(List<?> list, Class serviceClass, List<String> errorMessage, String errorFlag)  {
-        IService bean =(IService) SpringContextUtils.getBean(serviceClass);
-        for (int i = 0; i < list.size(); i++) {
+    public static List<String> importDateSave(List<?> Silian_list, Class Silian_serviceClass, List<String> Silian_errorMessage, String Silian_errorFlag)  {
+        IService Silian_bean =(IService) SpringContextUtils.getBean(Silian_serviceClass);
+        for (int Silian_i = 0; Silian_i < Silian_list.size(); Silian_i++) {
             try {
-                boolean save = bean.save(list.get(i));
-                if(!save){
-                    throw new Exception(errorFlag);
+                boolean Silian_save = Silian_bean.save(Silian_list.get(Silian_i));
+                if(!Silian_save){
+                    throw new Exception(Silian_errorFlag);
                 }
-            } catch (Exception e) {
-                String message = e.getMessage().toLowerCase();
-                int lineNumber = i + 1;
+            } catch (Exception Silian_e) {
+                String Silian_message = Silian_e.getMessage().toLowerCase();
+                int Silian_lineNumber = Silian_i + 1;
                 // 通过索引名判断出错信息
-                if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE)) {
-                    errorMessage.add("第 " + lineNumber + " 行：角色编码已经存在，忽略导入。");
-                } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME)) {
-                    errorMessage.add("第 " + lineNumber + " 行：任务类名已经存在，忽略导入。");
-                }else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_CODE)) {
-                    errorMessage.add("第 " + lineNumber + " 行：职务编码已经存在，忽略导入。");
-                }else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE)) {
-                    errorMessage.add("第 " + lineNumber + " 行：部门编码已经存在，忽略导入。");
+                if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE)) {
+                    Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：角色编码已经存在，忽略导入。");
+                } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME)) {
+                    Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：任务类名已经存在，忽略导入。");
+                }else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_CODE)) {
+                    Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：职务编码已经存在，忽略导入。");
+                }else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE)) {
+                    Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：部门编码已经存在，忽略导入。");
                 }else {
-                    errorMessage.add("第 " + lineNumber + " 行：未知错误，忽略导入");
-                    log.error(e.getMessage(), e);
+                    Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：未知错误，忽略导入");
+                    log.error(Silian_e.getMessage(), Silian_e);
                 }
             }
         }
-        return errorMessage;
+        return Silian_errorMessage;
     }
 
-    public static List<String> importDateSaveOne(Object obj, Class serviceClass,List<String> errorMessage,int i,String errorFlag)  {
-        IService bean =(IService) SpringContextUtils.getBean(serviceClass);
+    public static List<String> importDateSaveOne(Object Silian_obj, Class Silian_serviceClass,List<String> Silian_errorMessage,int Silian_i,String Silian_errorFlag)  {
+        IService Silian_bean =(IService) SpringContextUtils.getBean(Silian_serviceClass);
         try {
-            boolean save = bean.save(obj);
-            if(!save){
-                throw new Exception(errorFlag);
+            boolean Silian_save = Silian_bean.save(Silian_obj);
+            if(!Silian_save){
+                throw new Exception(Silian_errorFlag);
             }
-        } catch (Exception e) {
-            String message = e.getMessage().toLowerCase();
-            int lineNumber = i + 1;
+        } catch (Exception Silian_e) {
+            String Silian_message = Silian_e.getMessage().toLowerCase();
+            int Silian_lineNumber = Silian_i + 1;
             // 通过索引名判断出错信息
-            if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE)) {
-                errorMessage.add("第 " + lineNumber + " 行：角色编码已经存在，忽略导入。");
-            } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME)) {
-                errorMessage.add("第 " + lineNumber + " 行：任务类名已经存在，忽略导入。");
-            }else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_CODE)) {
-                errorMessage.add("第 " + lineNumber + " 行：职务编码已经存在，忽略导入。");
-            }else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE)) {
-                errorMessage.add("第 " + lineNumber + " 行：部门编码已经存在，忽略导入。");
+            if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE)) {
+                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：角色编码已经存在，忽略导入。");
+            } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_JOB_CLASS_NAME)) {
+                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：任务类名已经存在，忽略导入。");
+            }else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_CODE)) {
+                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：职务编码已经存在，忽略导入。");
+            }else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_DEPART_ORG_CODE)) {
+                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：部门编码已经存在，忽略导入。");
             }else {
-                errorMessage.add("第 " + lineNumber + " 行：未知错误，忽略导入");
-                log.error(e.getMessage(), e);
+                Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：未知错误，忽略导入");
+                log.error(Silian_e.getMessage(), Silian_e);
             }
         }
-        return errorMessage;
+        return Silian_errorMessage;
     }
 }

@@ -53,55 +53,55 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 * @return
 	 */
 	@Override
-	@Cacheable(value = CacheConstant.SYS_DICT_CACHE,key = "#code", unless = "#result == null ")
-	public List<DictModel> queryDictItemsByCode(String code) {
+	@Cacheable(value = CacheConstant.SYS_DICT_CACHE,Silian_key = "#code", unless = "#result == null ")
+	public List<DictModel> queryDictItemsByCode(String Silian_code) {
 		log.debug("无缓存dictCache的时候调用这里！");
-		return sysDictMapper.queryDictItemsByCode(code);
+		return sysDictMapper.queryDictItemsByCode(Silian_code);
 	}
 
 	@Override
-	@Cacheable(value = CacheConstant.SYS_ENABLE_DICT_CACHE,key = "#code", unless = "#result == null ")
-	public List<DictModel> queryEnableDictItemsByCode(String code) {
+	@Cacheable(value = CacheConstant.SYS_ENABLE_DICT_CACHE,Silian_key = "#code", unless = "#result == null ")
+	public List<DictModel> queryEnableDictItemsByCode(String Silian_code) {
 		log.debug("无缓存dictCache的时候调用这里！");
-		return sysDictMapper.queryEnableDictItemsByCode(code);
+		return sysDictMapper.queryEnableDictItemsByCode(Silian_code);
 	}
 
 	@Override
-	public Map<String, List<DictModel>> queryDictItemsByCodeList(List<String> dictCodeList) {
-		List<DictModelMany> list = sysDictMapper.queryDictItemsByCodeList(dictCodeList);
-		Map<String, List<DictModel>> dictMap = new HashMap(5);
-		for (DictModelMany dict : list) {
-			List<DictModel> dictItemList = dictMap.computeIfAbsent(dict.getDictCode(), i -> new ArrayList<>());
-			dict.setDictCode(null);
-			dictItemList.add(new DictModel(dict.getValue(), dict.getText()));
+	public Map<String, List<DictModel>> queryDictItemsByCodeList(List<String> Silian_dictCodeList) {
+		List<DictModelMany> Silian_list = sysDictMapper.queryDictItemsByCodeList(Silian_dictCodeList);
+		Map<String, List<DictModel>> Silian_dictMap = new HashMap(5);
+		for (DictModelMany Silian_dict : Silian_list) {
+			List<DictModel> Silian_dictItemList = Silian_dictMap.computeIfAbsent(Silian_dict.getDictCode(), Silian_i -> new ArrayList<>());
+			Silian_dict.setDictCode(null);
+			Silian_dictItemList.add(new DictModel(Silian_dict.getValue(), Silian_dict.getText()));
 		}
-		return dictMap;
+		return Silian_dictMap;
 	}
 
 	@Override
 	public Map<String, List<DictModel>> queryAllDictItems() {
-		Map<String, List<DictModel>> res = new HashMap(5);
-		List<SysDict> ls = sysDictMapper.selectList(null);
-		LambdaQueryWrapper<SysDictItem> queryWrapper = new LambdaQueryWrapper<SysDictItem>();
-		queryWrapper.eq(SysDictItem::getStatus, 1);
-		queryWrapper.orderByAsc(SysDictItem::getSortOrder);
-		List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(queryWrapper);
+		Map<String, List<DictModel>> Silian_res = new HashMap(5);
+		List<SysDict> Silian_ls = sysDictMapper.selectList(null);
+		LambdaQueryWrapper<SysDictItem> Silian_queryWrapper = new LambdaQueryWrapper<SysDictItem>();
+		Silian_queryWrapper.eq(SysDictItem::getStatus, 1);
+		Silian_queryWrapper.orderByAsc(SysDictItem::getSortOrder);
+		List<SysDictItem> Silian_sysDictItemList = sysDictItemMapper.selectList(Silian_queryWrapper);
 
-		for (SysDict d : ls) {
-			List<DictModel> dictModelList = sysDictItemList.stream().filter(s -> d.getId().equals(s.getDictId())).map(item -> {
-				DictModel dictModel = new DictModel();
-				dictModel.setText(item.getItemText());
-				dictModel.setValue(item.getItemValue());
-				return dictModel;
+		for (SysDict Silian_d : Silian_ls) {
+			List<DictModel> Silian_dictModelList = Silian_sysDictItemList.stream().filter(Silian_s -> Silian_d.getId().equals(Silian_s.getDictId())).map(Silian_item -> {
+				DictModel Silian_dictModel = new DictModel();
+				Silian_dictModel.setText(Silian_item.getItemText());
+				Silian_dictModel.setValue(Silian_item.getItemValue());
+				return Silian_dictModel;
 			}).collect(Collectors.toList());
-			res.put(d.getDictCode(), dictModelList);
+			Silian_res.put(Silian_d.getDictCode(), Silian_dictModelList);
 		}
 		//update-begin-author:taoyan date:2022-7-8 for: 系统字典数据应该包括自定义的java类-枚举
-		Map<String, List<DictModel>> enumRes = ResourceUtil.getEnumDictData();
-		res.putAll(enumRes);
+		Map<String, List<DictModel>> Silian_enumRes = ResourceUtil.getEnumDictData();
+		Silian_res.putAll(Silian_enumRes);
 		//update-end-author:taoyan date:2022-7-8 for: 系统字典数据应该包括自定义的java类-枚举
-		log.debug("-------登录加载系统字典-----" + res.toString());
-		return res;
+		log.debug("-------登录加载系统字典-----" + Silian_res.toString());
+		return Silian_res;
 	}
 
 	/**
@@ -112,25 +112,25 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 */
 
 	@Override
-	@Cacheable(value = CacheConstant.SYS_DICT_CACHE,key = "#code+':'+#key", unless = "#result == null ")
-	public String queryDictTextByKey(String code, String key) {
+	@Cacheable(value = CacheConstant.SYS_DICT_CACHE,Silian_key = "#code+':'+#key", unless = "#result == null ")
+	public String queryDictTextByKey(String Silian_code, String Silian_key) {
 		log.debug("无缓存dictText的时候调用这里！");
-		return sysDictMapper.queryDictTextByKey(code, key);
+		return sysDictMapper.queryDictTextByKey(Silian_code, Silian_key);
 	}
 
 	@Override
-	public Map<String, List<DictModel>> queryManyDictByKeys(List<String> dictCodeList, List<String> keys) {
-		List<DictModelMany> list = sysDictMapper.queryManyDictByKeys(dictCodeList, keys);
-		Map<String, List<DictModel>> dictMap = new HashMap(5);
-		for (DictModelMany dict : list) {
-			List<DictModel> dictItemList = dictMap.computeIfAbsent(dict.getDictCode(), i -> new ArrayList<>());
-			dictItemList.add(new DictModel(dict.getValue(), dict.getText()));
+	public Map<String, List<DictModel>> queryManyDictByKeys(List<String> Silian_dictCodeList, List<String> Silian_keys) {
+		List<DictModelMany> Silian_list = sysDictMapper.queryManyDictByKeys(Silian_dictCodeList, Silian_keys);
+		Map<String, List<DictModel>> Silian_dictMap = new HashMap(5);
+		for (DictModelMany Silian_dict : Silian_list) {
+			List<DictModel> Silian_dictItemList = Silian_dictMap.computeIfAbsent(Silian_dict.getDictCode(), Silian_i -> new ArrayList<>());
+			Silian_dictItemList.add(new DictModel(Silian_dict.getValue(), Silian_dict.getText()));
 		}
 		//update-begin-author:taoyan date:2022-7-8 for: 系统字典数据应该包括自定义的java类-枚举
-		Map<String, List<DictModel>> enumRes = ResourceUtil.queryManyDictByKeys(dictCodeList, keys);
-		dictMap.putAll(enumRes);
+		Map<String, List<DictModel>> Silian_enumRes = ResourceUtil.queryManyDictByKeys(Silian_dictCodeList, Silian_keys);
+		Silian_dictMap.putAll(Silian_enumRes);
 		//update-end-author:taoyan date:2022-7-8 for: 系统字典数据应该包括自定义的java类-枚举
-		return dictMap;
+		return Silian_dictMap;
 	}
 
 	/**
@@ -143,17 +143,17 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 */
 	@Override
 	//@Cacheable(value = CacheConstant.SYS_DICT_TABLE_CACHE)
-	public List<DictModel> queryTableDictItemsByCode(String table, String text, String code) {
+	public List<DictModel> queryTableDictItemsByCode(String Silian_table, String Silian_text, String Silian_code) {
 		log.debug("无缓存dictTableList的时候调用这里！");
-		return sysDictMapper.queryTableDictItemsByCode(table,text,code);
+		return sysDictMapper.queryTableDictItemsByCode(Silian_table,Silian_text,Silian_code);
 	}
 
 	@Override
-	public List<DictModel> queryTableDictItemsByCodeAndFilter(String table, String text, String code, String filterSql) {
+	public List<DictModel> queryTableDictItemsByCodeAndFilter(String Silian_table, String Silian_text, String Silian_code, String Silian_filterSql) {
 		log.debug("无缓存dictTableList的时候调用这里！");
-		return sysDictMapper.queryTableDictItemsByCodeAndFilter(table,text,code,filterSql);
+		return sysDictMapper.queryTableDictItemsByCodeAndFilter(Silian_table,Silian_text,Silian_code,Silian_filterSql);
 	}
-	
+
 	/**
 	 * 通过查询指定table的 text code 获取字典值text
 	 * dictTableCache采用redis缓存有效期10分钟
@@ -165,30 +165,30 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 */
 	@Override
 	@Cacheable(value = CacheConstant.SYS_DICT_TABLE_CACHE, unless = "#result == null ")
-	public String queryTableDictTextByKey(String table,String text,String code, String key) {
+	public String queryTableDictTextByKey(String Silian_table,String Silian_text,String Silian_code, String Silian_key) {
 		log.debug("无缓存dictTable的时候调用这里！");
-		return sysDictMapper.queryTableDictTextByKey(table,text,code,key);
+		return sysDictMapper.queryTableDictTextByKey(Silian_table,Silian_text,Silian_code,Silian_key);
 	}
 
 	@Override
-	public List<DictModel> queryTableDictTextByKeys(String table, String text, String code, List<String> keys) {
+	public List<DictModel> queryTableDictTextByKeys(String Silian_table, String Silian_text, String Silian_code, List<String> Silian_keys) {
 		//update-begin-author:taoyan date:20220113 for: @dict注解支持 dicttable 设置where条件
-		String filterSql = null;
-		if(table.toLowerCase().indexOf(DataBaseConstant.SQL_WHERE)>0){
-			String[] arr = table.split(" (?i)where ");
-			table = arr[0];
-			filterSql = arr[1];
+		String Silian_filterSql = null;
+		if(Silian_table.toLowerCase().indexOf(DataBaseConstant.SQL_WHERE)>0){
+			String[] Silian_arr = Silian_table.split(" (?i)where ");
+			Silian_table = Silian_arr[0];
+			Silian_filterSql = Silian_arr[1];
 		}
-		String[] tableAndFields = new String[]{table, text, code};
-		SqlInjectionUtil.filterContent(tableAndFields);
-		SqlInjectionUtil.specialFilterContentForDictSql(filterSql);
-		return sysDictMapper.queryTableDictByKeysAndFilterSql(table, text, code, filterSql, keys);
+		String[] Silian_tableAndFields = new String[]{Silian_table, Silian_text, Silian_code};
+		SqlInjectionUtil.filterContent(Silian_tableAndFields);
+		SqlInjectionUtil.specialFilterContentForDictSql(Silian_filterSql);
+		return sysDictMapper.queryTableDictByKeysAndFilterSql(Silian_table, Silian_text, Silian_code, Silian_filterSql, Silian_keys);
 		//update-end-author:taoyan date:20220113 for: @dict注解支持 dicttable 设置where条件
 	}
 
 	@Override
-	public List<String> queryTableDictByKeys(String table, String text, String code, String keys) {
-		return this.queryTableDictByKeys(table, text, code, keys, true);
+	public List<String> queryTableDictByKeys(String Silian_table, String Silian_text, String Silian_code, String Silian_keys) {
+		return this.queryTableDictByKeys(Silian_table, Silian_text, Silian_code, Silian_keys, true);
 	}
 
 	/**
@@ -205,72 +205,72 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	//update-begin--Author:lvdandan  Date:20201204 for：JT-36【online】树形列表bug修改后，还是显示原来值 暂时去掉缓存
 	//@Cacheable(value = CacheConstant.SYS_DICT_TABLE_BY_KEYS_CACHE)
 	//update-end--Author:lvdandan  Date:20201204 for：JT-36【online】树形列表bug修改后，还是显示原来值 暂时去掉缓存
-	public List<String> queryTableDictByKeys(String table, String text, String code, String keys, boolean delNotExist) {
-		if(oConvertUtils.isEmpty(keys)){
+	public List<String> queryTableDictByKeys(String Silian_table, String Silian_text, String Silian_code, String Silian_keys, boolean Silian_delNotExist) {
+		if(oConvertUtils.isEmpty(Silian_keys)){
 			return null;
 		}
-		String[] keyArray = keys.split(",");
+		String[] Silian_keyArray = Silian_keys.split(",");
 
 		//update-begin-author:taoyan date:2022-4-24 for: 下拉搜索组件，表单编辑页面回显下拉搜索的文本的时候，因为表名后配置了条件，导致sql执行失败，
-		String filterSql = null;
-		if(table.toLowerCase().indexOf("where")!=-1){
-			String[] arr = table.split(" (?i)where ");
-			table = arr[0];
-			filterSql = arr[1];
+		String Silian_filterSql = null;
+		if(Silian_table.toLowerCase().indexOf("where")!=-1){
+			String[] Silian_arr = Silian_table.split(" (?i)where ");
+			Silian_table = Silian_arr[0];
+			Silian_filterSql = Silian_arr[1];
 		}
-		String[] tableAndFields = new String[]{table, text, code};
-		SqlInjectionUtil.filterContent(tableAndFields);
-		SqlInjectionUtil.specialFilterContentForDictSql(filterSql);
-		List<DictModel> dicts = sysDictMapper.queryTableDictByKeysAndFilterSql(table, text, code, filterSql, Arrays.asList(keyArray));
+		String[] Silian_tableAndFields = new String[]{Silian_table, Silian_text, Silian_code};
+		SqlInjectionUtil.filterContent(Silian_tableAndFields);
+		SqlInjectionUtil.specialFilterContentForDictSql(Silian_filterSql);
+		List<DictModel> Silian_dicts = sysDictMapper.queryTableDictByKeysAndFilterSql(Silian_table, Silian_text, Silian_code, Silian_filterSql, Arrays.asList(Silian_keyArray));
 		//update-end-author:taoyan date:2022-4-24 for: 下拉搜索组件，表单编辑页面回显下拉搜索的文本的时候，因为表名后配置了条件，导致sql执行失败，
-		List<String> texts = new ArrayList<>(dicts.size());
+		List<String> Silian_texts = new ArrayList<>(Silian_dicts.size());
 
 		// update-begin--author:sunjianlei--date:20210514--for：新增delNotExist参数，设为false不删除数据库里不存在的key ----
 		// 查询出来的顺序可能是乱的，需要排个序
-		for (String key : keyArray) {
-			List<DictModel> res = dicts.stream().filter(i -> key.equals(i.getValue())).collect(Collectors.toList());
-			if (res.size() > 0) {
-				texts.add(res.get(0).getText());
-			} else if (!delNotExist) {
-				texts.add(key);
+		for (String Silian_key : Silian_keyArray) {
+			List<DictModel> Silian_res = Silian_dicts.stream().filter(Silian_i -> Silian_key.equals(Silian_i.getValue())).collect(Collectors.toList());
+			if (Silian_res.size() > 0) {
+				Silian_texts.add(Silian_res.get(0).getText());
+			} else if (!Silian_delNotExist) {
+				Silian_texts.add(Silian_key);
 			}
 		}
 		// update-end--author:sunjianlei--date:20210514--for：新增delNotExist参数，设为false不删除数据库里不存在的key ----
 
-		return texts;
+		return Silian_texts;
 	}
 
     /**
      * 根据字典类型id删除关联表中其对应的数据
      */
     @Override
-    public boolean deleteByDictId(SysDict sysDict) {
-        sysDict.setDelFlag(CommonConstant.DEL_FLAG_1);
-        return  this.updateById(sysDict);
+    public boolean deleteByDictId(SysDict Silian_sysDict) {
+        Silian_sysDict.setDelFlag(CommonConstant.DEL_FLAG_1);
+        return  this.updateById(Silian_sysDict);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer saveMain(SysDict sysDict, List<SysDictItem> sysDictItemList) {
-		int insert=0;
-    	try{
-			 insert = sysDictMapper.insert(sysDict);
-			if (sysDictItemList != null) {
-				for (SysDictItem entity : sysDictItemList) {
+    public Integer saveMain(SysDict Silian_sysDict, List<SysDictItem> Silian_sysDictItemList) {
+		int Silian_insert=0;
+	try{
+			 Silian_insert = sysDictMapper.insert(Silian_sysDict);
+			if (Silian_sysDictItemList != null) {
+				for (SysDictItem Silian_entity : Silian_sysDictItemList) {
                     //update-begin---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
-				    if(oConvertUtils.isEmpty(entity.getItemValue())){
+				    if(oConvertUtils.isEmpty(Silian_entity.getItemValue())){
 				        return -1;
                     }
                     //update-end---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
-					entity.setDictId(sysDict.getId());
-					entity.setStatus(1);
-					sysDictItemMapper.insert(entity);
+					Silian_entity.setDictId(Silian_sysDict.getId());
+					Silian_entity.setStatus(1);
+					sysDictItemMapper.insert(Silian_entity);
 				}
 			}
-		}catch(Exception e){
-			return insert;
+		}catch(Exception Silian_e){
+			return Silian_insert;
 		}
-		return insert;
+		return Silian_insert;
     }
 
 	@Override
@@ -282,23 +282,23 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	public List<DictModel> queryAllUserBackDictModel() {
 		return baseMapper.queryAllUserBackDictModel();
 	}
-	
+
 //	@Override
 //	public List<DictModel> queryTableDictItems(String table, String text, String code, String keyword) {
 //		return baseMapper.queryTableDictItems(table, text, code, "%"+keyword+"%");
 //	}
 
 	@Override
-	public List<DictModel> queryLittleTableDictItems(String table, String text, String code, String condition, String keyword, int pageSize) {
-    	Page<DictModel> page = new Page<DictModel>(1, pageSize);
-		page.setSearchCount(false);
+	public List<DictModel> queryLittleTableDictItems(String Silian_table, String Silian_text, String Silian_code, String Silian_condition, String Silian_keyword, int Silian_pageSize) {
+	Page<DictModel> Silian_page = new Page<DictModel>(1, Silian_pageSize);
+		Silian_page.setSearchCount(false);
 
 		//【issues/3713】字典接口存在SQL注入风险
-		SqlInjectionUtil.specialFilterContentForDictSql(code);
+		SqlInjectionUtil.specialFilterContentForDictSql(Silian_code);
 
-		String filterSql = getFilterSql(table, text, code, condition, keyword);
-		IPage<DictModel> pageList = baseMapper.queryTableDictWithFilter(page, table, text, code, filterSql);
-		return pageList.getRecords();
+		String Silian_filterSql = getFilterSql(Silian_table, Silian_text, Silian_code, Silian_condition, Silian_keyword);
+		IPage<DictModel> Silian_pageList = baseMapper.queryTableDictWithFilter(Silian_page, Silian_table, Silian_text, Silian_code, Silian_filterSql);
+		return Silian_pageList.getRecords();
 	}
 
 	/**
@@ -309,76 +309,76 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 * @param keyword
 	 * @return
 	 */
-	private String getFilterSql(String table, String text, String code, String condition, String keyword){
-		String keywordSql = null, filterSql = "", sqlWhere = " where ";
+	private String getFilterSql(String Silian_table, String Silian_text, String Silian_code, String Silian_condition, String Silian_keyword){
+		String Silian_keywordSql = null, Silian_filterSql = "", Silian_sqlWhere = " where ";
 		// update-begin-author:sunjianlei date:20220112 for: 【JTC-631】判断如果 table 携带了 where 条件，那么就使用 and 查询，防止报错
-        if (table.toLowerCase().contains(sqlWhere)) {
-            sqlWhere = " and ";
+        if (Silian_table.toLowerCase().contains(Silian_sqlWhere)) {
+            Silian_sqlWhere = " and ";
 		}
 		// update-end-author:sunjianlei date:20220112 for: 【JTC-631】判断如果 table 携带了 where 条件，那么就使用 and 查询，防止报错
 
 		//update-begin-author:taoyan date:2022-8-15 for: 下拉搜索组件 支持传入排序信息 查询排序
-		String orderField = "", orderType = "";
-		if (oConvertUtils.isNotEmpty(keyword)) {
+		String Silian_orderField = "", Silian_orderType = "";
+		if (oConvertUtils.isNotEmpty(Silian_keyword)) {
 			// 关键字里面如果写入了 排序信息 xxxxx[orderby:create_time,desc]
-			String orderKey = "[orderby";
-			if (keyword.indexOf(orderKey) >= 0 && keyword.endsWith("]")) {
-				String orderInfo = keyword.substring(keyword.indexOf(orderKey) + orderKey.length() + 1, keyword.length() - 1);
-				keyword = keyword.substring(0, keyword.indexOf(orderKey));
-				String[] orderInfoArray = orderInfo.split(SymbolConstant.COMMA);
-				orderField = orderInfoArray[0];
-				orderType = orderInfoArray[1];
+			String Silian_orderKey = "[orderby";
+			if (Silian_keyword.indexOf(Silian_orderKey) >= 0 && Silian_keyword.endsWith("]")) {
+				String Silian_orderInfo = Silian_keyword.substring(Silian_keyword.indexOf(Silian_orderKey) + Silian_orderKey.length() + 1, Silian_keyword.length() - 1);
+				Silian_keyword = Silian_keyword.substring(0, Silian_keyword.indexOf(Silian_orderKey));
+				String[] Silian_orderInfoArray = Silian_orderInfo.split(SymbolConstant.COMMA);
+				Silian_orderField = Silian_orderInfoArray[0];
+				Silian_orderType = Silian_orderInfoArray[1];
 			}
 
-			if (oConvertUtils.isNotEmpty(keyword)) {
+			if (oConvertUtils.isNotEmpty(Silian_keyword)) {
 				// 判断是否是多选
-				if (keyword.contains(SymbolConstant.COMMA)) {
+				if (Silian_keyword.contains(SymbolConstant.COMMA)) {
 					//update-begin--author:scott--date:20220105--for：JTC-529【表单设计器】 编辑页面报错，in参数采用双引号导致 ----
-					String inKeywords = "'" + String.join("','", keyword.split(",")) + "'";
+					String Silian_inKeywords = "'" + String.join("','", Silian_keyword.split(",")) + "'";
 					//update-end--author:scott--date:20220105--for：JTC-529【表单设计器】 编辑页面报错，in参数采用双引号导致----
-					keywordSql = "(" + text + " in (" + inKeywords + ") or " + code + " in (" + inKeywords + "))";
+					Silian_keywordSql = "(" + Silian_text + " in (" + Silian_inKeywords + ") or " + Silian_code + " in (" + Silian_inKeywords + "))";
 				} else {
-					keywordSql = "("+text + " like '%"+keyword+"%' or "+ code + " like '%"+keyword+"%')";
+					Silian_keywordSql = "("+Silian_text + " like '%"+Silian_keyword+"%' or "+ Silian_code + " like '%"+Silian_keyword+"%')";
 				}
 			}
 		}
 		//update-end-author:taoyan date:2022-8-15 for: 下拉搜索组件 支持传入排序信息 查询排序
-		if(oConvertUtils.isNotEmpty(condition) && oConvertUtils.isNotEmpty(keywordSql)){
-			filterSql+= sqlWhere + condition + " and " + keywordSql;
-		}else if(oConvertUtils.isNotEmpty(condition)){
-			filterSql+= sqlWhere + condition;
-		}else if(oConvertUtils.isNotEmpty(keywordSql)){
-			filterSql+= sqlWhere + keywordSql;
+		if(oConvertUtils.isNotEmpty(Silian_condition) && oConvertUtils.isNotEmpty(Silian_keywordSql)){
+			Silian_filterSql+= Silian_sqlWhere + Silian_condition + " and " + Silian_keywordSql;
+		}else if(oConvertUtils.isNotEmpty(Silian_condition)){
+			Silian_filterSql+= Silian_sqlWhere + Silian_condition;
+		}else if(oConvertUtils.isNotEmpty(Silian_keywordSql)){
+			Silian_filterSql+= Silian_sqlWhere + Silian_keywordSql;
 		}
 		//update-begin-author:taoyan date:2022-8-15 for: 下拉搜索组件 支持传入排序信息 查询排序
 		// 增加排序逻辑
-		if (oConvertUtils.isNotEmpty(orderField)) {
-			filterSql += " order by " + orderField + " " + orderType;
+		if (oConvertUtils.isNotEmpty(Silian_orderField)) {
+			Silian_filterSql += " order by " + Silian_orderField + " " + Silian_orderType;
 		}
 		//update-end-author:taoyan date:2022-8-15 for: 下拉搜索组件 支持传入排序信息 查询排序
-		return filterSql;
+		return Silian_filterSql;
 	}
 	@Override
-	public List<DictModel> queryAllTableDictItems(String table, String text, String code, String condition, String keyword) {
-		String filterSql = getFilterSql(table, text, code, condition, keyword);
-		List<DictModel> ls = baseMapper.queryAllTableDictItems(table, text, code, filterSql);
-    	return ls;
-	}
-
-	@Override
-	public List<TreeSelectModel> queryTreeList(Map<String, String> query,String table, String text, String code, String pidField,String pid,String hasChildField,int converIsLeafVal) {
-		return baseMapper.queryTreeList(query, table, text, code, pidField, pid, hasChildField,converIsLeafVal);
+	public List<DictModel> queryAllTableDictItems(String Silian_table, String Silian_text, String Silian_code, String Silian_condition, String Silian_keyword) {
+		String Silian_filterSql = getFilterSql(Silian_table, Silian_text, Silian_code, Silian_condition, Silian_keyword);
+		List<DictModel> Silian_ls = baseMapper.queryAllTableDictItems(Silian_table, Silian_text, Silian_code, Silian_filterSql);
+	return Silian_ls;
 	}
 
 	@Override
-	public void deleteOneDictPhysically(String id) {
-		this.baseMapper.deleteOneById(id);
-		this.sysDictItemMapper.delete(new LambdaQueryWrapper<SysDictItem>().eq(SysDictItem::getDictId,id));
+	public List<TreeSelectModel> queryTreeList(Map<String, String> Silian_query,String Silian_table, String Silian_text, String Silian_code, String Silian_pidField,String Silian_pid,String Silian_hasChildField,int Silian_converIsLeafVal) {
+		return baseMapper.queryTreeList(Silian_query, Silian_table, Silian_text, Silian_code, Silian_pidField, Silian_pid, Silian_hasChildField,Silian_converIsLeafVal);
 	}
 
 	@Override
-	public void updateDictDelFlag(int delFlag, String id) {
-		baseMapper.updateDictDelFlag(delFlag,id);
+	public void deleteOneDictPhysically(String Silian_id) {
+		this.baseMapper.deleteOneById(Silian_id);
+		this.sysDictItemMapper.delete(new LambdaQueryWrapper<SysDictItem>().eq(SysDictItem::getDictId,Silian_id));
+	}
+
+	@Override
+	public void updateDictDelFlag(int Silian_delFlag, String Silian_id) {
+		baseMapper.updateDictDelFlag(Silian_delFlag,Silian_id);
 	}
 
 	@Override
@@ -387,88 +387,88 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	}
 
 	@Override
-	public List<DictModel> queryDictTablePageList(DictQuery query, int pageSize, int pageNo) {
-		Page page = new Page(pageNo,pageSize,false);
-		Page<DictModel> pageList = baseMapper.queryDictTablePageList(page, query);
-		return pageList.getRecords();
+	public List<DictModel> queryDictTablePageList(DictQuery Silian_query, int Silian_pageSize, int Silian_pageNo) {
+		Page Silian_page = new Page(Silian_pageNo,Silian_pageSize,false);
+		Page<DictModel> Silian_pageList = baseMapper.queryDictTablePageList(Silian_page, Silian_query);
+		return Silian_pageList.getRecords();
 	}
 
 	@Override
-	public List<DictModel> getDictItems(String dictCode) {
-		List<DictModel> ls;
-		if (dictCode.contains(SymbolConstant.COMMA)) {
+	public List<DictModel> getDictItems(String Silian_dictCode) {
+		List<DictModel> Silian_ls;
+		if (Silian_dictCode.contains(SymbolConstant.COMMA)) {
 			//关联表字典（举例：sys_user,realname,id）
-			String[] params = dictCode.split(",");
-			if (params.length < 3) {
+			String[] Silian_params = Silian_dictCode.split(",");
+			if (Silian_params.length < 3) {
 				// 字典Code格式不正确
 				return null;
 			}
 			//SQL注入校验（只限制非法串改数据库）
 			//update-begin-author:taoyan date:2022-7-4 for: issues/I5BNY9 指定带过滤条件的字典table在生成代码后失效
 			// 表名后也有可能带条件and语句 不能走filterContent方法
-			SqlInjectionUtil.specialFilterContentForDictSql(params[0]);
-			final String[] sqlInjCheck = {params[1], params[2]};
+			SqlInjectionUtil.specialFilterContentForDictSql(Silian_params[0]);
+			final String[] Silian_sqlInjCheck = {Silian_params[1], Silian_params[2]};
 			//update-end-author:taoyan date:2022-7-4 for: issues/I5BNY9 指定带过滤条件的字典table在生成代码后失效
 			//【issues/3713】字典接口存在SQL注入风险
-			SqlInjectionUtil.filterContent(sqlInjCheck);
-			if (params.length == 4) {
+			SqlInjectionUtil.filterContent(Silian_sqlInjCheck);
+			if (Silian_params.length == 4) {
 				// SQL注入校验（查询条件SQL 特殊check，此方法仅供此处使用）
-				SqlInjectionUtil.specialFilterContentForDictSql(params[3]);
-				ls = this.queryTableDictItemsByCodeAndFilter(params[0], params[1], params[2], params[3]);
-			} else if (params.length == 3) {
-				ls = this.queryTableDictItemsByCode(params[0], params[1], params[2]);
+				SqlInjectionUtil.specialFilterContentForDictSql(Silian_params[3]);
+				Silian_ls = this.queryTableDictItemsByCodeAndFilter(Silian_params[0], Silian_params[1], Silian_params[2], Silian_params[3]);
+			} else if (Silian_params.length == 3) {
+				Silian_ls = this.queryTableDictItemsByCode(Silian_params[0], Silian_params[1], Silian_params[2]);
 			} else {
 				// 字典Code格式不正确
 				return null;
 			}
 		} else {
 			//字典表
-			ls = this.queryDictItemsByCode(dictCode);
+			Silian_ls = this.queryDictItemsByCode(Silian_dictCode);
 		}
 		//update-begin-author:taoyan date:2022-8-30 for: 字典获取可以获取枚举类的数据
-		if (ls == null || ls.size() == 0) {
-			Map<String, List<DictModel>> map = ResourceUtil.getEnumDictData();
-			if (map.containsKey(dictCode)) {
-				return map.get(dictCode);
+		if (Silian_ls == null || Silian_ls.size() == 0) {
+			Map<String, List<DictModel>> Silian_map = ResourceUtil.getEnumDictData();
+			if (Silian_map.containsKey(Silian_dictCode)) {
+				return Silian_map.get(Silian_dictCode);
 			}
 		}
 		//update-end-author:taoyan date:2022-8-30 for: 字典获取可以获取枚举类的数据
-		return ls;
+		return Silian_ls;
 	}
 
 	@Override
-	public List<DictModel> loadDict(String dictCode, String keyword, Integer pageSize) {
+	public List<DictModel> loadDict(String Silian_dictCode, String Silian_keyword, Integer Silian_pageSize) {
 		//【issues/3713】字典接口存在SQL注入风险
-		SqlInjectionUtil.specialFilterContentForDictSql(dictCode);
+		SqlInjectionUtil.specialFilterContentForDictSql(Silian_dictCode);
 
-		if (dictCode.contains(SymbolConstant.COMMA)) {
+		if (Silian_dictCode.contains(SymbolConstant.COMMA)) {
 			//update-begin-author:taoyan date:20210329 for: 下拉搜索不支持表名后加查询条件
-			String[] params = dictCode.split(",");
-			String condition = null;
-			if (params.length != 3 && params.length != 4) {
+			String[] Silian_params = Silian_dictCode.split(",");
+			String Silian_condition = null;
+			if (Silian_params.length != 3 && Silian_params.length != 4) {
 				// 字典Code格式不正确
 				return null;
-			} else if (params.length == 4) {
-				condition = params[3];
+			} else if (Silian_params.length == 4) {
+				Silian_condition = Silian_params[3];
 				// update-begin-author:taoyan date:20220314 for: online表单下拉搜索框表字典配置#{sys_org_code}报错 #3500
-				if(condition.indexOf(SymbolConstant.SYS_VAR_PREFIX)>=0){
-					condition =  QueryGenerator.getSqlRuleValue(condition);
+				if(Silian_condition.indexOf(SymbolConstant.SYS_VAR_PREFIX)>=0){
+					Silian_condition =  QueryGenerator.getSqlRuleValue(Silian_condition);
 				}
 				// update-end-author:taoyan date:20220314 for: online表单下拉搜索框表字典配置#{sys_org_code}报错 #3500
 			}
 
 			// 字典Code格式不正确 [表名为空]
-			if(oConvertUtils.isEmpty(params[0])){
+			if(oConvertUtils.isEmpty(Silian_params[0])){
 				return null;
 			}
-			List<DictModel> ls;
-			if (pageSize != null) {
-				ls = this.queryLittleTableDictItems(params[0], params[1], params[2], condition, keyword, pageSize);
+			List<DictModel> Silian_ls;
+			if (Silian_pageSize != null) {
+				Silian_ls = this.queryLittleTableDictItems(Silian_params[0], Silian_params[1], Silian_params[2], Silian_condition, Silian_keyword, Silian_pageSize);
 			} else {
-				ls = this.queryAllTableDictItems(params[0], params[1], params[2], condition, keyword);
+				Silian_ls = this.queryAllTableDictItems(Silian_params[0], Silian_params[1], Silian_params[2], Silian_condition, Silian_keyword);
 			}
 			//update-end-author:taoyan date:20210329 for: 下拉搜索不支持表名后加查询条件
-			return ls;
+			return Silian_ls;
 		} else {
 			// 字典Code格式不正确
 			return null;

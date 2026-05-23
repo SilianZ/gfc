@@ -46,14 +46,14 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-分页列表查询")
     @ApiOperation(value = "知识库-文档管理-分页列表查询", notes = "知识库-文档管理-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<?> queryPageList(SysFiles sysFiles,
-                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                   HttpServletRequest req) {
-        QueryWrapper<SysFiles> queryWrapper = QueryGenerator.initQueryWrapper(sysFiles, req.getParameterMap());
-        Page<SysFiles> page = new Page<SysFiles>(pageNo, pageSize);
-        IPage<SysFiles> pageList = sysFilesService.page(page, queryWrapper);
-        return Result.OK(pageList);
+    public Result<?> queryPageList(SysFiles Silian_sysFiles,
+                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                   HttpServletRequest Silian_req) {
+        QueryWrapper<SysFiles> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysFiles, Silian_req.getParameterMap());
+        Page<SysFiles> Silian_page = new Page<SysFiles>(Silian_pageNo, Silian_pageSize);
+        IPage<SysFiles> Silian_pageList = sysFilesService.page(Silian_page, Silian_queryWrapper);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -65,8 +65,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-添加")
     @ApiOperation(value = "知识库-文档管理-添加", notes = "知识库-文档管理-添加")
     @PostMapping(value = "/add")
-    public Result<?> add(@RequestBody SysFiles sysFiles) {
-        sysFilesService.save(sysFiles);
+    public Result<?> add(@RequestBody SysFiles Silian_sysFiles) {
+        sysFilesService.save(Silian_sysFiles);
         return Result.OK("添加成功！");
     }
 
@@ -79,8 +79,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-编辑")
     @ApiOperation(value = "知识库-文档管理-编辑", notes = "知识库-文档管理-编辑")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<?> edit(@RequestBody SysFiles sysFiles) {
-        sysFilesService.updateById(sysFiles);
+    public Result<?> edit(@RequestBody SysFiles Silian_sysFiles) {
+        sysFilesService.updateById(Silian_sysFiles);
         return Result.OK("编辑成功!");
     }
 
@@ -93,8 +93,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-通过id删除")
     @ApiOperation(value = "知识库-文档管理-通过id删除", notes = "知识库-文档管理-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-        sysFilesService.removeById(id);
+    public Result<?> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        sysFilesService.removeById(Silian_id);
         return Result.OK("删除成功!");
     }
 
@@ -107,8 +107,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-批量删除")
     @ApiOperation(value = "知识库-文档管理-批量删除", notes = "知识库-文档管理-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.sysFilesService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.sysFilesService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.OK("批量删除成功！");
     }
 
@@ -121,9 +121,9 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-通过id查询")
     @ApiOperation(value = "知识库-文档管理-通过id查询", notes = "知识库-文档管理-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
-        SysFiles sysFiles = sysFilesService.getById(id);
-        return Result.OK(sysFiles);
+    public Result<?> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        SysFiles Silian_sysFiles = sysFilesService.getById(Silian_id);
+        return Result.OK(Silian_sysFiles);
     }
 
     /**
@@ -133,8 +133,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
      * @param sysFiles
      */
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, SysFiles sysFiles) {
-        return super.exportXls(request, sysFiles, SysFiles.class, "知识库-文档管理");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, SysFiles Silian_sysFiles) {
+        return super.exportXls(Silian_request, Silian_sysFiles, SysFiles.class, "知识库-文档管理");
     }
 
     /**
@@ -145,8 +145,8 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
      * @return
      */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, SysFiles.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, SysFiles.class);
     }
 
 }

@@ -28,9 +28,9 @@ public class SysDictTree implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String key;
-	
+
 	private String title;
-	
+
     /**
      * id
      */
@@ -42,7 +42,7 @@ public class SysDictTree implements Serializable {
      * 默认为string类型
      */
     private Integer type;
-    
+
     /**
      * 字典名称
      */
@@ -82,15 +82,15 @@ public class SysDictTree implements Serializable {
      * 更新时间
      */
     private Date updateTime;
-    
-    public SysDictTree(SysDict node) {
-    	this.id = node.getId();
-		this.key = node.getId();
-		this.title = node.getDictName();
-		this.dictCode = node.getDictCode();
-		this.description = node.getDescription();
-		this.delFlag = node.getDelFlag();
-		this.type = node.getType();
+
+    public SysDictTree(SysDict Silian_node) {
+	this.id = Silian_node.getId();
+		this.key = Silian_node.getId();
+		this.title = Silian_node.getDictName();
+		this.dictCode = Silian_node.getDictCode();
+		this.description = Silian_node.getDescription();
+		this.delFlag = Silian_node.getDelFlag();
+		this.type = Silian_node.getType();
 	}
-    
+
 }

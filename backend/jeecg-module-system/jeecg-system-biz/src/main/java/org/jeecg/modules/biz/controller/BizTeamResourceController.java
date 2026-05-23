@@ -78,17 +78,17 @@ public class BizTeamResourceController {
 	//@AutoLog(value = "团队资源-分页列表查询")
 	@ApiOperation(value="团队资源-分页列表查询", notes="团队资源-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<IPage<BizTeamResource>> queryPageList(BizTeamResource bizTeamResource,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<BizTeamResource> queryWrapper = QueryGenerator.initQueryWrapper(bizTeamResource, req.getParameterMap());
-		queryWrapper.ne("resource_type", "LS");
-		Page<BizTeamResource> page = new Page<BizTeamResource>(pageNo, pageSize);
-		IPage<BizTeamResource> pageList = bizTeamResourceService.page(page, queryWrapper);
-		return Result.OK(pageList);
+	public Result<IPage<BizTeamResource>> queryPageList(BizTeamResource Silian_bizTeamResource,
+								   @RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,
+								   HttpServletRequest Silian_req) {
+		QueryWrapper<BizTeamResource> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizTeamResource, Silian_req.getParameterMap());
+		Silian_queryWrapper.ne("resource_type", "LS");
+		Page<BizTeamResource> Silian_page = new Page<BizTeamResource>(Silian_pageNo, Silian_pageSize);
+		IPage<BizTeamResource> Silian_pageList = bizTeamResourceService.page(Silian_page, Silian_queryWrapper);
+		return Result.OK(Silian_pageList);
 	}
-	
+
 	/**
 	 *   添加
 	 *
@@ -99,13 +99,13 @@ public class BizTeamResourceController {
 	@ApiOperation(value="团队资源-添加", notes="团队资源-添加")
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:add")
 	@PostMapping(value = "/add")
-	public Result<String> add(@RequestBody BizTeamResourcePage bizTeamResourcePage) {
-		BizTeamResource bizTeamResource = new BizTeamResource();
-		BeanUtils.copyProperties(bizTeamResourcePage, bizTeamResource);
-		bizTeamResourceService.saveMain(bizTeamResource, bizTeamResourcePage.getBizResourceRightsList());
+	public Result<String> add(@RequestBody BizTeamResourcePage Silian_bizTeamResourcePage) {
+		BizTeamResource Silian_bizTeamResource = new BizTeamResource();
+		BeanUtils.copyProperties(Silian_bizTeamResourcePage, Silian_bizTeamResource);
+		bizTeamResourceService.saveMain(Silian_bizTeamResource, Silian_bizTeamResourcePage.getBizResourceRightsList());
 		return Result.OK("添加成功！");
 	}
-	
+
 	/**
 	 *  编辑
 	 *
@@ -116,17 +116,17 @@ public class BizTeamResourceController {
 	@ApiOperation(value="团队资源-编辑", notes="团队资源-编辑")
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-	public Result<String> edit(@RequestBody BizTeamResourcePage bizTeamResourcePage) {
-		BizTeamResource bizTeamResource = new BizTeamResource();
-		BeanUtils.copyProperties(bizTeamResourcePage, bizTeamResource);
-		BizTeamResource bizTeamResourceEntity = bizTeamResourceService.getById(bizTeamResource.getId());
-		if(bizTeamResourceEntity==null) {
+	public Result<String> edit(@RequestBody BizTeamResourcePage Silian_bizTeamResourcePage) {
+		BizTeamResource Silian_bizTeamResource = new BizTeamResource();
+		BeanUtils.copyProperties(Silian_bizTeamResourcePage, Silian_bizTeamResource);
+		BizTeamResource Silian_bizTeamResourceEntity = bizTeamResourceService.getById(Silian_bizTeamResource.getId());
+		if(Silian_bizTeamResourceEntity==null) {
 			return Result.error("未找到对应数据");
 		}
-		bizTeamResourceService.updateMain(bizTeamResource, bizTeamResourcePage.getBizResourceRightsList());
+		bizTeamResourceService.updateMain(Silian_bizTeamResource, Silian_bizTeamResourcePage.getBizResourceRightsList());
 		return Result.OK("编辑成功!");
 	}
-	
+
 	/**
 	 *   通过id删除
 	 *
@@ -137,11 +137,11 @@ public class BizTeamResourceController {
 	@ApiOperation(value="团队资源-通过id删除", notes="团队资源-通过id删除")
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<String> delete(@RequestParam(name="id",required=true) String id) {
-		bizTeamResourceService.delMain(id);
+	public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
+		bizTeamResourceService.delMain(Silian_id);
 		return Result.OK("删除成功!");
 	}
-	
+
 	/**
 	 *  批量删除
 	 *
@@ -152,11 +152,11 @@ public class BizTeamResourceController {
 	@ApiOperation(value="团队资源-批量删除", notes="团队资源-批量删除")
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.bizTeamResourceService.delBatchMain(Arrays.asList(ids.split(",")));
+	public Result<String> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+		this.bizTeamResourceService.delBatchMain(Arrays.asList(Silian_ids.split(",")));
 		return Result.OK("批量删除成功！");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -166,31 +166,31 @@ public class BizTeamResourceController {
 	//@AutoLog(value = "团队资源-通过id查询")
 	@ApiOperation(value="团队资源-通过id查询", notes="团队资源-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<BizTeamResource> queryById(@RequestParam(name="id",required=true) String id) {
-		BizTeamResource bizTeamResource = bizTeamResourceService.getById(id);
-		if(bizTeamResource.getResourceType().equals("LS")){//老式工厂，效率为0.5，需考虑银行投资加成
-			bizTeamResource.setProductRate(0.50);
-			SysUser belongUser = sysUserService.getUserByName(bizTeamResource.getUserId());
-			BizBankConfig bizBankConfig = bizBankConfigService.getByDeptId(belongUser.getDepartIds().split(",")[0]);
-			if(bizBankConfig != null && "JGC".equals(bizBankConfig.getInvestPlan())){
-				bizTeamResource.setIsBankRate(true);
-				bizTeamResource.setBankRate(0.65);
+	public Result<BizTeamResource> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+		BizTeamResource Silian_bizTeamResource = bizTeamResourceService.getById(Silian_id);
+		if(Silian_bizTeamResource.getResourceType().equals("LS")){//老式工厂，效率为0.5，需考虑银行投资加成
+			Silian_bizTeamResource.setProductRate(0.50);
+			SysUser Silian_belongUser = sysUserService.getUserByName(Silian_bizTeamResource.getUserId());
+			BizBankConfig Silian_bizBankConfig = bizBankConfigService.getByDeptId(Silian_belongUser.getDepartIds().split(",")[0]);
+			if(Silian_bizBankConfig != null && "JGC".equals(Silian_bizBankConfig.getInvestPlan())){
+				Silian_bizTeamResource.setIsBankRate(true);
+				Silian_bizTeamResource.setBankRate(0.65);
 			}
 		}else{
-			if(bizTeamResource.getResourceType().equals("JM")){//伽马工厂，效率为1.5
-				bizTeamResource.setProductRate(1.50);
+			if(Silian_bizTeamResource.getResourceType().equals("JM")){//伽马工厂，效率为1.5
+				Silian_bizTeamResource.setProductRate(1.50);
 			}else{//马里奥小岛工厂，效率为1.0
-				bizTeamResource.setProductRate(1.00);
+				Silian_bizTeamResource.setProductRate(1.00);
 			}
-			bizTeamResource.setIsBankRate(false);
+			Silian_bizTeamResource.setIsBankRate(false);
 		}
-		if(bizTeamResource==null) {
+		if(Silian_bizTeamResource==null) {
 			return Result.error("未找到对应数据");
 		}
-		return Result.OK(bizTeamResource);
+		return Result.OK(Silian_bizTeamResource);
 
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -200,9 +200,9 @@ public class BizTeamResourceController {
 	//@AutoLog(value = "使用权通过主表ID查询")
 	@ApiOperation(value="使用权主表ID查询", notes="使用权-通主表ID查询")
 	@GetMapping(value = "/queryBizResourceRightsByMainId")
-	public Result<List<BizResourceRights>> queryBizResourceRightsListByMainId(@RequestParam(name="id",required=true) String id) {
-		List<BizResourceRights> bizResourceRightsList = bizResourceRightsService.selectByMainId(id);
-		return Result.OK(bizResourceRightsList);
+	public Result<List<BizResourceRights>> queryBizResourceRightsListByMainId(@RequestParam(name="id",required=true) String Silian_id) {
+		List<BizResourceRights> Silian_bizResourceRightsList = bizResourceRightsService.selectByMainId(Silian_id);
+		return Result.OK(Silian_bizResourceRightsList);
 	}
 
     /**
@@ -213,37 +213,37 @@ public class BizTeamResourceController {
     */
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, BizTeamResource bizTeamResource) {
+    public ModelAndView exportXls(HttpServletRequest Silian_request, BizTeamResource Silian_bizTeamResource) {
       // Step.1 组装查询条件查询数据
-      QueryWrapper<BizTeamResource> queryWrapper = QueryGenerator.initQueryWrapper(bizTeamResource, request.getParameterMap());
-      LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+      QueryWrapper<BizTeamResource> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizTeamResource, Silian_request.getParameterMap());
+      LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
       //配置选中数据查询条件
-      String selections = request.getParameter("selections");
-      if(oConvertUtils.isNotEmpty(selections)) {
-         List<String> selectionList = Arrays.asList(selections.split(","));
-         queryWrapper.in("id",selectionList);
+      String Silian_selections = Silian_request.getParameter("selections");
+      if(oConvertUtils.isNotEmpty(Silian_selections)) {
+         List<String> Silian_selectionList = Arrays.asList(Silian_selections.split(","));
+         Silian_queryWrapper.in("id",Silian_selectionList);
       }
       //Step.2 获取导出数据
-      List<BizTeamResource> bizTeamResourceList = bizTeamResourceService.list(queryWrapper);
+      List<BizTeamResource> Silian_bizTeamResourceList = bizTeamResourceService.list(Silian_queryWrapper);
 
       // Step.3 组装pageList
-      List<BizTeamResourcePage> pageList = new ArrayList<BizTeamResourcePage>();
-      for (BizTeamResource main : bizTeamResourceList) {
-          BizTeamResourcePage vo = new BizTeamResourcePage();
-          BeanUtils.copyProperties(main, vo);
-          List<BizResourceRights> bizResourceRightsList = bizResourceRightsService.selectByMainId(main.getId());
-          vo.setBizResourceRightsList(bizResourceRightsList);
-          pageList.add(vo);
+      List<BizTeamResourcePage> Silian_pageList = new ArrayList<BizTeamResourcePage>();
+      for (BizTeamResource Silian_main : Silian_bizTeamResourceList) {
+          BizTeamResourcePage Silian_vo = new BizTeamResourcePage();
+          BeanUtils.copyProperties(Silian_main, Silian_vo);
+          List<BizResourceRights> Silian_bizResourceRightsList = bizResourceRightsService.selectByMainId(Silian_main.getId());
+          Silian_vo.setBizResourceRightsList(Silian_bizResourceRightsList);
+          Silian_pageList.add(Silian_vo);
       }
 
       // Step.4 AutoPoi 导出Excel
-      ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      mv.addObject(NormalExcelConstants.FILE_NAME, "团队资源列表");
-      mv.addObject(NormalExcelConstants.CLASS, BizTeamResourcePage.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("团队资源数据", "导出人:"+sysUser.getRealname(), "团队资源"));
-      mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-      return mv;
+      ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
+      Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "团队资源列表");
+      Silian_mv.addObject(NormalExcelConstants.CLASS, BizTeamResourcePage.class);
+      Silian_mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("团队资源数据", "导出人:"+Silian_sysUser.getRealname(), "团队资源"));
+      Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+      return Silian_mv;
     }
 
     /**
@@ -255,32 +255,32 @@ public class BizTeamResourceController {
     */
     //@RequiresPermissions("org.jeecg.modules:biz_team_resource:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-      Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-      for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+      MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+      Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
+      for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
           // 获取上传文件对象
-          MultipartFile file = entity.getValue();
-          ImportParams params = new ImportParams();
-          params.setTitleRows(2);
-          params.setHeadRows(1);
-          params.setNeedSave(true);
+          MultipartFile Silian_file = Silian_entity.getValue();
+          ImportParams Silian_params = new ImportParams();
+          Silian_params.setTitleRows(2);
+          Silian_params.setHeadRows(1);
+          Silian_params.setNeedSave(true);
           try {
-              List<BizTeamResourcePage> list = ExcelImportUtil.importExcel(file.getInputStream(), BizTeamResourcePage.class, params);
-              for (BizTeamResourcePage page : list) {
-                  BizTeamResource po = new BizTeamResource();
-                  BeanUtils.copyProperties(page, po);
-                  bizTeamResourceService.saveMain(po, page.getBizResourceRightsList());
+              List<BizTeamResourcePage> Silian_list = ExcelImportUtil.importExcel(Silian_file.getInputStream(), BizTeamResourcePage.class, Silian_params);
+              for (BizTeamResourcePage Silian_page : Silian_list) {
+                  BizTeamResource Silian_po = new BizTeamResource();
+                  BeanUtils.copyProperties(Silian_page, Silian_po);
+                  bizTeamResourceService.saveMain(Silian_po, Silian_page.getBizResourceRightsList());
               }
-              return Result.OK("文件导入成功！数据行数:" + list.size());
-          } catch (Exception e) {
-              log.error(e.getMessage(),e);
-              return Result.error("文件导入失败:"+e.getMessage());
+              return Result.OK("文件导入成功！数据行数:" + Silian_list.size());
+          } catch (Exception Silian_e) {
+              log.error(Silian_e.getMessage(),Silian_e);
+              return Result.error("文件导入失败:"+Silian_e.getMessage());
           } finally {
               try {
-                  file.getInputStream().close();
-              } catch (IOException e) {
-                  e.printStackTrace();
+                  Silian_file.getInputStream().close();
+              } catch (IOException Silian_e) {
+                  Silian_e.printStackTrace();
               }
           }
       }

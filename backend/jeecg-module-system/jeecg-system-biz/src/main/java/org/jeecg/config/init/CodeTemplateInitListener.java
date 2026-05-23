@@ -25,12 +25,12 @@ import java.nio.charset.StandardCharsets;
 public class CodeTemplateInitListener implements ApplicationListener<ApplicationReadyEvent> {
 
     @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
+    public void onApplicationEvent(ApplicationReadyEvent Silian_event) {
         try {
             log.info(" Init Code Generate Template [ 检测如果是JAR启动环境，Copy模板到config目录 ] ");
             this.initJarConfigCodeGeneratorTemplate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
         }
     }
 
@@ -40,27 +40,27 @@ public class CodeTemplateInitListener implements ApplicationListener<Application
      */
     private void initJarConfigCodeGeneratorTemplate() throws Exception {
         //1.获取jar同级下的config路径
-        String configPath = System.getProperty("user.dir") + File.separator + "config" + File.separator;
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath*:jeecg/code-template-online/**/*");
-        for (Resource re : resources) {
-            URL url = re.getURL();
-            String filepath = url.getPath();
+        String Silian_configPath = System.getProperty("user.dir") + File.separator + "config" + File.separator;
+        PathMatchingResourcePatternResolver Silian_resolver = new PathMatchingResourcePatternResolver();
+        Resource[] Silian_resources = Silian_resolver.getResources("classpath*:jeecg/code-template-online/**/*");
+        for (Resource Silian_re : Silian_resources) {
+            URL Silian_url = Silian_re.getURL();
+            String Silian_filepath = Silian_url.getPath();
             //System.out.println("native url= " + filepath);
-            filepath = java.net.URLDecoder.decode(filepath, "utf-8");
+            Silian_filepath = java.net.URLDecoder.decode(Silian_filepath, "utf-8");
             //System.out.println("decode url= " + filepath);
 
             //2.在config下，创建jeecg/code-template-online/*模板
-            String createFilePath = configPath + filepath.substring(filepath.indexOf("jeecg/code-template-online"));
+            String Silian_createFilePath = Silian_configPath + Silian_filepath.substring(Silian_filepath.indexOf("jeecg/code-template-online"));
 
             // 非jar模式不生成模板
             // 不生成目录，只生成具体模板文件
-            if (!filepath.contains(".jar!/BOOT-INF/lib/") || !createFilePath.contains(".")) {
+            if (!Silian_filepath.contains(".jar!/BOOT-INF/lib/") || !Silian_createFilePath.contains(".")) {
                 continue;
             }
-            if (!FileUtil.exist(createFilePath)) {
-                log.info("create file codeTemplate = " + createFilePath);
-                FileUtil.writeString(IOUtils.toString(url, StandardCharsets.UTF_8), createFilePath, "UTF-8");
+            if (!FileUtil.exist(Silian_createFilePath)) {
+                log.info("create file codeTemplate = " + Silian_createFilePath);
+                FileUtil.writeString(IOUtils.toString(Silian_url, StandardCharsets.UTF_8), Silian_createFilePath, "UTF-8");
             }
         }
     }

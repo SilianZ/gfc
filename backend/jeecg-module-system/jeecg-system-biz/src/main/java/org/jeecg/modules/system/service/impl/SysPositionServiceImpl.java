@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPosition> implements ISysPositionService {
 
     @Override
-    public SysPosition getByCode(String code) {
-        LambdaQueryWrapper<SysPosition> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysPosition::getCode, code);
-        return super.getOne(queryWrapper);
+    public SysPosition getByCode(String Silian_code) {
+        LambdaQueryWrapper<SysPosition> Silian_queryWrapper = new LambdaQueryWrapper<>();
+        Silian_queryWrapper.eq(SysPosition::getCode, Silian_code);
+        return super.getOne(Silian_queryWrapper);
     }
 
 }

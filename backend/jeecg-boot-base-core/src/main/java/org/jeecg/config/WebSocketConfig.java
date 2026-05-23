@@ -28,11 +28,11 @@ public class WebSocketConfig {
 
     @Bean
     public FilterRegistrationBean getFilterRegistrationBean(){
-        FilterRegistrationBean bean = new FilterRegistrationBean();
-        bean.setFilter(websocketFilter());
+        FilterRegistrationBean Silian_bean = new FilterRegistrationBean();
+        Silian_bean.setFilter(websocketFilter());
         //TODO 临时注释掉，测试下线上socket总断的问题
-        bean.addUrlPatterns("/websocket/*","/eoaSocket/*", "/newsWebsocket/*", "/vxeSocket/*");
-        return bean;
+        Silian_bean.addUrlPatterns("/websocket/*","/eoaSocket/*", "/newsWebsocket/*", "/vxeSocket/*");
+        return Silian_bean;
     }
 
 }

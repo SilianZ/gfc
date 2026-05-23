@@ -27,7 +27,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @Accessors(chain = true)
 @ApiModel(value="sys_role_index对象", description="角色首页配置")
 public class SysRoleIndex {
-    
+
 	/**id*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "id")
@@ -88,7 +88,7 @@ public class SysRoleIndex {
 	public SysRoleIndex() {
 
 	}
-	public SysRoleIndex(String componentUrl){
-		this.component = componentUrl;
+	public SysRoleIndex(String Silian_componentUrl){
+		this.component = Silian_componentUrl;
 	}
 }

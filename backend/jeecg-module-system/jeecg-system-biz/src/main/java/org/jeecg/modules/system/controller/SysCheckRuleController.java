@@ -47,19 +47,19 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param request
      * @return
      */
-    @AutoLog(value = "编码校验规则-分页列表查询")
-    @ApiOperation(value = "编码校验规则-分页列表查询", notes = "编码校验规则-分页列表查询")
-    @GetMapping(value = "/list")
+    @AutoLog(Silian_value = "编码校验规则-分页列表查询")
+    @ApiOperation(Silian_value = "编码校验规则-分页列表查询", notes = "编码校验规则-分页列表查询")
+    @GetMapping(Silian_value = "/list")
     public Result queryPageList(
-            SysCheckRule sysCheckRule,
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            HttpServletRequest request
+            SysCheckRule Silian_sysCheckRule,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            HttpServletRequest Silian_request
     ) {
-        QueryWrapper<SysCheckRule> queryWrapper = QueryGenerator.initQueryWrapper(sysCheckRule, request.getParameterMap());
-        Page<SysCheckRule> page = new Page<>(pageNo, pageSize);
-        IPage<SysCheckRule> pageList = sysCheckRuleService.page(page, queryWrapper);
-        return Result.ok(pageList);
+        QueryWrapper<SysCheckRule> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysCheckRule, Silian_request.getParameterMap());
+        Page<SysCheckRule> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+        IPage<SysCheckRule> Silian_pageList = sysCheckRuleService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
     }
 
 
@@ -69,24 +69,24 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param ruleCode
      * @return
      */
-    @AutoLog(value = "编码校验规则-通过Code校验传入的值")
-    @ApiOperation(value = "编码校验规则-通过Code校验传入的值", notes = "编码校验规则-通过Code校验传入的值")
-    @GetMapping(value = "/checkByCode")
+    @AutoLog(Silian_value = "编码校验规则-通过Code校验传入的值")
+    @ApiOperation(Silian_value = "编码校验规则-通过Code校验传入的值", notes = "编码校验规则-通过Code校验传入的值")
+    @GetMapping(Silian_value = "/checkByCode")
     public Result checkByCode(
-            @RequestParam(name = "ruleCode") String ruleCode,
-            @RequestParam(name = "value") String value
+            @RequestParam(name = "ruleCode") String Silian_ruleCode,
+            @RequestParam(name = "value") String Silian_value
     ) throws UnsupportedEncodingException {
-        SysCheckRule sysCheckRule = sysCheckRuleService.getByCode(ruleCode);
-        if (sysCheckRule == null) {
+        SysCheckRule Silian_sysCheckRule = sysCheckRuleService.getByCode(Silian_ruleCode);
+        if (Silian_sysCheckRule == null) {
             return Result.error("该编码不存在");
         }
-        JSONObject errorResult = sysCheckRuleService.checkValue(sysCheckRule, URLDecoder.decode(value, "UTF-8"));
-        if (errorResult == null) {
+        JSONObject Silian_errorResult = sysCheckRuleService.checkValue(Silian_sysCheckRule, URLDecoder.decode(Silian_value, "UTF-8"));
+        if (Silian_errorResult == null) {
             return Result.ok();
         } else {
-            Result<Object> r = Result.error(errorResult.getString("message"));
-            r.setResult(errorResult);
-            return r;
+            Result<Object> Silian_r = Result.error(Silian_errorResult.getString("message"));
+            Silian_r.setResult(Silian_errorResult);
+            return Silian_r;
         }
     }
 
@@ -96,11 +96,11 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param sysCheckRule
      * @return
      */
-    @AutoLog(value = "编码校验规则-添加")
-    @ApiOperation(value = "编码校验规则-添加", notes = "编码校验规则-添加")
-    @PostMapping(value = "/add")
-    public Result add(@RequestBody SysCheckRule sysCheckRule) {
-        sysCheckRuleService.save(sysCheckRule);
+    @AutoLog(Silian_value = "编码校验规则-添加")
+    @ApiOperation(Silian_value = "编码校验规则-添加", notes = "编码校验规则-添加")
+    @PostMapping(Silian_value = "/add")
+    public Result add(@RequestBody SysCheckRule Silian_sysCheckRule) {
+        sysCheckRuleService.save(Silian_sysCheckRule);
         return Result.ok("添加成功！");
     }
 
@@ -110,11 +110,11 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param sysCheckRule
      * @return
      */
-    @AutoLog(value = "编码校验规则-编辑")
-    @ApiOperation(value = "编码校验规则-编辑", notes = "编码校验规则-编辑")
-    @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-    public Result edit(@RequestBody SysCheckRule sysCheckRule) {
-        sysCheckRuleService.updateById(sysCheckRule);
+    @AutoLog(Silian_value = "编码校验规则-编辑")
+    @ApiOperation(Silian_value = "编码校验规则-编辑", notes = "编码校验规则-编辑")
+    @RequestMapping(Silian_value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
+    public Result edit(@RequestBody SysCheckRule Silian_sysCheckRule) {
+        sysCheckRuleService.updateById(Silian_sysCheckRule);
         return Result.ok("编辑成功!");
     }
 
@@ -124,11 +124,11 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param id
      * @return
      */
-    @AutoLog(value = "编码校验规则-通过id删除")
-    @ApiOperation(value = "编码校验规则-通过id删除", notes = "编码校验规则-通过id删除")
-    @DeleteMapping(value = "/delete")
-    public Result delete(@RequestParam(name = "id", required = true) String id) {
-        sysCheckRuleService.removeById(id);
+    @AutoLog(Silian_value = "编码校验规则-通过id删除")
+    @ApiOperation(Silian_value = "编码校验规则-通过id删除", notes = "编码校验规则-通过id删除")
+    @DeleteMapping(Silian_value = "/delete")
+    public Result delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        sysCheckRuleService.removeById(Silian_id);
         return Result.ok("删除成功!");
     }
 
@@ -138,11 +138,11 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param ids
      * @return
      */
-    @AutoLog(value = "编码校验规则-批量删除")
-    @ApiOperation(value = "编码校验规则-批量删除", notes = "编码校验规则-批量删除")
-    @DeleteMapping(value = "/deleteBatch")
-    public Result deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.sysCheckRuleService.removeByIds(Arrays.asList(ids.split(",")));
+    @AutoLog(Silian_value = "编码校验规则-批量删除")
+    @ApiOperation(Silian_value = "编码校验规则-批量删除", notes = "编码校验规则-批量删除")
+    @DeleteMapping(Silian_value = "/deleteBatch")
+    public Result deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.sysCheckRuleService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.ok("批量删除成功！");
     }
 
@@ -152,12 +152,12 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param id
      * @return
      */
-    @AutoLog(value = "编码校验规则-通过id查询")
-    @ApiOperation(value = "编码校验规则-通过id查询", notes = "编码校验规则-通过id查询")
-    @GetMapping(value = "/queryById")
-    public Result queryById(@RequestParam(name = "id", required = true) String id) {
-        SysCheckRule sysCheckRule = sysCheckRuleService.getById(id);
-        return Result.ok(sysCheckRule);
+    @AutoLog(Silian_value = "编码校验规则-通过id查询")
+    @ApiOperation(Silian_value = "编码校验规则-通过id查询", notes = "编码校验规则-通过id查询")
+    @GetMapping(Silian_value = "/queryById")
+    public Result queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        SysCheckRule Silian_sysCheckRule = sysCheckRuleService.getById(Silian_id);
+        return Result.ok(Silian_sysCheckRule);
     }
 
     /**
@@ -166,9 +166,9 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param request
      * @param sysCheckRule
      */
-    @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, SysCheckRule sysCheckRule) {
-        return super.exportXls(request, sysCheckRule, SysCheckRule.class, "编码校验规则");
+    @RequestMapping(Silian_value = "/exportXls")
+    public ModelAndView exportXls(HttpServletRequest Silian_request, SysCheckRule Silian_sysCheckRule) {
+        return super.exportXls(Silian_request, Silian_sysCheckRule, SysCheckRule.class, "编码校验规则");
     }
 
     /**
@@ -178,9 +178,9 @@ public class SysCheckRuleController extends JeecgController<SysCheckRule, ISysCh
      * @param response
      * @return
      */
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, SysCheckRule.class);
+    @RequestMapping(Silian_value = "/importExcel", method = RequestMethod.POST)
+    public Result importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, SysCheckRule.class);
     }
 
 }

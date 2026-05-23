@@ -49,14 +49,14 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-分页列表查询")
     @ApiOperation(value = "填值规则-分页列表查询", notes = "填值规则-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<?> queryPageList(SysFillRule sysFillRule,
-                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                   HttpServletRequest req) {
-        QueryWrapper<SysFillRule> queryWrapper = QueryGenerator.initQueryWrapper(sysFillRule, req.getParameterMap());
-        Page<SysFillRule> page = new Page<>(pageNo, pageSize);
-        IPage<SysFillRule> pageList = sysFillRuleService.page(page, queryWrapper);
-        return Result.ok(pageList);
+    public Result<?> queryPageList(SysFillRule Silian_sysFillRule,
+                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                   HttpServletRequest Silian_req) {
+        QueryWrapper<SysFillRule> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysFillRule, Silian_req.getParameterMap());
+        Page<SysFillRule> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+        IPage<SysFillRule> Silian_pageList = sysFillRuleService.page(Silian_page, Silian_queryWrapper);
+        return Result.ok(Silian_pageList);
     }
 
     /**
@@ -66,9 +66,9 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      * @return
      */
     @GetMapping(value = "/testFillRule")
-    public Result testFillRule(@RequestParam("ruleCode") String ruleCode) {
-        Object result = FillRuleUtil.executeRule(ruleCode, new JSONObject());
-        return Result.ok(result);
+    public Result testFillRule(@RequestParam("ruleCode") String Silian_ruleCode) {
+        Object Silian_result = FillRuleUtil.executeRule(Silian_ruleCode, new JSONObject());
+        return Result.ok(Silian_result);
     }
 
     /**
@@ -80,8 +80,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-添加")
     @ApiOperation(value = "填值规则-添加", notes = "填值规则-添加")
     @PostMapping(value = "/add")
-    public Result<?> add(@RequestBody SysFillRule sysFillRule) {
-        sysFillRuleService.save(sysFillRule);
+    public Result<?> add(@RequestBody SysFillRule Silian_sysFillRule) {
+        sysFillRuleService.save(Silian_sysFillRule);
         return Result.ok("添加成功！");
     }
 
@@ -94,8 +94,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-编辑")
     @ApiOperation(value = "填值规则-编辑", notes = "填值规则-编辑")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
-    public Result<?> edit(@RequestBody SysFillRule sysFillRule) {
-        sysFillRuleService.updateById(sysFillRule);
+    public Result<?> edit(@RequestBody SysFillRule Silian_sysFillRule) {
+        sysFillRuleService.updateById(Silian_sysFillRule);
         return Result.ok("编辑成功!");
     }
 
@@ -108,8 +108,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-通过id删除")
     @ApiOperation(value = "填值规则-通过id删除", notes = "填值规则-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-        sysFillRuleService.removeById(id);
+    public Result<?> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        sysFillRuleService.removeById(Silian_id);
         return Result.ok("删除成功!");
     }
 
@@ -122,8 +122,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-批量删除")
     @ApiOperation(value = "填值规则-批量删除", notes = "填值规则-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.sysFillRuleService.removeByIds(Arrays.asList(ids.split(",")));
+    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        this.sysFillRuleService.removeByIds(Arrays.asList(Silian_ids.split(",")));
         return Result.ok("批量删除成功！");
     }
 
@@ -136,9 +136,9 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
     @AutoLog(value = "填值规则-通过id查询")
     @ApiOperation(value = "填值规则-通过id查询", notes = "填值规则-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
-        SysFillRule sysFillRule = sysFillRuleService.getById(id);
-        return Result.ok(sysFillRule);
+    public Result<?> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        SysFillRule Silian_sysFillRule = sysFillRuleService.getById(Silian_id);
+        return Result.ok(Silian_sysFillRule);
     }
 
     /**
@@ -148,8 +148,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      * @param sysFillRule
      */
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, SysFillRule sysFillRule) {
-        return super.exportXls(request, sysFillRule, SysFillRule.class, "填值规则");
+    public ModelAndView exportXls(HttpServletRequest Silian_request, SysFillRule Silian_sysFillRule) {
+        return super.exportXls(Silian_request, Silian_sysFillRule, SysFillRule.class, "填值规则");
     }
 
     /**
@@ -160,8 +160,8 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      * @return
      */
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        return super.importExcel(request, response, SysFillRule.class);
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) {
+        return super.importExcel(Silian_request, Silian_response, SysFillRule.class);
     }
 
     /**
@@ -172,9 +172,9 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      * @return 运行后的结果
      */
     @PutMapping("/executeRuleByCode/{ruleCode}")
-    public Result executeByRuleCode(@PathVariable("ruleCode") String ruleCode, @RequestBody JSONObject formData) {
-        Object result = FillRuleUtil.executeRule(ruleCode, formData);
-        return Result.ok(result);
+    public Result executeByRuleCode(@PathVariable("ruleCode") String Silian_ruleCode, @RequestBody JSONObject Silian_formData) {
+        Object Silian_result = FillRuleUtil.executeRule(Silian_ruleCode, Silian_formData);
+        return Result.ok(Silian_result);
     }
 
 
@@ -187,27 +187,27 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      *
      */
     @PutMapping("/executeRuleByCodeBatch")
-    public Result executeByRuleCodeBatch(@RequestBody JSONObject ruleData) {
-        JSONObject commonFormData = ruleData.getJSONObject("commonFormData");
-        JSONArray rules = ruleData.getJSONArray("rules");
+    public Result executeByRuleCodeBatch(@RequestBody JSONObject Silian_ruleData) {
+        JSONObject Silian_commonFormData = Silian_ruleData.getJSONObject("commonFormData");
+        JSONArray Silian_rules = Silian_ruleData.getJSONArray("rules");
         // 遍历 rules ，批量执行规则
-        JSONArray results = new JSONArray(rules.size());
-        for (int i = 0; i < rules.size(); i++) {
-            JSONObject rule = rules.getJSONObject(i);
-            String ruleCode = rule.getString("ruleCode");
-            JSONObject formData = rule.getJSONObject("formData");
+        JSONArray Silian_results = new JSONArray(Silian_rules.size());
+        for (int Silian_i = 0; Silian_i < Silian_rules.size(); Silian_i++) {
+            JSONObject Silian_rule = Silian_rules.getJSONObject(Silian_i);
+            String Silian_ruleCode = Silian_rule.getString("ruleCode");
+            JSONObject Silian_formData = Silian_rule.getJSONObject("formData");
             // 如果没有传递 formData，就用common的
-            if (formData == null) {
-                formData = commonFormData;
+            if (Silian_formData == null) {
+                Silian_formData = Silian_commonFormData;
             }
             // 执行填值规则
-            Object result = FillRuleUtil.executeRule(ruleCode, formData);
-            JSONObject obj = new JSONObject(rules.size());
-            obj.put("ruleCode", ruleCode);
-            obj.put("result", result);
-            results.add(obj);
+            Object Silian_result = FillRuleUtil.executeRule(Silian_ruleCode, Silian_formData);
+            JSONObject Silian_obj = new JSONObject(Silian_rules.size());
+            Silian_obj.put("ruleCode", Silian_ruleCode);
+            Silian_obj.put("result", Silian_result);
+            Silian_results.add(Silian_obj);
         }
-        return Result.ok(results);
+        return Result.ok(Silian_results);
     }
 
 }

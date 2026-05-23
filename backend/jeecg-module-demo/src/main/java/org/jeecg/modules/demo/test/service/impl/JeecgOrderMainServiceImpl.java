@@ -36,42 +36,42 @@ public class JeecgOrderMainServiceImpl extends ServiceImpl<JeecgOrderMainMapper,
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveMain(JeecgOrderMain jeecgOrderMain, List<JeecgOrderCustomer> jeecgOrderCustomerList, List<JeecgOrderTicket> jeecgOrderTicketList) {
-        jeecgOrderMainMapper.insert(jeecgOrderMain);
-        if (jeecgOrderCustomerList != null) {
-            for (JeecgOrderCustomer entity : jeecgOrderCustomerList) {
-                entity.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderCustomerMapper.insert(entity);
+    public void saveMain(JeecgOrderMain Silian_jeecgOrderMain, List<JeecgOrderCustomer> Silian_jeecgOrderCustomerList, List<JeecgOrderTicket> Silian_jeecgOrderTicketList) {
+        jeecgOrderMainMapper.insert(Silian_jeecgOrderMain);
+        if (Silian_jeecgOrderCustomerList != null) {
+            for (JeecgOrderCustomer Silian_entity : Silian_jeecgOrderCustomerList) {
+                Silian_entity.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderCustomerMapper.insert(Silian_entity);
             }
         }
-        if (jeecgOrderTicketList != null) {
-            for (JeecgOrderTicket entity : jeecgOrderTicketList) {
-                entity.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderTicketMapper.insert(entity);
+        if (Silian_jeecgOrderTicketList != null) {
+            for (JeecgOrderTicket Silian_entity : Silian_jeecgOrderTicketList) {
+                Silian_entity.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderTicketMapper.insert(Silian_entity);
             }
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateMain(JeecgOrderMain jeecgOrderMain, List<JeecgOrderCustomer> jeecgOrderCustomerList, List<JeecgOrderTicket> jeecgOrderTicketList) {
-        jeecgOrderMainMapper.updateById(jeecgOrderMain);
+    public void updateMain(JeecgOrderMain Silian_jeecgOrderMain, List<JeecgOrderCustomer> Silian_jeecgOrderCustomerList, List<JeecgOrderTicket> Silian_jeecgOrderTicketList) {
+        jeecgOrderMainMapper.updateById(Silian_jeecgOrderMain);
 
         //1.先删除子表数据
-        jeecgOrderTicketMapper.deleteTicketsByMainId(jeecgOrderMain.getId());
-        jeecgOrderCustomerMapper.deleteCustomersByMainId(jeecgOrderMain.getId());
+        jeecgOrderTicketMapper.deleteTicketsByMainId(Silian_jeecgOrderMain.getId());
+        jeecgOrderCustomerMapper.deleteCustomersByMainId(Silian_jeecgOrderMain.getId());
 
         //2.子表数据重新插入
-        if (jeecgOrderCustomerList != null) {
-            for (JeecgOrderCustomer entity : jeecgOrderCustomerList) {
-                entity.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderCustomerMapper.insert(entity);
+        if (Silian_jeecgOrderCustomerList != null) {
+            for (JeecgOrderCustomer Silian_entity : Silian_jeecgOrderCustomerList) {
+                Silian_entity.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderCustomerMapper.insert(Silian_entity);
             }
         }
-        if (jeecgOrderTicketList != null) {
-            for (JeecgOrderTicket entity : jeecgOrderTicketList) {
-                entity.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderTicketMapper.insert(entity);
+        if (Silian_jeecgOrderTicketList != null) {
+            for (JeecgOrderTicket Silian_entity : Silian_jeecgOrderTicketList) {
+                Silian_entity.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderTicketMapper.insert(Silian_entity);
             }
         }
     }
@@ -84,78 +84,78 @@ public class JeecgOrderMainServiceImpl extends ServiceImpl<JeecgOrderMainMapper,
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateCopyMain(JeecgOrderMain jeecgOrderMain, List<JeecgOrderCustomer> jeecgOrderCustomerList, List<JeecgOrderTicket> jeecgOrderTicketList) {
-        jeecgOrderMainMapper.updateById(jeecgOrderMain);
+    public void updateCopyMain(JeecgOrderMain Silian_jeecgOrderMain, List<JeecgOrderCustomer> Silian_jeecgOrderCustomerList, List<JeecgOrderTicket> Silian_jeecgOrderTicketList) {
+        jeecgOrderMainMapper.updateById(Silian_jeecgOrderMain);
 
         // 循环前台传过来的数据
-        for (JeecgOrderTicket ticket:jeecgOrderTicketList){
+        for (JeecgOrderTicket Silian_ticket:Silian_jeecgOrderTicketList){
             // 先查询子表数据库
-            JeecgOrderTicket orderTicket = jeecgOrderTicketMapper.selectById(ticket.getId());
-            if(orderTicket == null){
+            JeecgOrderTicket Silian_orderTicket = jeecgOrderTicketMapper.selectById(Silian_ticket.getId());
+            if(Silian_orderTicket == null){
                 // 当传过来的id数据库不存在时，说明数据库没有，走新增逻辑
-                ticket.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderTicketMapper.insert(ticket);
+                Silian_ticket.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderTicketMapper.insert(Silian_ticket);
                 break;
             }
-            if(orderTicket.getId().equals(ticket.getId())){
+            if(Silian_orderTicket.getId().equals(Silian_ticket.getId())){
                 // 传过来的id和数据库id一至时，说明数据库存在该数据，走更新逻辑
-                jeecgOrderTicketMapper.updateById(ticket);
+                jeecgOrderTicketMapper.updateById(Silian_ticket);
             }
         }
-        for (JeecgOrderCustomer customer:jeecgOrderCustomerList){
+        for (JeecgOrderCustomer Silian_customer:Silian_jeecgOrderCustomerList){
             // 先查询子表数据库
-            JeecgOrderCustomer customers = jeecgOrderCustomerMapper.selectById(customer.getId());
-            if(customers == null){
+            JeecgOrderCustomer Silian_customers = jeecgOrderCustomerMapper.selectById(Silian_customer.getId());
+            if(Silian_customers == null){
                 // 当传过来的id数据库不存在时，说明数据库没有，走新增逻辑
-                customer.setOrderId(jeecgOrderMain.getId());
-                jeecgOrderCustomerMapper.insert(customer);
+                Silian_customer.setOrderId(Silian_jeecgOrderMain.getId());
+                jeecgOrderCustomerMapper.insert(Silian_customer);
                 break;
             }
-            if(customers.getId().equals(customer.getId())){
+            if(Silian_customers.getId().equals(Silian_customer.getId())){
                 //TODO 传过来的id和数据库id一至时，说明数据库存在该数据，走更新逻辑
-                jeecgOrderCustomerMapper.updateById(customer);
+                jeecgOrderCustomerMapper.updateById(Silian_customer);
             }
         }
         // 当跟新和删除之后取差集， 当传过来的id不存在，而数据库存在时，说明已删除，走删除逻辑
-        List<JeecgOrderTicket> jeecgOrderTickets = jeecgOrderTicketMapper.selectTicketsByMainId(jeecgOrderMain.getId());
-        List<JeecgOrderTicket> collect = jeecgOrderTickets.stream()
-                .filter(item -> !jeecgOrderTicketList.stream()
-                .map(e -> e.getId())
+        List<JeecgOrderTicket> Silian_jeecgOrderTickets = jeecgOrderTicketMapper.selectTicketsByMainId(Silian_jeecgOrderMain.getId());
+        List<JeecgOrderTicket> Silian_collect = Silian_jeecgOrderTickets.stream()
+                .filter(Silian_item -> !Silian_jeecgOrderTicketList.stream()
+                .map(Silian_e -> Silian_e.getId())
                 .collect(Collectors.toList())
-                .contains(item.getId()))
+                .contains(Silian_item.getId()))
                 .collect(Collectors.toList());
         // for循环删除id
-        for (JeecgOrderTicket ticket:collect){
-            jeecgOrderTicketMapper.deleteById(ticket.getId());
+        for (JeecgOrderTicket Silian_ticket:Silian_collect){
+            jeecgOrderTicketMapper.deleteById(Silian_ticket.getId());
         }
 
-        List<JeecgOrderCustomer> jeecgOrderCustomers = jeecgOrderCustomerMapper.selectCustomersByMainId(jeecgOrderMain.getId());
-        List<JeecgOrderCustomer> customersCollect = jeecgOrderCustomers.stream()
-                .filter(item -> !jeecgOrderCustomerList.stream()
-                        .map(e -> e.getId())
+        List<JeecgOrderCustomer> Silian_jeecgOrderCustomers = jeecgOrderCustomerMapper.selectCustomersByMainId(Silian_jeecgOrderMain.getId());
+        List<JeecgOrderCustomer> Silian_customersCollect = Silian_jeecgOrderCustomers.stream()
+                .filter(Silian_item -> !Silian_jeecgOrderCustomerList.stream()
+                        .map(Silian_e -> Silian_e.getId())
                         .collect(Collectors.toList())
-                        .contains(item.getId()))
+                        .contains(Silian_item.getId()))
                 .collect(Collectors.toList());
         //TODO for循环删除id
-        for (JeecgOrderCustomer c:customersCollect){
-            jeecgOrderCustomerMapper.deleteById(c.getId());
+        for (JeecgOrderCustomer Silian_c:Silian_customersCollect){
+            jeecgOrderCustomerMapper.deleteById(Silian_c.getId());
         }
     }
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delMain(String id) {
-		jeecgOrderMainMapper.deleteById(id);
-		jeecgOrderTicketMapper.deleteTicketsByMainId(id);
-		jeecgOrderCustomerMapper.deleteCustomersByMainId(id);
+	public void delMain(String Silian_id) {
+		jeecgOrderMainMapper.deleteById(Silian_id);
+		jeecgOrderTicketMapper.deleteTicketsByMainId(Silian_id);
+		jeecgOrderCustomerMapper.deleteCustomersByMainId(Silian_id);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delBatchMain(Collection<? extends Serializable> idList) {
-		for(Serializable id:idList) {
-			jeecgOrderMainMapper.deleteById(id);
-			jeecgOrderTicketMapper.deleteTicketsByMainId(id.toString());
-			jeecgOrderCustomerMapper.deleteCustomersByMainId(id.toString());
+	public void delBatchMain(Collection<? extends Serializable> Silian_idList) {
+		for(Serializable Silian_id:Silian_idList) {
+			jeecgOrderMainMapper.deleteById(Silian_id);
+			jeecgOrderTicketMapper.deleteTicketsByMainId(Silian_id.toString());
+			jeecgOrderCustomerMapper.deleteCustomersByMainId(Silian_id.toString());
 		}
 	}
 

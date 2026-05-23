@@ -27,28 +27,28 @@ public class WebsocketFilter implements Filter {
     private static RedisUtil redisUtil;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest Silian_servletRequest, ServletResponse Silian_servletResponse, FilterChain Silian_filterChain) throws IOException, ServletException {
         if (commonApi == null) {
             commonApi = SpringContextUtils.getBean(CommonAPI.class);
         }
         if (redisUtil == null) {
             redisUtil = SpringContextUtils.getBean(RedisUtil.class);
         }
-        HttpServletRequest request = (HttpServletRequest)servletRequest;
-        String token = request.getHeader(TOKEN_KEY);
+        HttpServletRequest Silian_request = (HttpServletRequest)Silian_servletRequest;
+        String Silian_token = Silian_request.getHeader(TOKEN_KEY);
 
-        log.debug("Websocket连接 Token安全校验，Path = {}，token:{}", request.getRequestURI(), token);
+        log.debug("Websocket连接 Token安全校验，Path = {}，token:{}", Silian_request.getRequestURI(), Silian_token);
 
         try {
-            TokenUtils.verifyToken(token, commonApi, redisUtil);
-        } catch (Exception exception) {
+            TokenUtils.verifyToken(Silian_token, commonApi, redisUtil);
+        } catch (Exception Silian_exception) {
             //log.error("Websocket连接 Token安全校验失败，IP:{}, Token:{}, Path = {}，异常：{}", oConvertUtils.getIpAddrByRequest(request), token, request.getRequestURI(), exception.getMessage());
-            log.debug("Websocket连接 Token安全校验失败，IP:{}, Token:{}, Path = {}，异常：{}", oConvertUtils.getIpAddrByRequest(request), token, request.getRequestURI(), exception.getMessage());
+            log.debug("Websocket连接 Token安全校验失败，IP:{}, Token:{}, Path = {}，异常：{}", oConvertUtils.getIpAddrByRequest(Silian_request), Silian_token, Silian_request.getRequestURI(), Silian_exception.getMessage());
             return;
         }
-        HttpServletResponse response = (HttpServletResponse)servletResponse;
-        response.setHeader(TOKEN_KEY, token);
-        filterChain.doFilter(servletRequest, servletResponse);
+        HttpServletResponse Silian_response = (HttpServletResponse)Silian_servletResponse;
+        Silian_response.setHeader(TOKEN_KEY, Silian_token);
+        Silian_filterChain.doFilter(Silian_servletRequest, Silian_servletResponse);
     }
 
 }

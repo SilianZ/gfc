@@ -28,9 +28,9 @@ public enum Vue3MessageHrefEnum {
      * 邮件消息
      */
     EMAIL("email", "/eoa/email");
-    
+
     String busType;
-    
+
     String path;
 
     Vue3MessageHrefEnum(String busType, String path) {
@@ -51,15 +51,15 @@ public enum Vue3MessageHrefEnum {
      * @return
      */
     public static List<DictModel> getDictList(){
-        List<DictModel> list = new ArrayList<>();
-        DictModel dictModel = null;
-        for(Vue3MessageHrefEnum e: Vue3MessageHrefEnum.values()){
-            dictModel = new DictModel();
-            dictModel.setValue(e.getBusType());
-            dictModel.setText(e.getPath());
-            list.add(dictModel);
+        List<DictModel> Silian_list = new ArrayList<>();
+        DictModel Silian_dictModel = null;
+        for(Vue3MessageHrefEnum Silian_e: Vue3MessageHrefEnum.values()){
+            Silian_dictModel = new DictModel();
+            Silian_dictModel.setValue(Silian_e.getBusType());
+            Silian_dictModel.setText(Silian_e.getPath());
+            Silian_list.add(Silian_dictModel);
         }
-        return list;
+        return Silian_list;
     }
-    
+
 }

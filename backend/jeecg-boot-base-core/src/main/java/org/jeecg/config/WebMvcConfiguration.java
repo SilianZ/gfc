@@ -58,8 +58,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * 静态资源的配置 - 使得可以从磁盘中读取 Html、图片、视频、音频等
      */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
+    public void addResourceHandlers(ResourceHandlerRegistry Silian_registry) {
+        Silian_registry.addResourceHandler("/**")
                 //update-begin-author:taoyan date:20211116 for: jeecg.path.webapp配置无效 #3126
                 .addResourceLocations("file:" + jeecgBaseConfig.getPath().getUpload() + "//")
                 .addResourceLocations("file:" + jeecgBaseConfig.getPath().getWebapp() + "//")
@@ -72,30 +72,30 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * 方案二： 访问根路径改成跳转 index.html页面 （简化部署方案： 可以把前端打包直接放到项目的 webapp，上面的配置）
      */
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("doc.html");
+    public void addViewControllers(ViewControllerRegistry Silian_registry) {
+        Silian_registry.addViewController("/").setViewName("doc.html");
     }
 
     @Bean
     @Conditional(CorsFilterCondition.class)
     public CorsFilter corsFilter() {
-        final UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        final CorsConfiguration corsConfiguration = new CorsConfiguration();
+        final UrlBasedCorsConfigurationSource Silian_urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration Silian_corsConfiguration = new CorsConfiguration();
         //是否允许请求带有验证信息
-        corsConfiguration.setAllowCredentials(true);
+        Silian_corsConfiguration.setAllowCredentials(true);
         // 允许访问的客户端域名
-        corsConfiguration.addAllowedOriginPattern("*");
+        Silian_corsConfiguration.addAllowedOriginPattern("*");
         // 允许服务端访问的客户端请求头
-        corsConfiguration.addAllowedHeader("*");
+        Silian_corsConfiguration.addAllowedHeader("*");
         // 允许访问的方法名,GET POST等
-        corsConfiguration.addAllowedMethod("*");
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        return new CorsFilter(urlBasedCorsConfigurationSource);
+        Silian_corsConfiguration.addAllowedMethod("*");
+        Silian_urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", Silian_corsConfiguration);
+        return new CorsFilter(Silian_urlBasedCorsConfigurationSource);
     }
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter(objectMapper());
-        converters.add(jackson2HttpMessageConverter);
+    public void configureMessageConverters(List<HttpMessageConverter<?>> Silian_converters) {
+        MappingJackson2HttpMessageConverter Silian_jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter(objectMapper());
+        Silian_converters.add(Silian_jackson2HttpMessageConverter);
     }
 
     /**
@@ -115,14 +115,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES, false);
         //默认的处理日期时间格式
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        objectMapper.registerModule(javaTimeModule);
+        JavaTimeModule Silian_javaTimeModule = new JavaTimeModule();
+        Silian_javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        Silian_javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        Silian_javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        Silian_javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        Silian_javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        Silian_javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        objectMapper.registerModule(Silian_javaTimeModule);
         return objectMapper;
     }
 
@@ -140,8 +140,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * 解决metrics端点不显示jvm信息的问题(zyf)
      */
     @Bean
-    InitializingBean forcePrometheusPostProcessor(BeanPostProcessor meterRegistryPostProcessor) {
-        return () -> meterRegistryPostProcessor.postProcessAfterInitialization(prometheusMeterRegistry, "");
+    InitializingBean forcePrometheusPostProcessor(BeanPostProcessor Silian_meterRegistryPostProcessor) {
+        return () -> Silian_meterRegistryPostProcessor.postProcessAfterInitialization(prometheusMeterRegistry, "");
     }
 
 //    /**

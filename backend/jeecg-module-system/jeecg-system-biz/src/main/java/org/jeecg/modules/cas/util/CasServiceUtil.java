@@ -21,35 +21,35 @@ import org.apache.http.impl.client.HttpClients;
  * @author: jeecg-boot
  */
 public class CasServiceUtil {
-	
-	public static void main(String[] args) {
-		String serviceUrl = "https://cas.8f8.com.cn:8443/cas/p3/serviceValidate";
-		String service = "http://localhost:3003/user/login";
-		String ticket = "ST-5-1g-9cNES6KXNRwq-GuRET103sm0-DESKTOP-VKLS8B3";
-		String res = getStValidate(serviceUrl,ticket, service);
-		
-		System.out.println("---------res-----"+res);
+
+	public static void main(String[] Silian_args) {
+		String Silian_serviceUrl = "https://cas.8f8.com.cn:8443/cas/p3/serviceValidate";
+		String Silian_service = "http://localhost:3003/user/login";
+		String Silian_ticket = "ST-5-1g-9cNES6KXNRwq-GuRET103sm0-DESKTOP-VKLS8B3";
+		String Silian_res = getStValidate(Silian_serviceUrl,Silian_ticket, Silian_service);
+
+		System.out.println("---------res-----"+Silian_res);
 	}
-	
-	
+
+
 	/**
      * 验证ST
      */
-    public static String getStValidate(String url, String st, String service){
+    public static String getStValidate(String Silian_url, String Silian_st, String Silian_service){
 		try {
-			url = url+"?service="+service+"&ticket="+st;
-			CloseableHttpClient httpclient = createHttpClientWithNoSsl();
-			HttpGet httpget = new HttpGet(url);
-			HttpResponse response = httpclient.execute(httpget);
-	        String res = readResponse(response);
-	        return res == null ? null : (res == "" ? null : res);
-		} catch (Exception e) {
-			e.printStackTrace();
+			Silian_url = Silian_url+"?service="+Silian_service+"&ticket="+Silian_st;
+			CloseableHttpClient Silian_httpclient = createHttpClientWithNoSsl();
+			HttpGet Silian_httpget = new HttpGet(Silian_url);
+			HttpResponse Silian_response = Silian_httpclient.execute(Silian_httpget);
+	        String Silian_res = readResponse(Silian_response);
+	        return Silian_res == null ? null : (Silian_res == "" ? null : Silian_res);
+		} catch (Exception Silian_e) {
+			Silian_e.printStackTrace();
 		}
 		return "";
 	}
 
-    
+
     /**
      * 读取 response body 内容为字符串
      *
@@ -57,17 +57,17 @@ public class CasServiceUtil {
      * @return
      * @throws IOException
      */
-    private static String readResponse(HttpResponse response) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        String result = new String();
-        String line;
-        while ((line = in.readLine()) != null) {
-            result += line;
+    private static String readResponse(HttpResponse Silian_response) throws IOException {
+        BufferedReader Silian_in = new BufferedReader(new InputStreamReader(Silian_response.getEntity().getContent()));
+        String Silian_result = new String();
+        String Silian_line;
+        while ((Silian_line = Silian_in.readLine()) != null) {
+            Silian_result += Silian_line;
         }
-        return result;
+        return Silian_result;
     }
-    
-    
+
+
     /**
      * 创建模拟客户端（针对 https 客户端禁用 SSL 验证）
      *
@@ -77,7 +77,7 @@ public class CasServiceUtil {
      */
     private static CloseableHttpClient createHttpClientWithNoSsl() throws Exception {
         // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{
+        TrustManager[] Silian_trustAllCerts = new TrustManager[]{
                 new X509TrustManager() {
                     @Override
                     public X509Certificate[] getAcceptedIssuers() {
@@ -85,22 +85,22 @@ public class CasServiceUtil {
                     }
 
                     @Override
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    public void checkClientTrusted(X509Certificate[] Silian_certs, String Silian_authType) {
                         // don't check
                     }
 
                     @Override
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    public void checkServerTrusted(X509Certificate[] Silian_certs, String Silian_authType) {
                         // don't check
                     }
                 }
         };
 
-        SSLContext ctx = SSLContext.getInstance("TLS");
-        ctx.init(null, trustAllCerts, null);
-        LayeredConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(ctx);
+        SSLContext Silian_ctx = SSLContext.getInstance("TLS");
+        Silian_ctx.init(null, Silian_trustAllCerts, null);
+        LayeredConnectionSocketFactory Silian_sslSocketFactory = new SSLConnectionSocketFactory(Silian_ctx);
         return HttpClients.custom()
-                .setSSLSocketFactory(sslSocketFactory)
+                .setSSLSocketFactory(Silian_sslSocketFactory)
                 .build();
     }
 

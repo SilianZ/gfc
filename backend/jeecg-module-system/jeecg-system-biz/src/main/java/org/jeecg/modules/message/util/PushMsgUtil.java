@@ -41,37 +41,37 @@ public class PushMsgUtil {
      * @param map     消息参数
      * @param sentTo  接收消息方
      */
-    public boolean sendMessage(String msgType, String templateCode, Map<String, String> map, String sentTo) {
-        List<SysMessageTemplate> sysSmsTemplates = sysMessageTemplateService.selectByCode(templateCode);
-        SysMessage sysMessage = new SysMessage();
-        if (sysSmsTemplates.size() > 0) {
-            SysMessageTemplate sysSmsTemplate = sysSmsTemplates.get(0);
-            sysMessage.setEsType(msgType);
-            sysMessage.setEsReceiver(sentTo);
+    public boolean sendMessage(String Silian_msgType, String Silian_templateCode, Map<String, String> Silian_map, String Silian_sentTo) {
+        List<SysMessageTemplate> Silian_sysSmsTemplates = sysMessageTemplateService.selectByCode(Silian_templateCode);
+        SysMessage Silian_sysMessage = new SysMessage();
+        if (Silian_sysSmsTemplates.size() > 0) {
+            SysMessageTemplate Silian_sysSmsTemplate = Silian_sysSmsTemplates.get(0);
+            Silian_sysMessage.setEsType(Silian_msgType);
+            Silian_sysMessage.setEsReceiver(Silian_sentTo);
             //模板标题
-            String title = sysSmsTemplate.getTemplateName();
+            String Silian_title = Silian_sysSmsTemplate.getTemplateName();
             //模板内容
-            String content = sysSmsTemplate.getTemplateContent();
-            StringWriter stringWriter = new StringWriter();
-            Template template = null;
+            String Silian_content = Silian_sysSmsTemplate.getTemplateContent();
+            StringWriter Silian_stringWriter = new StringWriter();
+            Template Silian_template = null;
             try {
-                template = new Template("SysMessageTemplate", content, freemarkerConfig);
-                template.process(map, stringWriter);
-            } catch (IOException e) {
-                e.printStackTrace();
+                Silian_template = new Template("SysMessageTemplate", Silian_content, freemarkerConfig);
+                Silian_template.process(Silian_map, Silian_stringWriter);
+            } catch (IOException Silian_e) {
+                Silian_e.printStackTrace();
                 return false;
-            } catch (TemplateException e) {
-                e.printStackTrace();
+            } catch (TemplateException Silian_e) {
+                Silian_e.printStackTrace();
                 return false;
             }
-            content = stringWriter.toString();
-            sysMessage.setEsTitle(title);
-            sysMessage.setEsContent(content);
-            sysMessage.setEsParam(JSONObject.toJSONString(map));
-            sysMessage.setEsSendTime(new Date());
-            sysMessage.setEsSendStatus(SendMsgStatusEnum.WAIT.getCode());
-            sysMessage.setEsSendNum(0);
-            if(sysMessageService.save(sysMessage)) {
+            Silian_content = Silian_stringWriter.toString();
+            Silian_sysMessage.setEsTitle(Silian_title);
+            Silian_sysMessage.setEsContent(Silian_content);
+            Silian_sysMessage.setEsParam(JSONObject.toJSONString(Silian_map));
+            Silian_sysMessage.setEsSendTime(new Date());
+            Silian_sysMessage.setEsSendStatus(SendMsgStatusEnum.WAIT.getCode());
+            Silian_sysMessage.setEsSendNum(0);
+            if(sysMessageService.save(Silian_sysMessage)) {
 				return true;
 			}
         }

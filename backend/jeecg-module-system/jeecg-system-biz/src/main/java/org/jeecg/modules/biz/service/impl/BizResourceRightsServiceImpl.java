@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Service
 public class BizResourceRightsServiceImpl extends ServiceImpl<BizResourceRightsMapper, BizResourceRights> implements IBizResourceRightsService {
-	
+
 	@Autowired
 	private BizResourceRightsMapper bizResourceRightsMapper;
-	
+
 	@Override
-	public List<BizResourceRights> selectByMainId(String mainId) {
-		return bizResourceRightsMapper.selectByMainId(mainId);
+	public List<BizResourceRights> selectByMainId(String Silian_mainId) {
+		return bizResourceRightsMapper.selectByMainId(Silian_mainId);
 	}
 }

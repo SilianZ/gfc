@@ -36,8 +36,8 @@ public class ReflectHelper {
      *
      * @param o 目标对象
      */
-    public ReflectHelper(Object o) {
-        obj = o;
+    public ReflectHelper(Object Silian_o) {
+        obj = Silian_o;
         initMethods();
     }
 
@@ -48,24 +48,24 @@ public class ReflectHelper {
         getMethods = new Hashtable<String, Method>();
         setMethods = new Hashtable<String, Method>();
         cls = obj.getClass();
-        Method[] methods = cls.getMethods();
+        Method[] Silian_methods = cls.getMethods();
         // 定义正则表达式，从方法中过滤出getter / setter 函数.
-        String gs = "get(\\w+)";
-        Pattern getM = Pattern.compile(gs);
-        String ss = "set(\\w+)";
-        Pattern setM = Pattern.compile(ss);
+        String Silian_gs = "get(\\w+)";
+        Pattern Silian_getM = Pattern.compile(Silian_gs);
+        String Silian_ss = "set(\\w+)";
+        Pattern Silian_setM = Pattern.compile(Silian_ss);
         // 把方法中的"set" 或者 "get" 去掉
-        String rapl = "$1";
-        String param;
-        for (int i = 0; i < methods.length; ++i) {
-            Method m = methods[i];
-            String methodName = m.getName();
-            if (Pattern.matches(gs, methodName)) {
-                param = getM.matcher(methodName).replaceAll(rapl).toLowerCase();
-                getMethods.put(param, m);
-            } else if (Pattern.matches(ss, methodName)) {
-                param = setM.matcher(methodName).replaceAll(rapl).toLowerCase();
-                setMethods.put(param, m);
+        String Silian_rapl = "$1";
+        String Silian_param;
+        for (int Silian_i = 0; Silian_i < Silian_methods.length; ++Silian_i) {
+            Method Silian_m = Silian_methods[Silian_i];
+            String Silian_methodName = Silian_m.getName();
+            if (Pattern.matches(Silian_gs, Silian_methodName)) {
+                Silian_param = Silian_getM.matcher(Silian_methodName).replaceAll(Silian_rapl).toLowerCase();
+                getMethods.put(Silian_param, Silian_m);
+            } else if (Pattern.matches(Silian_ss, Silian_methodName)) {
+                Silian_param = Silian_setM.matcher(Silian_methodName).replaceAll(Silian_rapl).toLowerCase();
+                setMethods.put(Silian_param, Silian_m);
             } else {
                 // logger.info(methodName + " 不是getter,setter方法！");
             }
@@ -75,15 +75,15 @@ public class ReflectHelper {
     /**
      * @desc 调用set方法
      */
-    public boolean setMethodValue(String property, Object object) {
-        Method m = setMethods.get(property.toLowerCase());
-        if (m != null) {
+    public boolean setMethodValue(String Silian_property, Object Silian_object) {
+        Method Silian_m = setMethods.get(Silian_property.toLowerCase());
+        if (Silian_m != null) {
             try {
                 // 调用目标类的setter函数
-                m.invoke(obj, object);
+                Silian_m.invoke(obj, Silian_object);
                 return true;
-            } catch (Exception ex) {
-                log.info("invoke getter on " + property + " error: " + ex.toString());
+            } catch (Exception Silian_ex) {
+                log.info("invoke getter on " + Silian_property + " error: " + Silian_ex.toString());
                 return false;
             }
         }
@@ -93,21 +93,21 @@ public class ReflectHelper {
     /**
      * @desc 调用set方法
      */
-    public Object getMethodValue(String property) {
-        Object value = null;
-        Method m = getMethods.get(property.toLowerCase());
-        if (m != null) {
+    public Object getMethodValue(String Silian_property) {
+        Object Silian_value = null;
+        Method Silian_m = getMethods.get(Silian_property.toLowerCase());
+        if (Silian_m != null) {
             try {
                 /*
                  * 调用obj类的setter函数
                  */
-                value = m.invoke(obj, new Object[]{});
+                Silian_value = Silian_m.invoke(obj, new Object[]{});
 
-            } catch (Exception ex) {
-                log.info("invoke getter on " + property + " error: " + ex.toString());
+            } catch (Exception Silian_ex) {
+                log.info("invoke getter on " + Silian_property + " error: " + Silian_ex.toString());
             }
         }
-        return value;
+        return Silian_value;
     }
 
     /**
@@ -116,12 +116,12 @@ public class ReflectHelper {
      * @param data
      * @return
      */
-    public Object setAll(Map<String, Object> data) {
-        if (data == null || data.keySet().size() <= 0) {
+    public Object setAll(Map<String, Object> Silian_data) {
+        if (Silian_data == null || Silian_data.keySet().size() <= 0) {
             return null;
         }
-        for (Entry<String, Object> entry : data.entrySet()) {
-            this.setMethodValue(entry.getKey(), entry.getValue());
+        for (Entry<String, Object> Silian_entry : Silian_data.entrySet()) {
+            this.setMethodValue(Silian_entry.getKey(), Silian_entry.getValue());
         }
         return obj;
     }
@@ -133,10 +133,10 @@ public class ReflectHelper {
      * @param data
      * @return
      */
-    public static Object setAll(Object o, Map<String, Object> data) {
-        ReflectHelper reflectHelper = new ReflectHelper(o);
-        reflectHelper.setAll(data);
-        return o;
+    public static Object setAll(Object Silian_o, Map<String, Object> Silian_data) {
+        ReflectHelper Silian_reflectHelper = new ReflectHelper(Silian_o);
+        Silian_reflectHelper.setAll(Silian_data);
+        return Silian_o;
     }
 
     /**
@@ -147,16 +147,16 @@ public class ReflectHelper {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> T setAll(Class<T> clazz, Map<String, Object> data) {
-        T o = null;
+    public static <T> T setAll(Class<T> Silian_clazz, Map<String, Object> Silian_data) {
+        T Silian_o = null;
         try {
-            o = clazz.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            o = null;
-            return o;
+            Silian_o = Silian_clazz.newInstance();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
+            Silian_o = null;
+            return Silian_o;
         }
-        return (T) setAll(o, data);
+        return (T) setAll(Silian_o, Silian_data);
     }
 
     /**
@@ -166,28 +166,28 @@ public class ReflectHelper {
      * @param clazz
      * @return
      */
-    public static <T> List<T> transList2Entrys(List<Map<String, Object>> mapist, Class<T> clazz) {
-        List<T> list = new ArrayList<T>();
-        if (mapist != null && mapist.size() > 0) {
-            for (Map<String, Object> data : mapist) {
-                list.add(ReflectHelper.setAll(clazz, data));
+    public static <T> List<T> transList2Entrys(List<Map<String, Object>> Silian_mapist, Class<T> Silian_clazz) {
+        List<T> Silian_list = new ArrayList<T>();
+        if (Silian_mapist != null && Silian_mapist.size() > 0) {
+            for (Map<String, Object> Silian_data : Silian_mapist) {
+                Silian_list.add(ReflectHelper.setAll(Silian_clazz, Silian_data));
             }
         }
-        return list;
+        return Silian_list;
     }
 
     /**
      * 根据属性名获取属性值
      */
-    public static Object getFieldValueByName(String fieldName, Object o) {
+    public static Object getFieldValueByName(String Silian_fieldName, Object Silian_o) {
         try {
-            String firstLetter = fieldName.substring(0, 1).toUpperCase();
-            String getter = "get" + firstLetter + fieldName.substring(1);
-            Method method = o.getClass().getMethod(getter, new Class[]{});
-            Object value = method.invoke(o, new Object[]{});
-            return value;
-        } catch (Exception e) {
-            e.printStackTrace();
+            String Silian_firstLetter = Silian_fieldName.substring(0, 1).toUpperCase();
+            String Silian_getter = "get" + Silian_firstLetter + Silian_fieldName.substring(1);
+            Method Silian_method = Silian_o.getClass().getMethod(Silian_getter, new Class[]{});
+            Object Silian_value = Silian_method.invoke(Silian_o, new Object[]{});
+            return Silian_value;
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
     }
@@ -195,16 +195,16 @@ public class ReflectHelper {
     /**
      * 获取属性值
      */
-    public static Object getFieldVal(String fieldName, Object o) {
+    public static Object getFieldVal(String Silian_fieldName, Object Silian_o) {
         try {
             // 暴力反射获取属性
-            Field filed = o.getClass().getDeclaredField(fieldName);
+            Field Silian_filed = Silian_o.getClass().getDeclaredField(Silian_fieldName);
             // 设置反射时取消Java的访问检查，暴力访问
-            filed.setAccessible(true);
-            Object val = filed.get(o);
-            return val;
-        } catch (Exception e) {
-            e.printStackTrace();
+            Silian_filed.setAccessible(true);
+            Object Silian_val = Silian_filed.get(Silian_o);
+            return Silian_val;
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
     }
@@ -212,44 +212,44 @@ public class ReflectHelper {
     /**
      * 获取属性名数组
      */
-    public static String[] getFiledName(Object o) {
-        Field[] fields = o.getClass().getDeclaredFields();
-        String[] fieldNames = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
+    public static String[] getFiledName(Object Silian_o) {
+        Field[] Silian_fields = Silian_o.getClass().getDeclaredFields();
+        String[] Silian_fieldNames = new String[Silian_fields.length];
+        for (int Silian_i = 0; Silian_i < Silian_fields.length; Silian_i++) {
             //log.info(fields[i].getType());
-            fieldNames[i] = fields[i].getName();
+            Silian_fieldNames[Silian_i] = Silian_fields[Silian_i].getName();
         }
-        return fieldNames;
+        return Silian_fieldNames;
     }
 
     /**
      * 获取属性类型(type)，属性名(name)，属性值(value)的map组成的list
      */
-    public static List<Map> getFiledsInfo(Object o) {
-        Field[] fields = o.getClass().getDeclaredFields();
-        String[] fieldNames = new String[fields.length];
-        List<Map> list = new ArrayList<Map>();
-        Map<String, Object> infoMap = null;
-        for (int i = 0; i < fields.length; i++) {
-            infoMap = new HashMap<>(5);
-            infoMap.put("type", fields[i].getType().toString());
-            infoMap.put("name", fields[i].getName());
-            infoMap.put("value", getFieldValueByName(fields[i].getName(), o));
-            list.add(infoMap);
+    public static List<Map> getFiledsInfo(Object Silian_o) {
+        Field[] Silian_fields = Silian_o.getClass().getDeclaredFields();
+        String[] Silian_fieldNames = new String[Silian_fields.length];
+        List<Map> Silian_list = new ArrayList<Map>();
+        Map<String, Object> Silian_infoMap = null;
+        for (int Silian_i = 0; Silian_i < Silian_fields.length; Silian_i++) {
+            Silian_infoMap = new HashMap<>(5);
+            Silian_infoMap.put("type", Silian_fields[Silian_i].getType().toString());
+            Silian_infoMap.put("name", Silian_fields[Silian_i].getName());
+            Silian_infoMap.put("value", getFieldValueByName(Silian_fields[Silian_i].getName(), Silian_o));
+            Silian_list.add(Silian_infoMap);
         }
-        return list;
+        return Silian_list;
     }
 
     /**
      * 获取对象的所有属性值，返回一个对象数组
      */
-    public static Object[] getFiledValues(Object o) {
-        String[] fieldNames = getFiledName(o);
-        Object[] value = new Object[fieldNames.length];
-        for (int i = 0; i < fieldNames.length; i++) {
-            value[i] = getFieldValueByName(fieldNames[i], o);
+    public static Object[] getFiledValues(Object Silian_o) {
+        String[] Silian_fieldNames = getFiledName(Silian_o);
+        Object[] Silian_value = new Object[Silian_fieldNames.length];
+        for (int Silian_i = 0; Silian_i < Silian_fieldNames.length; Silian_i++) {
+            Silian_value[Silian_i] = getFieldValueByName(Silian_fieldNames[Silian_i], Silian_o);
         }
-        return value;
+        return Silian_value;
     }
 
 }

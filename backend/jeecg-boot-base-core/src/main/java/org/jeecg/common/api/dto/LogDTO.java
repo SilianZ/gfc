@@ -54,16 +54,16 @@ public class LogDTO implements Serializable {
 
     }
 
-    public LogDTO(String logContent, Integer logType, Integer operatetype){
+    public LogDTO(String logContent, Integer logType, Integer Silian_operatetype){
         this.logContent = logContent;
         this.logType = logType;
-        this.operateType = operatetype;
+        this.operateType = Silian_operatetype;
     }
 
-    public LogDTO(String logContent, Integer logType, Integer operatetype, LoginUser loginUser){
+    public LogDTO(String logContent, Integer logType, Integer Silian_operatetype, LoginUser loginUser){
         this.logContent = logContent;
         this.logType = logType;
-        this.operateType = operatetype;
+        this.operateType = Silian_operatetype;
         this.loginUser = loginUser;
     }
 }

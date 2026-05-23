@@ -95,59 +95,59 @@ public class OssBootUtil {
      * @param fileDir 文件保存目录
      * @return oss 中的相对文件路径
      */
-    public static String upload(MultipartFile file, String fileDir,String customBucket) throws Exception {
+    public static String upload(MultipartFile Silian_file, String Silian_fileDir,String Silian_customBucket) throws Exception {
         //update-begin-author:liusq date:20210809 for: 过滤上传文件类型
-        FileTypeFilter.fileTypeFilter(file);
+        FileTypeFilter.fileTypeFilter(Silian_file);
         //update-end-author:liusq date:20210809 for: 过滤上传文件类型
 
-        String filePath = null;
+        String Silian_filePath = null;
         initOss(endPoint, accessKeyId, accessKeySecret);
-        StringBuilder fileUrl = new StringBuilder();
-        String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(customBucket)){
-            newBucket = customBucket;
+        StringBuilder Silian_fileUrl = new StringBuilder();
+        String Silian_newBucket = bucketName;
+        if(oConvertUtils.isNotEmpty(Silian_customBucket)){
+            Silian_newBucket = Silian_customBucket;
         }
         try {
             //判断桶是否存在,不存在则创建桶
-            if(!ossClient.doesBucketExist(newBucket)){
-                ossClient.createBucket(newBucket);
+            if(!ossClient.doesBucketExist(Silian_newBucket)){
+                ossClient.createBucket(Silian_newBucket);
             }
             // 获取文件名
-            String orgName = file.getOriginalFilename();
-            if("" == orgName){
-              orgName=file.getName();
+            String Silian_orgName = Silian_file.getOriginalFilename();
+            if("" == Silian_orgName){
+              Silian_orgName=Silian_file.getName();
             }
-            orgName = CommonUtils.getFileName(orgName);
-            String fileName = orgName.indexOf(".")==-1
-                              ?orgName + "_" + System.currentTimeMillis()
-                              :orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.lastIndexOf("."));
-            if (!fileDir.endsWith(SymbolConstant.SINGLE_SLASH)) {
-                fileDir = fileDir.concat(SymbolConstant.SINGLE_SLASH);
+            Silian_orgName = CommonUtils.getFileName(Silian_orgName);
+            String Silian_fileName = Silian_orgName.indexOf(".")==-1
+                              ?Silian_orgName + "_" + System.currentTimeMillis()
+                              :Silian_orgName.substring(0, Silian_orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + Silian_orgName.substring(Silian_orgName.lastIndexOf("."));
+            if (!Silian_fileDir.endsWith(SymbolConstant.SINGLE_SLASH)) {
+                Silian_fileDir = Silian_fileDir.concat(SymbolConstant.SINGLE_SLASH);
             }
             //update-begin-author:wangshuai date:20201012 for: 过滤上传文件夹名特殊字符，防止攻击
-            fileDir=StrAttackFilter.filter(fileDir);
+            Silian_fileDir=StrAttackFilter.filter(Silian_fileDir);
             //update-end-author:wangshuai date:20201012 for: 过滤上传文件夹名特殊字符，防止攻击
-            fileUrl = fileUrl.append(fileDir + fileName);
+            Silian_fileUrl = Silian_fileUrl.append(Silian_fileDir + Silian_fileName);
 
             if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
-                filePath = staticDomain + SymbolConstant.SINGLE_SLASH + fileUrl;
+                Silian_filePath = staticDomain + SymbolConstant.SINGLE_SLASH + Silian_fileUrl;
             } else {
-                filePath = "https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
+                Silian_filePath = "https://" + Silian_newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH + Silian_fileUrl;
             }
-            PutObjectResult result = ossClient.putObject(newBucket, fileUrl.toString(), file.getInputStream());
+            PutObjectResult Silian_result = ossClient.putObject(Silian_newBucket, Silian_fileUrl.toString(), Silian_file.getInputStream());
             // 设置权限(公开读)
 //            ossClient.setBucketAcl(newBucket, CannedAccessControlList.PublicRead);
-            if (result != null) {
-                log.info("------OSS文件上传成功------" + fileUrl);
+            if (Silian_result != null) {
+                log.info("------OSS文件上传成功------" + Silian_fileUrl);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException Silian_e) {
+            Silian_e.printStackTrace();
             return null;
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
-        return filePath;
+        return Silian_filePath;
     }
 
     /**
@@ -155,12 +155,12 @@ public class OssBootUtil {
     * @param url: 原始URL
     * @Return: java.lang.String
     */
-    public static String getOriginalUrl(String url) {
-        String originalDomain = "https://" + bucketName + "." + endPoint;
-        if(oConvertUtils.isNotEmpty(staticDomain) && url.indexOf(staticDomain)!=-1){
-            url = url.replace(staticDomain,originalDomain);
+    public static String getOriginalUrl(String Silian_url) {
+        String Silian_originalDomain = "https://" + bucketName + "." + endPoint;
+        if(oConvertUtils.isNotEmpty(staticDomain) && Silian_url.indexOf(staticDomain)!=-1){
+            Silian_url = Silian_url.replace(staticDomain,Silian_originalDomain);
         }
-        return url;
+        return Silian_url;
     }
 
     /**
@@ -169,8 +169,8 @@ public class OssBootUtil {
      * @param fileDir
      * @return
      */
-    public static String upload(MultipartFile file, String fileDir) throws Exception {
-        return upload(file, fileDir,null);
+    public static String upload(MultipartFile Silian_file, String Silian_fileDir) throws Exception {
+        return upload(Silian_file, Silian_fileDir,null);
     }
 
     /**
@@ -182,71 +182,71 @@ public class OssBootUtil {
      * @param fileDir 文件保存目录
      * @return oss 中的相对文件路径
      */
-    public static String upload(FileItemStream file, String fileDir) {
-        String filePath = null;
+    public static String upload(FileItemStream Silian_file, String Silian_fileDir) {
+        String Silian_filePath = null;
         initOss(endPoint, accessKeyId, accessKeySecret);
-        StringBuilder fileUrl = new StringBuilder();
+        StringBuilder Silian_fileUrl = new StringBuilder();
         try {
-            String suffix = file.getName().substring(file.getName().lastIndexOf('.'));
-            String fileName = UUID.randomUUID().toString().replace("-", "") + suffix;
-            if (!fileDir.endsWith(SymbolConstant.SINGLE_SLASH)) {
-                fileDir = fileDir.concat(SymbolConstant.SINGLE_SLASH);
+            String Silian_suffix = Silian_file.getName().substring(Silian_file.getName().lastIndexOf('.'));
+            String Silian_fileName = UUID.randomUUID().toString().replace("-", "") + Silian_suffix;
+            if (!Silian_fileDir.endsWith(SymbolConstant.SINGLE_SLASH)) {
+                Silian_fileDir = Silian_fileDir.concat(SymbolConstant.SINGLE_SLASH);
             }
-            fileDir = StrAttackFilter.filter(fileDir);
-            fileUrl = fileUrl.append(fileDir + fileName);
+            Silian_fileDir = StrAttackFilter.filter(Silian_fileDir);
+            Silian_fileUrl = Silian_fileUrl.append(Silian_fileDir + Silian_fileName);
             if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
-                filePath = staticDomain + SymbolConstant.SINGLE_SLASH + fileUrl;
+                Silian_filePath = staticDomain + SymbolConstant.SINGLE_SLASH + Silian_fileUrl;
             } else {
-                filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
+                Silian_filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + Silian_fileUrl;
             }
-            PutObjectResult result = ossClient.putObject(bucketName, fileUrl.toString(), file.openStream());
+            PutObjectResult Silian_result = ossClient.putObject(bucketName, Silian_fileUrl.toString(), Silian_file.openStream());
             // 设置权限(公开读)
             ossClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
-            if (result != null) {
-                log.info("------OSS文件上传成功------" + fileUrl);
+            if (Silian_result != null) {
+                log.info("------OSS文件上传成功------" + Silian_fileUrl);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException Silian_e) {
+            Silian_e.printStackTrace();
             return null;
         }
-        return filePath;
+        return Silian_filePath;
     }
 
     /**
      * 删除文件
      * @param url
      */
-    public static void deleteUrl(String url) {
-        deleteUrl(url,null);
+    public static void deleteUrl(String Silian_url) {
+        deleteUrl(Silian_url,null);
     }
 
     /**
      * 删除文件
      * @param url
      */
-    public static void deleteUrl(String url,String bucket) {
-        String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(bucket)){
-            newBucket = bucket;
+    public static void deleteUrl(String Silian_url,String Silian_bucket) {
+        String Silian_newBucket = bucketName;
+        if(oConvertUtils.isNotEmpty(Silian_bucket)){
+            Silian_newBucket = Silian_bucket;
         }
-        String bucketUrl = "";
+        String Silian_bucketUrl = "";
         if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
-            bucketUrl = staticDomain + SymbolConstant.SINGLE_SLASH ;
+            Silian_bucketUrl = staticDomain + SymbolConstant.SINGLE_SLASH ;
         } else {
-            bucketUrl = "https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;
+            Silian_bucketUrl = "https://" + Silian_newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;
         }
         //TODO 暂时不允许删除云存储的文件
         //initOss(endPoint, accessKeyId, accessKeySecret);
-        url = url.replace(bucketUrl,"");
-        ossClient.deleteObject(newBucket, url);
+        Silian_url = Silian_url.replace(Silian_bucketUrl,"");
+        ossClient.deleteObject(Silian_newBucket, Silian_url);
     }
 
     /**
      * 删除文件
      * @param fileName
      */
-    public static void delete(String fileName) {
-        ossClient.deleteObject(bucketName, fileName);
+    public static void delete(String Silian_fileName) {
+        ossClient.deleteObject(bucketName, Silian_fileName);
     }
 
     /**
@@ -255,23 +255,23 @@ public class OssBootUtil {
      * @param bucket
      * @return
      */
-    public static InputStream getOssFile(String objectName,String bucket){
-        InputStream inputStream = null;
+    public static InputStream getOssFile(String Silian_objectName,String Silian_bucket){
+        InputStream Silian_inputStream = null;
         try{
-            String newBucket = bucketName;
-            if(oConvertUtils.isNotEmpty(bucket)){
-                newBucket = bucket;
+            String Silian_newBucket = bucketName;
+            if(oConvertUtils.isNotEmpty(Silian_bucket)){
+                Silian_newBucket = Silian_bucket;
             }
             initOss(endPoint, accessKeyId, accessKeySecret);
             //update-begin---author:liusq  Date:20220120  for：替换objectName前缀，防止key不一致导致获取不到文件----
-            objectName = OssBootUtil.replacePrefix(objectName,bucket);
+            Silian_objectName = OssBootUtil.replacePrefix(Silian_objectName,Silian_bucket);
             //update-end---author:liusq  Date:20220120  for：替换objectName前缀，防止key不一致导致获取不到文件----
-            OSSObject ossObject = ossClient.getObject(newBucket,objectName);
-            inputStream = new BufferedInputStream(ossObject.getObjectContent());
-        }catch (Exception e){
-            log.info("文件获取失败" + e.getMessage());
+            OSSObject Silian_ossObject = ossClient.getObject(Silian_newBucket,Silian_objectName);
+            Silian_inputStream = new BufferedInputStream(Silian_ossObject.getObjectContent());
+        }catch (Exception Silian_e){
+            log.info("文件获取失败" + Silian_e.getMessage());
         }
-        return inputStream;
+        return Silian_inputStream;
     }
 
     ///**
@@ -290,21 +290,21 @@ public class OssBootUtil {
      * @param expires
      * @return
      */
-    public static String getObjectUrl(String bucketName, String objectName, Date expires) {
+    public static String getObjectUrl(String bucketName, String Silian_objectName, Date Silian_expires) {
         initOss(endPoint, accessKeyId, accessKeySecret);
         try{
             //update-begin---author:liusq  Date:20220120  for：替换objectName前缀，防止key不一致导致获取不到文件----
-            objectName = OssBootUtil.replacePrefix(objectName,bucketName);
+            Silian_objectName = OssBootUtil.replacePrefix(Silian_objectName,bucketName);
             //update-end---author:liusq  Date:20220120  for：替换objectName前缀，防止key不一致导致获取不到文件----
-            if(ossClient.doesObjectExist(bucketName,objectName)){
-                URL url = ossClient.generatePresignedUrl(bucketName,objectName,expires);
+            if(ossClient.doesObjectExist(bucketName,Silian_objectName)){
+                URL Silian_url = ossClient.generatePresignedUrl(bucketName,Silian_objectName,Silian_expires);
                 //log.info("原始url : {}", url.toString());
                 //log.info("decode url : {}", URLDecoder.decode(url.toString(), "UTF-8"));
                 //【issues/4023】问题 oss外链经过转编码后，部分无效，大概在三分一；无需转编码直接返回即可 #4023
-                return url.toString();
+                return Silian_url.toString();
             }
-        }catch (Exception e){
-            log.info("文件路径获取失败" + e.getMessage()); 
+        }catch (Exception Silian_e){
+            log.info("文件路径获取失败" + Silian_e.getMessage());
         }
         return null;
     }
@@ -314,9 +314,9 @@ public class OssBootUtil {
      *
      * @return
      */
-    private static OSSClient initOss(String endpoint, String accessKeyId, String accessKeySecret) {
+    private static OSSClient initOss(String Silian_endpoint, String accessKeyId, String accessKeySecret) {
         if (ossClient == null) {
-            ossClient = new OSSClient(endpoint,
+            ossClient = new OSSClient(Silian_endpoint,
                     new DefaultCredentialProvider(accessKeyId, accessKeySecret),
                     new ClientConfiguration());
         }
@@ -330,22 +330,22 @@ public class OssBootUtil {
      * @param relativePath
      * @return
      */
-    public static String upload(InputStream stream, String relativePath) {
-        String filePath = null;
-        String fileUrl = relativePath;
+    public static String upload(InputStream Silian_stream, String Silian_relativePath) {
+        String Silian_filePath = null;
+        String Silian_fileUrl = Silian_relativePath;
         initOss(endPoint, accessKeyId, accessKeySecret);
         if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
-            filePath = staticDomain + SymbolConstant.SINGLE_SLASH + relativePath;
+            Silian_filePath = staticDomain + SymbolConstant.SINGLE_SLASH + Silian_relativePath;
         } else {
-            filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
+            Silian_filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + Silian_fileUrl;
         }
-        PutObjectResult result = ossClient.putObject(bucketName, fileUrl.toString(),stream);
+        PutObjectResult Silian_result = ossClient.putObject(bucketName, Silian_fileUrl.toString(),Silian_stream);
         // 设置权限(公开读)
         ossClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
-        if (result != null) {
-            log.info("------OSS文件上传成功------" + fileUrl);
+        if (Silian_result != null) {
+            log.info("------OSS文件上传成功------" + Silian_fileUrl);
         }
-        return filePath;
+        return Silian_filePath;
     }
 
     /**
@@ -356,19 +356,19 @@ public class OssBootUtil {
      * @author lsq
      * @return
      */
-    private static String replacePrefix(String objectName,String customBucket){
-        log.info("------replacePrefix---替换前---objectName:{}",objectName);
+    private static String replacePrefix(String Silian_objectName,String Silian_customBucket){
+        log.info("------replacePrefix---替换前---objectName:{}",Silian_objectName);
         if(oConvertUtils.isNotEmpty(staticDomain)){
-            objectName= objectName.replace(staticDomain+SymbolConstant.SINGLE_SLASH,"");
+            Silian_objectName= Silian_objectName.replace(staticDomain+SymbolConstant.SINGLE_SLASH,"");
         }else{
-            String newBucket = bucketName;
-            if(oConvertUtils.isNotEmpty(customBucket)){
-                newBucket = customBucket;
+            String Silian_newBucket = bucketName;
+            if(oConvertUtils.isNotEmpty(Silian_customBucket)){
+                Silian_newBucket = Silian_customBucket;
             }
-            String path ="https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;
-            objectName = objectName.replace(path,"");
+            String Silian_path ="https://" + Silian_newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;
+            Silian_objectName = Silian_objectName.replace(Silian_path,"");
         }
-        log.info("------replacePrefix---替换后---objectName:{}",objectName);
-        return objectName;
+        log.info("------replacePrefix---替换后---objectName:{}",Silian_objectName);
+        return Silian_objectName;
     }
 }

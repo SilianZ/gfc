@@ -76,39 +76,39 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<List<SysPermissionTree>> list(SysPermission sysPermission, HttpServletRequest req) {
-        long start = System.currentTimeMillis();
-		Result<List<SysPermissionTree>> result = new Result<>();
+	public Result<List<SysPermissionTree>> list(SysPermission Silian_sysPermission, HttpServletRequest Silian_req) {
+        long Silian_start = System.currentTimeMillis();
+		Result<List<SysPermissionTree>> Silian_result = new Result<>();
 		try {
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.orderByAsc(SysPermission::getSortNo);
-			
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<SysPermission>();
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.orderByAsc(SysPermission::getSortNo);
+
 			//支持通过菜单名字，模糊查询
-			if(oConvertUtils.isNotEmpty(sysPermission.getName())){
-				query.like(SysPermission::getName, sysPermission.getName());
+			if(oConvertUtils.isNotEmpty(Silian_sysPermission.getName())){
+				Silian_query.like(SysPermission::getName, Silian_sysPermission.getName());
 			}
-			List<SysPermission> list = sysPermissionService.list(query);
-			List<SysPermissionTree> treeList = new ArrayList<>();
+			List<SysPermission> Silian_list = sysPermissionService.list(Silian_query);
+			List<SysPermissionTree> Silian_treeList = new ArrayList<>();
 
 			//如果有菜单名查询条件，则平铺数据 不做上下级
-			if(oConvertUtils.isNotEmpty(sysPermission.getName())){
-				if(list!=null && list.size()>0){
-					treeList = list.stream().map(e -> {
-						e.setLeaf(true);
-						return new SysPermissionTree(e);
+			if(oConvertUtils.isNotEmpty(Silian_sysPermission.getName())){
+				if(Silian_list!=null && Silian_list.size()>0){
+					Silian_treeList = Silian_list.stream().map(Silian_e -> {
+						Silian_e.setLeaf(true);
+						return new SysPermissionTree(Silian_e);
 					}).collect(Collectors.toList());
 				}
 			}else{
-				getTreeList(treeList, list, null);
+				getTreeList(Silian_treeList, Silian_list, null);
 			}
-			result.setResult(treeList);
-			result.setSuccess(true);
-            log.info("======获取全部菜单数据=====耗时:" + (System.currentTimeMillis() - start) + "毫秒");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			Silian_result.setResult(Silian_treeList);
+			Silian_result.setSuccess(true);
+            log.info("======获取全部菜单数据=====耗时:" + (System.currentTimeMillis() - Silian_start) + "毫秒");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/*update_begin author:wuxianquan date:20190908 for:先查询一级菜单，当用户点击展开菜单时加载子菜单 */
@@ -119,26 +119,26 @@ public class SysPermissionController {
 	 */
 	@RequestMapping(value = "/getSystemMenuList", method = RequestMethod.GET)
 	public Result<List<SysPermissionTree>> getSystemMenuList() {
-        long start = System.currentTimeMillis();
-		Result<List<SysPermissionTree>> result = new Result<>();
+        long Silian_start = System.currentTimeMillis();
+		Result<List<SysPermissionTree>> Silian_result = new Result<>();
 		try {
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
-			query.eq(SysPermission::getMenuType,CommonConstant.MENU_TYPE_0);
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.orderByAsc(SysPermission::getSortNo);
-			List<SysPermission> list = sysPermissionService.list(query);
-			List<SysPermissionTree> sysPermissionTreeList = new ArrayList<SysPermissionTree>();
-			for(SysPermission sysPermission : list){
-				SysPermissionTree sysPermissionTree = new SysPermissionTree(sysPermission);
-				sysPermissionTreeList.add(sysPermissionTree);
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<SysPermission>();
+			Silian_query.eq(SysPermission::getMenuType,CommonConstant.MENU_TYPE_0);
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.orderByAsc(SysPermission::getSortNo);
+			List<SysPermission> Silian_list = sysPermissionService.list(Silian_query);
+			List<SysPermissionTree> Silian_sysPermissionTreeList = new ArrayList<SysPermissionTree>();
+			for(SysPermission Silian_sysPermission : Silian_list){
+				SysPermissionTree Silian_sysPermissionTree = new SysPermissionTree(Silian_sysPermission);
+				Silian_sysPermissionTreeList.add(Silian_sysPermissionTree);
 			}
-			result.setResult(sysPermissionTreeList);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			Silian_result.setResult(Silian_sysPermissionTreeList);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-        log.info("======获取一级菜单数据=====耗时:" + (System.currentTimeMillis() - start) + "毫秒");
-		return result;
+        log.info("======获取一级菜单数据=====耗时:" + (System.currentTimeMillis() - Silian_start) + "毫秒");
+		return Silian_result;
 	}
 
 	/**
@@ -147,25 +147,25 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getSystemSubmenu", method = RequestMethod.GET)
-	public Result<List<SysPermissionTree>> getSystemSubmenu(@RequestParam("parentId") String parentId){
-		Result<List<SysPermissionTree>> result = new Result<>();
+	public Result<List<SysPermissionTree>> getSystemSubmenu(@RequestParam("parentId") String Silian_parentId){
+		Result<List<SysPermissionTree>> Silian_result = new Result<>();
 		try{
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
-			query.eq(SysPermission::getParentId,parentId);
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.orderByAsc(SysPermission::getSortNo);
-			List<SysPermission> list = sysPermissionService.list(query);
-			List<SysPermissionTree> sysPermissionTreeList = new ArrayList<SysPermissionTree>();
-			for(SysPermission sysPermission : list){
-				SysPermissionTree sysPermissionTree = new SysPermissionTree(sysPermission);
-				sysPermissionTreeList.add(sysPermissionTree);
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<SysPermission>();
+			Silian_query.eq(SysPermission::getParentId,Silian_parentId);
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.orderByAsc(SysPermission::getSortNo);
+			List<SysPermission> Silian_list = sysPermissionService.list(Silian_query);
+			List<SysPermissionTree> Silian_sysPermissionTreeList = new ArrayList<SysPermissionTree>();
+			for(SysPermission Silian_sysPermission : Silian_list){
+				SysPermissionTree Silian_sysPermissionTree = new SysPermissionTree(Silian_sysPermission);
+				Silian_sysPermissionTreeList.add(Silian_sysPermissionTree);
 			}
-			result.setResult(sysPermissionTreeList);
-			result.setSuccess(true);
-		}catch (Exception e){
-			log.error(e.getMessage(), e);
+			Silian_result.setResult(Silian_sysPermissionTreeList);
+			Silian_result.setSuccess(true);
+		}catch (Exception Silian_e){
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 	/*update_end author:wuxianquan date:20190908 for:先查询一级菜单，当用户点击展开菜单时加载子菜单 */
 
@@ -177,37 +177,37 @@ public class SysPermissionController {
 	 * @return 返回 key-value 的 Map
 	 */
 	@GetMapping("/getSystemSubmenuBatch")
-	public Result getSystemSubmenuBatch(@RequestParam("parentIds") String parentIds) {
+	public Result getSystemSubmenuBatch(@RequestParam("parentIds") String Silian_parentIds) {
 		try {
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<>();
-			List<String> parentIdList = Arrays.asList(parentIds.split(","));
-			query.in(SysPermission::getParentId, parentIdList);
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.orderByAsc(SysPermission::getSortNo);
-			List<SysPermission> list = sysPermissionService.list(query);
-			Map<String, List<SysPermissionTree>> listMap = new HashMap(5);
-			for (SysPermission item : list) {
-				String pid = item.getParentId();
-				if (parentIdList.contains(pid)) {
-					List<SysPermissionTree> mapList = listMap.get(pid);
-					if (mapList == null) {
-						mapList = new ArrayList<>();
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<>();
+			List<String> Silian_parentIdList = Arrays.asList(Silian_parentIds.split(","));
+			Silian_query.in(SysPermission::getParentId, Silian_parentIdList);
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.orderByAsc(SysPermission::getSortNo);
+			List<SysPermission> Silian_list = sysPermissionService.list(Silian_query);
+			Map<String, List<SysPermissionTree>> Silian_listMap = new HashMap(5);
+			for (SysPermission Silian_item : Silian_list) {
+				String Silian_pid = Silian_item.getParentId();
+				if (Silian_parentIdList.contains(Silian_pid)) {
+					List<SysPermissionTree> Silian_mapList = Silian_listMap.get(Silian_pid);
+					if (Silian_mapList == null) {
+						Silian_mapList = new ArrayList<>();
 					}
-					mapList.add(new SysPermissionTree(item));
-					listMap.put(pid, mapList);
+					Silian_mapList.add(new SysPermissionTree(Silian_item));
+					Silian_listMap.put(Silian_pid, Silian_mapList);
 				}
 			}
-			return Result.ok(listMap);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return Result.error("批量查询子菜单失败：" + e.getMessage());
+			return Result.ok(Silian_listMap);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			return Result.error("批量查询子菜单失败：" + Silian_e.getMessage());
 		}
 	}
 	// update_end author:sunjianlei date:20200108 for: 新增批量根据父ID查询子级菜单的接口 -------------
 
 //	/**
 //	 * 查询用户拥有的菜单权限和按钮权限（根据用户账号）
-//	 * 
+//	 *
 //	 * @return
 //	 */
 //	@RequestMapping(value = "/queryByUser", method = RequestMethod.GET)
@@ -234,75 +234,75 @@ public class SysPermissionController {
 	 */
 	@RequestMapping(value = "/getUserPermissionByToken", method = RequestMethod.GET)
 	//@DynamicTable(value = DynamicTableConstant.SYS_ROLE_INDEX)
-	public Result<?> getUserPermissionByToken(HttpServletRequest request) {
-		Result<JSONObject> result = new Result<JSONObject>();
+	public Result<?> getUserPermissionByToken(HttpServletRequest Silian_request) {
+		Result<JSONObject> Silian_result = new Result<JSONObject>();
 		try {
 			//直接获取当前用户不适用前端token
-			LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-			if (oConvertUtils.isEmpty(loginUser)) {
+			LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+			if (oConvertUtils.isEmpty(Silian_loginUser)) {
 				return Result.error("请登录系统！");
 			}
-			List<SysPermission> metaList = sysPermissionService.queryByUser(loginUser.getUsername());
+			List<SysPermission> Silian_metaList = sysPermissionService.queryByUser(Silian_loginUser.getUsername());
 			//添加首页路由
 			//update-begin-author:taoyan date:20200211 for: TASK #3368 【路由缓存】首页的缓存设置有问题，需要根据后台的路由配置来实现是否缓存
-			if(!PermissionDataUtil.hasIndexPage(metaList)){
-				SysPermission indexMenu = sysPermissionService.list(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getName,"首页")).get(0);
-				metaList.add(0,indexMenu);
+			if(!PermissionDataUtil.hasIndexPage(Silian_metaList)){
+				SysPermission Silian_indexMenu = sysPermissionService.list(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getName,"首页")).get(0);
+				Silian_metaList.add(0,Silian_indexMenu);
 			}
 			//update-end-author:taoyan date:20200211 for: TASK #3368 【路由缓存】首页的缓存设置有问题，需要根据后台的路由配置来实现是否缓存
 
 			//update-begin--Author:zyf Date:20220425  for:自定义首页地址 LOWCOD-1578
-			String version = request.getHeader(CommonConstant.VERSION);
+			String Silian_version = Silian_request.getHeader(CommonConstant.VERSION);
 			//update-begin---author:liusq ---date:2022-06-29  for：接口返回值修改，同步修改这里的判断逻辑-----------
-			SysRoleIndex roleIndex= sysUserService.getDynamicIndexByUserRole(loginUser.getUsername(),version);
+			SysRoleIndex Silian_roleIndex= sysUserService.getDynamicIndexByUserRole(Silian_loginUser.getUsername(),Silian_version);
 			//update-end---author:liusq ---date:2022-06-29  for：接口返回值修改，同步修改这里的判断逻辑-----------
 			//update-end--Author:zyf  Date:20220425  for：自定义首页地址 LOWCOD-1578
 
-			if(roleIndex!=null){
-				List<SysPermission> menus = metaList.stream().filter(sysPermission -> "首页".equals(sysPermission.getName())).collect(Collectors.toList());
+			if(Silian_roleIndex!=null){
+				List<SysPermission> Silian_menus = Silian_metaList.stream().filter(Silian_sysPermission -> "首页".equals(Silian_sysPermission.getName())).collect(Collectors.toList());
 				//update-begin---author:liusq ---date:2022-06-29  for：设置自定义首页地址和组件----------
-				String component = roleIndex.getComponent();
-				String routeUrl = roleIndex.getUrl();
-				boolean route = roleIndex.isRoute();
-				if(oConvertUtils.isNotEmpty(routeUrl)){
-					menus.get(0).setComponent(component);
-					menus.get(0).setRoute(route);
-					menus.get(0).setUrl(routeUrl);
+				String Silian_component = Silian_roleIndex.getComponent();
+				String Silian_routeUrl = Silian_roleIndex.getUrl();
+				boolean Silian_route = Silian_roleIndex.isRoute();
+				if(oConvertUtils.isNotEmpty(Silian_routeUrl)){
+					Silian_menus.get(0).setComponent(Silian_component);
+					Silian_menus.get(0).setRoute(Silian_route);
+					Silian_menus.get(0).setUrl(Silian_routeUrl);
 				}else{
-					menus.get(0).setComponent(component);
+					Silian_menus.get(0).setComponent(Silian_component);
 				}
 				//update-end---author:liusq ---date:2022-06-29  for：设置自定义首页地址和组件-----------
 			}
-			
-			JSONObject json = new JSONObject();
-			JSONArray menujsonArray = new JSONArray();
-			this.getPermissionJsonArray(menujsonArray, metaList, null);
-			//一级菜单下的子菜单全部是隐藏路由，则一级菜单不显示
-			this.handleFirstLevelMenuHidden(menujsonArray);
 
-			JSONArray authjsonArray = new JSONArray();
-			this.getAuthJsonArray(authjsonArray, metaList);
+			JSONObject Silian_json = new JSONObject();
+			JSONArray Silian_menujsonArray = new JSONArray();
+			this.getPermissionJsonArray(Silian_menujsonArray, Silian_metaList, null);
+			//一级菜单下的子菜单全部是隐藏路由，则一级菜单不显示
+			this.handleFirstLevelMenuHidden(Silian_menujsonArray);
+
+			JSONArray Silian_authjsonArray = new JSONArray();
+			this.getAuthJsonArray(Silian_authjsonArray, Silian_metaList);
 			//查询所有的权限
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.eq(SysPermission::getMenuType, CommonConstant.MENU_TYPE_2);
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<SysPermission>();
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.eq(SysPermission::getMenuType, CommonConstant.MENU_TYPE_2);
 			//query.eq(SysPermission::getStatus, "1");
-			List<SysPermission> allAuthList = sysPermissionService.list(query);
-			JSONArray allauthjsonArray = new JSONArray();
-			this.getAllAuthJsonArray(allauthjsonArray, allAuthList);
+			List<SysPermission> Silian_allAuthList = sysPermissionService.list(Silian_query);
+			JSONArray Silian_allauthjsonArray = new JSONArray();
+			this.getAllAuthJsonArray(Silian_allauthjsonArray, Silian_allAuthList);
 			//路由菜单
-			json.put("menu", menujsonArray);
+			Silian_json.put("menu", Silian_menujsonArray);
 			//按钮权限（用户拥有的权限集合）
-			json.put("auth", authjsonArray);
+			Silian_json.put("auth", Silian_authjsonArray);
 			//全部权限配置集合（按钮权限，访问权限）
-			json.put("allAuth", allauthjsonArray);
-			json.put("sysSafeMode", jeecgBaseConfig.getSafeMode());
-			result.setResult(json);
-		} catch (Exception e) {
-			result.error500("查询失败:" + e.getMessage());  
-			log.error(e.getMessage(), e);
+			Silian_json.put("allAuth", Silian_allauthjsonArray);
+			Silian_json.put("sysSafeMode", jeecgBaseConfig.getSafeMode());
+			Silian_result.setResult(Silian_json);
+		} catch (Exception Silian_e) {
+			Silian_result.error500("查询失败:" + Silian_e.getMessage());
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -315,39 +315,39 @@ public class SysPermissionController {
 	public Result<?> getPermCode() {
 		try {
 			// 直接获取当前用户
-			LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-			if (oConvertUtils.isEmpty(loginUser)) {
+			LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+			if (oConvertUtils.isEmpty(Silian_loginUser)) {
 				return Result.error("请登录系统！");
 			}
 			// 获取当前用户的权限集合
-			List<SysPermission> metaList = sysPermissionService.queryByUser(loginUser.getUsername());
+			List<SysPermission> Silian_metaList = sysPermissionService.queryByUser(Silian_loginUser.getUsername());
             // 按钮权限（用户拥有的权限集合）
-            List<String> codeList = metaList.stream()
-                    .filter((permission) -> CommonConstant.MENU_TYPE_2.equals(permission.getMenuType()) && CommonConstant.STATUS_1.equals(permission.getStatus()))
-                    .collect(ArrayList::new, (list, permission) -> list.add(permission.getPerms()), ArrayList::addAll);
+            List<String> Silian_codeList = Silian_metaList.stream()
+                    .filter((Silian_permission) -> CommonConstant.MENU_TYPE_2.equals(Silian_permission.getMenuType()) && CommonConstant.STATUS_1.equals(Silian_permission.getStatus()))
+                    .collect(ArrayList::new, (Silian_list, Silian_permission) -> Silian_list.add(Silian_permission.getPerms()), ArrayList::addAll);
             //
-			JSONArray authArray = new JSONArray();
-			this.getAuthJsonArray(authArray, metaList);
+			JSONArray Silian_authArray = new JSONArray();
+			this.getAuthJsonArray(Silian_authArray, Silian_metaList);
 			// 查询所有的权限
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<>();
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.eq(SysPermission::getMenuType, CommonConstant.MENU_TYPE_2);
-			List<SysPermission> allAuthList = sysPermissionService.list(query);
-			JSONArray allAuthArray = new JSONArray();
-			this.getAllAuthJsonArray(allAuthArray, allAuthList);
-			JSONObject result = new JSONObject();
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<>();
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.eq(SysPermission::getMenuType, CommonConstant.MENU_TYPE_2);
+			List<SysPermission> Silian_allAuthList = sysPermissionService.list(Silian_query);
+			JSONArray Silian_allAuthArray = new JSONArray();
+			this.getAllAuthJsonArray(Silian_allAuthArray, Silian_allAuthList);
+			JSONObject Silian_result = new JSONObject();
             // 所拥有的权限编码
-			result.put("codeList", codeList);
+			Silian_result.put("codeList", Silian_codeList);
 			//按钮权限（用户拥有的权限集合）
-			result.put("auth", authArray);
+			Silian_result.put("auth", Silian_authArray);
 			//全部权限配置集合（按钮权限，访问权限）
-			result.put("allAuth", allAuthArray);
+			Silian_result.put("allAuth", Silian_allAuthArray);
             // 系统安全模式
-			result.put("sysSafeMode", jeecgBaseConfig.getSafeMode());
-            return Result.OK(result);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-            return Result.error("查询失败:" + e.getMessage());
+			Silian_result.put("sysSafeMode", jeecgBaseConfig.getSafeMode());
+            return Result.OK(Silian_result);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+            return Result.error("查询失败:" + Silian_e.getMessage());
 		}
 	}
 
@@ -358,17 +358,17 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Result<SysPermission> add(@RequestBody SysPermission permission) {
-		Result<SysPermission> result = new Result<SysPermission>();
+	public Result<SysPermission> add(@RequestBody SysPermission Silian_permission) {
+		Result<SysPermission> Silian_result = new Result<SysPermission>();
 		try {
-			permission = PermissionDataUtil.intelligentProcessData(permission);
-			sysPermissionService.addPermission(permission);
-			result.success("添加成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			Silian_permission = PermissionDataUtil.intelligentProcessData(Silian_permission);
+			sysPermissionService.addPermission(Silian_permission);
+			Silian_result.success("添加成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -378,17 +378,17 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/edit", method = { RequestMethod.PUT, RequestMethod.POST })
-	public Result<SysPermission> edit(@RequestBody SysPermission permission) {
-		Result<SysPermission> result = new Result<>();
+	public Result<SysPermission> edit(@RequestBody SysPermission Silian_permission) {
+		Result<SysPermission> Silian_result = new Result<>();
 		try {
-			permission = PermissionDataUtil.intelligentProcessData(permission);
-			sysPermissionService.editPermission(permission);
-			result.success("修改成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			Silian_permission = PermissionDataUtil.intelligentProcessData(Silian_permission);
+			sysPermissionService.editPermission(Silian_permission);
+			Silian_result.success("修改成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -398,19 +398,19 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/checkPermDuplication", method = RequestMethod.GET)
-	public Result<String> checkPermDuplication(@RequestParam(name = "id", required = false) String id, @RequestParam(name = "url") String url, @RequestParam(name = "alwaysShow") Boolean alwaysShow) {
-		Result<String> result = new Result<>();
+	public Result<String> checkPermDuplication(@RequestParam(name = "id", required = false) String Silian_id, @RequestParam(name = "url") String Silian_url, @RequestParam(name = "alwaysShow") Boolean Silian_alwaysShow) {
+		Result<String> Silian_result = new Result<>();
 		try {
-			boolean check=sysPermissionService.checkPermDuplication(id,url,alwaysShow);
-			if(check){
+			boolean Silian_check=sysPermissionService.checkPermDuplication(Silian_id,Silian_url,Silian_alwaysShow);
+			if(Silian_check){
 				return Result.ok("该值可用！");
 			}
 			return Result.error("该值不可用，系统中已存在！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -420,16 +420,16 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result<SysPermission> delete(@RequestParam(name = "id", required = true) String id) {
-		Result<SysPermission> result = new Result<>();
+	public Result<SysPermission> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+		Result<SysPermission> Silian_result = new Result<>();
 		try {
-			sysPermissionService.deletePermission(id);
-			result.success("删除成功!");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500(e.getMessage());
+			sysPermissionService.deletePermission(Silian_id);
+			Silian_result.success("删除成功!");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500(Silian_e.getMessage());
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -439,29 +439,29 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-	public Result<SysPermission> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-		Result<SysPermission> result = new Result<>();
+	public Result<SysPermission> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+		Result<SysPermission> Silian_result = new Result<>();
 		try {
-            String[] arr = ids.split(",");
-			for (String id : arr) {
-				if (oConvertUtils.isNotEmpty(id)) {
+            String[] Silian_arr = Silian_ids.split(",");
+			for (String Silian_id : Silian_arr) {
+				if (oConvertUtils.isNotEmpty(Silian_id)) {
 					try {
-						sysPermissionService.deletePermission(id);
-					} catch (JeecgBootException e) {
-						if(e.getMessage()!=null && e.getMessage().contains("未找到菜单信息")){
-							log.warn(e.getMessage());
+						sysPermissionService.deletePermission(Silian_id);
+					} catch (JeecgBootException Silian_e) {
+						if(Silian_e.getMessage()!=null && Silian_e.getMessage().contains("未找到菜单信息")){
+							log.warn(Silian_e.getMessage());
 						}else{
-							throw e;
+							throw Silian_e;
 						}
 					}
 				}
 			}
-			result.success("删除成功!");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("删除失败!");
+			Silian_result.success("删除成功!");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("删除失败!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -471,31 +471,31 @@ public class SysPermissionController {
 	 */
 	@RequestMapping(value = "/queryTreeList", method = RequestMethod.GET)
 	public Result<Map<String, Object>> queryTreeList() {
-		Result<Map<String, Object>> result = new Result<>();
+		Result<Map<String, Object>> Silian_result = new Result<>();
 		// 全部权限ids
-		List<String> ids = new ArrayList<>();
+		List<String> Silian_ids = new ArrayList<>();
 		try {
-			LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
-			query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
-			query.orderByAsc(SysPermission::getSortNo);
-			List<SysPermission> list = sysPermissionService.list(query);
-			for (SysPermission sysPer : list) {
-				ids.add(sysPer.getId());
+			LambdaQueryWrapper<SysPermission> Silian_query = new LambdaQueryWrapper<SysPermission>();
+			Silian_query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+			Silian_query.orderByAsc(SysPermission::getSortNo);
+			List<SysPermission> Silian_list = sysPermissionService.list(Silian_query);
+			for (SysPermission Silian_sysPer : Silian_list) {
+				Silian_ids.add(Silian_sysPer.getId());
 			}
-			List<TreeModel> treeList = new ArrayList<>();
-			getTreeModelList(treeList, list, null);
+			List<TreeModel> Silian_treeList = new ArrayList<>();
+			getTreeModelList(Silian_treeList, Silian_list, null);
 
-			Map<String, Object> resMap = new HashMap<String, Object>(5);
+			Map<String, Object> Silian_resMap = new HashMap<String, Object>(5);
             // 全部树节点数据
-			resMap.put("treeList", treeList);
+			Silian_resMap.put("treeList", Silian_treeList);
             // 全部树ids
-			resMap.put("ids", ids);
-			result.setResult(resMap);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			Silian_resMap.put("ids", Silian_ids);
+			Silian_result.setResult(Silian_resMap);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -504,21 +504,21 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryListAsync", method = RequestMethod.GET)
-	public Result<List<TreeModel>> queryAsync(@RequestParam(name = "pid", required = false) String parentId) {
-		Result<List<TreeModel>> result = new Result<>();
+	public Result<List<TreeModel>> queryAsync(@RequestParam(name = "pid", required = false) String Silian_parentId) {
+		Result<List<TreeModel>> Silian_result = new Result<>();
 		try {
-			List<TreeModel> list = sysPermissionService.queryListByParentId(parentId);
-			if (list == null || list.size() <= 0) {
-				result.error500("未找到角色信息");
+			List<TreeModel> Silian_list = sysPermissionService.queryListByParentId(Silian_parentId);
+			if (Silian_list == null || Silian_list.size() <= 0) {
+				Silian_result.error500("未找到角色信息");
 			} else {
-				result.setResult(list);
-				result.setSuccess(true);
+				Silian_result.setResult(Silian_list);
+				Silian_result.setSuccess(true);
 			}
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
 
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -527,16 +527,16 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryRolePermission", method = RequestMethod.GET)
-	public Result<List<String>> queryRolePermission(@RequestParam(name = "roleId", required = true) String roleId) {
-		Result<List<String>> result = new Result<>();
+	public Result<List<String>> queryRolePermission(@RequestParam(name = "roleId", required = true) String Silian_roleId) {
+		Result<List<String>> Silian_result = new Result<>();
 		try {
-			List<SysRolePermission> list = sysRolePermissionService.list(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, roleId));
-			result.setResult(list.stream().map(sysRolePermission -> String.valueOf(sysRolePermission.getPermissionId())).collect(Collectors.toList()));
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			List<SysRolePermission> Silian_list = sysRolePermissionService.list(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, Silian_roleId));
+			Silian_result.setResult(Silian_list.stream().map(Silian_sysRolePermission -> String.valueOf(Silian_sysRolePermission.getPermissionId())).collect(Collectors.toList()));
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -546,59 +546,59 @@ public class SysPermissionController {
 	 */
 	@RequestMapping(value = "/saveRolePermission", method = RequestMethod.POST)
 	//@RequiresRoles({ "admin" })
-	public Result<String> saveRolePermission(@RequestBody JSONObject json) {
-		long start = System.currentTimeMillis();
-		Result<String> result = new Result<>();
+	public Result<String> saveRolePermission(@RequestBody JSONObject Silian_json) {
+		long Silian_start = System.currentTimeMillis();
+		Result<String> Silian_result = new Result<>();
 		try {
-			String roleId = json.getString("roleId");
-			String permissionIds = json.getString("permissionIds");
-			String lastPermissionIds = json.getString("lastpermissionIds");
-			this.sysRolePermissionService.saveRolePermission(roleId, permissionIds, lastPermissionIds);
+			String Silian_roleId = Silian_json.getString("roleId");
+			String Silian_permissionIds = Silian_json.getString("permissionIds");
+			String Silian_lastPermissionIds = Silian_json.getString("lastpermissionIds");
+			this.sysRolePermissionService.saveRolePermission(Silian_roleId, Silian_permissionIds, Silian_lastPermissionIds);
 			//update-begin---author:wangshuai ---date:20220316  for：[VUEN-234]用户管理角色授权添加敏感日志------------
-            LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-			baseCommonService.addLog("修改角色ID: "+roleId+" 的权限配置，操作人： " +loginUser.getUsername() ,CommonConstant.LOG_TYPE_2, 2);
+            LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+			baseCommonService.addLog("修改角色ID: "+Silian_roleId+" 的权限配置，操作人： " +Silian_loginUser.getUsername() ,CommonConstant.LOG_TYPE_2, 2);
             //update-end---author:wangshuai ---date:20220316  for：[VUEN-234]用户管理角色授权添加敏感日志------------
-			result.success("保存成功！");
-			log.info("======角色授权成功=====耗时:" + (System.currentTimeMillis() - start) + "毫秒");
-		} catch (Exception e) {
-			result.error500("授权失败！");
-			log.error(e.getMessage(), e);
+			Silian_result.success("保存成功！");
+			log.info("======角色授权成功=====耗时:" + (System.currentTimeMillis() - Silian_start) + "毫秒");
+		} catch (Exception Silian_e) {
+			Silian_result.error500("授权失败！");
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
-	private void getTreeList(List<SysPermissionTree> treeList, List<SysPermission> metaList, SysPermissionTree temp) {
-		for (SysPermission permission : metaList) {
-			String tempPid = permission.getParentId();
-			SysPermissionTree tree = new SysPermissionTree(permission);
-			if (temp == null && oConvertUtils.isEmpty(tempPid)) {
-				treeList.add(tree);
-				if (!tree.getIsLeaf()) {
-					getTreeList(treeList, metaList, tree);
+	private void getTreeList(List<SysPermissionTree> Silian_treeList, List<SysPermission> Silian_metaList, SysPermissionTree Silian_temp) {
+		for (SysPermission Silian_permission : Silian_metaList) {
+			String Silian_tempPid = Silian_permission.getParentId();
+			SysPermissionTree Silian_tree = new SysPermissionTree(Silian_permission);
+			if (Silian_temp == null && oConvertUtils.isEmpty(Silian_tempPid)) {
+				Silian_treeList.add(Silian_tree);
+				if (!Silian_tree.getIsLeaf()) {
+					getTreeList(Silian_treeList, Silian_metaList, Silian_tree);
 				}
-			} else if (temp != null && tempPid != null && tempPid.equals(temp.getId())) {
-				temp.getChildren().add(tree);
-				if (!tree.getIsLeaf()) {
-					getTreeList(treeList, metaList, tree);
+			} else if (Silian_temp != null && Silian_tempPid != null && Silian_tempPid.equals(Silian_temp.getId())) {
+				Silian_temp.getChildren().add(Silian_tree);
+				if (!Silian_tree.getIsLeaf()) {
+					getTreeList(Silian_treeList, Silian_metaList, Silian_tree);
 				}
 			}
 
 		}
 	}
 
-	private void getTreeModelList(List<TreeModel> treeList, List<SysPermission> metaList, TreeModel temp) {
-		for (SysPermission permission : metaList) {
-			String tempPid = permission.getParentId();
-			TreeModel tree = new TreeModel(permission);
-			if (temp == null && oConvertUtils.isEmpty(tempPid)) {
-				treeList.add(tree);
-				if (!tree.getIsLeaf()) {
-					getTreeModelList(treeList, metaList, tree);
+	private void getTreeModelList(List<TreeModel> Silian_treeList, List<SysPermission> Silian_metaList, TreeModel Silian_temp) {
+		for (SysPermission Silian_permission : Silian_metaList) {
+			String Silian_tempPid = Silian_permission.getParentId();
+			TreeModel Silian_tree = new TreeModel(Silian_permission);
+			if (Silian_temp == null && oConvertUtils.isEmpty(Silian_tempPid)) {
+				Silian_treeList.add(Silian_tree);
+				if (!Silian_tree.getIsLeaf()) {
+					getTreeModelList(Silian_treeList, Silian_metaList, Silian_tree);
 				}
-			} else if (temp != null && tempPid != null && tempPid.equals(temp.getKey())) {
-				temp.getChildren().add(tree);
-				if (!tree.getIsLeaf()) {
-					getTreeModelList(treeList, metaList, tree);
+			} else if (Silian_temp != null && Silian_tempPid != null && Silian_tempPid.equals(Silian_temp.getKey())) {
+				Silian_temp.getChildren().add(Silian_tree);
+				if (!Silian_tree.getIsLeaf()) {
+					getTreeModelList(Silian_treeList, Silian_metaList, Silian_tree);
 				}
 			}
 
@@ -609,23 +609,23 @@ public class SysPermissionController {
 	 * 一级菜单的子菜单全部是隐藏路由，则一级菜单不显示
 	 * @param jsonArray
 	 */
-	private void handleFirstLevelMenuHidden(JSONArray jsonArray) {
-		jsonArray = jsonArray.stream().map(obj -> {
-			JSONObject returnObj = new JSONObject();
-			JSONObject jsonObj = (JSONObject)obj;
-			if(jsonObj.containsKey(CHILDREN)){
-				JSONArray childrens = jsonObj.getJSONArray(CHILDREN);
-                childrens = childrens.stream().filter(arrObj -> !"true".equals(((JSONObject) arrObj).getString("hidden"))).collect(Collectors.toCollection(JSONArray::new));
-                if(childrens==null || childrens.size()==0){
-                    jsonObj.put("hidden",true);
+	private void handleFirstLevelMenuHidden(JSONArray Silian_jsonArray) {
+		Silian_jsonArray = Silian_jsonArray.stream().map(Silian_obj -> {
+			JSONObject Silian_returnObj = new JSONObject();
+			JSONObject Silian_jsonObj = (JSONObject)Silian_obj;
+			if(Silian_jsonObj.containsKey(CHILDREN)){
+				JSONArray Silian_childrens = Silian_jsonObj.getJSONArray(CHILDREN);
+                Silian_childrens = Silian_childrens.stream().filter(Silian_arrObj -> !"true".equals(((JSONObject) Silian_arrObj).getString("hidden"))).collect(Collectors.toCollection(JSONArray::new));
+                if(Silian_childrens==null || Silian_childrens.size()==0){
+                    Silian_jsonObj.put("hidden",true);
 
                     //vue3版本兼容代码
-                    JSONObject meta = new JSONObject();
-                    meta.put("hideMenu",true);
-                    jsonObj.put("meta", meta);
+                    JSONObject Silian_meta = new JSONObject();
+                    Silian_meta.put("hideMenu",true);
+                    Silian_jsonObj.put("meta", Silian_meta);
                 }
 			}
-			return returnObj;
+			return Silian_returnObj;
 		}).collect(Collectors.toCollection(JSONArray::new));
 	}
 
@@ -635,16 +635,16 @@ public class SysPermissionController {
 	 * @param jsonArray
 	 * @param allList
 	 */
-	private void getAllAuthJsonArray(JSONArray jsonArray,List<SysPermission> allList) {
-		JSONObject json = null;
-		for (SysPermission permission : allList) {
-			json = new JSONObject();
-			json.put("action", permission.getPerms());
-			json.put("status", permission.getStatus());
+	private void getAllAuthJsonArray(JSONArray Silian_jsonArray,List<SysPermission> Silian_allList) {
+		JSONObject Silian_json = null;
+		for (SysPermission Silian_permission : Silian_allList) {
+			Silian_json = new JSONObject();
+			Silian_json.put("action", Silian_permission.getPerms());
+			Silian_json.put("status", Silian_permission.getStatus());
 			//1显示2禁用
-			json.put("type", permission.getPermsType());
-			json.put("describe", permission.getName());
-			jsonArray.add(json);
+			Silian_json.put("type", Silian_permission.getPermsType());
+			Silian_json.put("describe", Silian_permission.getName());
+			Silian_jsonArray.add(Silian_json);
 		}
 	}
 
@@ -653,18 +653,18 @@ public class SysPermissionController {
 	 * @param jsonArray
 	 * @param metaList
 	 */
-	private void getAuthJsonArray(JSONArray jsonArray,List<SysPermission> metaList) {
-		for (SysPermission permission : metaList) {
-			if(permission.getMenuType()==null) {
+	private void getAuthJsonArray(JSONArray Silian_jsonArray,List<SysPermission> Silian_metaList) {
+		for (SysPermission Silian_permission : Silian_metaList) {
+			if(Silian_permission.getMenuType()==null) {
 				continue;
 			}
-			JSONObject json = null;
-			if(permission.getMenuType().equals(CommonConstant.MENU_TYPE_2) &&CommonConstant.STATUS_1.equals(permission.getStatus())) {
-				json = new JSONObject();
-				json.put("action", permission.getPerms());
-				json.put("type", permission.getPermsType());
-				json.put("describe", permission.getName());
-				jsonArray.add(json);
+			JSONObject Silian_json = null;
+			if(Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_2) &&CommonConstant.STATUS_1.equals(Silian_permission.getStatus())) {
+				Silian_json = new JSONObject();
+				Silian_json.put("action", Silian_permission.getPerms());
+				Silian_json.put("type", Silian_permission.getPermsType());
+				Silian_json.put("describe", Silian_permission.getName());
+				Silian_jsonArray.add(Silian_json);
 			}
 		}
 	}
@@ -674,44 +674,44 @@ public class SysPermissionController {
 	 * @param metaList
 	 * @param parentJson
 	 */
-	private void getPermissionJsonArray(JSONArray jsonArray, List<SysPermission> metaList, JSONObject parentJson) {
-		for (SysPermission permission : metaList) {
-			if (permission.getMenuType() == null) {
+	private void getPermissionJsonArray(JSONArray Silian_jsonArray, List<SysPermission> Silian_metaList, JSONObject Silian_parentJson) {
+		for (SysPermission Silian_permission : Silian_metaList) {
+			if (Silian_permission.getMenuType() == null) {
 				continue;
 			}
-			String tempPid = permission.getParentId();
-			JSONObject json = getPermissionJsonObject(permission);
-			if(json==null) {
+			String Silian_tempPid = Silian_permission.getParentId();
+			JSONObject Silian_json = getPermissionJsonObject(Silian_permission);
+			if(Silian_json==null) {
 				continue;
 			}
-			if (parentJson == null && oConvertUtils.isEmpty(tempPid)) {
-				jsonArray.add(json);
-				if (!permission.isLeaf()) {
-					getPermissionJsonArray(jsonArray, metaList, json);
+			if (Silian_parentJson == null && oConvertUtils.isEmpty(Silian_tempPid)) {
+				Silian_jsonArray.add(Silian_json);
+				if (!Silian_permission.isLeaf()) {
+					getPermissionJsonArray(Silian_jsonArray, Silian_metaList, Silian_json);
 				}
-			} else if (parentJson != null && oConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))) {
+			} else if (Silian_parentJson != null && oConvertUtils.isNotEmpty(Silian_tempPid) && Silian_tempPid.equals(Silian_parentJson.getString("id"))) {
 				// 类型( 0：一级菜单 1：子菜单 2：按钮 )
-				if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
-					JSONObject metaJson = parentJson.getJSONObject("meta");
-					if (metaJson.containsKey("permissionList")) {
-						metaJson.getJSONArray("permissionList").add(json);
+				if (Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
+					JSONObject Silian_metaJson = Silian_parentJson.getJSONObject("meta");
+					if (Silian_metaJson.containsKey("permissionList")) {
+						Silian_metaJson.getJSONArray("permissionList").add(Silian_json);
 					} else {
-						JSONArray permissionList = new JSONArray();
-						permissionList.add(json);
-						metaJson.put("permissionList", permissionList);
+						JSONArray Silian_permissionList = new JSONArray();
+						Silian_permissionList.add(Silian_json);
+						Silian_metaJson.put("permissionList", Silian_permissionList);
 					}
 					// 类型( 0：一级菜单 1：子菜单 2：按钮 )
-				} else if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_1) || permission.getMenuType().equals(CommonConstant.MENU_TYPE_0)) {
-					if (parentJson.containsKey("children")) {
-						parentJson.getJSONArray("children").add(json);
+				} else if (Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_1) || Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_0)) {
+					if (Silian_parentJson.containsKey("children")) {
+						Silian_parentJson.getJSONArray("children").add(Silian_json);
 					} else {
-						JSONArray children = new JSONArray();
-						children.add(json);
-						parentJson.put("children", children);
+						JSONArray Silian_children = new JSONArray();
+						Silian_children.add(Silian_json);
+						Silian_parentJson.put("children", Silian_children);
 					}
 
-					if (!permission.isLeaf()) {
-						getPermissionJsonArray(jsonArray, metaList, json);
+					if (!Silian_permission.isLeaf()) {
+						getPermissionJsonArray(Silian_jsonArray, Silian_metaList, Silian_json);
 					}
 				}
 			}
@@ -724,97 +724,97 @@ public class SysPermissionController {
 	 * @param permission
 	 * @return
 	 */
-		private JSONObject getPermissionJsonObject(SysPermission permission) {
-		JSONObject json = new JSONObject();
+		private JSONObject getPermissionJsonObject(SysPermission Silian_permission) {
+		JSONObject Silian_json = new JSONObject();
 		// 类型(0：一级菜单 1：子菜单 2：按钮)
-		if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
+		if (Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
 			//json.put("action", permission.getPerms());
 			//json.put("type", permission.getPermsType());
 			//json.put("describe", permission.getName());
 			return null;
-		} else if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_0) || permission.getMenuType().equals(CommonConstant.MENU_TYPE_1)) {
-			json.put("id", permission.getId());
-			if (permission.isRoute()) {
+		} else if (Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_0) || Silian_permission.getMenuType().equals(CommonConstant.MENU_TYPE_1)) {
+			Silian_json.put("id", Silian_permission.getId());
+			if (Silian_permission.isRoute()) {
                 //表示生成路由
-				json.put("route", "1");
+				Silian_json.put("route", "1");
 			} else {
                 //表示不生成路由
-				json.put("route", "0");
+				Silian_json.put("route", "0");
 			}
 
-			if (isWwwHttpUrl(permission.getUrl())) {
-				json.put("path", Md5Util.md5Encode(permission.getUrl(), "utf-8"));
+			if (isWwwHttpUrl(Silian_permission.getUrl())) {
+				Silian_json.put("path", Md5Util.md5Encode(Silian_permission.getUrl(), "utf-8"));
 			} else {
-				json.put("path", permission.getUrl());
+				Silian_json.put("path", Silian_permission.getUrl());
 			}
 
 			// 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
-			if (oConvertUtils.isNotEmpty(permission.getComponentName())) {
-				json.put("name", permission.getComponentName());
+			if (oConvertUtils.isNotEmpty(Silian_permission.getComponentName())) {
+				Silian_json.put("name", Silian_permission.getComponentName());
 			} else {
-				json.put("name", urlToRouteName(permission.getUrl()));
+				Silian_json.put("name", urlToRouteName(Silian_permission.getUrl()));
 			}
 
-			JSONObject meta = new JSONObject();
+			JSONObject Silian_meta = new JSONObject();
 			// 是否隐藏路由，默认都是显示的
-			if (permission.isHidden()) {
-				json.put("hidden", true);
+			if (Silian_permission.isHidden()) {
+				Silian_json.put("hidden", true);
                 //vue3版本兼容代码
-                meta.put("hideMenu",true);
+                Silian_meta.put("hideMenu",true);
 			}
 			// 聚合路由
-			if (permission.isAlwaysShow()) {
-				json.put("alwaysShow", true);
+			if (Silian_permission.isAlwaysShow()) {
+				Silian_json.put("alwaysShow", true);
 			}
-			json.put("component", permission.getComponent());
+			Silian_json.put("component", Silian_permission.getComponent());
 			// 由用户设置是否缓存页面 用布尔值
-			if (permission.isKeepAlive()) {
-				meta.put("keepAlive", true);
+			if (Silian_permission.isKeepAlive()) {
+				Silian_meta.put("keepAlive", true);
 			} else {
-				meta.put("keepAlive", false);
+				Silian_meta.put("keepAlive", false);
 			}
 
 			/*update_begin author:wuxianquan date:20190908 for:往菜单信息里添加外链菜单打开方式 */
 			//外链菜单打开方式
-			if (permission.isInternalOrExternal()) {
-				meta.put("internalOrExternal", true);
+			if (Silian_permission.isInternalOrExternal()) {
+				Silian_meta.put("internalOrExternal", true);
 			} else {
-				meta.put("internalOrExternal", false);
+				Silian_meta.put("internalOrExternal", false);
 			}
 			/* update_end author:wuxianquan date:20190908 for: 往菜单信息里添加外链菜单打开方式*/
 
-			meta.put("title", permission.getName());
+			Silian_meta.put("title", Silian_permission.getName());
 
 			//update-begin--Author:scott  Date:20201015 for：路由缓存问题，关闭了tab页时再打开就不刷新 #842
-			String component = permission.getComponent();
-			if(oConvertUtils.isNotEmpty(permission.getComponentName()) || oConvertUtils.isNotEmpty(component)){
-				meta.put("componentName", oConvertUtils.getString(permission.getComponentName(),component.substring(component.lastIndexOf("/")+1)));
+			String Silian_component = Silian_permission.getComponent();
+			if(oConvertUtils.isNotEmpty(Silian_permission.getComponentName()) || oConvertUtils.isNotEmpty(Silian_component)){
+				Silian_meta.put("componentName", oConvertUtils.getString(Silian_permission.getComponentName(),Silian_component.substring(Silian_component.lastIndexOf("/")+1)));
 			}
 			//update-end--Author:scott  Date:20201015 for：路由缓存问题，关闭了tab页时再打开就不刷新 #842
 
-			if (oConvertUtils.isEmpty(permission.getParentId())) {
+			if (oConvertUtils.isEmpty(Silian_permission.getParentId())) {
 				// 一级菜单跳转地址
-				json.put("redirect", permission.getRedirect());
-				if (oConvertUtils.isNotEmpty(permission.getIcon())) {
-					meta.put("icon", permission.getIcon());
+				Silian_json.put("redirect", Silian_permission.getRedirect());
+				if (oConvertUtils.isNotEmpty(Silian_permission.getIcon())) {
+					Silian_meta.put("icon", Silian_permission.getIcon());
 				}
 			} else {
-				if (oConvertUtils.isNotEmpty(permission.getIcon())) {
-					meta.put("icon", permission.getIcon());
+				if (oConvertUtils.isNotEmpty(Silian_permission.getIcon())) {
+					Silian_meta.put("icon", Silian_permission.getIcon());
 				}
 			}
-			if (isWwwHttpUrl(permission.getUrl())) {
-				meta.put("url", permission.getUrl());
+			if (isWwwHttpUrl(Silian_permission.getUrl())) {
+				Silian_meta.put("url", Silian_permission.getUrl());
 			}
 			// update-begin--Author:sunjianlei  Date:20210918 for：新增适配vue3项目的隐藏tab功能
-			if (permission.isHideTab()) {
-				meta.put("hideTab", true);
+			if (Silian_permission.isHideTab()) {
+				Silian_meta.put("hideTab", true);
 			}
 			// update-end--Author:sunjianlei  Date:20210918 for：新增适配vue3项目的隐藏tab功能
-			json.put("meta", meta);
+			Silian_json.put("meta", Silian_meta);
 		}
 
-		return json;
+		return Silian_json;
 	}
 
 	/**
@@ -823,9 +823,9 @@ public class SysPermissionController {
 	 *
 	 * @return
 	 */
-	private boolean isWwwHttpUrl(String url) {
-        boolean flag = url != null && (url.startsWith(CommonConstant.HTTP_PROTOCOL) || url.startsWith(CommonConstant.HTTPS_PROTOCOL) || url.startsWith(SymbolConstant.DOUBLE_LEFT_CURLY_BRACKET));
-        if (flag) {
+	private boolean isWwwHttpUrl(String Silian_url) {
+        boolean Silian_flag = Silian_url != null && (Silian_url.startsWith(CommonConstant.HTTP_PROTOCOL) || Silian_url.startsWith(CommonConstant.HTTPS_PROTOCOL) || Silian_url.startsWith(SymbolConstant.DOUBLE_LEFT_CURLY_BRACKET));
+        if (Silian_flag) {
 			return true;
 		}
 		return false;
@@ -837,16 +837,16 @@ public class SysPermissionController {
 	 *
 	 * @return
 	 */
-	private String urlToRouteName(String url) {
-		if (oConvertUtils.isNotEmpty(url)) {
-			if (url.startsWith(SymbolConstant.SINGLE_SLASH)) {
-				url = url.substring(1);
+	private String urlToRouteName(String Silian_url) {
+		if (oConvertUtils.isNotEmpty(Silian_url)) {
+			if (Silian_url.startsWith(SymbolConstant.SINGLE_SLASH)) {
+				Silian_url = Silian_url.substring(1);
 			}
-			url = url.replace("/", "-");
+			Silian_url = Silian_url.replace("/", "-");
 
 			// 特殊标记
-			url = url.replace(":", "@");
-			return url;
+			Silian_url = Silian_url.replace(":", "@");
+			return Silian_url;
 		} else {
 			return null;
 		}
@@ -859,12 +859,12 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getPermRuleListByPermId", method = RequestMethod.GET)
-	public Result<List<SysPermissionDataRule>> getPermRuleListByPermId(SysPermissionDataRule sysPermissionDataRule) {
-		List<SysPermissionDataRule> permRuleList = sysPermissionDataRuleService.getPermRuleListByPermId(sysPermissionDataRule.getPermissionId());
-		Result<List<SysPermissionDataRule>> result = new Result<>();
-		result.setSuccess(true);
-		result.setResult(permRuleList);
-		return result;
+	public Result<List<SysPermissionDataRule>> getPermRuleListByPermId(SysPermissionDataRule Silian_sysPermissionDataRule) {
+		List<SysPermissionDataRule> Silian_permRuleList = sysPermissionDataRuleService.getPermRuleListByPermId(Silian_sysPermissionDataRule.getPermissionId());
+		Result<List<SysPermissionDataRule>> Silian_result = new Result<>();
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_permRuleList);
+		return Silian_result;
 	}
 
 	/**
@@ -875,31 +875,31 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/addPermissionRule", method = RequestMethod.POST)
-	public Result<SysPermissionDataRule> addPermissionRule(@RequestBody SysPermissionDataRule sysPermissionDataRule) {
-		Result<SysPermissionDataRule> result = new Result<SysPermissionDataRule>();
+	public Result<SysPermissionDataRule> addPermissionRule(@RequestBody SysPermissionDataRule Silian_sysPermissionDataRule) {
+		Result<SysPermissionDataRule> Silian_result = new Result<SysPermissionDataRule>();
 		try {
-			sysPermissionDataRule.setCreateTime(new Date());
-			sysPermissionDataRuleService.savePermissionDataRule(sysPermissionDataRule);
-			result.success("添加成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			Silian_sysPermissionDataRule.setCreateTime(new Date());
+			sysPermissionDataRuleService.savePermissionDataRule(Silian_sysPermissionDataRule);
+			Silian_result.success("添加成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/editPermissionRule", method = { RequestMethod.PUT, RequestMethod.POST })
-	public Result<SysPermissionDataRule> editPermissionRule(@RequestBody SysPermissionDataRule sysPermissionDataRule) {
-		Result<SysPermissionDataRule> result = new Result<SysPermissionDataRule>();
+	public Result<SysPermissionDataRule> editPermissionRule(@RequestBody SysPermissionDataRule Silian_sysPermissionDataRule) {
+		Result<SysPermissionDataRule> Silian_result = new Result<SysPermissionDataRule>();
 		try {
-			sysPermissionDataRuleService.saveOrUpdate(sysPermissionDataRule);
-			result.success("更新成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			sysPermissionDataRuleService.saveOrUpdate(Silian_sysPermissionDataRule);
+			Silian_result.success("更新成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -910,16 +910,16 @@ public class SysPermissionController {
 	 */
 	//@RequiresRoles({ "admin" })
 	@RequestMapping(value = "/deletePermissionRule", method = RequestMethod.DELETE)
-	public Result<SysPermissionDataRule> deletePermissionRule(@RequestParam(name = "id", required = true) String id) {
-		Result<SysPermissionDataRule> result = new Result<SysPermissionDataRule>();
+	public Result<SysPermissionDataRule> deletePermissionRule(@RequestParam(name = "id", required = true) String Silian_id) {
+		Result<SysPermissionDataRule> Silian_result = new Result<SysPermissionDataRule>();
 		try {
-			sysPermissionDataRuleService.deletePermissionDataRule(id);
-			result.success("删除成功！");
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			sysPermissionDataRuleService.deletePermissionDataRule(Silian_id);
+			Silian_result.success("删除成功！");
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -929,16 +929,16 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryPermissionRule", method = RequestMethod.GET)
-	public Result<List<SysPermissionDataRule>> queryPermissionRule(SysPermissionDataRule sysPermissionDataRule) {
-		Result<List<SysPermissionDataRule>> result = new Result<>();
+	public Result<List<SysPermissionDataRule>> queryPermissionRule(SysPermissionDataRule Silian_sysPermissionDataRule) {
+		Result<List<SysPermissionDataRule>> Silian_result = new Result<>();
 		try {
-			List<SysPermissionDataRule> permRuleList = sysPermissionDataRuleService.queryPermissionRule(sysPermissionDataRule);
-			result.setResult(permRuleList);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			result.error500("操作失败");
+			List<SysPermissionDataRule> Silian_permRuleList = sysPermissionDataRuleService.queryPermissionRule(Silian_sysPermissionDataRule);
+			Silian_result.setResult(Silian_permRuleList);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
+			Silian_result.error500("操作失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -947,16 +947,16 @@ public class SysPermissionController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryDepartPermission", method = RequestMethod.GET)
-	public Result<List<String>> queryDepartPermission(@RequestParam(name = "departId", required = true) String departId) {
-		Result<List<String>> result = new Result<>();
+	public Result<List<String>> queryDepartPermission(@RequestParam(name = "departId", required = true) String Silian_departId) {
+		Result<List<String>> Silian_result = new Result<>();
 		try {
-			List<SysDepartPermission> list = sysDepartPermissionService.list(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, departId));
-			result.setResult(list.stream().map(sysDepartPermission -> String.valueOf(sysDepartPermission.getPermissionId())).collect(Collectors.toList()));
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			List<SysDepartPermission> Silian_list = sysDepartPermissionService.list(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, Silian_departId));
+			Silian_result.setResult(Silian_list.stream().map(Silian_sysDepartPermission -> String.valueOf(Silian_sysDepartPermission.getPermissionId())).collect(Collectors.toList()));
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -966,21 +966,21 @@ public class SysPermissionController {
 	 */
 	@RequestMapping(value = "/saveDepartPermission", method = RequestMethod.POST)
 	//@RequiresRoles({ "admin" })
-	public Result<String> saveDepartPermission(@RequestBody JSONObject json) {
-		long start = System.currentTimeMillis();
-		Result<String> result = new Result<>();
+	public Result<String> saveDepartPermission(@RequestBody JSONObject Silian_json) {
+		long Silian_start = System.currentTimeMillis();
+		Result<String> Silian_result = new Result<>();
 		try {
-			String departId = json.getString("departId");
-			String permissionIds = json.getString("permissionIds");
-			String lastPermissionIds = json.getString("lastpermissionIds");
-			this.sysDepartPermissionService.saveDepartPermission(departId, permissionIds, lastPermissionIds);
-			result.success("保存成功！");
-			log.info("======部门授权成功=====耗时:" + (System.currentTimeMillis() - start) + "毫秒");
-		} catch (Exception e) {
-			result.error500("授权失败！");
-			log.error(e.getMessage(), e);
+			String Silian_departId = Silian_json.getString("departId");
+			String Silian_permissionIds = Silian_json.getString("permissionIds");
+			String Silian_lastPermissionIds = Silian_json.getString("lastpermissionIds");
+			this.sysDepartPermissionService.saveDepartPermission(Silian_departId, Silian_permissionIds, Silian_lastPermissionIds);
+			Silian_result.success("保存成功！");
+			log.info("======部门授权成功=====耗时:" + (System.currentTimeMillis() - Silian_start) + "毫秒");
+		} catch (Exception Silian_e) {
+			Silian_result.error500("授权失败！");
+			log.error(Silian_e.getMessage(), Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
 
 }

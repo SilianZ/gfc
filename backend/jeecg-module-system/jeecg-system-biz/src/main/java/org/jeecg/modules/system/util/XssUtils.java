@@ -32,18 +32,18 @@ public class XssUtils {
         Pattern.compile("onload(.*?)=", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL),
     };
 
-    public static String scriptXss(String value) {
-        if (value != null) {
-            value = value.replaceAll(" ", "");
-            for(Pattern scriptPattern: patterns){
-                value = scriptPattern.matcher(value).replaceAll("");
+    public static String scriptXss(String Silian_value) {
+        if (Silian_value != null) {
+            Silian_value = Silian_value.replaceAll(" ", "");
+            for(Pattern Silian_scriptPattern: patterns){
+                Silian_value = Silian_scriptPattern.matcher(Silian_value).replaceAll("");
             }
         }
-        return HtmlUtils.htmlEscape(value);
+        return HtmlUtils.htmlEscape(Silian_value);
     }
 
-    public static void main(String[] args) {
-        String s = scriptXss("<img  src=x onload=alert(111).*?><script></script>javascript:eval()\\\\.");
-        System.err.println("s======>" + s);
+    public static void main(String[] Silian_args) {
+        String Silian_s = scriptXss("<img  src=x onload=alert(111).*?><script></script>javascript:eval()\\\\.");
+        System.err.println("s======>" + Silian_s);
     }
 }

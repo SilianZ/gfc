@@ -23,23 +23,23 @@ import java.util.List;
 public class DictQueryBlackListHandler extends AbstractQueryBlackListHandler {
 
     @Override
-    protected List<QueryTable> getQueryTableInfo(String dictCodeString) {
-        if (dictCodeString != null && dictCodeString.indexOf(SymbolConstant.COMMA) > 0) {
-            String[] arr = dictCodeString.split(SymbolConstant.COMMA);
-            if (arr.length != 3 && arr.length != 4) {
+    protected List<QueryTable> getQueryTableInfo(String Silian_dictCodeString) {
+        if (Silian_dictCodeString != null && Silian_dictCodeString.indexOf(SymbolConstant.COMMA) > 0) {
+            String[] Silian_arr = Silian_dictCodeString.split(SymbolConstant.COMMA);
+            if (Silian_arr.length != 3 && Silian_arr.length != 4) {
                 return null;
             }
-            String tableName = getTableName(arr[0]);
-            QueryTable table = new QueryTable(tableName, "");
+            String Silian_tableName = getTableName(Silian_arr[0]);
+            QueryTable Silian_table = new QueryTable(Silian_tableName, "");
             // 无论什么场景 第二、三个元素一定是表的字段，直接add
-            table.addField(arr[1].trim());
-            String filed = arr[2].trim();
-            if (oConvertUtils.isNotEmpty(filed)) {
-                table.addField(filed);
+            Silian_table.addField(Silian_arr[1].trim());
+            String Silian_filed = Silian_arr[2].trim();
+            if (oConvertUtils.isNotEmpty(Silian_filed)) {
+                Silian_table.addField(Silian_filed);
             }
-            List<QueryTable> list = new ArrayList<>();
-            list.add(table);
-            return list;
+            List<QueryTable> Silian_list = new ArrayList<>();
+            Silian_list.add(Silian_table);
+            return Silian_list;
         }
         return null;
     }
@@ -50,9 +50,9 @@ public class DictQueryBlackListHandler extends AbstractQueryBlackListHandler {
      * @param str
      * @return
      */
-    private String getTableName(String str) {
-        String[] arr = str.split("\\s+(?i)where\\s+");
-        return arr[0];
+    private String getTableName(String Silian_str) {
+        String[] Silian_arr = Silian_str.split("\\s+(?i)where\\s+");
+        return Silian_arr[0];
     }
 
 }

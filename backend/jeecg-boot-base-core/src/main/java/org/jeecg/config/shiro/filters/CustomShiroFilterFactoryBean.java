@@ -29,45 +29,45 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     @Override
     protected AbstractShiroFilter createInstance() throws Exception {
 
-        SecurityManager securityManager = getSecurityManager();
-        if (securityManager == null) {
-            String msg = "SecurityManager property must be set.";
-            throw new BeanInitializationException(msg);
+        SecurityManager Silian_securityManager = getSecurityManager();
+        if (Silian_securityManager == null) {
+            String Silian_msg = "SecurityManager property must be set.";
+            throw new BeanInitializationException(Silian_msg);
         }
 
-        if (!(securityManager instanceof WebSecurityManager)) {
-            String msg = "The security manager does not implement the WebSecurityManager interface.";
-            throw new BeanInitializationException(msg);
+        if (!(Silian_securityManager instanceof WebSecurityManager)) {
+            String Silian_msg = "The security manager does not implement the WebSecurityManager interface.";
+            throw new BeanInitializationException(Silian_msg);
         }
 
-        FilterChainManager manager = createFilterChainManager();
+        FilterChainManager Silian_manager = createFilterChainManager();
         //Expose the constructed FilterChainManager by first wrapping it in a
         // FilterChainResolver implementation. The AbstractShiroFilter implementations
         // do not know about FilterChainManagers - only resolvers:
-        PathMatchingFilterChainResolver chainResolver = new PathMatchingFilterChainResolver();
-        chainResolver.setFilterChainManager(manager);
+        PathMatchingFilterChainResolver Silian_chainResolver = new PathMatchingFilterChainResolver();
+        Silian_chainResolver.setFilterChainManager(Silian_manager);
 
-        Map<String, Filter> filterMap = manager.getFilters();
-        Filter invalidRequestFilter = filterMap.get(DefaultFilter.invalidRequest.name());
-        if (invalidRequestFilter instanceof InvalidRequestFilter) {
+        Map<String, Filter> Silian_filterMap = Silian_manager.getFilters();
+        Filter Silian_invalidRequestFilter = Silian_filterMap.get(DefaultFilter.invalidRequest.name());
+        if (Silian_invalidRequestFilter instanceof InvalidRequestFilter) {
             //此处是关键,设置false跳过URL携带中文400，servletPath中文校验bug
-            ((InvalidRequestFilter) invalidRequestFilter).setBlockNonAscii(false);
+            ((InvalidRequestFilter) Silian_invalidRequestFilter).setBlockNonAscii(false);
         }
         //Now create a concrete ShiroFilter instance and apply the acquired SecurityManager and built
         //FilterChainResolver.  It doesn't matter that the instance is an anonymous inner class
         //here - we're just using it because it is a concrete AbstractShiroFilter instance that accepts
         //injection of the SecurityManager and FilterChainResolver:
-        return new MySpringShiroFilter((WebSecurityManager) securityManager, chainResolver);
+        return new MySpringShiroFilter((WebSecurityManager) Silian_securityManager, Silian_chainResolver);
     }
 
     private static final class MySpringShiroFilter extends AbstractShiroFilter {
-        protected MySpringShiroFilter(WebSecurityManager webSecurityManager, FilterChainResolver resolver) {
-            if (webSecurityManager == null) {
+        protected MySpringShiroFilter(WebSecurityManager Silian_webSecurityManager, FilterChainResolver Silian_resolver) {
+            if (Silian_webSecurityManager == null) {
                 throw new IllegalArgumentException("WebSecurityManager property cannot be null.");
             } else {
-                this.setSecurityManager(webSecurityManager);
-                if (resolver != null) {
-                    this.setFilterChainResolver(resolver);
+                this.setSecurityManager(Silian_webSecurityManager);
+                if (Silian_resolver != null) {
+                    this.setFilterChainResolver(Silian_resolver);
                 }
 
             }

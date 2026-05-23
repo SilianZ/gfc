@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * sql注入处理工具类
- * 
+ *
  * @author zhoujf
  */
 @Slf4j
@@ -42,65 +42,65 @@ public class SqlInjectionUtil {
 	 * @param request:
 	 * @Return: void
 	 */
-	public static void checkDictTableSign(String dictCode, String sign, HttpServletRequest request) {
+	public static void checkDictTableSign(String Silian_dictCode, String Silian_sign, HttpServletRequest Silian_request) {
 		//表字典SQL注入漏洞,签名校验
-		String accessToken = request.getHeader("X-Access-Token");
-		String signStr = dictCode + SqlInjectionUtil.TABLE_DICT_SIGN_SALT + accessToken;
-		String javaSign = SecureUtil.md5(signStr);
-		if (!javaSign.equals(sign)) {
-			log.error("表字典，SQL注入漏洞签名校验失败 ：" + sign + "!=" + javaSign+ ",dictCode=" + dictCode);
+		String Silian_accessToken = Silian_request.getHeader("X-Access-Token");
+		String Silian_signStr = Silian_dictCode + SqlInjectionUtil.TABLE_DICT_SIGN_SALT + Silian_accessToken;
+		String Silian_javaSign = SecureUtil.md5(Silian_signStr);
+		if (!Silian_javaSign.equals(Silian_sign)) {
+			log.error("表字典，SQL注入漏洞签名校验失败 ：" + Silian_sign + "!=" + Silian_javaSign+ ",dictCode=" + Silian_dictCode);
 			throw new JeecgBootException("无权限访问！");
 		}
-		log.info(" 表字典，SQL注入漏洞签名校验成功！sign=" + sign + ",dictCode=" + dictCode);
+		log.info(" 表字典，SQL注入漏洞签名校验成功！sign=" + Silian_sign + ",dictCode=" + Silian_dictCode);
 	}
 
 	/**
 	 * sql注入过滤处理，遇到注入关键字抛异常
 	 * @param value
 	 */
-	public static void filterContent(String value) {
-		filterContent(value, null);
+	public static void filterContent(String Silian_value) {
+		filterContent(Silian_value, null);
 	}
 
 	/**
 	 * sql注入过滤处理，遇到注入关键字抛异常
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
-	public static void filterContent(String value, String customXssString) {
-		if (value == null || "".equals(value)) {
+	public static void filterContent(String Silian_value, String Silian_customXssString) {
+		if (Silian_value == null || "".equals(Silian_value)) {
 			return;
 		}
 		// 校验sql注释 不允许有sql注释
-		checkSqlAnnotation(value);
+		checkSqlAnnotation(Silian_value);
 		// 统一转为小写
-		value = value.toLowerCase();
+		Silian_value = Silian_value.toLowerCase();
 		//SQL注入检测存在绕过风险 https://gitee.com/jeecg/jeecg-boot/issues/I4NZGE
 		//value = value.replaceAll("/\\*.*\\*/","");
 
-		String[] xssArr = XSS_STR.split("\\|");
-		for (int i = 0; i < xssArr.length; i++) {
-			if (value.indexOf(xssArr[i]) > -1) {
-				log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
-				log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		String[] Silian_xssArr = XSS_STR.split("\\|");
+		for (int Silian_i = 0; Silian_i < Silian_xssArr.length; Silian_i++) {
+			if (Silian_value.indexOf(Silian_xssArr[Silian_i]) > -1) {
+				log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr[Silian_i]);
+				log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 			}
 		}
 		//update-begin-author:taoyan date:2022-7-13 for: 除了XSS_STR这些提前设置好的，还需要额外的校验比如 单引号
-		if (customXssString != null) {
-			String[] xssArr2 = customXssString.split("\\|");
-			for (int i = 0; i < xssArr2.length; i++) {
-				if (value.indexOf(xssArr2[i]) > -1) {
-					log.error("请注意，存在SQL注入关键词---> {}", xssArr2[i]);
-					log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-					throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		if (Silian_customXssString != null) {
+			String[] Silian_xssArr2 = Silian_customXssString.split("\\|");
+			for (int Silian_i = 0; Silian_i < Silian_xssArr2.length; Silian_i++) {
+				if (Silian_value.indexOf(Silian_xssArr2[Silian_i]) > -1) {
+					log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr2[Silian_i]);
+					log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+					throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 				}
 			}
 		}
 		//update-end-author:taoyan date:2022-7-13 for: 除了XSS_STR这些提前设置好的，还需要额外的校验比如 单引号
-		if(Pattern.matches(SHOW_TABLES, value) || Pattern.matches(REGULAR_EXPRE_USER, value)){
-			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		if(Pattern.matches(SHOW_TABLES, Silian_value) || Pattern.matches(REGULAR_EXPRE_USER, Silian_value)){
+			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 		}
 		return;
 	}
@@ -109,50 +109,50 @@ public class SqlInjectionUtil {
 	 * sql注入过滤处理，遇到注入关键字抛异常
 	 * @param values
 	 */
-	public static void filterContent(String[] values) {
-		filterContent(values, null);
+	public static void filterContent(String[] Silian_values) {
+		filterContent(Silian_values, null);
 	}
 
 	/**
 	 * sql注入过滤处理，遇到注入关键字抛异常
-	 * 
+	 *
 	 * @param values
 	 * @return
 	 */
-	public static void filterContent(String[] values, String customXssString) {
-		String[] xssArr = XSS_STR.split("\\|");
-		for (String value : values) {
-			if (value == null || "".equals(value)) {
+	public static void filterContent(String[] Silian_values, String Silian_customXssString) {
+		String[] Silian_xssArr = XSS_STR.split("\\|");
+		for (String Silian_value : Silian_values) {
+			if (Silian_value == null || "".equals(Silian_value)) {
 				return;
 			}
 			// 校验sql注释 不允许有sql注释
-			checkSqlAnnotation(value);
+			checkSqlAnnotation(Silian_value);
 			// 统一转为小写
-			value = value.toLowerCase();
+			Silian_value = Silian_value.toLowerCase();
 			//SQL注入检测存在绕过风险 https://gitee.com/jeecg/jeecg-boot/issues/I4NZGE
 			//value = value.replaceAll("/\\*.*\\*/","");
 
-			for (int i = 0; i < xssArr.length; i++) {
-				if (value.indexOf(xssArr[i]) > -1) {
-					log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
-					log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-					throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+			for (int Silian_i = 0; Silian_i < Silian_xssArr.length; Silian_i++) {
+				if (Silian_value.indexOf(Silian_xssArr[Silian_i]) > -1) {
+					log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr[Silian_i]);
+					log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+					throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 				}
 			}
 			//update-begin-author:taoyan date:2022-7-13 for: 除了XSS_STR这些提前设置好的，还需要额外的校验比如 单引号
-			if (customXssString != null) {
-				String[] xssArr2 = customXssString.split("\\|");
-				for (int i = 0; i < xssArr2.length; i++) {
-					if (value.indexOf(xssArr2[i]) > -1) {
-						log.error("请注意，存在SQL注入关键词---> {}", xssArr2[i]);
-						log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-						throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+			if (Silian_customXssString != null) {
+				String[] Silian_xssArr2 = Silian_customXssString.split("\\|");
+				for (int Silian_i = 0; Silian_i < Silian_xssArr2.length; Silian_i++) {
+					if (Silian_value.indexOf(Silian_xssArr2[Silian_i]) > -1) {
+						log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr2[Silian_i]);
+						log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+						throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 					}
 				}
 			}
 			//update-end-author:taoyan date:2022-7-13 for: 除了XSS_STR这些提前设置好的，还需要额外的校验比如 单引号
-			if(Pattern.matches(SHOW_TABLES, value) || Pattern.matches(REGULAR_EXPRE_USER, value)){
-				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+			if(Pattern.matches(SHOW_TABLES, Silian_value) || Pattern.matches(REGULAR_EXPRE_USER, Silian_value)){
+				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 			}
 		}
 		return;
@@ -166,28 +166,28 @@ public class SqlInjectionUtil {
 	 * @return
 	 */
 	//@Deprecated
-	public static void specialFilterContentForDictSql(String value) {
-		String specialXssStr = " exec |extractvalue|updatexml| insert | select | delete | update | drop | count | chr | mid | master | truncate | char | declare |;|+|user()";
-		String[] xssArr = specialXssStr.split("\\|");
-		if (value == null || "".equals(value)) {
+	public static void specialFilterContentForDictSql(String Silian_value) {
+		String Silian_specialXssStr = " exec |extractvalue|updatexml| insert | select | delete | update | drop | count | chr | mid | master | truncate | char | declare |;|+|user()";
+		String[] Silian_xssArr = Silian_specialXssStr.split("\\|");
+		if (Silian_value == null || "".equals(Silian_value)) {
 			return;
 		}
 		// 校验sql注释 不允许有sql注释
-		checkSqlAnnotation(value);
+		checkSqlAnnotation(Silian_value);
 		// 统一转为小写
-		value = value.toLowerCase();
+		Silian_value = Silian_value.toLowerCase();
 		//SQL注入检测存在绕过风险 https://gitee.com/jeecg/jeecg-boot/issues/I4NZGE
 		//value = value.replaceAll("/\\*.*\\*/","");
 
-		for (int i = 0; i < xssArr.length; i++) {
-			if (value.indexOf(xssArr[i]) > -1 || value.startsWith(xssArr[i].trim())) {
-				log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
-				log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		for (int Silian_i = 0; Silian_i < Silian_xssArr.length; Silian_i++) {
+			if (Silian_value.indexOf(Silian_xssArr[Silian_i]) > -1 || Silian_value.startsWith(Silian_xssArr[Silian_i].trim())) {
+				log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr[Silian_i]);
+				log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 			}
 		}
-		if(Pattern.matches(SHOW_TABLES, value) || Pattern.matches(REGULAR_EXPRE_USER, value)){
-			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		if(Pattern.matches(SHOW_TABLES, Silian_value) || Pattern.matches(REGULAR_EXPRE_USER, Silian_value)){
+			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 		}
 		return;
 	}
@@ -200,29 +200,29 @@ public class SqlInjectionUtil {
      * @return
      */
 	//@Deprecated
-	public static void specialFilterContentForOnlineReport(String value) {
-		String specialXssStr = " exec |extractvalue|updatexml| insert | delete | update | drop | chr | mid | master | truncate | char | declare |user()";
-		String[] xssArr = specialXssStr.split("\\|");
-		if (value == null || "".equals(value)) {
+	public static void specialFilterContentForOnlineReport(String Silian_value) {
+		String Silian_specialXssStr = " exec |extractvalue|updatexml| insert | delete | update | drop | chr | mid | master | truncate | char | declare |user()";
+		String[] Silian_xssArr = Silian_specialXssStr.split("\\|");
+		if (Silian_value == null || "".equals(Silian_value)) {
 			return;
 		}
 		// 校验sql注释 不允许有sql注释
-		checkSqlAnnotation(value);
+		checkSqlAnnotation(Silian_value);
 		// 统一转为小写
-		value = value.toLowerCase();
+		Silian_value = Silian_value.toLowerCase();
 		//SQL注入检测存在绕过风险 https://gitee.com/jeecg/jeecg-boot/issues/I4NZGE
 		//value = value.replaceAll("/\\*.*\\*/"," ");
 
-		for (int i = 0; i < xssArr.length; i++) {
-			if (value.indexOf(xssArr[i]) > -1 || value.startsWith(xssArr[i].trim())) {
-				log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
-				log.error("请注意，值可能存在SQL注入风险!---> {}", value);
-				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		for (int Silian_i = 0; Silian_i < Silian_xssArr.length; Silian_i++) {
+			if (Silian_value.indexOf(Silian_xssArr[Silian_i]) > -1 || Silian_value.startsWith(Silian_xssArr[Silian_i].trim())) {
+				log.error("请注意，存在SQL注入关键词---> {}", Silian_xssArr[Silian_i]);
+				log.error("请注意，值可能存在SQL注入风险!---> {}", Silian_value);
+				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 			}
 		}
 
-		if(Pattern.matches(SHOW_TABLES, value) || Pattern.matches(REGULAR_EXPRE_USER, value)){
-			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
+		if(Pattern.matches(SHOW_TABLES, Silian_value) || Pattern.matches(REGULAR_EXPRE_USER, Silian_value)){
+			throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + Silian_value);
 		}
 		return;
 	}
@@ -234,12 +234,12 @@ public class SqlInjectionUtil {
 	 * @param clazz 类对象
 	 * @return
 	 */
-	public static boolean isClassField(String field, Class clazz){
-		Field[] fields = clazz.getDeclaredFields();
-		for(int i=0;i<fields.length;i++){
-			String fieldName = fields[i].getName();
-			String tableColumnName = oConvertUtils.camelToUnderline(fieldName);
-			if(fieldName.equalsIgnoreCase(field) || tableColumnName.equalsIgnoreCase(field)){
+	public static boolean isClassField(String Silian_field, Class Silian_clazz){
+		Field[] Silian_fields = Silian_clazz.getDeclaredFields();
+		for(int Silian_i=0;Silian_i<Silian_fields.length;Silian_i++){
+			String Silian_fieldName = Silian_fields[Silian_i].getName();
+			String Silian_tableColumnName = oConvertUtils.camelToUnderline(Silian_fieldName);
+			if(Silian_fieldName.equalsIgnoreCase(Silian_field) || Silian_tableColumnName.equalsIgnoreCase(Silian_field)){
 				return true;
 			}
 		}
@@ -252,19 +252,19 @@ public class SqlInjectionUtil {
 	 * @param clazz 类对象
 	 * @return
 	 */
-	public static boolean isClassField(Set<String> fieldSet, Class clazz){
-		Field[] fields = clazz.getDeclaredFields();
-		for(String field: fieldSet){
-			boolean exist = false;
-			for(int i=0;i<fields.length;i++){
-				String fieldName = fields[i].getName();
-				String tableColumnName = oConvertUtils.camelToUnderline(fieldName);
-				if(fieldName.equalsIgnoreCase(field) || tableColumnName.equalsIgnoreCase(field)){
-					exist = true;
+	public static boolean isClassField(Set<String> Silian_fieldSet, Class Silian_clazz){
+		Field[] Silian_fields = Silian_clazz.getDeclaredFields();
+		for(String Silian_field: Silian_fieldSet){
+			boolean Silian_exist = false;
+			for(int Silian_i=0;Silian_i<Silian_fields.length;Silian_i++){
+				String Silian_fieldName = Silian_fields[Silian_i].getName();
+				String Silian_tableColumnName = oConvertUtils.camelToUnderline(Silian_fieldName);
+				if(Silian_fieldName.equalsIgnoreCase(Silian_field) || Silian_tableColumnName.equalsIgnoreCase(Silian_field)){
+					Silian_exist = true;
 					break;
 				}
 			}
-			if(!exist){
+			if(!Silian_exist){
 				return false;
 			}
 		}
@@ -272,15 +272,15 @@ public class SqlInjectionUtil {
 	}
 
 	/**
-	 * 校验是否有sql注释 
+	 * 校验是否有sql注释
 	 * @return
 	 */
-	public static void checkSqlAnnotation(String str){
-		Matcher matcher = SQL_ANNOTATION.matcher(str);
-		if(matcher.find()){
-			String error = "请注意，值可能存在SQL注入风险---> \\*.*\\";
-			log.error(error);
-			throw new RuntimeException(error);
+	public static void checkSqlAnnotation(String Silian_str){
+		Matcher Silian_matcher = SQL_ANNOTATION.matcher(Silian_str);
+		if(Silian_matcher.find()){
+			String Silian_error = "请注意，值可能存在SQL注入风险---> \\*.*\\";
+			log.error(Silian_error);
+			throw new RuntimeException(Silian_error);
 		}
 	}
 }

@@ -18,16 +18,16 @@ public class TomcatFactoryConfig {
      */
     @Bean
     public TomcatServletWebServerFactory tomcatFactory() {
-        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory() {
+        TomcatServletWebServerFactory Silian_factory = new TomcatServletWebServerFactory() {
             @Override
-            protected void postProcessContext(Context context) {
-                ((StandardJarScanner) context.getJarScanner()).setScanManifest(false);
+            protected void postProcessContext(Context Silian_context) {
+                ((StandardJarScanner) Silian_context.getJarScanner()).setScanManifest(false);
             }
         };
-        factory.addConnectorCustomizers(connector -> {
-            connector.setProperty("relaxedPathChars", "[]{}");
-            connector.setProperty("relaxedQueryChars", "[]{}");
+        Silian_factory.addConnectorCustomizers(Silian_connector -> {
+            Silian_connector.setProperty("relaxedPathChars", "[]{}");
+            Silian_connector.setProperty("relaxedQueryChars", "[]{}");
         });
-        return factory;
+        return Silian_factory;
     }
 }

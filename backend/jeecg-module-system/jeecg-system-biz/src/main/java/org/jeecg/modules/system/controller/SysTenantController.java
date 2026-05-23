@@ -43,31 +43,31 @@ public class SysTenantController {
      */
     @PermissionData(pageComponent = "system/TenantList")
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<IPage<SysTenant>> queryPageList(SysTenant sysTenant,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
-		Result<IPage<SysTenant>> result = new Result<IPage<SysTenant>>();
+	public Result<IPage<SysTenant>> queryPageList(SysTenant Silian_sysTenant,@RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,HttpServletRequest Silian_req) {
+		Result<IPage<SysTenant>> Silian_result = new Result<IPage<SysTenant>>();
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
-        Date beginDate=null;
-        Date endDate=null;
-        if(oConvertUtils.isNotEmpty(sysTenant)) {
-            beginDate=sysTenant.getBeginDate();
-            endDate=sysTenant.getEndDate();
-            sysTenant.setBeginDate(null);
-            sysTenant.setEndDate(null);
+        Date Silian_beginDate=null;
+        Date Silian_endDate=null;
+        if(oConvertUtils.isNotEmpty(Silian_sysTenant)) {
+            Silian_beginDate=Silian_sysTenant.getBeginDate();
+            Silian_endDate=Silian_sysTenant.getEndDate();
+            Silian_sysTenant.setBeginDate(null);
+            Silian_sysTenant.setEndDate(null);
         }
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
-        QueryWrapper<SysTenant> queryWrapper = QueryGenerator.initQueryWrapper(sysTenant, req.getParameterMap());
+        QueryWrapper<SysTenant> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysTenant, Silian_req.getParameterMap());
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
-        if(oConvertUtils.isNotEmpty(sysTenant)){
-            queryWrapper.ge(oConvertUtils.isNotEmpty(beginDate),"begin_date",beginDate);
-            queryWrapper.le(oConvertUtils.isNotEmpty(endDate),"end_date",endDate);
+        if(oConvertUtils.isNotEmpty(Silian_sysTenant)){
+            Silian_queryWrapper.ge(oConvertUtils.isNotEmpty(Silian_beginDate),"begin_date",Silian_beginDate);
+            Silian_queryWrapper.le(oConvertUtils.isNotEmpty(Silian_endDate),"end_date",Silian_endDate);
         }
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
-		Page<SysTenant> page = new Page<SysTenant>(pageNo, pageSize);
-		IPage<SysTenant> pageList = sysTenantService.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+		Page<SysTenant> Silian_page = new Page<SysTenant>(Silian_pageNo, Silian_pageSize);
+		IPage<SysTenant> Silian_pageList = sysTenantService.page(Silian_page, Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
 
     /**
@@ -76,19 +76,19 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result<SysTenant> add(@RequestBody SysTenant sysTenant) {
-        Result<SysTenant> result = new Result();
-        if(sysTenantService.getById(sysTenant.getId())!=null){
-            return result.error500("该编号已存在!");
+    public Result<SysTenant> add(@RequestBody SysTenant Silian_sysTenant) {
+        Result<SysTenant> Silian_result = new Result();
+        if(sysTenantService.getById(Silian_sysTenant.getId())!=null){
+            return Silian_result.error500("该编号已存在!");
         }
         try {
-            sysTenantService.save(sysTenant);
-            result.success("添加成功！");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
+            sysTenantService.save(Silian_sysTenant);
+            Silian_result.success("添加成功！");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("操作失败");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -97,17 +97,17 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/edit", method ={RequestMethod.PUT, RequestMethod.POST})
-    public Result<SysTenant> edit(@RequestBody SysTenant tenant) {
-        Result<SysTenant> result = new Result();
-        SysTenant sysTenant = sysTenantService.getById(tenant.getId());
-        if(sysTenant==null) {
-           return result.error500("未找到对应实体");
+    public Result<SysTenant> edit(@RequestBody SysTenant Silian_tenant) {
+        Result<SysTenant> Silian_result = new Result();
+        SysTenant Silian_sysTenant = sysTenantService.getById(Silian_tenant.getId());
+        if(Silian_sysTenant==null) {
+           return Silian_result.error500("未找到对应实体");
         }
-        boolean ok = sysTenantService.updateById(tenant);
-        if(ok) {
-            result.success("修改成功!");
+        boolean Silian_ok = sysTenantService.updateById(Silian_tenant);
+        if(Silian_ok) {
+            Silian_result.success("修改成功!");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -116,8 +116,8 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/delete", method ={RequestMethod.DELETE, RequestMethod.POST})
-    public Result<?> delete(@RequestParam(name="id",required=true) String id) {
-        sysTenantService.removeTenantById(id);
+    public Result<?> delete(@RequestParam(name="id",required=true) String Silian_id) {
+        sysTenantService.removeTenantById(Silian_id);
         return Result.ok("删除成功");
     }
 
@@ -127,32 +127,32 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-    public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-        Result<?> result = new Result<>();
-        if(oConvertUtils.isEmpty(ids)) {
-            result.error500("未选中租户！");
+    public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String Silian_ids) {
+        Result<?> Silian_result = new Result<>();
+        if(oConvertUtils.isEmpty(Silian_ids)) {
+            Silian_result.error500("未选中租户！");
         }else {
-            String[] ls = ids.split(",");
+            String[] Silian_ls = Silian_ids.split(",");
             // 过滤掉已被引用的租户
-            List<Integer> idList = new ArrayList<>();
-            for (String id : ls) {
-                Long userCount = sysTenantService.countUserLinkTenant(id);
-                if (userCount == 0) {
-                    idList.add(Integer.parseInt(id));
+            List<Integer> Silian_idList = new ArrayList<>();
+            for (String Silian_id : Silian_ls) {
+                Long Silian_userCount = sysTenantService.countUserLinkTenant(Silian_id);
+                if (Silian_userCount == 0) {
+                    Silian_idList.add(Integer.parseInt(Silian_id));
                 }
             }
-            if (idList.size() > 0) {
-                sysTenantService.removeByIds(idList);
-                if (ls.length == idList.size()) {
-                    result.success("删除成功！");
+            if (Silian_idList.size() > 0) {
+                sysTenantService.removeByIds(Silian_idList);
+                if (Silian_ls.length == Silian_idList.size()) {
+                    Silian_result.success("删除成功！");
                 } else {
-                    result.success("部分删除成功！（被引用的租户无法删除）");
+                    Silian_result.success("部分删除成功！（被引用的租户无法删除）");
                 }
             }else  {
-                result.error500("选择的租户都已被引用，无法删除！");
+                Silian_result.error500("选择的租户都已被引用，无法删除！");
             }
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -161,16 +161,16 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/queryById", method = RequestMethod.GET)
-    public Result<SysTenant> queryById(@RequestParam(name="id",required=true) String id) {
-        Result<SysTenant> result = new Result<SysTenant>();
-        SysTenant sysTenant = sysTenantService.getById(id);
-        if(sysTenant==null) {
-            result.error500("未找到对应实体");
+    public Result<SysTenant> queryById(@RequestParam(name="id",required=true) String Silian_id) {
+        Result<SysTenant> Silian_result = new Result<SysTenant>();
+        SysTenant Silian_sysTenant = sysTenantService.getById(Silian_id);
+        if(Silian_sysTenant==null) {
+            Silian_result.error500("未找到对应实体");
         }else {
-            result.setResult(sysTenant);
-            result.setSuccess(true);
+            Silian_result.setResult(Silian_sysTenant);
+            Silian_result.setSuccess(true);
         }
-        return result;
+        return Silian_result;
     }
 
 
@@ -179,18 +179,18 @@ public class SysTenantController {
      * @return
      */
     @RequestMapping(value = "/queryList", method = RequestMethod.GET)
-    public Result<List<SysTenant>> queryList(@RequestParam(name="ids",required=false) String ids) {
-        Result<List<SysTenant>> result = new Result<List<SysTenant>>();
-        LambdaQueryWrapper<SysTenant> query = new LambdaQueryWrapper<>();
-        query.eq(SysTenant::getStatus, 1);
-        if(oConvertUtils.isNotEmpty(ids)){
-            query.in(SysTenant::getId, ids.split(","));
+    public Result<List<SysTenant>> queryList(@RequestParam(name="ids",required=false) String Silian_ids) {
+        Result<List<SysTenant>> Silian_result = new Result<List<SysTenant>>();
+        LambdaQueryWrapper<SysTenant> Silian_query = new LambdaQueryWrapper<>();
+        Silian_query.eq(SysTenant::getStatus, 1);
+        if(oConvertUtils.isNotEmpty(Silian_ids)){
+            Silian_query.in(SysTenant::getId, Silian_ids.split(","));
         }
         //此处查询忽略时间条件
-        List<SysTenant> ls = sysTenantService.list(query);
-        result.setSuccess(true);
-        result.setResult(ls);
-        return result;
+        List<SysTenant> Silian_ls = sysTenantService.list(Silian_query);
+        Silian_result.setSuccess(true);
+        Silian_result.setResult(Silian_ls);
+        return Silian_result;
     }
     /**
      *  查询当前用户的所有有效租户 【当前用于vue3版本】
@@ -198,26 +198,26 @@ public class SysTenantController {
      */
     @RequestMapping(value = "/getCurrentUserTenant", method = RequestMethod.GET)
     public Result<Map<String,Object>> getCurrentUserTenant() {
-        Result<Map<String,Object>> result = new Result<Map<String,Object>>();
+        Result<Map<String,Object>> Silian_result = new Result<Map<String,Object>>();
         try {
-            LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            String tenantIds = sysUser.getRelTenantIds();
-            Map<String,Object> map = new HashMap(5);
-            if (oConvertUtils.isNotEmpty(tenantIds)) {
-                List<Integer> tenantIdList = new ArrayList<>();
-                for(String id: tenantIds.split(SymbolConstant.COMMA)){
-                    tenantIdList.add(Integer.valueOf(id));
+            LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            String Silian_tenantIds = Silian_sysUser.getRelTenantIds();
+            Map<String,Object> Silian_map = new HashMap(5);
+            if (oConvertUtils.isNotEmpty(Silian_tenantIds)) {
+                List<Integer> Silian_tenantIdList = new ArrayList<>();
+                for(String Silian_id: Silian_tenantIds.split(SymbolConstant.COMMA)){
+                    Silian_tenantIdList.add(Integer.valueOf(Silian_id));
                 }
                 // 该方法仅查询有效的租户，如果返回0个就说明所有的租户均无效。
-                List<SysTenant> tenantList = sysTenantService.queryEffectiveTenant(tenantIdList);
-                map.put("list", tenantList);
+                List<SysTenant> Silian_tenantList = sysTenantService.queryEffectiveTenant(Silian_tenantIdList);
+                Silian_map.put("list", Silian_tenantList);
             }
-            result.setSuccess(true);
-            result.setResult(map);
-        }catch(Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("查询失败！");
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(Silian_map);
+        }catch(Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("查询失败！");
         }
-        return result;
+        return Silian_result;
     }
 }

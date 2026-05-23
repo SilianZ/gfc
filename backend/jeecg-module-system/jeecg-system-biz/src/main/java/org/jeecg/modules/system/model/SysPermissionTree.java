@@ -60,7 +60,7 @@ public class SysPermissionTree implements Serializable {
 	 * 跳转网页链接
 	 */
 	private String url;
-	
+
 	/**
 	 * 一级菜单跳转地址
 	 */
@@ -80,7 +80,7 @@ public class SysPermissionTree implements Serializable {
 	 * 是否叶子节点: 1:是 0:不是
 	 */
 	private boolean isLeaf;
-	
+
 	/**
 	 * 是否路由菜单: 0:不是  1:是（默认值1）
 	 */
@@ -127,7 +127,7 @@ public class SysPermissionTree implements Serializable {
     private boolean alwaysShow;
     /**是否隐藏路由菜单: 0否,1是（默认值0）*/
     private boolean hidden;
-    
+
     /**按钮权限状态(0无效1有效)*/
 	private java.lang.String status;
 
@@ -140,39 +140,39 @@ public class SysPermissionTree implements Serializable {
 	public SysPermissionTree() {
 	}
 
-	public SysPermissionTree(SysPermission permission) {
-		this.key = permission.getId();
-		this.id = permission.getId();
-		this.perms = permission.getPerms();
-		this.permsType = permission.getPermsType();
-		this.component = permission.getComponent();
-		this.componentName = permission.getComponentName();
-		this.createBy = permission.getCreateBy();
-		this.createTime = permission.getCreateTime();
-		this.delFlag = permission.getDelFlag();
-		this.description = permission.getDescription();
-		this.icon = permission.getIcon();
-		this.isLeaf = permission.isLeaf();
-		this.menuType = permission.getMenuType();
-		this.name = permission.getName();
-		this.parentId = permission.getParentId();
-		this.sortNo = permission.getSortNo();
-		this.updateBy = permission.getUpdateBy();
-		this.updateTime = permission.getUpdateTime();
-		this.redirect = permission.getRedirect();
-		this.url = permission.getUrl();
-		this.hidden = permission.isHidden();
-		this.route = permission.isRoute();
-		this.keepAlive = permission.isKeepAlive();
-		this.alwaysShow= permission.isAlwaysShow();
+	public SysPermissionTree(SysPermission Silian_permission) {
+		this.key = Silian_permission.getId();
+		this.id = Silian_permission.getId();
+		this.perms = Silian_permission.getPerms();
+		this.permsType = Silian_permission.getPermsType();
+		this.component = Silian_permission.getComponent();
+		this.componentName = Silian_permission.getComponentName();
+		this.createBy = Silian_permission.getCreateBy();
+		this.createTime = Silian_permission.getCreateTime();
+		this.delFlag = Silian_permission.getDelFlag();
+		this.description = Silian_permission.getDescription();
+		this.icon = Silian_permission.getIcon();
+		this.isLeaf = Silian_permission.isLeaf();
+		this.menuType = Silian_permission.getMenuType();
+		this.name = Silian_permission.getName();
+		this.parentId = Silian_permission.getParentId();
+		this.sortNo = Silian_permission.getSortNo();
+		this.updateBy = Silian_permission.getUpdateBy();
+		this.updateTime = Silian_permission.getUpdateTime();
+		this.redirect = Silian_permission.getRedirect();
+		this.url = Silian_permission.getUrl();
+		this.hidden = Silian_permission.isHidden();
+		this.route = Silian_permission.isRoute();
+		this.keepAlive = Silian_permission.isKeepAlive();
+		this.alwaysShow= Silian_permission.isAlwaysShow();
 		/*update_begin author:wuxianquan date:20190908 for:赋值 */
-		this.internalOrExternal = permission.isInternalOrExternal();
+		this.internalOrExternal = Silian_permission.isInternalOrExternal();
 		/*update_end author:wuxianquan date:20190908 for:赋值 */
-		this.title=permission.getName();
-		if (!permission.isLeaf()) {
+		this.title=Silian_permission.getName();
+		if (!Silian_permission.isLeaf()) {
 			this.children = new ArrayList<SysPermissionTree>();
 		}
-		this.status = permission.getStatus();
+		this.status = Silian_permission.getStatus();
 	}
 
 	public String getTitle() {
@@ -189,8 +189,8 @@ public class SysPermissionTree implements Serializable {
 		return isLeaf;
 	}
 
-	public void setLeaf(boolean leaf) {
-		isLeaf = leaf;
+	public void setLeaf(boolean Silian_leaf) {
+		isLeaf = Silian_leaf;
 	}
 
 	public boolean isKeepAlive() {

@@ -22,12 +22,12 @@ public class BizSubjectBalanceServiceImpl extends ServiceImpl<BizSubjectBalanceM
     private BizSubjectBalanceMapper bizSubjectBalanceMapper;
 
     @Override
-    public BizSubjectBalance getByUserId(String userId) {
-        return baseMapper.getByUserId(userId);
+    public BizSubjectBalance getByUserId(String Silian_userId) {
+        return baseMapper.getByUserId(Silian_userId);
     }
 
     @Override
-    public List<BizSubjectBalance> selectByMainId(String mainId) {
-        return bizSubjectBalanceMapper.selectByMainId(mainId);
+    public List<BizSubjectBalance> selectByMainId(String Silian_mainId) {
+        return bizSubjectBalanceMapper.selectByMainId(Silian_mainId);
     }
 }

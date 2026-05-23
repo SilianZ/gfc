@@ -39,69 +39,69 @@ public class SysGatewayRouteServiceImpl extends ServiceImpl<SysGatewayRouteMappe
     private static final String STRING_STATUS = "status";
 
     @Override
-    public void addRoute2Redis(String key) {
-        List<SysGatewayRoute> ls = this.list(new LambdaQueryWrapper<SysGatewayRoute>());
-        redisTemplate.opsForValue().set(key, JSON.toJSONString(ls));
+    public void addRoute2Redis(String Silian_key) {
+        List<SysGatewayRoute> Silian_ls = this.list(new LambdaQueryWrapper<SysGatewayRoute>());
+        redisTemplate.opsForValue().set(Silian_key, JSON.toJSONString(Silian_ls));
     }
 
     @Override
-    public void deleteById(String id) {
-        this.removeById(id);
-        this.resreshRouter(id);
+    public void deleteById(String Silian_id) {
+        this.removeById(Silian_id);
+        this.resreshRouter(Silian_id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAll(JSONObject json) {
+    public void updateAll(JSONObject Silian_json) {
         log.info("--gateway 路由配置修改--");
         try {
-            json = json.getJSONObject("router");
-            String id = json.getString("id");
+            Silian_json = Silian_json.getJSONObject("router");
+            String Silian_id = Silian_json.getString("id");
             //update-begin-author:taoyan date:20211025 for: oracle路由网关新增小bug /issues/I4EV2J
-            SysGatewayRoute route;
-            if(oConvertUtils.isEmpty(id)){
-                route = new SysGatewayRoute();
+            SysGatewayRoute Silian_route;
+            if(oConvertUtils.isEmpty(Silian_id)){
+                Silian_route = new SysGatewayRoute();
             }else{
-                route = getById(id);
+                Silian_route = getById(Silian_id);
             }
             //update-end-author:taoyan date:20211025 for: oracle路由网关新增小bug /issues/I4EV2J
-            if (ObjectUtil.isEmpty(route)) {
-                route = new SysGatewayRoute();
+            if (ObjectUtil.isEmpty(Silian_route)) {
+                Silian_route = new SysGatewayRoute();
             }
-            route.setRouterId(json.getString("routerId"));
-            route.setName(json.getString("name"));
-            route.setPredicates(json.getString("predicates"));
-            String filters = json.getString("filters");
-            if (ObjectUtil.isEmpty(filters)) {
-                filters = "[]";
+            Silian_route.setRouterId(Silian_json.getString("routerId"));
+            Silian_route.setName(Silian_json.getString("name"));
+            Silian_route.setPredicates(Silian_json.getString("predicates"));
+            String Silian_filters = Silian_json.getString("filters");
+            if (ObjectUtil.isEmpty(Silian_filters)) {
+                Silian_filters = "[]";
             }
-            route.setFilters(filters);
-            route.setUri(json.getString("uri"));
-            if (json.get(STRING_STATUS) == null) {
-                route.setStatus(1);
+            Silian_route.setFilters(Silian_filters);
+            Silian_route.setUri(Silian_json.getString("uri"));
+            if (Silian_json.get(STRING_STATUS) == null) {
+                Silian_route.setStatus(1);
             } else {
-                route.setStatus(json.getInteger(STRING_STATUS));
+                Silian_route.setStatus(Silian_json.getInteger(STRING_STATUS));
             }
-            this.saveOrUpdate(route);
+            this.saveOrUpdate(Silian_route);
             resreshRouter(null);
-        } catch (Exception e) {
-            log.error("路由配置解析失败", e);
+        } catch (Exception Silian_e) {
+            log.error("路由配置解析失败", Silian_e);
             resreshRouter(null);
-            e.printStackTrace();
+            Silian_e.printStackTrace();
         }
     }
 
     /**
      * 更新redis路由缓存
      */
-    private void resreshRouter(String delRouterId) {
+    private void resreshRouter(String Silian_delRouterId) {
         //更新redis路由缓存
         addRoute2Redis(CacheConstant.GATEWAY_ROUTES);
-        BaseMap params = new BaseMap();
-        params.put(GlobalConstants.HANDLER_NAME, GlobalConstants.LODER_ROUDER_HANDLER);
-        params.put("delRouterId", delRouterId);
+        BaseMap Silian_params = new BaseMap();
+        Silian_params.put(GlobalConstants.HANDLER_NAME, GlobalConstants.LODER_ROUDER_HANDLER);
+        Silian_params.put("delRouterId", Silian_delRouterId);
         //刷新网关
-        redisTemplate.convertAndSend(GlobalConstants.REDIS_TOPIC_NAME, params);
+        redisTemplate.convertAndSend(GlobalConstants.REDIS_TOPIC_NAME, Silian_params);
     }
 
     @Override

@@ -82,15 +82,15 @@ public class BizVirtualCurrencyController
     // @AutoLog(value = "虚拟货币投资-分页列表查询")
     @ApiOperation(value = "虚拟货币投资-分页列表查询", notes = "虚拟货币投资-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<BizVirtualCurrency>> queryPageList(BizVirtualCurrency bizVirtualCurrency,
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            HttpServletRequest req) {
-        QueryWrapper<BizVirtualCurrency> queryWrapper = QueryGenerator.initQueryWrapper(bizVirtualCurrency,
-                req.getParameterMap());
-        Page<BizVirtualCurrency> page = new Page<BizVirtualCurrency>(pageNo, pageSize);
-        IPage<BizVirtualCurrency> pageList = bizVirtualCurrencyService.page(page, queryWrapper);
-        return Result.OK(pageList);
+    public Result<IPage<BizVirtualCurrency>> queryPageList(BizVirtualCurrency Silian_bizVirtualCurrency,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            HttpServletRequest Silian_req) {
+        QueryWrapper<BizVirtualCurrency> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_bizVirtualCurrency,
+                Silian_req.getParameterMap());
+        Page<BizVirtualCurrency> Silian_page = new Page<BizVirtualCurrency>(Silian_pageNo, Silian_pageSize);
+        IPage<BizVirtualCurrency> Silian_pageList = bizVirtualCurrencyService.page(Silian_page, Silian_queryWrapper);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -104,55 +104,55 @@ public class BizVirtualCurrencyController
     // @RequiresPermissions("org.jeecg.modules:biz_material_trans:add")
     @PostMapping(value = "/add")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> add(@RequestBody BizVirtualCurrency bizVirtualCurrency) {
+    public Result<String> add(@RequestBody BizVirtualCurrency Silian_bizVirtualCurrency) {
 
 
         try {
             log.info("12356896074578697");
-            Integer yearc=bizVirtualCurrency.getYearCode();
-            log.info("YearCode: {}", yearc);
-            
-            log.info("Start Year :::: {}", bizFiscalYearService.getById(yearc));
+            Integer Silian_yearc=Silian_bizVirtualCurrency.getYearCode();
+            log.info("YearCode: {}", Silian_yearc);
+
+            log.info("Start Year :::: {}", bizFiscalYearService.getById(Silian_yearc));
             log.info("Active Year :::: {}", bizFiscalYearService.getActiveYearCode());
             log.info("Max Year Code:::: {}", bizFiscalYearService.getMaxYearCode());
             log.info("Process Count :::: {}", bizFiscalYearService.getProcessCount());
-            log.info("Use yearCode to query the Bizfiscal year: {}", bizFiscalYearService.getByYearCode(yearc));
+            log.info("Use yearCode to query the Bizfiscal year: {}", bizFiscalYearService.getByYearCode(Silian_yearc));
 
-            
-            BizFiscalYear startyear=bizFiscalYearService.getByYearCode(yearc);
+
+            BizFiscalYear Silian_startyear=bizFiscalYearService.getByYearCode(Silian_yearc);
             // 检查是否在5分钟内投资
-            Date starttime=startyear.getStartTime();
+            Date Silian_starttime=Silian_startyear.getStartTime();
 
-            Date now = new Date();
+            Date Silian_now = new Date();
 
-            boolean isWithinFiveMinutes = now.after(starttime) && now.before(new Date(starttime.getTime() + 5 * 60000));
+            boolean Silian_isWithinFiveMinutes = Silian_now.after(Silian_starttime) && Silian_now.before(new Date(Silian_starttime.getTime() + 5 * 60000));
 
-            if(!isWithinFiveMinutes){
+            if(!Silian_isWithinFiveMinutes){
                 throw new Exception("已过当前财年投资时间");
             }
 
-            BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
+            BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizVirtualCurrency.getSellerId());
             //判断投资总额是否超标
-            Double acct=buyerBalance.getCashAcct();
-            if(acct * 0.05 < bizVirtualCurrency.getTransPrice()){
+            Double Silian_acct=Silian_buyerBalance.getCashAcct();
+            if(Silian_acct * 0.05 < Silian_bizVirtualCurrency.getTransPrice()){
                 throw new Exception("投资金额超过5%");
             }
 
             // 减少买方现金余额
-            buyerBalance.setCashAcct((buyerBalance.getCashAcct() == null ? 0 : buyerBalance.getCashAcct())
-                    - (bizVirtualCurrency.getTransPrice() == null ? 0 : bizVirtualCurrency.getTransPrice()));
-            if (buyerBalance.getCashAcct() < 0) {
+            Silian_buyerBalance.setCashAcct((Silian_buyerBalance.getCashAcct() == null ? 0 : Silian_buyerBalance.getCashAcct())
+                    - (Silian_bizVirtualCurrency.getTransPrice() == null ? 0 : Silian_bizVirtualCurrency.getTransPrice()));
+            if (Silian_buyerBalance.getCashAcct() < 0) {
                 throw new Exception("存入方现金余额不足");
             }
 
-            bizSubjectBalanceService.updateById(buyerBalance);
-            bizVirtualCurrencyService.save(bizVirtualCurrency);
+            bizSubjectBalanceService.updateById(Silian_buyerBalance);
+            bizVirtualCurrencyService.save(Silian_bizVirtualCurrency);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             // 回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("交易：" + e.getMessage());
+            return Result.error("交易：" + Silian_e.getMessage());
         }
         return Result.OK("添加成功！");
     }
@@ -170,44 +170,44 @@ public class BizVirtualCurrencyController
     //@RequiresPermissions("org.jeecg.modules:biz_finance_management:delete")
     @DeleteMapping(value = "/delete")
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> delete(@RequestParam(name="id",required=true) String id) {
+    public Result<String> delete(@RequestParam(name="id",required=true) String Silian_id) {
 
         try{
 
-            BizVirtualCurrency bizVirtualCurrency = bizVirtualCurrencyService.getById(id);
+            BizVirtualCurrency Silian_bizVirtualCurrency = bizVirtualCurrencyService.getById(Silian_id);
 
-            Integer now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
-            
-            if(now==bizVirtualCurrency.getYearCode()){//第0财年提款
-                BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
+            Integer Silian_now=bizFiscalYearService.getActiveYearCode();//得到当前财年的yearCode
 
-                buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizVirtualCurrency.getTransPrice());
+            if(Silian_now==Silian_bizVirtualCurrency.getYearCode()){//第0财年提款
+                BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizVirtualCurrency.getSellerId());
 
-                bizSubjectBalanceService.updateById(buyerBalance);
-                
-                bizVirtualCurrencyService.removeById(id);
+                Silian_buyerBalance.setCashAcct(Silian_buyerBalance.getCashAcct() + Silian_bizVirtualCurrency.getTransPrice());
+
+                bizSubjectBalanceService.updateById(Silian_buyerBalance);
+
+                bizVirtualCurrencyService.removeById(Silian_id);
             }
             else{
                 //计算收益
-                Double Inc=bizFiscalYearService.getByYearCode(now).getCurrencyInc();
+                Double Silian_Inc=bizFiscalYearService.getByYearCode(Silian_now).getCurrencyInc();
 
-                log.info("Here is the Increase: {}", Inc);
-                
+                log.info("Here is the Increase: {}", Silian_Inc);
+
                 //增加投资方资金
-                BizSubjectBalance buyerBalance = bizSubjectBalanceService.getByUserId(bizVirtualCurrency.getSellerId());
+                BizSubjectBalance Silian_buyerBalance = bizSubjectBalanceService.getByUserId(Silian_bizVirtualCurrency.getSellerId());
 
-                buyerBalance.setCashAcct(buyerBalance.getCashAcct() + bizVirtualCurrency.getTransPrice() * (1.00 + Inc));
+                Silian_buyerBalance.setCashAcct(Silian_buyerBalance.getCashAcct() + Silian_bizVirtualCurrency.getTransPrice() * (1.00 + Silian_Inc));
 
-                bizSubjectBalanceService.updateById(buyerBalance);
-                bizVirtualCurrencyService.removeById(id);
+                bizSubjectBalanceService.updateById(Silian_buyerBalance);
+                bizVirtualCurrencyService.removeById(Silian_id);
             }
-            
-        }catch (Exception e){
-            
-            e.printStackTrace();
+
+        }catch (Exception Silian_e){
+
+            Silian_e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return  Result.error("提现失败：" + e.getMessage());
+            return  Result.error("提现失败：" + Silian_e.getMessage());
 
         }
         return Result.OK("提现成功!");

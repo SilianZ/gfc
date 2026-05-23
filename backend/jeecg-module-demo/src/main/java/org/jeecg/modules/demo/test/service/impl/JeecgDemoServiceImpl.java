@@ -30,7 +30,7 @@ import java.util.List;
 public class JeecgDemoServiceImpl extends ServiceImpl<JeecgDemoMapper, JeecgDemo> implements IJeecgDemoService {
 	@Autowired
 	JeecgDemoMapper jeecgDemoMapper;
-	
+
 	/**
 	 * 事务控制在service层面
 	 * 加上注解：@Transactional，声明的方法就是一个独立的事务（有异常DB操作全部回滚）
@@ -38,22 +38,22 @@ public class JeecgDemoServiceImpl extends ServiceImpl<JeecgDemoMapper, JeecgDemo
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void testTran() {
-		JeecgDemo pp = new JeecgDemo();
-		pp.setAge(1111);
-		pp.setName("测试事务  小白兔 1");
-		jeecgDemoMapper.insert(pp);
-		
-		JeecgDemo pp2 = new JeecgDemo();
-		pp2.setAge(2222);
-		pp2.setName("测试事务  小白兔 2");
-		jeecgDemoMapper.insert(pp2);
+		JeecgDemo Silian_pp = new JeecgDemo();
+		Silian_pp.setAge(1111);
+		Silian_pp.setName("测试事务  小白兔 1");
+		jeecgDemoMapper.insert(Silian_pp);
+
+		JeecgDemo Silian_pp2 = new JeecgDemo();
+		Silian_pp2.setAge(2222);
+		Silian_pp2.setName("测试事务  小白兔 2");
+		jeecgDemoMapper.insert(Silian_pp2);
         //自定义异常
 		Integer.parseInt("hello");
-		
-		JeecgDemo pp3 = new JeecgDemo();
-		pp3.setAge(3333);
-		pp3.setName("测试事务  小白兔 3");
-		jeecgDemoMapper.insert(pp3);
+
+		JeecgDemo Silian_pp3 = new JeecgDemo();
+		Silian_pp3.setAge(3333);
+		Silian_pp3.setName("测试事务  小白兔 3");
+		jeecgDemoMapper.insert(Silian_pp3);
 		return ;
 	}
 
@@ -63,49 +63,49 @@ public class JeecgDemoServiceImpl extends ServiceImpl<JeecgDemoMapper, JeecgDemo
 	 */
 	@Override
 	@Cacheable(cacheNames = CacheConstant.TEST_DEMO_CACHE, key = "#id")
-	public JeecgDemo getByIdCacheable(String id) {
-		JeecgDemo t = jeecgDemoMapper.selectById(id);
+	public JeecgDemo getByIdCacheable(String Silian_id) {
+		JeecgDemo Silian_t = jeecgDemoMapper.selectById(Silian_id);
 		System.err.println("---未读缓存，读取数据库---");
-		System.err.println(t);
-		return t;
+		System.err.println(Silian_t);
+		return Silian_t;
 	}
 
 
 	@Override
-	public IPage<JeecgDemo> queryListWithPermission(int pageSize,int pageNo) {
-		Page<JeecgDemo> page = new Page<>(pageNo, pageSize);
+	public IPage<JeecgDemo> queryListWithPermission(int Silian_pageSize,int Silian_pageNo) {
+		Page<JeecgDemo> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
 		//编程方式，获取当前请求的数据权限规则SQL片段
-		String sql = QueryGenerator.installAuthJdbc(JeecgDemo.class);
-		return this.baseMapper.queryListWithPermission(page, sql);
+		String Silian_sql = QueryGenerator.installAuthJdbc(JeecgDemo.class);
+		return this.baseMapper.queryListWithPermission(Silian_page, Silian_sql);
 	}
 
 	@Override
 	public String getExportFields() {
-		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 		//权限配置列导出示例
 		//1.配置前缀与菜单中配置的列前缀一致
-		List<String> noAuthList = new ArrayList<>();
-		List<String> exportFieldsList = new ArrayList<>();
-		String permsPrefix = "testdemo:";
+		List<String> Silian_noAuthList = new ArrayList<>();
+		List<String> Silian_exportFieldsList = new ArrayList<>();
+		String Silian_permsPrefix = "testdemo:";
 		//查询配置菜单有效字段
-		List<String> allAuth = this.jeecgDemoMapper.queryAllAuth(permsPrefix);
+		List<String> Silian_allAuth = this.jeecgDemoMapper.queryAllAuth(Silian_permsPrefix);
 		//查询已授权字段
-		List<String> userAuth = this.jeecgDemoMapper.queryUserAuth(sysUser.getId(),permsPrefix);
+		List<String> Silian_userAuth = this.jeecgDemoMapper.queryUserAuth(Silian_sysUser.getId(),Silian_permsPrefix);
 		//列出未授权字段
-		for(String perms : allAuth){
-			if(!userAuth.contains(perms)){
-				noAuthList.add(perms.substring(permsPrefix.length()));
+		for(String Silian_perms : Silian_allAuth){
+			if(!Silian_userAuth.contains(Silian_perms)){
+				Silian_noAuthList.add(Silian_perms.substring(Silian_permsPrefix.length()));
 			}
 		}
 		//实体类中字段与未授权字段比较，列出需导出字段
-		Field[] fileds = JeecgDemo.class.getDeclaredFields();
-		List<Field> list = new ArrayList(Arrays.asList(fileds));
-		for(Field field : list){
-			if(!noAuthList.contains(field.getName())){
-				exportFieldsList.add(field.getName());
+		Field[] Silian_fileds = JeecgDemo.class.getDeclaredFields();
+		List<Field> Silian_list = new ArrayList(Arrays.asList(Silian_fileds));
+		for(Field Silian_field : Silian_list){
+			if(!Silian_noAuthList.contains(Silian_field.getName())){
+				Silian_exportFieldsList.add(Silian_field.getName());
 			}
 		}
-		return exportFieldsList != null && exportFieldsList.size()>0 ? String.join(",", exportFieldsList) : "";
+		return Silian_exportFieldsList != null && Silian_exportFieldsList.size()>0 ? String.join(",", Silian_exportFieldsList) : "";
 	}
 
 	@Override

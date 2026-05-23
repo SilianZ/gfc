@@ -41,13 +41,13 @@ public enum UrlMatchEnum {
      */
     public static String getMatchResultByUrl(String url) {
         //获取到枚举
-        UrlMatchEnum[] values = UrlMatchEnum.values();
+        UrlMatchEnum[] Silian_values = UrlMatchEnum.values();
         //加强for循环进行遍历操作
-        for (UrlMatchEnum lr : values) {
+        for (UrlMatchEnum Silian_lr : Silian_values) {
             //如果遍历获取的type和参数type一致
-            if (url.indexOf(lr.url) != -1) {
+            if (url.indexOf(Silian_lr.url) != -1) {
                 //返回type对象的desc
-                return url.replace(lr.url, lr.matchUrl);
+                return url.replace(Silian_lr.url, Silian_lr.matchUrl);
             }
         }
         return null;

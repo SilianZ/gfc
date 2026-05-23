@@ -100,28 +100,28 @@ public class SysUserController {
      */
     @RequestMapping(value = "/init", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public Result<?> init(@RequestBody JSONObject jsonObject) {
+    public Result<?> init(@RequestBody JSONObject Silian_jsonObject) {
         try {
             //先清空现有账号数据
             sysUserService.deleteUser();
             //增加账号
-            Integer number = jsonObject.getInteger("number");
-            Double initAmount = jsonObject.getDouble("initAmount");
-            List<SysDepart> countrys = sysDepartService.queryDeptByPid("6d35e179cd814e3299bd588ea7daed3f");
-            for (SysDepart country : countrys) {
-                for (int i = 1; i <= number; i++) {
-                    JSONObject user = new JSONObject();
-                    user.put("username", country.getDepartName().substring(0, 1) + "-" + String.format("%03d", i));
-                    user.put("realname", country.getDepartName() + "-" + String.format("%03d", i) + "组");
-                    user.put("workno", initAmount);
-                    user.put("post", "TEM");
-                    user.put("password", "1qa@WS3ed");
-                    user.put("confirmpassword", "1qa@WS3ed");
-                    user.put("selecteddeparts", country.getId());
-                    user.put("activitiSync", "1");
-                    user.put("userIdentity", "1");
-                    user.put("selectedroles", "1707659087407153153");
-                    this.addUser(user);
+            Integer Silian_number = Silian_jsonObject.getInteger("number");
+            Double Silian_initAmount = Silian_jsonObject.getDouble("initAmount");
+            List<SysDepart> Silian_countrys = sysDepartService.queryDeptByPid("6d35e179cd814e3299bd588ea7daed3f");
+            for (SysDepart Silian_country : Silian_countrys) {
+                for (int Silian_i = 1; Silian_i <= Silian_number; Silian_i++) {
+                    JSONObject Silian_user = new JSONObject();
+                    Silian_user.put("username", Silian_country.getDepartName().substring(0, 1) + "-" + String.format("%03d", Silian_i));
+                    Silian_user.put("realname", Silian_country.getDepartName() + "-" + String.format("%03d", Silian_i) + "组");
+                    Silian_user.put("workno", Silian_initAmount);
+                    Silian_user.put("post", "TEM");
+                    Silian_user.put("password", "1qa@WS3ed");
+                    Silian_user.put("confirmpassword", "1qa@WS3ed");
+                    Silian_user.put("selecteddeparts", Silian_country.getId());
+                    Silian_user.put("activitiSync", "1");
+                    Silian_user.put("userIdentity", "1");
+                    Silian_user.put("selectedroles", "1707659087407153153");
+                    this.addUser(Silian_user);
                 }
             }
             //初始化团队账户
@@ -134,34 +134,34 @@ public class SysUserController {
             sysUserService.initFiscalYear();
             //删除其它数据
             sysUserService.deleteOtherData();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception Silian_e) {
+            Silian_e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error("初始化失败:" + e.getMessage());
+            return Result.error("初始化失败:" + Silian_e.getMessage());
         }
         return Result.OK("初始化成功！");
     }
 
-    public void addUser(JSONObject jsonObject) {
-        String selectedRoles = jsonObject.getString("selectedroles");
-        String selectedDeparts = jsonObject.getString("selecteddeparts");
+    public void addUser(JSONObject Silian_jsonObject) {
+        String Silian_selectedRoles = Silian_jsonObject.getString("selectedroles");
+        String Silian_selectedDeparts = Silian_jsonObject.getString("selecteddeparts");
         try {
-            SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
-            user.setCreateTime(new Date());//设置创建时间
-            String salt = oConvertUtils.randomGen(8);
-            user.setSalt(salt);
-            String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), salt);
-            user.setPassword(passwordEncode);
-            user.setStatus(1);
-            user.setDelFlag(CommonConstant.DEL_FLAG_0);
+            SysUser Silian_user = JSON.parseObject(Silian_jsonObject.toJSONString(), SysUser.class);
+            Silian_user.setCreateTime(new Date());//设置创建时间
+            String Silian_salt = oConvertUtils.randomGen(8);
+            Silian_user.setSalt(Silian_salt);
+            String Silian_passwordEncode = PasswordUtil.encrypt(Silian_user.getUsername(), Silian_user.getPassword(), Silian_salt);
+            Silian_user.setPassword(Silian_passwordEncode);
+            Silian_user.setStatus(1);
+            Silian_user.setDelFlag(CommonConstant.DEL_FLAG_0);
             //用户表字段org_code不能在这里设置他的值
-            user.setOrgCode(null);
+            Silian_user.setOrgCode(null);
             // 保存用户走一个service 保证事务
-            sysUserService.saveUser(user, selectedRoles, selectedDeparts);
-            baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
-        } catch (Exception e) {
-            throw e;
+            sysUserService.saveUser(Silian_user, Silian_selectedRoles, Silian_selectedDeparts);
+            baseCommonService.addLog("添加用户，username： " + Silian_user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+        } catch (Exception Silian_e) {
+            throw Silian_e;
         }
     }
 
@@ -176,124 +176,124 @@ public class SysUserController {
      */
     @PermissionData(pageComponent = "system/UserList")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Result<IPage<SysUser>> queryPageList(SysUser user, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
-        Result<IPage<SysUser>> result = new Result<IPage<SysUser>>();
-        QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
-        queryWrapper.in("post", "TEM", "ZXT");
+    public Result<IPage<SysUser>> queryPageList(SysUser Silian_user, @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize, HttpServletRequest Silian_req) {
+        Result<IPage<SysUser>> Silian_result = new Result<IPage<SysUser>>();
+        QueryWrapper<SysUser> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_user, Silian_req.getParameterMap());
+        Silian_queryWrapper.in("post", "TEM", "ZXT");
         //update-begin-Author:wangshuai--Date:20211119--for:【vue3】通过部门id查询用户，通过code查询id
         //部门ID
-        String departId = req.getParameter("departId");
-        if (oConvertUtils.isNotEmpty(departId)) {
-            LambdaQueryWrapper<SysUserDepart> query = new LambdaQueryWrapper<>();
-            query.eq(SysUserDepart::getDepId, departId);
-            List<SysUserDepart> list = sysUserDepartService.list(query);
-            List<String> userIds = list.stream().map(SysUserDepart::getUserId).collect(Collectors.toList());
+        String Silian_departId = Silian_req.getParameter("departId");
+        if (oConvertUtils.isNotEmpty(Silian_departId)) {
+            LambdaQueryWrapper<SysUserDepart> Silian_query = new LambdaQueryWrapper<>();
+            Silian_query.eq(SysUserDepart::getDepId, Silian_departId);
+            List<SysUserDepart> Silian_list = sysUserDepartService.list(Silian_query);
+            List<String> Silian_userIds = Silian_list.stream().map(SysUserDepart::getUserId).collect(Collectors.toList());
             //update-begin---author:wangshuai ---date:20220322  for：[issues/I4XTYB]查询用户时，当部门id 下没有分配用户时接口报错------------
-            if (oConvertUtils.listIsNotEmpty(userIds)) {
-                queryWrapper.in("id", userIds);
+            if (oConvertUtils.listIsNotEmpty(Silian_userIds)) {
+                Silian_queryWrapper.in("id", Silian_userIds);
             } else {
                 return Result.OK();
             }
             //update-end---author:wangshuai ---date:20220322  for：[issues/I4XTYB]查询用户时，当部门id 下没有分配用户时接口报错------------
         }
         //用户ID
-        String code = req.getParameter("code");
-        if (oConvertUtils.isNotEmpty(code)) {
-            queryWrapper.in("id", Arrays.asList(code.split(",")));
-            pageSize = code.split(",").length;
+        String Silian_code = Silian_req.getParameter("code");
+        if (oConvertUtils.isNotEmpty(Silian_code)) {
+            Silian_queryWrapper.in("id", Arrays.asList(Silian_code.split(",")));
+            Silian_pageSize = Silian_code.split(",").length;
         }
         //update-end-Author:wangshuai--Date:20211119--for:【vue3】通过部门id查询用户，通过code查询id
 
         //update-begin-author:taoyan--date:20220104--for: JTC-372 【用户冻结问题】 online授权、用户组件，选择用户都能看到被冻结的用户
-        String status = req.getParameter("status");
-        if (oConvertUtils.isNotEmpty(status)) {
-            queryWrapper.eq("status", Integer.parseInt(status));
+        String Silian_status = Silian_req.getParameter("status");
+        if (oConvertUtils.isNotEmpty(Silian_status)) {
+            Silian_queryWrapper.eq("status", Integer.parseInt(Silian_status));
         }
         //update-end-author:taoyan--date:20220104--for: JTC-372 【用户冻结问题】 online授权、用户组件，选择用户都能看到被冻结的用户
 
         //TODO 外部模拟登陆临时账号，列表不显示
-        queryWrapper.ne("username", "_reserve_user_external");
-        Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
-        IPage<SysUser> pageList = sysUserService.page(page, queryWrapper);
+        Silian_queryWrapper.ne("username", "_reserve_user_external");
+        Page<SysUser> Silian_page = new Page<SysUser>(Silian_pageNo, Silian_pageSize);
+        IPage<SysUser> Silian_pageList = sysUserService.page(Silian_page, Silian_queryWrapper);
 
         //批量查询用户的所属部门
         //step.1 先拿到全部的 useids
         //step.2 通过 useids，一次性查询用户的所属部门名字
-        List<String> userIds = pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
-        if (userIds != null && userIds.size() > 0) {
-            Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
-            pageList.getRecords().forEach(item -> {
-                item.setOrgCodeTxt(useDepNames.get(item.getId()));
+        List<String> Silian_userIds = Silian_pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
+        if (Silian_userIds != null && Silian_userIds.size() > 0) {
+            Map<String, String> Silian_useDepNames = sysUserService.getDepNamesByUserIds(Silian_userIds);
+            Silian_pageList.getRecords().forEach(Silian_item -> {
+                Silian_item.setOrgCodeTxt(Silian_useDepNames.get(Silian_item.getId()));
             });
         }
-        result.setSuccess(true);
-        result.setResult(pageList);
-        log.info(pageList.toString());
-        return result;
+        Silian_result.setSuccess(true);
+        Silian_result.setResult(Silian_pageList);
+        log.info(Silian_pageList.toString());
+        return Silian_result;
     }
 
     //@RequiresRoles({"admin"})
     //Permissions("system:user:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result<SysUser> add(@RequestBody JSONObject jsonObject) {
-        Result<SysUser> result = new Result<SysUser>();
-        String selectedRoles = jsonObject.getString("selectedroles");
-        String selectedDeparts = jsonObject.getString("selecteddeparts");
+    public Result<SysUser> add(@RequestBody JSONObject Silian_jsonObject) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
+        String Silian_selectedRoles = Silian_jsonObject.getString("selectedroles");
+        String Silian_selectedDeparts = Silian_jsonObject.getString("selecteddeparts");
         try {
-            SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
-            user.setCreateTime(new Date());//设置创建时间
-            String salt = oConvertUtils.randomGen(8);
-            user.setSalt(salt);
-            String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), salt);
-            user.setPassword(passwordEncode);
-            user.setStatus(1);
-            user.setDelFlag(CommonConstant.DEL_FLAG_0);
+            SysUser Silian_user = JSON.parseObject(Silian_jsonObject.toJSONString(), SysUser.class);
+            Silian_user.setCreateTime(new Date());//设置创建时间
+            String Silian_salt = oConvertUtils.randomGen(8);
+            Silian_user.setSalt(Silian_salt);
+            String Silian_passwordEncode = PasswordUtil.encrypt(Silian_user.getUsername(), Silian_user.getPassword(), Silian_salt);
+            Silian_user.setPassword(Silian_passwordEncode);
+            Silian_user.setStatus(1);
+            Silian_user.setDelFlag(CommonConstant.DEL_FLAG_0);
             //用户表字段org_code不能在这里设置他的值
-            user.setOrgCode(null);
+            Silian_user.setOrgCode(null);
             // 保存用户走一个service 保证事务
-            sysUserService.saveUser(user, selectedRoles, selectedDeparts);
-            baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
-            result.success("添加成功！");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
+            sysUserService.saveUser(Silian_user, Silian_selectedRoles, Silian_selectedDeparts);
+            baseCommonService.addLog("添加用户，username： " + Silian_user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+            Silian_result.success("添加成功！");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("操作失败");
         }
-        return result;
+        return Silian_result;
     }
 
     //@RequiresRoles({"admin"})
     //Permissions("system:user:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<SysUser> edit(@RequestBody JSONObject jsonObject) {
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<SysUser> edit(@RequestBody JSONObject Silian_jsonObject) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
         try {
-            SysUser sysUser = sysUserService.getById(jsonObject.getString("id"));
-            baseCommonService.addLog("编辑用户，username： " + sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
-            if (sysUser == null) {
-                result.error500("未找到对应实体");
+            SysUser Silian_sysUser = sysUserService.getById(Silian_jsonObject.getString("id"));
+            baseCommonService.addLog("编辑用户，username： " + Silian_sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+            if (Silian_sysUser == null) {
+                Silian_result.error500("未找到对应实体");
             } else {
-                SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
-                user.setUpdateTime(new Date());
+                SysUser Silian_user = JSON.parseObject(Silian_jsonObject.toJSONString(), SysUser.class);
+                Silian_user.setUpdateTime(new Date());
                 //String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), sysUser.getSalt());
-                user.setPassword(sysUser.getPassword());
-                String roles = jsonObject.getString("selectedroles");
-                String departs = jsonObject.getString("selecteddeparts");
-                if (oConvertUtils.isEmpty(departs)) {
+                Silian_user.setPassword(Silian_sysUser.getPassword());
+                String Silian_roles = Silian_jsonObject.getString("selectedroles");
+                String Silian_departs = Silian_jsonObject.getString("selecteddeparts");
+                if (oConvertUtils.isEmpty(Silian_departs)) {
                     //vue3.0前端只传递了departIds
-                    departs = user.getDepartIds();
+                    Silian_departs = Silian_user.getDepartIds();
                 }
                 //用户表字段org_code不能在这里设置他的值
-                user.setOrgCode(null);
+                Silian_user.setOrgCode(null);
                 // 修改用户走一个service 保证事务
-                sysUserService.editUser(user, roles, departs);
-                result.success("修改成功!");
+                sysUserService.editUser(Silian_user, Silian_roles, Silian_departs);
+                Silian_result.success("修改成功!");
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("操作失败");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -301,9 +301,9 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
-        baseCommonService.addLog("删除用户，id： " + id, CommonConstant.LOG_TYPE_2, 3);
-        this.sysUserService.deleteUser(id);
+    public Result<?> delete(@RequestParam(name = "id", required = true) String Silian_id) {
+        baseCommonService.addLog("删除用户，id： " + Silian_id, CommonConstant.LOG_TYPE_2, 3);
+        this.sysUserService.deleteUser(Silian_id);
         return Result.ok("删除用户成功");
     }
 
@@ -312,9 +312,9 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        baseCommonService.addLog("批量删除用户， ids： " + ids, CommonConstant.LOG_TYPE_2, 3);
-        this.sysUserService.deleteBatchUsers(ids);
+    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String Silian_ids) {
+        baseCommonService.addLog("批量删除用户， ids： " + Silian_ids, CommonConstant.LOG_TYPE_2, 3);
+        this.sysUserService.deleteBatchUsers(Silian_ids);
         return Result.ok("批量删除用户成功");
     }
 
@@ -326,55 +326,55 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/frozenBatch", method = RequestMethod.PUT)
-    public Result<SysUser> frozenBatch(@RequestBody JSONObject jsonObject) {
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<SysUser> frozenBatch(@RequestBody JSONObject Silian_jsonObject) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
         try {
-            String ids = jsonObject.getString("ids");
-            String status = jsonObject.getString("status");
-            String[] arr = ids.split(",");
-            for (String id : arr) {
-                if (oConvertUtils.isNotEmpty(id)) {
-                    this.sysUserService.update(new SysUser().setStatus(Integer.parseInt(status)),
-                            new UpdateWrapper<SysUser>().lambda().eq(SysUser::getId, id));
+            String Silian_ids = Silian_jsonObject.getString("ids");
+            String Silian_status = Silian_jsonObject.getString("status");
+            String[] Silian_arr = Silian_ids.split(",");
+            for (String Silian_id : Silian_arr) {
+                if (oConvertUtils.isNotEmpty(Silian_id)) {
+                    this.sysUserService.update(new SysUser().setStatus(Integer.parseInt(Silian_status)),
+                            new UpdateWrapper<SysUser>().lambda().eq(SysUser::getId, Silian_id));
                 }
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败" + e.getMessage());
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("操作失败" + Silian_e.getMessage());
         }
-        result.success("操作成功!");
-        return result;
+        Silian_result.success("操作成功!");
+        return Silian_result;
 
     }
 
     @RequestMapping(value = "/queryById", method = RequestMethod.GET)
-    public Result<SysUser> queryById(@RequestParam(name = "id", required = true) String id) {
-        Result<SysUser> result = new Result<SysUser>();
-        SysUser sysUser = sysUserService.getById(id);
-        if (sysUser == null) {
-            result.error500("未找到对应实体");
+    public Result<SysUser> queryById(@RequestParam(name = "id", required = true) String Silian_id) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
+        SysUser Silian_sysUser = sysUserService.getById(Silian_id);
+        if (Silian_sysUser == null) {
+            Silian_result.error500("未找到对应实体");
         } else {
-            result.setResult(sysUser);
-            result.setSuccess(true);
+            Silian_result.setResult(Silian_sysUser);
+            Silian_result.setSuccess(true);
         }
-        return result;
+        return Silian_result;
     }
 
     @RequestMapping(value = "/queryUserRole", method = RequestMethod.GET)
-    public Result<List<String>> queryUserRole(@RequestParam(name = "userid", required = true) String userid) {
-        Result<List<String>> result = new Result<>();
-        List<String> list = new ArrayList<String>();
-        List<SysUserRole> userRole = sysUserRoleService.list(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userid));
-        if (userRole == null || userRole.size() <= 0) {
-            result.error500("未找到用户相关角色信息");
+    public Result<List<String>> queryUserRole(@RequestParam(name = "userid", required = true) String Silian_userid) {
+        Result<List<String>> Silian_result = new Result<>();
+        List<String> Silian_list = new ArrayList<String>();
+        List<SysUserRole> Silian_userRole = sysUserRoleService.list(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, Silian_userid));
+        if (Silian_userRole == null || Silian_userRole.size() <= 0) {
+            Silian_result.error500("未找到用户相关角色信息");
         } else {
-            for (SysUserRole sysUserRole : userRole) {
-                list.add(sysUserRole.getRoleId());
+            for (SysUserRole Silian_sysUserRole : Silian_userRole) {
+                Silian_list.add(Silian_sysUserRole.getRoleId());
             }
-            result.setSuccess(true);
-            result.setResult(list);
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(Silian_list);
         }
-        return result;
+        return Silian_result;
     }
 
 
@@ -386,27 +386,27 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/checkOnlyUser", method = RequestMethod.GET)
-    public Result<Boolean> checkOnlyUser(SysUser sysUser) {
-        Result<Boolean> result = new Result<>();
+    public Result<Boolean> checkOnlyUser(SysUser Silian_sysUser) {
+        Result<Boolean> Silian_result = new Result<>();
         //如果此参数为false则程序发生异常
-        result.setResult(true);
+        Silian_result.setResult(true);
         try {
             //通过传入信息查询新的用户信息
-            sysUser.setPassword(null);
-            SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>(sysUser));
-            if (user != null) {
-                result.setSuccess(false);
-                result.setMessage("用户账号已存在");
-                return result;
+            Silian_sysUser.setPassword(null);
+            SysUser Silian_user = sysUserService.getOne(new QueryWrapper<SysUser>(Silian_sysUser));
+            if (Silian_user != null) {
+                Silian_result.setSuccess(false);
+                Silian_result.setMessage("用户账号已存在");
+                return Silian_result;
             }
 
-        } catch (Exception e) {
-            result.setSuccess(false);
-            result.setMessage(e.getMessage());
-            return result;
+        } catch (Exception Silian_e) {
+            Silian_result.setSuccess(false);
+            Silian_result.setMessage(Silian_e.getMessage());
+            return Silian_result;
         }
-        result.setSuccess(true);
-        return result;
+        Silian_result.setSuccess(true);
+        return Silian_result;
     }
 
     /**
@@ -414,17 +414,17 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/changePassword", method = RequestMethod.PUT)
-    public Result<?> changePassword(@RequestBody SysUser sysUser) {
-        SysUser u = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, sysUser.getUsername()));
-        if (u == null) {
+    public Result<?> changePassword(@RequestBody SysUser Silian_sysUser) {
+        SysUser Silian_u = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, Silian_sysUser.getUsername()));
+        if (Silian_u == null) {
             return Result.error("用户不存在！");
         }
-        sysUser.setId(u.getId());
+        Silian_sysUser.setId(Silian_u.getId());
         //update-begin---author:wangshuai ---date:20220316  for：[VUEN-234]修改密码添加敏感日志------------
-        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        baseCommonService.addLog("修改用户 " + sysUser.getUsername() + " 的密码，操作人： " + loginUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+        LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        baseCommonService.addLog("修改用户 " + Silian_sysUser.getUsername() + " 的密码，操作人： " + Silian_loginUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
         //update-end---author:wangshuai ---date:20220316  for：[VUEN-234]修改密码添加敏感日志------------
-        return sysUserService.changePassword(sysUser);
+        return sysUserService.changePassword(Silian_sysUser);
     }
 
     /**
@@ -434,24 +434,24 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/userDepartList", method = RequestMethod.GET)
-    public Result<List<DepartIdModel>> getUserDepartsList(@RequestParam(name = "userId", required = true) String userId) {
-        Result<List<DepartIdModel>> result = new Result<>();
+    public Result<List<DepartIdModel>> getUserDepartsList(@RequestParam(name = "userId", required = true) String Silian_userId) {
+        Result<List<DepartIdModel>> Silian_result = new Result<>();
         try {
-            List<DepartIdModel> depIdModelList = this.sysUserDepartService.queryDepartIdsOfUser(userId);
-            if (depIdModelList != null && depIdModelList.size() > 0) {
-                result.setSuccess(true);
-                result.setMessage("查找成功");
-                result.setResult(depIdModelList);
+            List<DepartIdModel> Silian_depIdModelList = this.sysUserDepartService.queryDepartIdsOfUser(Silian_userId);
+            if (Silian_depIdModelList != null && Silian_depIdModelList.size() > 0) {
+                Silian_result.setSuccess(true);
+                Silian_result.setMessage("查找成功");
+                Silian_result.setResult(Silian_depIdModelList);
             } else {
-                result.setSuccess(false);
-                result.setMessage("查找失败");
+                Silian_result.setSuccess(false);
+                Silian_result.setMessage("查找失败");
             }
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.setSuccess(false);
-            result.setMessage("查找过程中出现了异常: " + e.getMessage());
-            return result;
+            return Silian_result;
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.setSuccess(false);
+            Silian_result.setMessage("查找过程中出现了异常: " + Silian_e.getMessage());
+            return Silian_result;
         }
 
     }
@@ -463,12 +463,12 @@ public class SysUserController {
      */
     @RequestMapping(value = "/generateUserId", method = RequestMethod.GET)
     public Result<String> generateUserId() {
-        Result<String> result = new Result<>();
+        Result<String> Silian_result = new Result<>();
         System.out.println("我执行了,生成用户ID==============================");
-        String userId = UUID.randomUUID().toString().replace("-", "");
-        result.setSuccess(true);
-        result.setResult(userId);
-        return result;
+        String Silian_userId = UUID.randomUUID().toString().replace("-", "");
+        Silian_result.setSuccess(true);
+        Silian_result.setResult(Silian_userId);
+        return Silian_result;
     }
 
     /**
@@ -478,32 +478,32 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/queryUserByDepId", method = RequestMethod.GET)
-    public Result<List<SysUser>> queryUserByDepId(@RequestParam(name = "id", required = true) String id, @RequestParam(name = "realname", required = false) String realname) {
-        Result<List<SysUser>> result = new Result<>();
+    public Result<List<SysUser>> queryUserByDepId(@RequestParam(name = "id", required = true) String Silian_id, @RequestParam(name = "realname", required = false) String Silian_realname) {
+        Result<List<SysUser>> Silian_result = new Result<>();
         //List<SysUser> userList = sysUserDepartService.queryUserByDepId(id);
-        SysDepart sysDepart = sysDepartService.getById(id);
-        List<SysUser> userList = sysUserDepartService.queryUserByDepCode(sysDepart.getOrgCode(), realname);
+        SysDepart Silian_sysDepart = sysDepartService.getById(Silian_id);
+        List<SysUser> Silian_userList = sysUserDepartService.queryUserByDepCode(Silian_sysDepart.getOrgCode(), Silian_realname);
 
         //批量查询用户的所属部门
         //step.1 先拿到全部的 useids
         //step.2 通过 useids，一次性查询用户的所属部门名字
-        List<String> userIds = userList.stream().map(SysUser::getId).collect(Collectors.toList());
-        if (userIds != null && userIds.size() > 0) {
-            Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
-            userList.forEach(item -> {
+        List<String> Silian_userIds = Silian_userList.stream().map(SysUser::getId).collect(Collectors.toList());
+        if (Silian_userIds != null && Silian_userIds.size() > 0) {
+            Map<String, String> Silian_useDepNames = sysUserService.getDepNamesByUserIds(Silian_userIds);
+            Silian_userList.forEach(Silian_item -> {
                 //TODO 临时借用这个字段用于页面展示
-                item.setOrgCodeTxt(useDepNames.get(item.getId()));
+                Silian_item.setOrgCodeTxt(Silian_useDepNames.get(Silian_item.getId()));
             });
         }
 
         try {
-            result.setSuccess(true);
-            result.setResult(userList);
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.setSuccess(false);
-            return result;
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(Silian_userList);
+            return Silian_result;
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
     }
 
@@ -516,18 +516,18 @@ public class SysUserController {
      */
     @RequestMapping(value = "/queryUserComponentData", method = RequestMethod.GET)
     public Result<IPage<SysUser>> queryUserComponentData(
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(name = "departId", required = false) String departId,
-            @RequestParam(name = "realname", required = false) String realname,
-            @RequestParam(name = "username", required = false) String username,
-            @RequestParam(name = "id", required = false) String id) {
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            @RequestParam(name = "departId", required = false) String Silian_departId,
+            @RequestParam(name = "realname", required = false) String Silian_realname,
+            @RequestParam(name = "username", required = false) String Silian_username,
+            @RequestParam(name = "id", required = false) String Silian_id) {
         //update-begin-author:taoyan date:2022-7-14 for: VUEN-1702【禁止问题】sql注入漏洞
-        String[] arr = new String[]{departId, realname, username, id};
-        SqlInjectionUtil.filterContent(arr, SymbolConstant.SINGLE_QUOTATION_MARK);
+        String[] Silian_arr = new String[]{Silian_departId, Silian_realname, Silian_username, Silian_id};
+        SqlInjectionUtil.filterContent(Silian_arr, SymbolConstant.SINGLE_QUOTATION_MARK);
         //update-end-author:taoyan date:2022-7-14 for: VUEN-1702【禁止问题】sql注入漏洞
-        IPage<SysUser> pageList = sysUserDepartService.queryDepartUserPageList(departId, username, realname, pageSize, pageNo, id);
-        return Result.OK(pageList);
+        IPage<SysUser> Silian_pageList = sysUserDepartService.queryDepartUserPageList(Silian_departId, Silian_username, Silian_realname, Silian_pageSize, Silian_pageNo, Silian_id);
+        return Result.OK(Silian_pageList);
     }
 
     /**
@@ -539,28 +539,28 @@ public class SysUserController {
     //@RequiresRoles({"admin"})
     //@RequiresPermissions("system:user:export")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(SysUser sysUser, HttpServletRequest request) {
+    public ModelAndView exportXls(SysUser Silian_sysUser, HttpServletRequest Silian_request) {
         // Step.1 组装查询条件
-        QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(sysUser, request.getParameterMap());
+        QueryWrapper<SysUser> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysUser, Silian_request.getParameterMap());
         //Step.2 AutoPoi 导出Excel
-        ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+        ModelAndView Silian_mv = new ModelAndView(new JeecgEntityExcelView());
         //update-begin--Author:kangxiaolin  Date:20180825 for：[03]用户导出，如果选择数据则只导出相关数据--------------------
-        String selections = request.getParameter("selections");
-        if (!oConvertUtils.isEmpty(selections)) {
-            queryWrapper.in("id", selections.split(","));
+        String Silian_selections = Silian_request.getParameter("selections");
+        if (!oConvertUtils.isEmpty(Silian_selections)) {
+            Silian_queryWrapper.in("id", Silian_selections.split(","));
         }
         //update-end--Author:kangxiaolin  Date:20180825 for：[03]用户导出，如果选择数据则只导出相关数据----------------------
-        List<SysUser> pageList = sysUserService.list(queryWrapper);
+        List<SysUser> Silian_pageList = sysUserService.list(Silian_queryWrapper);
 
         //导出文件名称
-        mv.addObject(NormalExcelConstants.FILE_NAME, "用户列表");
-        mv.addObject(NormalExcelConstants.CLASS, SysUser.class);
-        LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        ExportParams exportParams = new ExportParams("用户列表数据", "导出人:" + user.getRealname(), "导出信息");
-        exportParams.setImageBasePath(upLoadPath);
-        mv.addObject(NormalExcelConstants.PARAMS, exportParams);
-        mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-        return mv;
+        Silian_mv.addObject(NormalExcelConstants.FILE_NAME, "用户列表");
+        Silian_mv.addObject(NormalExcelConstants.CLASS, SysUser.class);
+        LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        ExportParams Silian_exportParams = new ExportParams("用户列表数据", "导出人:" + Silian_user.getRealname(), "导出信息");
+        Silian_exportParams.setImageBasePath(upLoadPath);
+        Silian_mv.addObject(NormalExcelConstants.PARAMS, Silian_exportParams);
+        Silian_mv.addObject(NormalExcelConstants.DATA_LIST, Silian_pageList);
+        return Silian_mv;
     }
 
     /**
@@ -573,79 +573,79 @@ public class SysUserController {
     //@RequiresRoles({"admin"})
     //Permissions("system:user:import")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+    public Result<?> importExcel(HttpServletRequest Silian_request, HttpServletResponse Silian_response) throws IOException {
+        MultipartHttpServletRequest Silian_multipartRequest = (MultipartHttpServletRequest) Silian_request;
+        Map<String, MultipartFile> Silian_fileMap = Silian_multipartRequest.getFileMap();
         // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            MultipartFile file = entity.getValue();// 获取上传文件对象
+        List<String> Silian_errorMessage = new ArrayList<>();
+        int Silian_successLines = 0, Silian_errorLines = 0;
+        for (Map.Entry<String, MultipartFile> Silian_entity : Silian_fileMap.entrySet()) {
+            MultipartFile Silian_file = Silian_entity.getValue();// 获取上传文件对象
             ImportParams params = new ImportParams();
             params.setTitleRows(2);
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<SysUser> listSysUsers = ExcelImportUtil.importExcel(file.getInputStream(), SysUser.class, params);
-                for (int i = 0; i < listSysUsers.size(); i++) {
-                    SysUser sysUserExcel = listSysUsers.get(i);
-                    if (StringUtils.isBlank(sysUserExcel.getPassword())) {
+                List<SysUser> Silian_listSysUsers = ExcelImportUtil.importExcel(Silian_file.getInputStream(), SysUser.class, params);
+                for (int Silian_i = 0; Silian_i < Silian_listSysUsers.size(); Silian_i++) {
+                    SysUser Silian_sysUserExcel = Silian_listSysUsers.get(Silian_i);
+                    if (StringUtils.isBlank(Silian_sysUserExcel.getPassword())) {
                         // 密码默认为 “123456”
-                        sysUserExcel.setPassword("123456");
+                        Silian_sysUserExcel.setPassword("123456");
                     }
                     // 密码加密加盐
-                    String salt = oConvertUtils.randomGen(8);
-                    sysUserExcel.setSalt(salt);
-                    String passwordEncode = PasswordUtil.encrypt(sysUserExcel.getUsername(), sysUserExcel.getPassword(), salt);
-                    sysUserExcel.setPassword(passwordEncode);
+                    String Silian_salt = oConvertUtils.randomGen(8);
+                    Silian_sysUserExcel.setSalt(Silian_salt);
+                    String Silian_passwordEncode = PasswordUtil.encrypt(Silian_sysUserExcel.getUsername(), Silian_sysUserExcel.getPassword(), Silian_salt);
+                    Silian_sysUserExcel.setPassword(Silian_passwordEncode);
                     try {
-                        sysUserService.save(sysUserExcel);
-                        successLines++;
-                    } catch (Exception e) {
-                        errorLines++;
-                        String message = e.getMessage().toLowerCase();
-                        int lineNumber = i + 1;
+                        sysUserService.save(Silian_sysUserExcel);
+                        Silian_successLines++;
+                    } catch (Exception Silian_e) {
+                        Silian_errorLines++;
+                        String Silian_message = Silian_e.getMessage().toLowerCase();
+                        int Silian_lineNumber = Silian_i + 1;
                         // 通过索引名判断出错信息
-                        if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_USERNAME)) {
-                            errorMessage.add("第 " + lineNumber + " 行：用户名已经存在，忽略导入。");
-                        } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_WORK_NO)) {
-                            errorMessage.add("第 " + lineNumber + " 行：工号已经存在，忽略导入。");
-                        } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_PHONE)) {
-                            errorMessage.add("第 " + lineNumber + " 行：手机号已经存在，忽略导入。");
-                        } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_EMAIL)) {
-                            errorMessage.add("第 " + lineNumber + " 行：电子邮件已经存在，忽略导入。");
-                        } else if (message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER)) {
-                            errorMessage.add("第 " + lineNumber + " 行：违反表唯一性约束。");
+                        if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_USERNAME)) {
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：用户名已经存在，忽略导入。");
+                        } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_WORK_NO)) {
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：工号已经存在，忽略导入。");
+                        } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_PHONE)) {
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：手机号已经存在，忽略导入。");
+                        } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER_EMAIL)) {
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：电子邮件已经存在，忽略导入。");
+                        } else if (Silian_message.contains(CommonConstant.SQL_INDEX_UNIQ_SYS_USER)) {
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：违反表唯一性约束。");
                         } else {
-                            errorMessage.add("第 " + lineNumber + " 行：未知错误，忽略导入");
-                            log.error(e.getMessage(), e);
+                            Silian_errorMessage.add("第 " + Silian_lineNumber + " 行：未知错误，忽略导入");
+                            log.error(Silian_e.getMessage(), Silian_e);
                         }
                     }
                     // 批量将部门和用户信息建立关联关系
-                    String departIds = sysUserExcel.getDepartIds();
-                    if (StringUtils.isNotBlank(departIds)) {
-                        String userId = sysUserExcel.getId();
-                        String[] departIdArray = departIds.split(",");
-                        List<SysUserDepart> userDepartList = new ArrayList<>(departIdArray.length);
-                        for (String departId : departIdArray) {
-                            userDepartList.add(new SysUserDepart(userId, departId));
+                    String Silian_departIds = Silian_sysUserExcel.getDepartIds();
+                    if (StringUtils.isNotBlank(Silian_departIds)) {
+                        String Silian_userId = Silian_sysUserExcel.getId();
+                        String[] Silian_departIdArray = Silian_departIds.split(",");
+                        List<SysUserDepart> Silian_userDepartList = new ArrayList<>(Silian_departIdArray.length);
+                        for (String Silian_departId : Silian_departIdArray) {
+                            Silian_userDepartList.add(new SysUserDepart(Silian_userId, Silian_departId));
                         }
-                        sysUserDepartService.saveBatch(userDepartList);
+                        sysUserDepartService.saveBatch(Silian_userDepartList);
                     }
 
                 }
-            } catch (Exception e) {
-                errorMessage.add("发生异常：" + e.getMessage());
-                log.error(e.getMessage(), e);
+            } catch (Exception Silian_e) {
+                Silian_errorMessage.add("发生异常：" + Silian_e.getMessage());
+                log.error(Silian_e.getMessage(), Silian_e);
             } finally {
                 try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    Silian_file.getInputStream().close();
+                } catch (IOException Silian_e) {
+                    log.error(Silian_e.getMessage(), Silian_e);
                 }
             }
         }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+        return ImportExcelUtil.imporReturnRes(Silian_errorLines, Silian_successLines, Silian_errorMessage);
     }
 
     /**
@@ -654,14 +654,14 @@ public class SysUserController {
      * @功能：根据id 批量查询
      */
     @RequestMapping(value = "/queryByIds", method = RequestMethod.GET)
-    public Result<Collection<SysUser>> queryByIds(@RequestParam String userIds) {
-        Result<Collection<SysUser>> result = new Result<>();
-        String[] userId = userIds.split(",");
-        Collection<String> idList = Arrays.asList(userId);
-        Collection<SysUser> userRole = sysUserService.listByIds(idList);
-        result.setSuccess(true);
-        result.setResult(userRole);
-        return result;
+    public Result<Collection<SysUser>> queryByIds(@RequestParam String Silian_userIds) {
+        Result<Collection<SysUser>> Silian_result = new Result<>();
+        String[] Silian_userId = Silian_userIds.split(",");
+        Collection<String> Silian_idList = Arrays.asList(Silian_userId);
+        Collection<SysUser> Silian_userRole = sysUserService.listByIds(Silian_idList);
+        Silian_result.setSuccess(true);
+        Silian_result.setResult(Silian_userRole);
+        return Silian_result;
     }
 
     /**
@@ -669,37 +669,37 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/updatePassword", method = RequestMethod.PUT)
-    public Result<?> updatePassword(@RequestBody JSONObject json) {
-        String username = json.getString("username");
-        String oldpassword = json.getString("oldpassword");
-        String password = json.getString("password");
-        String confirmpassword = json.getString("confirmpassword");
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        if (!sysUser.getUsername().equals(username)) {
+    public Result<?> updatePassword(@RequestBody JSONObject Silian_json) {
+        String Silian_username = Silian_json.getString("username");
+        String Silian_oldpassword = Silian_json.getString("oldpassword");
+        String Silian_password = Silian_json.getString("password");
+        String Silian_confirmpassword = Silian_json.getString("confirmpassword");
+        LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        if (!Silian_sysUser.getUsername().equals(Silian_username)) {
             return Result.error("只允许修改自己的密码！");
         }
-        SysUser user = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
-        if (user == null) {
+        SysUser Silian_user = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, Silian_username));
+        if (Silian_user == null) {
             return Result.error("用户不存在！");
         }
         //update-begin---author:wangshuai ---date:20220316  for：[VUEN-234]修改密码添加敏感日志------------
-        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        baseCommonService.addLog("修改密码，username： " + loginUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+        LoginUser Silian_loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        baseCommonService.addLog("修改密码，username： " + Silian_loginUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
         //update-end---author:wangshuai ---date:20220316  for：[VUEN-234]修改密码添加敏感日志------------
-        return sysUserService.resetPassword(username, oldpassword, password, confirmpassword);
+        return sysUserService.resetPassword(Silian_username, Silian_oldpassword, Silian_password, Silian_confirmpassword);
     }
 
     @RequestMapping(value = "/userRoleList", method = RequestMethod.GET)
-    public Result<IPage<SysUser>> userRoleList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                               @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
-        Result<IPage<SysUser>> result = new Result<IPage<SysUser>>();
-        Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
-        String roleId = req.getParameter("roleId");
-        String username = req.getParameter("username");
-        IPage<SysUser> pageList = sysUserService.getUserByRoleId(page, roleId, username);
-        result.setSuccess(true);
-        result.setResult(pageList);
-        return result;
+    public Result<IPage<SysUser>> userRoleList(@RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                               @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize, HttpServletRequest Silian_req) {
+        Result<IPage<SysUser>> Silian_result = new Result<IPage<SysUser>>();
+        Page<SysUser> Silian_page = new Page<SysUser>(Silian_pageNo, Silian_pageSize);
+        String Silian_roleId = Silian_req.getParameter("roleId");
+        String Silian_username = Silian_req.getParameter("username");
+        IPage<SysUser> Silian_pageList = sysUserService.getUserByRoleId(Silian_page, Silian_roleId, Silian_username);
+        Silian_result.setSuccess(true);
+        Silian_result.setResult(Silian_pageList);
+        return Silian_result;
     }
 
     /**
@@ -710,28 +710,28 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/addSysUserRole", method = RequestMethod.POST)
-    public Result<String> addSysUserRole(@RequestBody SysUserRoleVO sysUserRoleVO) {
-        Result<String> result = new Result<String>();
+    public Result<String> addSysUserRole(@RequestBody SysUserRoleVO Silian_sysUserRoleVO) {
+        Result<String> Silian_result = new Result<String>();
         try {
-            String sysRoleId = sysUserRoleVO.getRoleId();
-            for (String sysUserId : sysUserRoleVO.getUserIdList()) {
-                SysUserRole sysUserRole = new SysUserRole(sysUserId, sysRoleId);
-                QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<SysUserRole>();
-                queryWrapper.eq("role_id", sysRoleId).eq("user_id", sysUserId);
-                SysUserRole one = sysUserRoleService.getOne(queryWrapper);
-                if (one == null) {
-                    sysUserRoleService.save(sysUserRole);
+            String Silian_sysRoleId = Silian_sysUserRoleVO.getRoleId();
+            for (String Silian_sysUserId : Silian_sysUserRoleVO.getUserIdList()) {
+                SysUserRole Silian_sysUserRole = new SysUserRole(Silian_sysUserId, Silian_sysRoleId);
+                QueryWrapper<SysUserRole> Silian_queryWrapper = new QueryWrapper<SysUserRole>();
+                Silian_queryWrapper.eq("role_id", Silian_sysRoleId).eq("user_id", Silian_sysUserId);
+                SysUserRole Silian_one = sysUserRoleService.getOne(Silian_queryWrapper);
+                if (Silian_one == null) {
+                    sysUserRoleService.save(Silian_sysUserRole);
                 }
 
             }
-            result.setMessage("添加成功!");
-            result.setSuccess(true);
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.setSuccess(false);
-            result.setMessage("出错了: " + e.getMessage());
-            return result;
+            Silian_result.setMessage("添加成功!");
+            Silian_result.setSuccess(true);
+            return Silian_result;
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.setSuccess(false);
+            Silian_result.setMessage("出错了: " + Silian_e.getMessage());
+            return Silian_result;
         }
     }
 
@@ -743,20 +743,20 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteUserRole", method = RequestMethod.DELETE)
-    public Result<SysUserRole> deleteUserRole(@RequestParam(name = "roleId") String roleId,
-                                              @RequestParam(name = "userId", required = true) String userId
+    public Result<SysUserRole> deleteUserRole(@RequestParam(name = "roleId") String Silian_roleId,
+                                              @RequestParam(name = "userId", required = true) String Silian_userId
     ) {
-        Result<SysUserRole> result = new Result<SysUserRole>();
+        Result<SysUserRole> Silian_result = new Result<SysUserRole>();
         try {
-            QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<SysUserRole>();
-            queryWrapper.eq("role_id", roleId).eq("user_id", userId);
-            sysUserRoleService.remove(queryWrapper);
-            result.success("删除成功!");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("删除失败！");
+            QueryWrapper<SysUserRole> Silian_queryWrapper = new QueryWrapper<SysUserRole>();
+            Silian_queryWrapper.eq("role_id", Silian_roleId).eq("user_id", Silian_userId);
+            sysUserRoleService.remove(Silian_queryWrapper);
+            Silian_result.success("删除成功!");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("删除失败！");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -768,63 +768,63 @@ public class SysUserController {
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteUserRoleBatch", method = RequestMethod.DELETE)
     public Result<SysUserRole> deleteUserRoleBatch(
-            @RequestParam(name = "roleId") String roleId,
-            @RequestParam(name = "userIds", required = true) String userIds) {
-        Result<SysUserRole> result = new Result<SysUserRole>();
+            @RequestParam(name = "roleId") String Silian_roleId,
+            @RequestParam(name = "userIds", required = true) String Silian_userIds) {
+        Result<SysUserRole> Silian_result = new Result<SysUserRole>();
         try {
-            QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<SysUserRole>();
-            queryWrapper.eq("role_id", roleId).in("user_id", Arrays.asList(userIds.split(",")));
-            sysUserRoleService.remove(queryWrapper);
-            result.success("删除成功!");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("删除失败！");
+            QueryWrapper<SysUserRole> Silian_queryWrapper = new QueryWrapper<SysUserRole>();
+            Silian_queryWrapper.eq("role_id", Silian_roleId).in("user_id", Arrays.asList(Silian_userIds.split(",")));
+            sysUserRoleService.remove(Silian_queryWrapper);
+            Silian_result.success("删除成功!");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("删除失败！");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
      * 部门用户列表
      */
     @RequestMapping(value = "/departUserList", method = RequestMethod.GET)
-    public Result<IPage<SysUser>> departUserList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
-        Result<IPage<SysUser>> result = new Result<IPage<SysUser>>();
-        Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
-        String depId = req.getParameter("depId");
-        String username = req.getParameter("username");
+    public Result<IPage<SysUser>> departUserList(@RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize, HttpServletRequest Silian_req) {
+        Result<IPage<SysUser>> Silian_result = new Result<IPage<SysUser>>();
+        Page<SysUser> Silian_page = new Page<SysUser>(Silian_pageNo, Silian_pageSize);
+        String Silian_depId = Silian_req.getParameter("depId");
+        String Silian_username = Silian_req.getParameter("username");
         //根据部门ID查询,当前和下级所有的部门IDS
-        List<String> subDepids = new ArrayList<>();
+        List<String> Silian_subDepids = new ArrayList<>();
         //部门id为空时，查询我的部门下所有用户
-        if (oConvertUtils.isEmpty(depId)) {
-            LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            int userIdentity = user.getUserIdentity() != null ? user.getUserIdentity() : CommonConstant.USER_IDENTITY_1;
-            if (oConvertUtils.isNotEmpty(userIdentity) && userIdentity == CommonConstant.USER_IDENTITY_2) {
-                subDepids = sysDepartService.getMySubDepIdsByDepId(user.getDepartIds());
+        if (oConvertUtils.isEmpty(Silian_depId)) {
+            LoginUser Silian_user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            int Silian_userIdentity = Silian_user.getUserIdentity() != null ? Silian_user.getUserIdentity() : CommonConstant.USER_IDENTITY_1;
+            if (oConvertUtils.isNotEmpty(Silian_userIdentity) && Silian_userIdentity == CommonConstant.USER_IDENTITY_2) {
+                Silian_subDepids = sysDepartService.getMySubDepIdsByDepId(Silian_user.getDepartIds());
             }
         } else {
-            subDepids = sysDepartService.getSubDepIdsByDepId(depId);
+            Silian_subDepids = sysDepartService.getSubDepIdsByDepId(Silian_depId);
         }
-        if (subDepids != null && subDepids.size() > 0) {
-            IPage<SysUser> pageList = sysUserService.getUserByDepIds(page, subDepids, username);
+        if (Silian_subDepids != null && Silian_subDepids.size() > 0) {
+            IPage<SysUser> Silian_pageList = sysUserService.getUserByDepIds(Silian_page, Silian_subDepids, Silian_username);
             //批量查询用户的所属部门
             //step.1 先拿到全部的 useids
             //step.2 通过 useids，一次性查询用户的所属部门名字
-            List<String> userIds = pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
-            if (userIds != null && userIds.size() > 0) {
-                Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
-                pageList.getRecords().forEach(item -> {
+            List<String> Silian_userIds = Silian_pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
+            if (Silian_userIds != null && Silian_userIds.size() > 0) {
+                Map<String, String> Silian_useDepNames = sysUserService.getDepNamesByUserIds(Silian_userIds);
+                Silian_pageList.getRecords().forEach(Silian_item -> {
                     //批量查询用户的所属部门
-                    item.setOrgCode(useDepNames.get(item.getId()));
+                    Silian_item.setOrgCode(Silian_useDepNames.get(Silian_item.getId()));
                 });
             }
-            result.setSuccess(true);
-            result.setResult(pageList);
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(Silian_pageList);
         } else {
-            result.setSuccess(true);
-            result.setResult(null);
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(null);
         }
-        return result;
+        return Silian_result;
     }
 
 
@@ -834,13 +834,13 @@ public class SysUserController {
      */
     @GetMapping("/queryByOrgCode")
     public Result<?> queryByDepartId(
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(name = "orgCode") String orgCode,
-            SysUser userParams
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            @RequestParam(name = "orgCode") String Silian_orgCode,
+            SysUser Silian_userParams
     ) {
-        IPage<SysUserSysDepartModel> pageList = sysUserService.queryUserByOrgCode(orgCode, userParams, new Page(pageNo, pageSize));
-        return Result.ok(pageList);
+        IPage<SysUserSysDepartModel> Silian_pageList = sysUserService.queryUserByOrgCode(Silian_orgCode, Silian_userParams, new Page(Silian_pageNo, Silian_pageSize));
+        return Result.ok(Silian_pageList);
     }
 
     /**
@@ -849,44 +849,44 @@ public class SysUserController {
      */
     @GetMapping("/queryByOrgCodeForAddressList")
     public Result<?> queryByOrgCodeForAddressList(
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam(name = "orgCode", required = false) String orgCode,
-            SysUser userParams
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+            @RequestParam(name = "orgCode", required = false) String Silian_orgCode,
+            SysUser Silian_userParams
     ) {
-        IPage page = new Page(pageNo, pageSize);
-        IPage<SysUserSysDepartModel> pageList = sysUserService.queryUserByOrgCode(orgCode, userParams, page);
-        List<SysUserSysDepartModel> list = pageList.getRecords();
+        IPage Silian_page = new Page(Silian_pageNo, Silian_pageSize);
+        IPage<SysUserSysDepartModel> Silian_pageList = sysUserService.queryUserByOrgCode(Silian_orgCode, Silian_userParams, Silian_page);
+        List<SysUserSysDepartModel> Silian_list = Silian_pageList.getRecords();
 
         // 记录所有出现过的 user, key = userId
-        Map<String, JSONObject> hasUser = new HashMap<>(list.size());
+        Map<String, JSONObject> Silian_hasUser = new HashMap<>(Silian_list.size());
 
-        JSONArray resultJson = new JSONArray(list.size());
+        JSONArray Silian_resultJson = new JSONArray(Silian_list.size());
 
-        for (SysUserSysDepartModel item : list) {
-            String userId = item.getId();
+        for (SysUserSysDepartModel Silian_item : Silian_list) {
+            String Silian_userId = Silian_item.getId();
             // userId
-            JSONObject getModel = hasUser.get(userId);
+            JSONObject Silian_getModel = Silian_hasUser.get(Silian_userId);
             // 之前已存在过该用户，直接合并数据
-            if (getModel != null) {
-                String departName = getModel.get("departName").toString();
-                getModel.put("departName", (departName + " | " + item.getDepartName()));
+            if (Silian_getModel != null) {
+                String Silian_departName = Silian_getModel.get("departName").toString();
+                Silian_getModel.put("departName", (Silian_departName + " | " + Silian_item.getDepartName()));
             } else {
                 // 将用户对象转换为json格式，并将部门信息合并到 json 中
-                JSONObject json = JSON.parseObject(JSON.toJSONString(item));
-                json.remove("id");
-                json.put("userId", userId);
-                json.put("departId", item.getDepartId());
-                json.put("departName", item.getDepartName());
+                JSONObject Silian_json = JSON.parseObject(JSON.toJSONString(Silian_item));
+                Silian_json.remove("id");
+                Silian_json.put("userId", Silian_userId);
+                Silian_json.put("departId", Silian_item.getDepartId());
+                Silian_json.put("departName", Silian_item.getDepartName());
 //                json.put("avatar", item.getSysUser().getAvatar());
-                resultJson.add(json);
-                hasUser.put(userId, json);
+                Silian_resultJson.add(Silian_json);
+                Silian_hasUser.put(Silian_userId, Silian_json);
             }
         }
 
-        IPage<JSONObject> result = new Page<>(pageNo, pageSize, pageList.getTotal());
-        result.setRecords(resultJson.toJavaList(JSONObject.class));
-        return Result.ok(result);
+        IPage<JSONObject> Silian_result = new Page<>(Silian_pageNo, Silian_pageSize, Silian_pageList.getTotal());
+        Silian_result.setRecords(Silian_resultJson.toJavaList(JSONObject.class));
+        return Result.ok(Silian_result);
     }
 
     /**
@@ -894,27 +894,27 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/editSysDepartWithUser", method = RequestMethod.POST)
-    public Result<String> editSysDepartWithUser(@RequestBody SysDepartUsersVO sysDepartUsersVO) {
-        Result<String> result = new Result<String>();
+    public Result<String> editSysDepartWithUser(@RequestBody SysDepartUsersVO Silian_sysDepartUsersVO) {
+        Result<String> Silian_result = new Result<String>();
         try {
-            String sysDepId = sysDepartUsersVO.getDepId();
-            for (String sysUserId : sysDepartUsersVO.getUserIdList()) {
-                SysUserDepart sysUserDepart = new SysUserDepart(null, sysUserId, sysDepId);
-                QueryWrapper<SysUserDepart> queryWrapper = new QueryWrapper<SysUserDepart>();
-                queryWrapper.eq("dep_id", sysDepId).eq("user_id", sysUserId);
-                SysUserDepart one = sysUserDepartService.getOne(queryWrapper);
-                if (one == null) {
-                    sysUserDepartService.save(sysUserDepart);
+            String Silian_sysDepId = Silian_sysDepartUsersVO.getDepId();
+            for (String Silian_sysUserId : Silian_sysDepartUsersVO.getUserIdList()) {
+                SysUserDepart Silian_sysUserDepart = new SysUserDepart(null, Silian_sysUserId, Silian_sysDepId);
+                QueryWrapper<SysUserDepart> Silian_queryWrapper = new QueryWrapper<SysUserDepart>();
+                Silian_queryWrapper.eq("dep_id", Silian_sysDepId).eq("user_id", Silian_sysUserId);
+                SysUserDepart Silian_one = sysUserDepartService.getOne(Silian_queryWrapper);
+                if (Silian_one == null) {
+                    sysUserDepartService.save(Silian_sysUserDepart);
                 }
             }
-            result.setMessage("添加成功!");
-            result.setSuccess(true);
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.setSuccess(false);
-            result.setMessage("出错了: " + e.getMessage());
-            return result;
+            Silian_result.setMessage("添加成功!");
+            Silian_result.setSuccess(true);
+            return Silian_result;
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.setSuccess(false);
+            Silian_result.setMessage("出错了: " + Silian_e.getMessage());
+            return Silian_result;
         }
     }
 
@@ -923,31 +923,31 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteUserInDepart", method = RequestMethod.DELETE)
-    public Result<SysUserDepart> deleteUserInDepart(@RequestParam(name = "depId") String depId,
-                                                    @RequestParam(name = "userId", required = true) String userId
+    public Result<SysUserDepart> deleteUserInDepart(@RequestParam(name = "depId") String Silian_depId,
+                                                    @RequestParam(name = "userId", required = true) String Silian_userId
     ) {
-        Result<SysUserDepart> result = new Result<SysUserDepart>();
+        Result<SysUserDepart> Silian_result = new Result<SysUserDepart>();
         try {
-            QueryWrapper<SysUserDepart> queryWrapper = new QueryWrapper<SysUserDepart>();
-            queryWrapper.eq("dep_id", depId).eq("user_id", userId);
-            boolean b = sysUserDepartService.remove(queryWrapper);
-            if (b) {
-                List<SysDepartRole> sysDepartRoleList = departRoleService.list(new QueryWrapper<SysDepartRole>().eq("depart_id", depId));
-                List<String> roleIds = sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
-                if (roleIds != null && roleIds.size() > 0) {
-                    QueryWrapper<SysDepartRoleUser> query = new QueryWrapper<>();
-                    query.eq("user_id", userId).in("drole_id", roleIds);
-                    departRoleUserService.remove(query);
+            QueryWrapper<SysUserDepart> Silian_queryWrapper = new QueryWrapper<SysUserDepart>();
+            Silian_queryWrapper.eq("dep_id", Silian_depId).eq("user_id", Silian_userId);
+            boolean Silian_b = sysUserDepartService.remove(Silian_queryWrapper);
+            if (Silian_b) {
+                List<SysDepartRole> Silian_sysDepartRoleList = departRoleService.list(new QueryWrapper<SysDepartRole>().eq("depart_id", Silian_depId));
+                List<String> Silian_roleIds = Silian_sysDepartRoleList.stream().map(SysDepartRole::getId).collect(Collectors.toList());
+                if (Silian_roleIds != null && Silian_roleIds.size() > 0) {
+                    QueryWrapper<SysDepartRoleUser> Silian_query = new QueryWrapper<>();
+                    Silian_query.eq("user_id", Silian_userId).in("drole_id", Silian_roleIds);
+                    departRoleUserService.remove(Silian_query);
                 }
-                result.success("删除成功!");
+                Silian_result.success("删除成功!");
             } else {
-                result.error500("当前选中部门与用户无关联关系!");
+                Silian_result.error500("当前选中部门与用户无关联关系!");
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("删除失败！");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("删除失败！");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -956,22 +956,22 @@ public class SysUserController {
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteUserInDepartBatch", method = RequestMethod.DELETE)
     public Result<SysUserDepart> deleteUserInDepartBatch(
-            @RequestParam(name = "depId") String depId,
-            @RequestParam(name = "userIds", required = true) String userIds) {
-        Result<SysUserDepart> result = new Result<SysUserDepart>();
+            @RequestParam(name = "depId") String Silian_depId,
+            @RequestParam(name = "userIds", required = true) String Silian_userIds) {
+        Result<SysUserDepart> Silian_result = new Result<SysUserDepart>();
         try {
-            QueryWrapper<SysUserDepart> queryWrapper = new QueryWrapper<SysUserDepart>();
-            queryWrapper.eq("dep_id", depId).in("user_id", Arrays.asList(userIds.split(",")));
-            boolean b = sysUserDepartService.remove(queryWrapper);
-            if (b) {
-                departRoleUserService.removeDeptRoleUser(Arrays.asList(userIds.split(",")), depId);
+            QueryWrapper<SysUserDepart> Silian_queryWrapper = new QueryWrapper<SysUserDepart>();
+            Silian_queryWrapper.eq("dep_id", Silian_depId).in("user_id", Arrays.asList(Silian_userIds.split(",")));
+            boolean Silian_b = sysUserDepartService.remove(Silian_queryWrapper);
+            if (Silian_b) {
+                departRoleUserService.removeDeptRoleUser(Arrays.asList(Silian_userIds.split(",")), Silian_depId);
             }
-            result.success("删除成功!");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("删除失败！");
+            Silian_result.success("删除成功!");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("删除失败！");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -981,20 +981,20 @@ public class SysUserController {
      */
     @RequestMapping(value = "/getCurrentUserDeparts", method = RequestMethod.GET)
     public Result<Map<String, Object>> getCurrentUserDeparts() {
-        Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+        Result<Map<String, Object>> Silian_result = new Result<Map<String, Object>>();
         try {
-            LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            List<SysDepart> list = this.sysDepartService.queryUserDeparts(sysUser.getId());
-            Map<String, Object> map = new HashMap(5);
-            map.put("list", list);
-            map.put("orgCode", sysUser.getOrgCode());
-            result.setSuccess(true);
-            result.setResult(map);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("查询失败！");
+            LoginUser Silian_sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            List<SysDepart> Silian_list = this.sysDepartService.queryUserDeparts(Silian_sysUser.getId());
+            Map<String, Object> Silian_map = new HashMap(5);
+            Silian_map.put("list", Silian_list);
+            Silian_map.put("orgCode", Silian_sysUser.getOrgCode());
+            Silian_result.setSuccess(true);
+            Silian_result.setResult(Silian_map);
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("查询失败！");
         }
-        return result;
+        return Silian_result;
     }
 
 
@@ -1006,78 +1006,78 @@ public class SysUserController {
      * @return
      */
     @PostMapping("/register")
-    public Result<JSONObject> userRegister(@RequestBody JSONObject jsonObject, SysUser user) {
-        Result<JSONObject> result = new Result<JSONObject>();
-        String phone = jsonObject.getString("phone");
-        String smscode = jsonObject.getString("smscode");
+    public Result<JSONObject> userRegister(@RequestBody JSONObject Silian_jsonObject, SysUser Silian_user) {
+        Result<JSONObject> Silian_result = new Result<JSONObject>();
+        String Silian_phone = Silian_jsonObject.getString("phone");
+        String Silian_smscode = Silian_jsonObject.getString("smscode");
 
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        Object code = redisUtil.get(redisKey);
+        String Silian_redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + Silian_phone;
+        Object Silian_code = redisUtil.get(Silian_redisKey);
         //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
 
-        String username = jsonObject.getString("username");
+        String Silian_username = Silian_jsonObject.getString("username");
         //未设置用户名，则用手机号作为用户名
-        if (oConvertUtils.isEmpty(username)) {
-            username = phone;
+        if (oConvertUtils.isEmpty(Silian_username)) {
+            Silian_username = Silian_phone;
         }
         //未设置密码，则随机生成一个密码
-        String password = jsonObject.getString("password");
-        if (oConvertUtils.isEmpty(password)) {
-            password = RandomUtil.randomString(8);
+        String Silian_password = Silian_jsonObject.getString("password");
+        if (oConvertUtils.isEmpty(Silian_password)) {
+            Silian_password = RandomUtil.randomString(8);
         }
-        String email = jsonObject.getString("email");
-        SysUser sysUser1 = sysUserService.getUserByName(username);
-        if (sysUser1 != null) {
-            result.setMessage("用户名已注册");
-            result.setSuccess(false);
-            return result;
+        String Silian_email = Silian_jsonObject.getString("email");
+        SysUser Silian_sysUser1 = sysUserService.getUserByName(Silian_username);
+        if (Silian_sysUser1 != null) {
+            Silian_result.setMessage("用户名已注册");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        SysUser sysUser2 = sysUserService.getUserByPhone(phone);
-        if (sysUser2 != null) {
-            result.setMessage("该手机号已注册");
-            result.setSuccess(false);
-            return result;
+        SysUser Silian_sysUser2 = sysUserService.getUserByPhone(Silian_phone);
+        if (Silian_sysUser2 != null) {
+            Silian_result.setMessage("该手机号已注册");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
 
-        if (oConvertUtils.isNotEmpty(email)) {
-            SysUser sysUser3 = sysUserService.getUserByEmail(email);
-            if (sysUser3 != null) {
-                result.setMessage("邮箱已被注册");
-                result.setSuccess(false);
-                return result;
+        if (oConvertUtils.isNotEmpty(Silian_email)) {
+            SysUser Silian_sysUser3 = sysUserService.getUserByEmail(Silian_email);
+            if (Silian_sysUser3 != null) {
+                Silian_result.setMessage("邮箱已被注册");
+                Silian_result.setSuccess(false);
+                return Silian_result;
             }
         }
-        if (null == code) {
-            result.setMessage("手机验证码失效，请重新获取");
-            result.setSuccess(false);
-            return result;
+        if (null == Silian_code) {
+            Silian_result.setMessage("手机验证码失效，请重新获取");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        if (!smscode.equals(code.toString())) {
-            result.setMessage("手机验证码错误");
-            result.setSuccess(false);
-            return result;
+        if (!Silian_smscode.equals(Silian_code.toString())) {
+            Silian_result.setMessage("手机验证码错误");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
 
         try {
-            user.setCreateTime(new Date());// 设置创建时间
-            String salt = oConvertUtils.randomGen(8);
-            String passwordEncode = PasswordUtil.encrypt(username, password, salt);
-            user.setSalt(salt);
-            user.setUsername(username);
-            user.setRealname(username);
-            user.setPassword(passwordEncode);
-            user.setEmail(email);
-            user.setPhone(phone);
-            user.setStatus(CommonConstant.USER_UNFREEZE);
-            user.setDelFlag(CommonConstant.DEL_FLAG_0);
-            user.setActivitiSync(CommonConstant.ACT_SYNC_0);
-            sysUserService.addUserWithRole(user, "ee8626f80f7c2619917b6236f3a7f02b");//默认临时角色 test
-            result.success("注册成功");
-        } catch (Exception e) {
-            result.error500("注册失败");
+            Silian_user.setCreateTime(new Date());// 设置创建时间
+            String Silian_salt = oConvertUtils.randomGen(8);
+            String Silian_passwordEncode = PasswordUtil.encrypt(Silian_username, Silian_password, Silian_salt);
+            Silian_user.setSalt(Silian_salt);
+            Silian_user.setUsername(Silian_username);
+            Silian_user.setRealname(Silian_username);
+            Silian_user.setPassword(Silian_passwordEncode);
+            Silian_user.setEmail(Silian_email);
+            Silian_user.setPhone(Silian_phone);
+            Silian_user.setStatus(CommonConstant.USER_UNFREEZE);
+            Silian_user.setDelFlag(CommonConstant.DEL_FLAG_0);
+            Silian_user.setActivitiSync(CommonConstant.ACT_SYNC_0);
+            sysUserService.addUserWithRole(Silian_user, "ee8626f80f7c2619917b6236f3a7f02b");//默认临时角色 test
+            Silian_result.success("注册成功");
+        } catch (Exception Silian_e) {
+            Silian_result.error500("注册失败");
         }
-        return result;
+        return Silian_result;
     }
 
 //	/**
@@ -1120,81 +1120,81 @@ public class SysUserController {
      * 用户手机号验证
      */
     @PostMapping("/phoneVerification")
-    public Result<Map<String, String>> phoneVerification(@RequestBody JSONObject jsonObject) {
-        Result<Map<String, String>> result = new Result<Map<String, String>>();
-        String phone = jsonObject.getString("phone");
-        String smscode = jsonObject.getString("smscode");
+    public Result<Map<String, String>> phoneVerification(@RequestBody JSONObject Silian_jsonObject) {
+        Result<Map<String, String>> Silian_result = new Result<Map<String, String>>();
+        String Silian_phone = Silian_jsonObject.getString("phone");
+        String Silian_smscode = Silian_jsonObject.getString("smscode");
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        Object code = redisUtil.get(redisKey);
-        if (!smscode.equals(code)) {
-            result.setMessage("手机验证码错误");
-            result.setSuccess(false);
-            return result;
+        String Silian_redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + Silian_phone;
+        Object Silian_code = redisUtil.get(Silian_redisKey);
+        if (!Silian_smscode.equals(Silian_code)) {
+            Silian_result.setMessage("手机验证码错误");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
         //设置有效时间
-        redisUtil.set(redisKey, smscode, 600);
+        redisUtil.set(Silian_redisKey, Silian_smscode, 600);
         //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
 
         //新增查询用户名
-        LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
-        query.eq(SysUser::getPhone, phone);
-        SysUser user = sysUserService.getOne(query);
-        Map<String, String> map = new HashMap(5);
-        map.put("smscode", smscode);
-        map.put("username", user.getUsername());
-        result.setResult(map);
-        result.setSuccess(true);
-        return result;
+        LambdaQueryWrapper<SysUser> Silian_query = new LambdaQueryWrapper<>();
+        Silian_query.eq(SysUser::getPhone, Silian_phone);
+        SysUser Silian_user = sysUserService.getOne(Silian_query);
+        Map<String, String> Silian_map = new HashMap(5);
+        Silian_map.put("smscode", Silian_smscode);
+        Silian_map.put("username", Silian_user.getUsername());
+        Silian_result.setResult(Silian_map);
+        Silian_result.setSuccess(true);
+        return Silian_result;
     }
 
     /**
      * 用户更改密码
      */
     @GetMapping("/passwordChange")
-    public Result<SysUser> passwordChange(@RequestParam(name = "username") String username,
-                                          @RequestParam(name = "password") String password,
-                                          @RequestParam(name = "smscode") String smscode,
-                                          @RequestParam(name = "phone") String phone) {
-        Result<SysUser> result = new Result<SysUser>();
-        if (oConvertUtils.isEmpty(username) || oConvertUtils.isEmpty(password) || oConvertUtils.isEmpty(smscode) || oConvertUtils.isEmpty(phone)) {
-            result.setMessage("重置密码失败！");
-            result.setSuccess(false);
-            return result;
+    public Result<SysUser> passwordChange(@RequestParam(name = "username") String Silian_username,
+                                          @RequestParam(name = "password") String Silian_password,
+                                          @RequestParam(name = "smscode") String Silian_smscode,
+                                          @RequestParam(name = "phone") String Silian_phone) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
+        if (oConvertUtils.isEmpty(Silian_username) || oConvertUtils.isEmpty(Silian_password) || oConvertUtils.isEmpty(Silian_smscode) || oConvertUtils.isEmpty(Silian_phone)) {
+            Silian_result.setMessage("重置密码失败！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
 
-        SysUser sysUser = new SysUser();
+        SysUser Silian_sysUser = new SysUser();
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        Object object = redisUtil.get(redisKey);
+        String Silian_redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + Silian_phone;
+        Object Silian_object = redisUtil.get(Silian_redisKey);
         //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        if (null == object) {
-            result.setMessage("短信验证码失效！");
-            result.setSuccess(false);
-            return result;
+        if (null == Silian_object) {
+            Silian_result.setMessage("短信验证码失效！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        if (!smscode.equals(object.toString())) {
-            result.setMessage("短信验证码不匹配！");
-            result.setSuccess(false);
-            return result;
+        if (!Silian_smscode.equals(Silian_object.toString())) {
+            Silian_result.setMessage("短信验证码不匹配！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        sysUser = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username).eq(SysUser::getPhone, phone));
-        if (sysUser == null) {
-            result.setMessage("未找到用户！");
-            result.setSuccess(false);
-            return result;
+        Silian_sysUser = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, Silian_username).eq(SysUser::getPhone, Silian_phone));
+        if (Silian_sysUser == null) {
+            Silian_result.setMessage("未找到用户！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         } else {
-            String salt = oConvertUtils.randomGen(8);
-            sysUser.setSalt(salt);
-            String passwordEncode = PasswordUtil.encrypt(sysUser.getUsername(), password, salt);
-            sysUser.setPassword(passwordEncode);
-            this.sysUserService.updateById(sysUser);
+            String Silian_salt = oConvertUtils.randomGen(8);
+            Silian_sysUser.setSalt(Silian_salt);
+            String Silian_passwordEncode = PasswordUtil.encrypt(Silian_sysUser.getUsername(), Silian_password, Silian_salt);
+            Silian_sysUser.setPassword(Silian_passwordEncode);
+            this.sysUserService.updateById(Silian_sysUser);
             //update-begin---author:wangshuai ---date:20220316  for：[VUEN-234]密码重置添加敏感日志------------
-            baseCommonService.addLog("重置 " + username + " 的密码，操作人： " + sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+            baseCommonService.addLog("重置 " + Silian_username + " 的密码，操作人： " + Silian_sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             //update-end---author:wangshuai ---date:20220316  for：[VUEN-234]密码重置添加敏感日志------------
-            result.setSuccess(true);
-            result.setMessage("密码重置完成！");
-            return result;
+            Silian_result.setSuccess(true);
+            Silian_result.setMessage("密码重置完成！");
+            return Silian_result;
         }
     }
 
@@ -1205,32 +1205,32 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/getUserSectionInfoByToken")
-    public Result<?> getUserSectionInfoByToken(HttpServletRequest request, @RequestParam(name = "token", required = false) String token) {
+    public Result<?> getUserSectionInfoByToken(HttpServletRequest Silian_request, @RequestParam(name = "token", required = false) String Silian_token) {
         try {
-            String username = null;
+            String Silian_username = null;
             // 如果没有传递token，就从header中获取token并获取用户信息
-            if (oConvertUtils.isEmpty(token)) {
-                username = JwtUtil.getUserNameByToken(request);
+            if (oConvertUtils.isEmpty(Silian_token)) {
+                Silian_username = JwtUtil.getUserNameByToken(Silian_request);
             } else {
-                username = JwtUtil.getUsername(token);
+                Silian_username = JwtUtil.getUsername(Silian_token);
             }
 
-            log.debug(" ------ 通过令牌获取部分用户信息，当前用户： " + username);
+            log.debug(" ------ 通过令牌获取部分用户信息，当前用户： " + Silian_username);
 
             // 根据用户名查询用户信息
-            SysUser sysUser = sysUserService.getUserByName(username);
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("sysUserId", sysUser.getId());
-            map.put("sysUserCode", sysUser.getUsername()); // 当前登录用户登录账号
-            map.put("sysUserName", sysUser.getRealname()); // 当前登录用户真实名称
-            map.put("sysOrgCode", sysUser.getOrgCode()); // 当前登录用户部门编号
+            SysUser Silian_sysUser = sysUserService.getUserByName(Silian_username);
+            Map<String, Object> Silian_map = new HashMap<String, Object>();
+            Silian_map.put("sysUserId", Silian_sysUser.getId());
+            Silian_map.put("sysUserCode", Silian_sysUser.getUsername()); // 当前登录用户登录账号
+            Silian_map.put("sysUserName", Silian_sysUser.getRealname()); // 当前登录用户真实名称
+            Silian_map.put("sysOrgCode", Silian_sysUser.getOrgCode()); // 当前登录用户部门编号
 
-            log.debug(" ------ 通过令牌获取部分用户信息，已获取的用户信息： " + map);
+            log.debug(" ------ 通过令牌获取部分用户信息，已获取的用户信息： " + Silian_map);
 
-            return Result.ok(map);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return Result.error(500, "查询失败:" + e.getMessage());
+            return Result.ok(Silian_map);
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            return Result.error(500, "查询失败:" + Silian_e.getMessage());
         }
     }
 
@@ -1243,33 +1243,33 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/appUserList")
-    public Result<?> appUserList(@RequestParam(name = "keyword", required = false) String keyword,
-                                 @RequestParam(name = "username", required = false) String username,
-                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                 @RequestParam(name = "syncFlow", required = false) String syncFlow) {
+    public Result<?> appUserList(@RequestParam(name = "keyword", required = false) String Silian_keyword,
+                                 @RequestParam(name = "username", required = false) String Silian_username,
+                                 @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize,
+                                 @RequestParam(name = "syncFlow", required = false) String Silian_syncFlow) {
         try {
             //TODO 从查询效率上将不要用mp的封装的page分页查询 建议自己写分页语句
-            LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<SysUser>();
-            if (oConvertUtils.isNotEmpty(syncFlow)) {
-                query.eq(SysUser::getActivitiSync, CommonConstant.ACT_SYNC_1);
+            LambdaQueryWrapper<SysUser> Silian_query = new LambdaQueryWrapper<SysUser>();
+            if (oConvertUtils.isNotEmpty(Silian_syncFlow)) {
+                Silian_query.eq(SysUser::getActivitiSync, CommonConstant.ACT_SYNC_1);
             }
-            query.eq(SysUser::getDelFlag, CommonConstant.DEL_FLAG_0);
-            if (oConvertUtils.isNotEmpty(username)) {
-                if (username.contains(",")) {
-                    query.in(SysUser::getUsername, username.split(","));
+            Silian_query.eq(SysUser::getDelFlag, CommonConstant.DEL_FLAG_0);
+            if (oConvertUtils.isNotEmpty(Silian_username)) {
+                if (Silian_username.contains(",")) {
+                    Silian_query.in(SysUser::getUsername, Silian_username.split(","));
                 } else {
-                    query.eq(SysUser::getUsername, username);
+                    Silian_query.eq(SysUser::getUsername, Silian_username);
                 }
             } else {
-                query.and(i -> i.like(SysUser::getUsername, keyword).or().like(SysUser::getRealname, keyword));
+                Silian_query.and(Silian_i -> Silian_i.like(SysUser::getUsername, Silian_keyword).or().like(SysUser::getRealname, Silian_keyword));
             }
-            Page<SysUser> page = new Page<>(pageNo, pageSize);
-            IPage<SysUser> res = this.sysUserService.page(page, query);
-            return Result.ok(res);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return Result.error(500, "查询失败:" + e.getMessage());
+            Page<SysUser> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+            IPage<SysUser> Silian_res = this.sysUserService.page(Silian_page, Silian_query);
+            return Result.ok(Silian_res);
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            return Result.error(500, "查询失败:" + Silian_e.getMessage());
         }
 
     }
@@ -1281,16 +1281,16 @@ public class SysUserController {
      */
     @GetMapping("/recycleBin")
     public Result getRecycleBin() {
-        List<SysUser> logicDeletedUserList = sysUserService.queryLogicDeleted();
-        if (logicDeletedUserList.size() > 0) {
+        List<SysUser> Silian_logicDeletedUserList = sysUserService.queryLogicDeleted();
+        if (Silian_logicDeletedUserList.size() > 0) {
             // 批量查询用户的所属部门
             // step.1 先拿到全部的 userIds
-            List<String> userIds = logicDeletedUserList.stream().map(SysUser::getId).collect(Collectors.toList());
+            List<String> Silian_userIds = Silian_logicDeletedUserList.stream().map(SysUser::getId).collect(Collectors.toList());
             // step.2 通过 userIds，一次性查询用户的所属部门名字
-            Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
-            logicDeletedUserList.forEach(item -> item.setOrgCode(useDepNames.get(item.getId())));
+            Map<String, String> Silian_useDepNames = sysUserService.getDepNamesByUserIds(Silian_userIds);
+            Silian_logicDeletedUserList.forEach(Silian_item -> Silian_item.setOrgCode(Silian_useDepNames.get(Silian_item.getId())));
         }
-        return Result.ok(logicDeletedUserList);
+        return Result.ok(Silian_logicDeletedUserList);
     }
 
     /**
@@ -1300,13 +1300,13 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/putRecycleBin", method = RequestMethod.PUT)
-    public Result putRecycleBin(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String userIds = jsonObject.getString("userIds");
-        if (StringUtils.isNotBlank(userIds)) {
-            SysUser updateUser = new SysUser();
-            updateUser.setUpdateBy(JwtUtil.getUserNameByToken(request));
-            updateUser.setUpdateTime(new Date());
-            sysUserService.revertLogicDeleted(Arrays.asList(userIds.split(",")), updateUser);
+    public Result putRecycleBin(@RequestBody JSONObject Silian_jsonObject, HttpServletRequest Silian_request) {
+        String Silian_userIds = Silian_jsonObject.getString("userIds");
+        if (StringUtils.isNotBlank(Silian_userIds)) {
+            SysUser Silian_updateUser = new SysUser();
+            Silian_updateUser.setUpdateBy(JwtUtil.getUserNameByToken(Silian_request));
+            Silian_updateUser.setUpdateTime(new Date());
+            sysUserService.revertLogicDeleted(Arrays.asList(Silian_userIds.split(",")), Silian_updateUser);
         }
         return Result.ok("还原成功");
     }
@@ -1319,9 +1319,9 @@ public class SysUserController {
      */
     //@RequiresRoles({"admin"})
     @RequestMapping(value = "/deleteRecycleBin", method = RequestMethod.DELETE)
-    public Result deleteRecycleBin(@RequestParam("userIds") String userIds) {
-        if (StringUtils.isNotBlank(userIds)) {
-            sysUserService.removeLogicDeleted(Arrays.asList(userIds.split(",")));
+    public Result deleteRecycleBin(@RequestParam("userIds") String Silian_userIds) {
+        if (StringUtils.isNotBlank(Silian_userIds)) {
+            sysUserService.removeLogicDeleted(Arrays.asList(Silian_userIds.split(",")));
         }
         return Result.ok("删除成功");
     }
@@ -1334,64 +1334,64 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/appEdit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<SysUser> appEdit(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<SysUser> appEdit(HttpServletRequest Silian_request, @RequestBody JSONObject Silian_jsonObject) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
         try {
-            String username = JwtUtil.getUserNameByToken(request);
-            SysUser sysUser = sysUserService.getUserByName(username);
-            baseCommonService.addLog("移动端编辑用户，id： " + jsonObject.getString("id"), CommonConstant.LOG_TYPE_2, 2);
-            String realname = jsonObject.getString("realname");
-            String avatar = jsonObject.getString("avatar");
-            String sex = jsonObject.getString("sex");
-            String phone = jsonObject.getString("phone");
-            String email = jsonObject.getString("email");
-            Date birthday = jsonObject.getDate("birthday");
-            SysUser userPhone = sysUserService.getUserByPhone(phone);
-            if (sysUser == null) {
-                result.error500("未找到对应用户!");
+            String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
+            SysUser Silian_sysUser = sysUserService.getUserByName(Silian_username);
+            baseCommonService.addLog("移动端编辑用户，id： " + Silian_jsonObject.getString("id"), CommonConstant.LOG_TYPE_2, 2);
+            String Silian_realname = Silian_jsonObject.getString("realname");
+            String Silian_avatar = Silian_jsonObject.getString("avatar");
+            String Silian_sex = Silian_jsonObject.getString("sex");
+            String Silian_phone = Silian_jsonObject.getString("phone");
+            String Silian_email = Silian_jsonObject.getString("email");
+            Date Silian_birthday = Silian_jsonObject.getDate("birthday");
+            SysUser Silian_userPhone = sysUserService.getUserByPhone(Silian_phone);
+            if (Silian_sysUser == null) {
+                Silian_result.error500("未找到对应用户!");
             } else {
-                if (userPhone != null) {
-                    String userPhonename = userPhone.getUsername();
-                    if (!userPhonename.equals(username)) {
-                        result.error500("手机号已存在!");
-                        return result;
+                if (Silian_userPhone != null) {
+                    String Silian_userPhonename = Silian_userPhone.getUsername();
+                    if (!Silian_userPhonename.equals(Silian_username)) {
+                        Silian_result.error500("手机号已存在!");
+                        return Silian_result;
                     }
                 }
-                if (StringUtils.isNotBlank(realname)) {
-                    sysUser.setRealname(realname);
+                if (StringUtils.isNotBlank(Silian_realname)) {
+                    Silian_sysUser.setRealname(Silian_realname);
                 }
-                if (StringUtils.isNotBlank(avatar)) {
-                    sysUser.setAvatar(avatar);
+                if (StringUtils.isNotBlank(Silian_avatar)) {
+                    Silian_sysUser.setAvatar(Silian_avatar);
                 }
-                if (StringUtils.isNotBlank(sex)) {
-                    sysUser.setSex(Integer.parseInt(sex));
+                if (StringUtils.isNotBlank(Silian_sex)) {
+                    Silian_sysUser.setSex(Integer.parseInt(Silian_sex));
                 }
-                if (StringUtils.isNotBlank(phone)) {
-                    sysUser.setPhone(phone);
+                if (StringUtils.isNotBlank(Silian_phone)) {
+                    Silian_sysUser.setPhone(Silian_phone);
                 }
-                if (StringUtils.isNotBlank(email)) {
+                if (StringUtils.isNotBlank(Silian_email)) {
                     //update-begin---author:wangshuai ---date:20220708  for：[VUEN-1528]积木官网邮箱重复，应该提示准确------------
-                    LambdaQueryWrapper<SysUser> emailQuery = new LambdaQueryWrapper<>();
-                    emailQuery.eq(SysUser::getEmail, email);
-                    long count = sysUserService.count(emailQuery);
-                    if (!email.equals(sysUser.getEmail()) && count != 0) {
-                        result.error500("保存失败，邮箱已存在!");
-                        return result;
+                    LambdaQueryWrapper<SysUser> Silian_emailQuery = new LambdaQueryWrapper<>();
+                    Silian_emailQuery.eq(SysUser::getEmail, Silian_email);
+                    long Silian_count = sysUserService.count(Silian_emailQuery);
+                    if (!Silian_email.equals(Silian_sysUser.getEmail()) && Silian_count != 0) {
+                        Silian_result.error500("保存失败，邮箱已存在!");
+                        return Silian_result;
                     }
                     //update-end---author:wangshuai ---date:20220708  for：[VUEN-1528]积木官网邮箱重复，应该提示准确--------------
-                    sysUser.setEmail(email);
+                    Silian_sysUser.setEmail(Silian_email);
                 }
-                if (null != birthday) {
-                    sysUser.setBirthday(birthday);
+                if (null != Silian_birthday) {
+                    Silian_sysUser.setBirthday(Silian_birthday);
                 }
-                sysUser.setUpdateTime(new Date());
-                sysUserService.updateById(sysUser);
+                Silian_sysUser.setUpdateTime(new Date());
+                sysUserService.updateById(Silian_sysUser);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("保存失败!");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("保存失败!");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -1401,22 +1401,22 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/saveClientId", method = RequestMethod.GET)
-    public Result<SysUser> saveClientId(HttpServletRequest request, @RequestParam("clientId") String clientId) {
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<SysUser> saveClientId(HttpServletRequest Silian_request, @RequestParam("clientId") String Silian_clientId) {
+        Result<SysUser> Silian_result = new Result<SysUser>();
         try {
-            String username = JwtUtil.getUserNameByToken(request);
-            SysUser sysUser = sysUserService.getUserByName(username);
-            if (sysUser == null) {
-                result.error500("未找到对应用户!");
+            String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
+            SysUser Silian_sysUser = sysUserService.getUserByName(Silian_username);
+            if (Silian_sysUser == null) {
+                Silian_result.error500("未找到对应用户!");
             } else {
-                sysUser.setClientId(clientId);
-                sysUserService.updateById(sysUser);
+                Silian_sysUser.setClientId(Silian_clientId);
+                sysUserService.updateById(Silian_sysUser);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败!");
+        } catch (Exception Silian_e) {
+            log.error(Silian_e.getMessage(), Silian_e);
+            Silian_result.error500("操作失败!");
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -1425,23 +1425,23 @@ public class SysUserController {
      * @return Result
      */
     @GetMapping("/queryChildrenByUsername")
-    public Result queryChildrenByUsername(@RequestParam("userId") String userId) {
+    public Result queryChildrenByUsername(@RequestParam("userId") String Silian_userId) {
         //获取用户信息
-        Map<String, Object> map = new HashMap(5);
-        SysUser sysUser = sysUserService.getById(userId);
-        String username = sysUser.getUsername();
-        Integer identity = sysUser.getUserIdentity();
-        map.put("sysUser", sysUser);
-        if (identity != null && identity == 2) {
+        Map<String, Object> Silian_map = new HashMap(5);
+        SysUser Silian_sysUser = sysUserService.getById(Silian_userId);
+        String Silian_username = Silian_sysUser.getUsername();
+        Integer Silian_identity = Silian_sysUser.getUserIdentity();
+        Silian_map.put("sysUser", Silian_sysUser);
+        if (Silian_identity != null && Silian_identity == 2) {
             //获取部门用户信息
-            String departIds = sysUser.getDepartIds();
-            if (StringUtils.isNotBlank(departIds)) {
-                List<String> departIdList = Arrays.asList(departIds.split(","));
-                List<SysUser> childrenUser = sysUserService.queryByDepIds(departIdList, username);
-                map.put("children", childrenUser);
+            String Silian_departIds = Silian_sysUser.getDepartIds();
+            if (StringUtils.isNotBlank(Silian_departIds)) {
+                List<String> Silian_departIdList = Arrays.asList(Silian_departIds.split(","));
+                List<SysUser> Silian_childrenUser = sysUserService.queryByDepIds(Silian_departIdList, Silian_username);
+                Silian_map.put("children", Silian_childrenUser);
             }
         }
-        return Result.ok(map);
+        return Result.ok(Silian_map);
     }
 
     /**
@@ -1451,13 +1451,13 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/appQueryByDepartId")
-    public Result<List<SysUser>> appQueryByDepartId(@RequestParam(name = "departId", required = false) String departId) {
-        Result<List<SysUser>> result = new Result<List<SysUser>>();
-        List<String> list = new ArrayList<String>();
-        list.add(departId);
-        List<SysUser> childrenUser = sysUserService.queryByDepIds(list, null);
-        result.setResult(childrenUser);
-        return result;
+    public Result<List<SysUser>> appQueryByDepartId(@RequestParam(name = "departId", required = false) String Silian_departId) {
+        Result<List<SysUser>> Silian_result = new Result<List<SysUser>>();
+        List<String> Silian_list = new ArrayList<String>();
+        Silian_list.add(Silian_departId);
+        List<SysUser> Silian_childrenUser = sysUserService.queryByDepIds(Silian_list, null);
+        Silian_result.setResult(Silian_childrenUser);
+        return Silian_result;
     }
 
     /**
@@ -1467,30 +1467,30 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/appQueryUser")
-    public Result<List<SysUser>> appQueryUser(@RequestParam(name = "keyword", required = false) String keyword,
-                                              @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                              @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        Result<List<SysUser>> result = new Result<List<SysUser>>();
-        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<SysUser>();
+    public Result<List<SysUser>> appQueryUser(@RequestParam(name = "keyword", required = false) String Silian_keyword,
+                                              @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                              @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize) {
+        Result<List<SysUser>> Silian_result = new Result<List<SysUser>>();
+        LambdaQueryWrapper<SysUser> Silian_queryWrapper = new LambdaQueryWrapper<SysUser>();
         //TODO 外部模拟登陆临时账号，列表不显示
-        queryWrapper.ne(SysUser::getUsername, "_reserve_user_external");
-        if (StringUtils.isNotBlank(keyword)) {
-            queryWrapper.and(i -> i.like(SysUser::getUsername, keyword).or().like(SysUser::getRealname, keyword));
+        Silian_queryWrapper.ne(SysUser::getUsername, "_reserve_user_external");
+        if (StringUtils.isNotBlank(Silian_keyword)) {
+            Silian_queryWrapper.and(Silian_i -> Silian_i.like(SysUser::getUsername, Silian_keyword).or().like(SysUser::getRealname, Silian_keyword));
         }
-        Page<SysUser> page = new Page<>(pageNo, pageSize);
-        IPage<SysUser> pageList = this.sysUserService.page(page, queryWrapper);
+        Page<SysUser> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+        IPage<SysUser> Silian_pageList = this.sysUserService.page(Silian_page, Silian_queryWrapper);
         //批量查询用户的所属部门
         //step.1 先拿到全部的 useids
         //step.2 通过 useids，一次性查询用户的所属部门名字
-        List<String> userIds = pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
-        if (userIds != null && userIds.size() > 0) {
-            Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
-            pageList.getRecords().forEach(item -> {
-                item.setOrgCodeTxt(useDepNames.get(item.getId()));
+        List<String> Silian_userIds = Silian_pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
+        if (Silian_userIds != null && Silian_userIds.size() > 0) {
+            Map<String, String> Silian_useDepNames = sysUserService.getDepNamesByUserIds(Silian_userIds);
+            Silian_pageList.getRecords().forEach(Silian_item -> {
+                Silian_item.setOrgCodeTxt(Silian_useDepNames.get(Silian_item.getId()));
             });
         }
-        result.setResult(pageList.getRecords());
-        return result;
+        Silian_result.setResult(Silian_pageList.getRecords());
+        return Silian_result;
     }
 
     /**
@@ -1500,37 +1500,37 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/updateMobile", method = RequestMethod.PUT)
-    public Result<?> changMobile(@RequestBody JSONObject json, HttpServletRequest request) {
-        String smscode = json.getString("smscode");
-        String phone = json.getString("phone");
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<?> changMobile(@RequestBody JSONObject Silian_json, HttpServletRequest Silian_request) {
+        String Silian_smscode = Silian_json.getString("smscode");
+        String Silian_phone = Silian_json.getString("phone");
+        Result<SysUser> Silian_result = new Result<SysUser>();
         //获取登录用户名
-        String username = JwtUtil.getUserNameByToken(request);
-        if (oConvertUtils.isEmpty(username) || oConvertUtils.isEmpty(smscode) || oConvertUtils.isEmpty(phone)) {
-            result.setMessage("修改手机号失败！");
-            result.setSuccess(false);
-            return result;
+        String Silian_username = JwtUtil.getUserNameByToken(Silian_request);
+        if (oConvertUtils.isEmpty(Silian_username) || oConvertUtils.isEmpty(Silian_smscode) || oConvertUtils.isEmpty(Silian_phone)) {
+            Silian_result.setMessage("修改手机号失败！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        Object object = redisUtil.get(redisKey);
+        String Silian_redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + Silian_phone;
+        Object Silian_object = redisUtil.get(Silian_redisKey);
         //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-        if (null == object) {
-            result.setMessage("短信验证码失效！");
-            result.setSuccess(false);
-            return result;
+        if (null == Silian_object) {
+            Silian_result.setMessage("短信验证码失效！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        if (!smscode.equals(object.toString())) {
-            result.setMessage("短信验证码不匹配！");
-            result.setSuccess(false);
-            return result;
+        if (!Silian_smscode.equals(Silian_object.toString())) {
+            Silian_result.setMessage("短信验证码不匹配！");
+            Silian_result.setSuccess(false);
+            return Silian_result;
         }
-        SysUser user = sysUserService.getUserByName(username);
-        if (user == null) {
+        SysUser Silian_user = sysUserService.getUserByName(Silian_username);
+        if (Silian_user == null) {
             return Result.error("用户不存在！");
         }
-        user.setPhone(phone);
-        sysUserService.updateById(user);
+        Silian_user.setPhone(Silian_phone);
+        sysUserService.updateById(Silian_user);
         return Result.ok("手机号设置成功!");
     }
 
@@ -1542,17 +1542,17 @@ public class SysUserController {
      * @return
      */
     @GetMapping("/getMultiUser")
-    public List<SysUser> getMultiUser(SysUser sysUser) {
-        QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(sysUser, null);
+    public List<SysUser> getMultiUser(SysUser Silian_sysUser) {
+        QueryWrapper<SysUser> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_sysUser, null);
         //update-begin---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
-        queryWrapper.eq("status", Integer.parseInt(CommonConstant.STATUS_1));
+        Silian_queryWrapper.eq("status", Integer.parseInt(CommonConstant.STATUS_1));
         //update-end---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
-        List<SysUser> ls = this.sysUserService.list(queryWrapper);
-        for (SysUser user : ls) {
-            user.setPassword(null);
-            user.setSalt(null);
+        List<SysUser> Silian_ls = this.sysUserService.list(Silian_queryWrapper);
+        for (SysUser Silian_user : Silian_ls) {
+            Silian_user.setPassword(null);
+            Silian_user.setSalt(null);
         }
-        return ls;
+        return Silian_ls;
     }
 
 
@@ -1563,17 +1563,17 @@ public class SysUserController {
      */
     @GetMapping("/getTeamNumber")
     public Result<?> getTeamNumber() {
-        List<Map<String, Object>> list = sysUserService.getTeamNumber();
-        if (list == null || list.isEmpty()){
+        List<Map<String, Object>> Silian_list = sysUserService.getTeamNumber();
+        if (Silian_list == null || Silian_list.isEmpty()){
             return Result.error("获取数据失败");
         }
-        Map<String, Long> resultMap = new HashMap<>();
-        for (Map<String, Object> data : list) {
-            String departName = (String) data.get("depart_name");
-            Long count = (Long) data.get("count");
-            resultMap.put(departName, count);
+        Map<String, Long> Silian_resultMap = new HashMap<>();
+        for (Map<String, Object> Silian_data : Silian_list) {
+            String Silian_departName = (String) Silian_data.get("depart_name");
+            Long Silian_count = (Long) Silian_data.get("count");
+            Silian_resultMap.put(Silian_departName, Silian_count);
         }
-        return Result.ok(resultMap);
+        return Result.ok(Silian_resultMap);
     }
 
 
@@ -1584,17 +1584,17 @@ public class SysUserController {
      */
     @GetMapping("/getBankBalance")
     public Result<?> getBankBalance() {
-        List<Map<String, Object>> list = sysUserService.getBankBalance();
-        if (list == null || list.isEmpty()){
+        List<Map<String, Object>> Silian_list = sysUserService.getBankBalance();
+        if (Silian_list == null || Silian_list.isEmpty()){
             return Result.error("获取数据失败");
         }
-        Map<String, Double> resultMap = new HashMap<>();
-        for (Map<String, Object> data : list) {
-            String departName = (String) data.get("depart_name");
-            Double balance = (Double) data.get("balance");
-            resultMap.put(departName, balance);
+        Map<String, Double> Silian_resultMap = new HashMap<>();
+        for (Map<String, Object> Silian_data : Silian_list) {
+            String Silian_departName = (String) Silian_data.get("depart_name");
+            Double Silian_balance = (Double) Silian_data.get("balance");
+            Silian_resultMap.put(Silian_departName, Silian_balance);
         }
-        return Result.ok(resultMap);
+        return Result.ok(Silian_resultMap);
     }
 
 }

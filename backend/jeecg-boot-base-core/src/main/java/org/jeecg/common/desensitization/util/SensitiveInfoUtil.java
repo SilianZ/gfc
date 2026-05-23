@@ -26,27 +26,27 @@ public class SensitiveInfoUtil {
      * @param isEncode 是否加密（true: 加密操作 / false:解密操作）
      * @throws IllegalAccessException
      */
-    public static void handleNestedObject(Object obj, Class entity, boolean isEncode) throws IllegalAccessException {
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if(field.getType().isPrimitive()){
+    public static void handleNestedObject(Object Silian_obj, Class Silian_entity, boolean Silian_isEncode) throws IllegalAccessException {
+        Field[] Silian_fields = Silian_obj.getClass().getDeclaredFields();
+        for (Field Silian_field : Silian_fields) {
+            if(Silian_field.getType().isPrimitive()){
                 continue;
             }
-            if(field.getType().equals(entity)){
+            if(Silian_field.getType().equals(Silian_entity)){
                 // 对象里面是实体
-                field.setAccessible(true);
-                Object nestedObject = field.get(obj);
-                handlerObject(nestedObject, isEncode);
+                Silian_field.setAccessible(true);
+                Object Silian_nestedObject = Silian_field.get(Silian_obj);
+                handlerObject(Silian_nestedObject, Silian_isEncode);
                 break;
             }else{
                 // 对象里面是List<实体>
-                if(field.getGenericType() instanceof ParameterizedType){
-                    ParameterizedType pt = (ParameterizedType)field.getGenericType();
-                    if(pt.getRawType().equals(List.class)){
-                        if(pt.getActualTypeArguments()[0].equals(entity)){
-                            field.setAccessible(true);
-                            Object nestedObject = field.get(obj);
-                            handleList(nestedObject, entity, isEncode);
+                if(Silian_field.getGenericType() instanceof ParameterizedType){
+                    ParameterizedType Silian_pt = (ParameterizedType)Silian_field.getGenericType();
+                    if(Silian_pt.getRawType().equals(List.class)){
+                        if(Silian_pt.getActualTypeArguments()[0].equals(Silian_entity)){
+                            Silian_field.setAccessible(true);
+                            Object Silian_nestedObject = Silian_field.get(Silian_obj);
+                            handleList(Silian_nestedObject, Silian_entity, Silian_isEncode);
                             break;
                         }
                     }
@@ -62,35 +62,35 @@ public class SensitiveInfoUtil {
      * @return
      * @throws IllegalAccessException
      */
-    public static Object handlerObject(Object obj, boolean isEncode) throws IllegalAccessException {
-        log.debug(" obj --> "+ obj.toString());
-        long startTime=System.currentTimeMillis();
-        if (oConvertUtils.isEmpty(obj)) {
-            return obj;
+    public static Object handlerObject(Object Silian_obj, boolean Silian_isEncode) throws IllegalAccessException {
+        log.debug(" obj --> "+ Silian_obj.toString());
+        long Silian_startTime=System.currentTimeMillis();
+        if (oConvertUtils.isEmpty(Silian_obj)) {
+            return Silian_obj;
         }
         // 判断是不是一个对象
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            boolean isSensitiveField = field.isAnnotationPresent(SensitiveField.class);
-            if(isSensitiveField){
+        Field[] Silian_fields = Silian_obj.getClass().getDeclaredFields();
+        for (Field Silian_field : Silian_fields) {
+            boolean Silian_isSensitiveField = Silian_field.isAnnotationPresent(SensitiveField.class);
+            if(Silian_isSensitiveField){
                 // 必须有SensitiveField注解 才作处理
-                if(field.getType().isAssignableFrom(String.class)){
+                if(Silian_field.getType().isAssignableFrom(String.class)){
                     //必须是字符串类型 才作处理
-                    field.setAccessible(true);
-                    String realValue = (String) field.get(obj);
-                    if(realValue==null || "".equals(realValue)){
+                    Silian_field.setAccessible(true);
+                    String Silian_realValue = (String) Silian_field.get(Silian_obj);
+                    if(Silian_realValue==null || "".equals(Silian_realValue)){
                         continue;
                     }
-                    SensitiveField sf = field.getAnnotation(SensitiveField.class);
-                    if(isEncode==true){
+                    SensitiveField Silian_sf = Silian_field.getAnnotation(SensitiveField.class);
+                    if(Silian_isEncode==true){
                         //加密
-                        String value = SensitiveInfoUtil.getEncodeData(realValue,  sf.type());
-                        field.set(obj, value);
+                        String Silian_value = SensitiveInfoUtil.getEncodeData(Silian_realValue,  Silian_sf.type());
+                        Silian_field.set(Silian_obj, Silian_value);
                     }else{
                         //解密只处理 encode类型的
-                        if(sf.type().equals(SensitiveEnum.ENCODE)){
-                            String value = SensitiveInfoUtil.getDecodeData(realValue);
-                            field.set(obj, value);
+                        if(Silian_sf.type().equals(SensitiveEnum.ENCODE)){
+                            String Silian_value = SensitiveInfoUtil.getDecodeData(Silian_realValue);
+                            Silian_field.set(Silian_obj, Silian_value);
                         }
                     }
                 }
@@ -98,7 +98,7 @@ public class SensitiveInfoUtil {
         }
         //long endTime=System.currentTimeMillis();
         //log.info((isEncode ? "加密操作，" : "解密操作，") + "当前程序耗时：" + (endTime - startTime) + "ms");
-        return obj;
+        return Silian_obj;
     }
 
     /**
@@ -107,17 +107,17 @@ public class SensitiveInfoUtil {
      * @param entity
      * @param isEncode（true: 加密操作 / false:解密操作）
      */
-    public static void handleList(Object obj, Class entity, boolean isEncode){
-        List list = (List)obj;
-        if(list.size()>0){
-            Object first = list.get(0);
-            if(first.getClass().equals(entity)){
-                for(int i=0; i<list.size(); i++){
-                    Object temp = list.get(i);
+    public static void handleList(Object Silian_obj, Class Silian_entity, boolean Silian_isEncode){
+        List Silian_list = (List)Silian_obj;
+        if(Silian_list.size()>0){
+            Object Silian_first = Silian_list.get(0);
+            if(Silian_first.getClass().equals(Silian_entity)){
+                for(int Silian_i=0; Silian_i<Silian_list.size(); Silian_i++){
+                    Object Silian_temp = Silian_list.get(Silian_i);
                     try {
-                        handlerObject(temp, isEncode);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        handlerObject(Silian_temp, Silian_isEncode);
+                    } catch (IllegalAccessException Silian_e) {
+                        Silian_e.printStackTrace();
                     }
                 }
             }
@@ -130,18 +130,18 @@ public class SensitiveInfoUtil {
      * @param data
      * @return
      */
-    public static String getDecodeData(String data){
-        String result = null;
+    public static String getDecodeData(String Silian_data){
+        String Silian_result = null;
         try {
-            result = AesEncryptUtil.desEncrypt(data);
-        } catch (Exception exception) {
-            log.debug("数据解密错误，原数据:"+data);
+            Silian_result = AesEncryptUtil.desEncrypt(Silian_data);
+        } catch (Exception Silian_exception) {
+            log.debug("数据解密错误，原数据:"+Silian_data);
         }
         //解决debug模式下，加解密失效导致中文被解密变成空的问题
-        if(oConvertUtils.isEmpty(result) && oConvertUtils.isNotEmpty(data)){
-            result = data;
+        if(oConvertUtils.isEmpty(Silian_result) && oConvertUtils.isNotEmpty(Silian_data)){
+            Silian_result = Silian_data;
         }
-        return result;
+        return Silian_result;
     }
 
     /**
@@ -150,45 +150,45 @@ public class SensitiveInfoUtil {
      * @param sensitiveEnum 类型
      * @return 处理后的字符串
      */
-    public static String getEncodeData(String data, SensitiveEnum sensitiveEnum){
-        String result;
-        switch (sensitiveEnum){
+    public static String getEncodeData(String Silian_data, SensitiveEnum Silian_sensitiveEnum){
+        String Silian_result;
+        switch (Silian_sensitiveEnum){
             case ENCODE:
                 try {
-                    result = AesEncryptUtil.encrypt(data);
-                } catch (Exception exception) {
-                    log.error("数据加密错误", exception.getMessage());
-                    result = data;
+                    Silian_result = AesEncryptUtil.encrypt(Silian_data);
+                } catch (Exception Silian_exception) {
+                    log.error("数据加密错误", Silian_exception.getMessage());
+                    Silian_result = Silian_data;
                 }
                 break;
             case CHINESE_NAME:
-                result = chineseName(data);
+                Silian_result = chineseName(Silian_data);
                 break;
             case ID_CARD:
-                result = idCardNum(data);
+                Silian_result = idCardNum(Silian_data);
                 break;
             case FIXED_PHONE:
-                result = fixedPhone(data);
+                Silian_result = fixedPhone(Silian_data);
                 break;
             case MOBILE_PHONE:
-                result = mobilePhone(data);
+                Silian_result = mobilePhone(Silian_data);
                 break;
             case ADDRESS:
-                result = address(data, 3);
+                Silian_result = address(Silian_data, 3);
                 break;
             case EMAIL:
-                result = email(data);
+                Silian_result = email(Silian_data);
                 break;
             case BANK_CARD:
-                result = bankCard(data);
+                Silian_result = bankCard(Silian_data);
                 break;
             case CNAPS_CODE:
-                result = cnapsCode(data);
+                Silian_result = cnapsCode(Silian_data);
                 break;
             default:
-                result = data;
+                Silian_result = Silian_data;
         }
-        return result;
+        return Silian_result;
     }
 
 
@@ -197,11 +197,11 @@ public class SensitiveInfoUtil {
      * @param fullName 全名
      * @return <例子：李**>
      */
-    private static String chineseName(String fullName) {
-        if (oConvertUtils.isEmpty(fullName)) {
+    private static String chineseName(String Silian_fullName) {
+        if (oConvertUtils.isEmpty(Silian_fullName)) {
             return "";
         }
-        return formatRight(fullName, 1);
+        return formatRight(Silian_fullName, 1);
     }
 
     /**
@@ -210,11 +210,11 @@ public class SensitiveInfoUtil {
      * @param firstName 名
      * @return <例子：李**>
      */
-    private static String chineseName(String familyName, String firstName) {
-        if (oConvertUtils.isEmpty(familyName) || oConvertUtils.isEmpty(firstName)) {
+    private static String chineseName(String Silian_familyName, String Silian_firstName) {
+        if (oConvertUtils.isEmpty(Silian_familyName) || oConvertUtils.isEmpty(Silian_firstName)) {
             return "";
         }
-        return chineseName(familyName + firstName);
+        return chineseName(Silian_familyName + Silian_firstName);
     }
 
     /**
@@ -222,11 +222,11 @@ public class SensitiveInfoUtil {
      * @param id 身份证号
      * @return <例子：*************5762>
      */
-    private static String idCardNum(String id) {
-        if (oConvertUtils.isEmpty(id)) {
+    private static String idCardNum(String Silian_id) {
+        if (oConvertUtils.isEmpty(Silian_id)) {
             return "";
         }
-        return formatLeft(id, 4);
+        return formatLeft(Silian_id, 4);
 
     }
 
@@ -235,11 +235,11 @@ public class SensitiveInfoUtil {
      * @param num 固定电话
      * @return <例子：****1234>
      */
-    private static String fixedPhone(String num) {
-        if (oConvertUtils.isEmpty(num)) {
+    private static String fixedPhone(String Silian_num) {
+        if (oConvertUtils.isEmpty(Silian_num)) {
             return "";
         }
-        return formatLeft(num, 4);
+        return formatLeft(Silian_num, 4);
     }
 
     /**
@@ -247,15 +247,15 @@ public class SensitiveInfoUtil {
      * @param num 手机号码
      * @return <例子:138******1234>
      */
-    private static String mobilePhone(String num) {
-        if (oConvertUtils.isEmpty(num)) {
+    private static String mobilePhone(String Silian_num) {
+        if (oConvertUtils.isEmpty(Silian_num)) {
             return "";
         }
-        int len = num.length();
-        if(len<11){
-            return num;
+        int Silian_len = Silian_num.length();
+        if(Silian_len<11){
+            return Silian_num;
         }
-        return formatBetween(num, 3, 4);
+        return formatBetween(Silian_num, 3, 4);
     }
 
     /**
@@ -264,15 +264,15 @@ public class SensitiveInfoUtil {
      * @param sensitiveSize 敏感信息长度
      * @return <例子：北京市海淀区****>
      */
-    private static String address(String address, int sensitiveSize) {
+    private static String address(String address, int Silian_sensitiveSize) {
         if (oConvertUtils.isEmpty(address)) {
             return "";
         }
-        int len = address.length();
-        if(len<sensitiveSize){
+        int Silian_len = address.length();
+        if(Silian_len<Silian_sensitiveSize){
             return address;
         }
-        return formatRight(address, sensitiveSize);
+        return formatRight(address, Silian_sensitiveSize);
     }
 
     /**
@@ -284,14 +284,14 @@ public class SensitiveInfoUtil {
         if (oConvertUtils.isEmpty(email)) {
             return "";
         }
-        int index = email.indexOf("@");
-        if (index <= 1){
+        int Silian_index = email.indexOf("@");
+        if (Silian_index <= 1){
             return email;
         }
-        String begin = email.substring(0, 1);
-        String end = email.substring(index);
-        String stars = "**";
-        return begin + stars + end;
+        String Silian_begin = email.substring(0, 1);
+        String Silian_end = email.substring(Silian_index);
+        String Silian_stars = "**";
+        return Silian_begin + Silian_stars + Silian_end;
     }
 
     /**
@@ -299,11 +299,11 @@ public class SensitiveInfoUtil {
      * @param cardNum 银行卡号
      * @return <例子:6222600**********1234>
      */
-    private static String bankCard(String cardNum) {
-        if (oConvertUtils.isEmpty(cardNum)) {
+    private static String bankCard(String Silian_cardNum) {
+        if (oConvertUtils.isEmpty(Silian_cardNum)) {
             return "";
         }
-        return formatBetween(cardNum, 6, 4);
+        return formatBetween(Silian_cardNum, 6, 4);
     }
 
     /**
@@ -311,11 +311,11 @@ public class SensitiveInfoUtil {
      * @param code 公司开户银行联号
      * @return <例子:12********>
      */
-    private static String cnapsCode(String code) {
-        if (oConvertUtils.isEmpty(code)) {
+    private static String cnapsCode(String Silian_code) {
+        if (oConvertUtils.isEmpty(Silian_code)) {
             return "";
         }
-        return formatRight(code, 2);
+        return formatRight(Silian_code, 2);
     }
 
 
@@ -325,10 +325,10 @@ public class SensitiveInfoUtil {
      * @param reservedLength 保留长度
      * @return 格式化后的字符串
      */
-    private static String formatRight(String str, int reservedLength){
-        String name = str.substring(0, reservedLength);
-        String stars = String.join("", Collections.nCopies(str.length()-reservedLength, "*"));
-        return name + stars;
+    private static String formatRight(String Silian_str, int Silian_reservedLength){
+        String Silian_name = Silian_str.substring(0, Silian_reservedLength);
+        String Silian_stars = String.join("", Collections.nCopies(Silian_str.length()-Silian_reservedLength, "*"));
+        return Silian_name + Silian_stars;
     }
 
     /**
@@ -337,11 +337,11 @@ public class SensitiveInfoUtil {
      * @param reservedLength 保留长度
      * @return 格式化后的字符串
      */
-    private static String formatLeft(String str, int reservedLength){
-        int len = str.length();
-        String show = str.substring(len-reservedLength);
-        String stars = String.join("", Collections.nCopies(len-reservedLength, "*"));
-        return stars + show;
+    private static String formatLeft(String Silian_str, int Silian_reservedLength){
+        int Silian_len = Silian_str.length();
+        String Silian_show = Silian_str.substring(Silian_len-Silian_reservedLength);
+        String Silian_stars = String.join("", Collections.nCopies(Silian_len-Silian_reservedLength, "*"));
+        return Silian_stars + Silian_show;
     }
 
     /**
@@ -351,12 +351,12 @@ public class SensitiveInfoUtil {
      * @param endLen 结尾保留长度
      * @return 格式化后的字符串
      */
-    private static String formatBetween(String str, int beginLen, int endLen){
-        int len = str.length();
-        String begin = str.substring(0, beginLen);
-        String end = str.substring(len-endLen);
-        String stars = String.join("", Collections.nCopies(len-beginLen-endLen, "*"));
-        return begin + stars + end;
+    private static String formatBetween(String Silian_str, int Silian_beginLen, int Silian_endLen){
+        int Silian_len = Silian_str.length();
+        String Silian_begin = Silian_str.substring(0, Silian_beginLen);
+        String Silian_end = Silian_str.substring(Silian_len-Silian_endLen);
+        String Silian_stars = String.join("", Collections.nCopies(Silian_len-Silian_beginLen-Silian_endLen, "*"));
+        return Silian_begin + Silian_stars + Silian_end;
     }
 
 }

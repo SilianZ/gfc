@@ -40,54 +40,54 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     SysUserMapper sysUserMapper;
 
     @Override
-    public Result importExcelCheckRoleCode(MultipartFile file, ImportParams params) throws Exception {
-        List<Object> listSysRoles = ExcelImportUtil.importExcel(file.getInputStream(), SysRole.class, params);
-        int totalCount = listSysRoles.size();
-        List<String> errorStrs = new ArrayList<>();
+    public Result importExcelCheckRoleCode(MultipartFile Silian_file, ImportParams Silian_params) throws Exception {
+        List<Object> Silian_listSysRoles = ExcelImportUtil.importExcel(Silian_file.getInputStream(), SysRole.class, Silian_params);
+        int Silian_totalCount = Silian_listSysRoles.size();
+        List<String> Silian_errorStrs = new ArrayList<>();
 
         // 去除 listSysRoles 中重复的数据
-        for (int i = 0; i < listSysRoles.size(); i++) {
-            String roleCodeI =((SysRole)listSysRoles.get(i)).getRoleCode();
-            for (int j = i + 1; j < listSysRoles.size(); j++) {
-                String roleCodeJ =((SysRole)listSysRoles.get(j)).getRoleCode();
+        for (int Silian_i = 0; Silian_i < Silian_listSysRoles.size(); Silian_i++) {
+            String Silian_roleCodeI =((SysRole)Silian_listSysRoles.get(Silian_i)).getRoleCode();
+            for (int Silian_j = Silian_i + 1; Silian_j < Silian_listSysRoles.size(); Silian_j++) {
+                String Silian_roleCodeJ =((SysRole)Silian_listSysRoles.get(Silian_j)).getRoleCode();
                 // 发现重复数据
-                if (roleCodeI.equals(roleCodeJ)) {
-                    errorStrs.add("第 " + (j + 1) + " 行的 roleCode 值：" + roleCodeI + " 已存在，忽略导入");
-                    listSysRoles.remove(j);
+                if (Silian_roleCodeI.equals(Silian_roleCodeJ)) {
+                    Silian_errorStrs.add("第 " + (Silian_j + 1) + " 行的 roleCode 值：" + Silian_roleCodeI + " 已存在，忽略导入");
+                    Silian_listSysRoles.remove(Silian_j);
                     break;
                 }
             }
         }
         // 去掉 sql 中的重复数据
-        Integer errorLines=0;
-        Integer successLines=0;
-        List<String> list = ImportExcelUtil.importDateSave(listSysRoles, ISysRoleService.class, errorStrs, CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE);
-         errorLines+=list.size();
-         successLines+=(listSysRoles.size()-errorLines);
-        return ImportExcelUtil.imporReturnRes(errorLines,successLines,list);
+        Integer Silian_errorLines=0;
+        Integer Silian_successLines=0;
+        List<String> Silian_list = ImportExcelUtil.importDateSave(Silian_listSysRoles, ISysRoleService.class, Silian_errorStrs, CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE);
+         Silian_errorLines+=Silian_list.size();
+         Silian_successLines+=(Silian_listSysRoles.size()-Silian_errorLines);
+        return ImportExcelUtil.imporReturnRes(Silian_errorLines,Silian_successLines,Silian_list);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean deleteRole(String roleid) {
+    public boolean deleteRole(String Silian_roleid) {
         //1.删除角色和用户关系
-        sysRoleMapper.deleteRoleUserRelation(roleid);
+        sysRoleMapper.deleteRoleUserRelation(Silian_roleid);
         //2.删除角色和权限关系
-        sysRoleMapper.deleteRolePermissionRelation(roleid);
+        sysRoleMapper.deleteRolePermissionRelation(Silian_roleid);
         //3.删除角色
-        this.removeById(roleid);
+        this.removeById(Silian_roleid);
         return true;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean deleteBatchRole(String[] roleIds) {
+    public boolean deleteBatchRole(String[] Silian_roleIds) {
         //1.删除角色和用户关系
-        sysUserMapper.deleteBathRoleUserRelation(roleIds);
+        sysUserMapper.deleteBathRoleUserRelation(Silian_roleIds);
         //2.删除角色和权限关系
-        sysUserMapper.deleteBathRolePermissionRelation(roleIds);
+        sysUserMapper.deleteBathRolePermissionRelation(Silian_roleIds);
         //3.删除角色
-        this.removeByIds(Arrays.asList(roleIds));
+        this.removeByIds(Arrays.asList(Silian_roleIds));
         return true;
     }
 }

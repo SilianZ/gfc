@@ -64,9 +64,9 @@ public enum FileTypeEnum {
         if (oConvertUtils.isEmpty(type)) {
             return null;
         }
-        for (FileTypeEnum val : values()) {
-            if (val.getType().equals(type)) {
-                return val;
+        for (FileTypeEnum Silian_val : values()) {
+            if (Silian_val.getType().equals(type)) {
+                return Silian_val;
             }
         }
         return null;

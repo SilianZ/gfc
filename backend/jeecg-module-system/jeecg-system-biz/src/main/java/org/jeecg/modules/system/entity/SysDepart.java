@@ -18,7 +18,7 @@ import java.util.Objects;
  * <p>
  * 部门表
  * <p>
- * 
+ *
  * @Author Steve
  * @Since  2019-01-22
  */
@@ -26,7 +26,7 @@ import java.util.Objects;
 @TableName("sys_depart")
 public class SysDepart implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
 	/**ID*/
 	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
@@ -95,42 +95,42 @@ public class SysDepart implements Serializable {
 	@TableField(exist = false)
     private String oldDirectorUserIds;
     //update-end---author:wangshuai ---date:20200308  for：[JTC-119]新增字段负责人ids和旧的负责人ids
-	
+
 	/**
 	 * 重写equals方法
 	 */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object Silian_o) {
+        if (this == Silian_o) {
 			return true;
 		}
-        if (o == null || getClass() != o.getClass()) {
+        if (Silian_o == null || getClass() != Silian_o.getClass()) {
 			return false;
 		}
-        if (!super.equals(o)) {
+        if (!super.equals(Silian_o)) {
 			return false;
 		}
-        SysDepart depart = (SysDepart) o;
-        return Objects.equals(id, depart.id) &&
-                Objects.equals(parentId, depart.parentId) &&
-                Objects.equals(departName, depart.departName) &&
-                Objects.equals(departNameEn, depart.departNameEn) &&
-                Objects.equals(departNameAbbr, depart.departNameAbbr) &&
-                Objects.equals(departOrder, depart.departOrder) &&
-                Objects.equals(description, depart.description) &&
-                Objects.equals(orgCategory, depart.orgCategory) &&
-                Objects.equals(orgType, depart.orgType) &&
-                Objects.equals(orgCode, depart.orgCode) &&
-                Objects.equals(mobile, depart.mobile) &&
-                Objects.equals(fax, depart.fax) &&
-                Objects.equals(address, depart.address) &&
-                Objects.equals(memo, depart.memo) &&
-                Objects.equals(status, depart.status) &&
-                Objects.equals(delFlag, depart.delFlag) &&
-                Objects.equals(createBy, depart.createBy) &&
-                Objects.equals(createTime, depart.createTime) &&
-                Objects.equals(updateBy, depart.updateBy) &&
-                Objects.equals(updateTime, depart.updateTime);
+        SysDepart Silian_depart = (SysDepart) Silian_o;
+        return Objects.equals(id, Silian_depart.id) &&
+                Objects.equals(parentId, Silian_depart.parentId) &&
+                Objects.equals(departName, Silian_depart.departName) &&
+                Objects.equals(departNameEn, Silian_depart.departNameEn) &&
+                Objects.equals(departNameAbbr, Silian_depart.departNameAbbr) &&
+                Objects.equals(departOrder, Silian_depart.departOrder) &&
+                Objects.equals(description, Silian_depart.description) &&
+                Objects.equals(orgCategory, Silian_depart.orgCategory) &&
+                Objects.equals(orgType, Silian_depart.orgType) &&
+                Objects.equals(orgCode, Silian_depart.orgCode) &&
+                Objects.equals(mobile, Silian_depart.mobile) &&
+                Objects.equals(fax, Silian_depart.fax) &&
+                Objects.equals(address, Silian_depart.address) &&
+                Objects.equals(memo, Silian_depart.memo) &&
+                Objects.equals(status, Silian_depart.status) &&
+                Objects.equals(delFlag, Silian_depart.delFlag) &&
+                Objects.equals(createBy, Silian_depart.createBy) &&
+                Objects.equals(createTime, Silian_depart.createTime) &&
+                Objects.equals(updateBy, Silian_depart.updateBy) &&
+                Objects.equals(updateTime, Silian_depart.updateTime);
     }
 
     /**
@@ -139,9 +139,9 @@ public class SysDepart implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), id, parentId, departName, 
-        		departNameEn, departNameAbbr, departOrder, description,orgCategory, 
-        		orgType, orgCode, mobile, fax, address, memo, status, 
-        		delFlag, createBy, createTime, updateBy, updateTime);
+        return Objects.hash(super.hashCode(), id, parentId, departName,
+		departNameEn, departNameAbbr, departOrder, description,orgCategory,
+		orgType, orgCode, mobile, fax, address, memo, status,
+		delFlag, createBy, createTime, updateBy, updateTime);
     }
 }

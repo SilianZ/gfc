@@ -33,77 +33,77 @@ import lombok.extern.slf4j.Slf4j;
 public class SysDataLogController {
 	@Autowired
 	private ISysDataLogService service;
-	
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public Result<IPage<SysDataLog>> queryPageList(SysDataLog dataLog,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
-		Result<IPage<SysDataLog>> result = new Result<IPage<SysDataLog>>();
-		dataLog.setType(CommonConstant.DATA_LOG_TYPE_JSON);
-		QueryWrapper<SysDataLog> queryWrapper = QueryGenerator.initQueryWrapper(dataLog, req.getParameterMap());
-		Page<SysDataLog> page = new Page<SysDataLog>(pageNo, pageSize);
-		IPage<SysDataLog> pageList = service.page(page, queryWrapper);
-		log.info("查询当前页："+pageList.getCurrent());
-		log.info("查询当前页数量："+pageList.getSize());
-		log.info("查询结果数量："+pageList.getRecords().size());
-		log.info("数据总数："+pageList.getTotal());
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+	public Result<IPage<SysDataLog>> queryPageList(SysDataLog Silian_dataLog,@RequestParam(name="pageNo", defaultValue="1") Integer Silian_pageNo,
+									  @RequestParam(name="pageSize", defaultValue="10") Integer Silian_pageSize,HttpServletRequest Silian_req) {
+		Result<IPage<SysDataLog>> Silian_result = new Result<IPage<SysDataLog>>();
+		Silian_dataLog.setType(CommonConstant.DATA_LOG_TYPE_JSON);
+		QueryWrapper<SysDataLog> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_dataLog, Silian_req.getParameterMap());
+		Page<SysDataLog> Silian_page = new Page<SysDataLog>(Silian_pageNo, Silian_pageSize);
+		IPage<SysDataLog> Silian_pageList = service.page(Silian_page, Silian_queryWrapper);
+		log.info("查询当前页："+Silian_pageList.getCurrent());
+		log.info("查询当前页数量："+Silian_pageList.getSize());
+		log.info("查询结果数量："+Silian_pageList.getRecords().size());
+		log.info("数据总数："+Silian_pageList.getTotal());
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
-	
+
 	/**
 	 * 查询对比数据
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping(value = "/queryCompareList", method = RequestMethod.GET)
-	public Result<List<SysDataLog>> queryCompareList(HttpServletRequest req) {
-		Result<List<SysDataLog>> result = new Result<>();
-		String dataId1 = req.getParameter("dataId1");
-		String dataId2 = req.getParameter("dataId2");
-		List<String> idList = new ArrayList<String>();
-		idList.add(dataId1);
-		idList.add(dataId2);
+	public Result<List<SysDataLog>> queryCompareList(HttpServletRequest Silian_req) {
+		Result<List<SysDataLog>> Silian_result = new Result<>();
+		String Silian_dataId1 = Silian_req.getParameter("dataId1");
+		String Silian_dataId2 = Silian_req.getParameter("dataId2");
+		List<String> Silian_idList = new ArrayList<String>();
+		Silian_idList.add(Silian_dataId1);
+		Silian_idList.add(Silian_dataId2);
 		try {
-			List<SysDataLog> list =  (List<SysDataLog>) service.listByIds(idList);
-			result.setResult(list);
-			result.setSuccess(true);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			List<SysDataLog> Silian_list =  (List<SysDataLog>) service.listByIds(Silian_idList);
+			Silian_result.setResult(Silian_list);
+			Silian_result.setSuccess(true);
+		} catch (Exception Silian_e) {
+			log.error(Silian_e.getMessage(),Silian_e);
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 	/**
 	 * 查询版本信息
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping(value = "/queryDataVerList", method = RequestMethod.GET)
-	public Result<List<SysDataLog>> queryDataVerList(HttpServletRequest req) {
-		Result<List<SysDataLog>> result = new Result<>();
-		String dataTable = req.getParameter("dataTable");
-		String dataId = req.getParameter("dataId");
-		QueryWrapper<SysDataLog> queryWrapper = new QueryWrapper<SysDataLog>();
-		queryWrapper.eq("data_table", dataTable);
-		queryWrapper.eq("data_id", dataId);
+	public Result<List<SysDataLog>> queryDataVerList(HttpServletRequest Silian_req) {
+		Result<List<SysDataLog>> Silian_result = new Result<>();
+		String Silian_dataTable = Silian_req.getParameter("dataTable");
+		String Silian_dataId = Silian_req.getParameter("dataId");
+		QueryWrapper<SysDataLog> Silian_queryWrapper = new QueryWrapper<SysDataLog>();
+		Silian_queryWrapper.eq("data_table", Silian_dataTable);
+		Silian_queryWrapper.eq("data_id", Silian_dataId);
 		//update-begin-author:taoyan date:2022-7-26 for: 新增查询条件-type
-		String type = req.getParameter("type");
-		if (oConvertUtils.isNotEmpty(type)) {
-			queryWrapper.eq("type", type);
+		String Silian_type = Silian_req.getParameter("type");
+		if (oConvertUtils.isNotEmpty(Silian_type)) {
+			Silian_queryWrapper.eq("type", Silian_type);
 		}
 		// 按时间倒序排
-		queryWrapper.orderByDesc("create_time");
+		Silian_queryWrapper.orderByDesc("create_time");
 		//update-end-author:taoyan date:2022-7-26 for:新增查询条件-type
 
-		List<SysDataLog> list = service.list(queryWrapper);
-		if(list==null||list.size()<=0) {
-			result.error500("未找到版本信息");
+		List<SysDataLog> Silian_list = service.list(Silian_queryWrapper);
+		if(Silian_list==null||Silian_list.size()<=0) {
+			Silian_result.error500("未找到版本信息");
 		}else {
-			result.setResult(list);
-			result.setSuccess(true);
+			Silian_result.setResult(Silian_list);
+			Silian_result.setSuccess(true);
 		}
-		return result;
+		return Silian_result;
 	}
-	
+
 }

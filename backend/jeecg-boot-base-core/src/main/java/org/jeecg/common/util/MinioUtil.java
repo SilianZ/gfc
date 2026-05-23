@@ -53,58 +53,58 @@ public class MinioUtil {
      * @param file
      * @return
      */
-    public static String upload(MultipartFile file, String bizPath, String customBucket) throws Exception {
-        String fileUrl = "";
+    public static String upload(MultipartFile Silian_file, String Silian_bizPath, String Silian_customBucket) throws Exception {
+        String Silian_fileUrl = "";
         //update-begin-author:wangshuai date:20201012 for: 过滤上传文件夹名特殊字符，防止攻击
-        bizPath = StrAttackFilter.filter(bizPath);
+        Silian_bizPath = StrAttackFilter.filter(Silian_bizPath);
         //update-end-author:wangshuai date:20201012 for: 过滤上传文件夹名特殊字符，防止攻击
 
         //update-begin-author:liusq date:20210809 for: 过滤上传文件类型
-        FileTypeFilter.fileTypeFilter(file);
+        FileTypeFilter.fileTypeFilter(Silian_file);
         //update-end-author:liusq date:20210809 for: 过滤上传文件类型
 
-        String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(customBucket)){
-            newBucket = customBucket;
+        String Silian_newBucket = bucketName;
+        if(oConvertUtils.isNotEmpty(Silian_customBucket)){
+            Silian_newBucket = Silian_customBucket;
         }
         try {
             initMinio(minioUrl, minioName,minioPass);
             // 检查存储桶是否已经存在
-            if(minioClient.bucketExists(BucketExistsArgs.builder().bucket(newBucket).build())) {
+            if(minioClient.bucketExists(BucketExistsArgs.builder().bucket(Silian_newBucket).build())) {
                 log.info("Bucket already exists.");
             } else {
                 // 创建一个名为ota的存储桶
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(newBucket).build());
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(Silian_newBucket).build());
                 log.info("create a new bucket.");
             }
-            InputStream stream = file.getInputStream();
+            InputStream Silian_stream = Silian_file.getInputStream();
             // 获取文件名
-            String orgName = file.getOriginalFilename();
-            if("".equals(orgName)){
-                orgName=file.getName();
+            String Silian_orgName = Silian_file.getOriginalFilename();
+            if("".equals(Silian_orgName)){
+                Silian_orgName=Silian_file.getName();
             }
-            orgName = CommonUtils.getFileName(orgName);
-            String objectName = bizPath+"/"
-                                +( orgName.indexOf(".")==-1
-                                   ?orgName + "_" + System.currentTimeMillis()
-                                   :orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.lastIndexOf("."))
+            Silian_orgName = CommonUtils.getFileName(Silian_orgName);
+            String Silian_objectName = Silian_bizPath+"/"
+                                +( Silian_orgName.indexOf(".")==-1
+                                   ?Silian_orgName + "_" + System.currentTimeMillis()
+                                   :Silian_orgName.substring(0, Silian_orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + Silian_orgName.substring(Silian_orgName.lastIndexOf("."))
                                  );
 
             // 使用putObject上传一个本地文件到存储桶中。
-            if(objectName.startsWith(SymbolConstant.SINGLE_SLASH)){
-                objectName = objectName.substring(1);
+            if(Silian_objectName.startsWith(SymbolConstant.SINGLE_SLASH)){
+                Silian_objectName = Silian_objectName.substring(1);
             }
-            PutObjectArgs objectArgs = PutObjectArgs.builder().object(objectName)
-                    .bucket(newBucket)
+            PutObjectArgs Silian_objectArgs = PutObjectArgs.builder().object(Silian_objectName)
+                    .bucket(Silian_newBucket)
                     .contentType("application/octet-stream")
-                    .stream(stream,stream.available(),-1).build();
-            minioClient.putObject(objectArgs);
-            stream.close();
-            fileUrl = minioUrl+newBucket+"/"+objectName;
-        }catch (Exception e){
-            log.error(e.getMessage(), e);
+                    .stream(Silian_stream,Silian_stream.available(),-1).build();
+            minioClient.putObject(Silian_objectArgs);
+            Silian_stream.close();
+            Silian_fileUrl = minioUrl+Silian_newBucket+"/"+Silian_objectName;
+        }catch (Exception Silian_e){
+            log.error(Silian_e.getMessage(), Silian_e);
         }
-        return fileUrl;
+        return Silian_fileUrl;
     }
 
     /**
@@ -113,8 +113,8 @@ public class MinioUtil {
      * @param bizPath
      * @return
      */
-    public static String upload(MultipartFile file, String bizPath) throws Exception {
-        return upload(file,bizPath,null);
+    public static String upload(MultipartFile Silian_file, String Silian_bizPath) throws Exception {
+        return upload(Silian_file,Silian_bizPath,null);
     }
 
     /**
@@ -123,17 +123,17 @@ public class MinioUtil {
      * @param objectName
      * @return
      */
-    public static InputStream getMinioFile(String bucketName,String objectName){
-        InputStream inputStream = null;
+    public static InputStream getMinioFile(String bucketName,String Silian_objectName){
+        InputStream Silian_inputStream = null;
         try {
             initMinio(minioUrl, minioName, minioPass);
-            GetObjectArgs objectArgs = GetObjectArgs.builder().object(objectName)
+            GetObjectArgs Silian_objectArgs = GetObjectArgs.builder().object(Silian_objectName)
                     .bucket(bucketName).build();
-            inputStream = minioClient.getObject(objectArgs);
-        } catch (Exception e) {
-            log.info("文件获取失败" + e.getMessage());
+            Silian_inputStream = minioClient.getObject(Silian_objectArgs);
+        } catch (Exception Silian_e) {
+            log.info("文件获取失败" + Silian_e.getMessage());
         }
-        return inputStream;
+        return Silian_inputStream;
     }
 
     /**
@@ -142,14 +142,14 @@ public class MinioUtil {
      * @param objectName
      * @throws Exception
      */
-    public static void removeObject(String bucketName, String objectName) {
+    public static void removeObject(String bucketName, String Silian_objectName) {
         try {
             initMinio(minioUrl, minioName,minioPass);
-            RemoveObjectArgs objectArgs = RemoveObjectArgs.builder().object(objectName)
+            RemoveObjectArgs Silian_objectArgs = RemoveObjectArgs.builder().object(Silian_objectName)
                     .bucket(bucketName).build();
-            minioClient.removeObject(objectArgs);
-        }catch (Exception e){
-            log.info("文件删除失败" + e.getMessage());
+            minioClient.removeObject(Silian_objectArgs);
+        }catch (Exception Silian_e){
+            log.info("文件删除失败" + Silian_e.getMessage());
         }
     }
 
@@ -160,18 +160,18 @@ public class MinioUtil {
      * @param expires
      * @return
      */
-    public static String getObjectUrl(String bucketName, String objectName, Integer expires) {
+    public static String getObjectUrl(String bucketName, String Silian_objectName, Integer Silian_expires) {
         initMinio(minioUrl, minioName,minioPass);
         try{
             //update-begin---author:liusq  Date:20220121  for：获取文件外链报错提示method不能为空，导致文件下载和预览失败----
-            GetPresignedObjectUrlArgs objectArgs = GetPresignedObjectUrlArgs.builder().object(objectName)
+            GetPresignedObjectUrlArgs Silian_objectArgs = GetPresignedObjectUrlArgs.builder().object(Silian_objectName)
                     .bucket(bucketName)
-                    .expiry(expires).method(Method.GET).build();
+                    .expiry(Silian_expires).method(Method.GET).build();
             //update-begin---author:liusq  Date:20220121  for：获取文件外链报错提示method不能为空，导致文件下载和预览失败----
-            String url = minioClient.getPresignedObjectUrl(objectArgs);
-            return URLDecoder.decode(url,"UTF-8");
-        }catch (Exception e){
-            log.info("文件路径获取失败" + e.getMessage());
+            String Silian_url = minioClient.getPresignedObjectUrl(Silian_objectArgs);
+            return URLDecoder.decode(Silian_url,"UTF-8");
+        }catch (Exception Silian_e){
+            log.info("文件路径获取失败" + Silian_e.getMessage());
         }
         return null;
     }
@@ -190,8 +190,8 @@ public class MinioUtil {
                         .endpoint(minioUrl)
                         .credentials(minioName, minioPass)
                         .build();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception Silian_e) {
+                Silian_e.printStackTrace();
             }
         }
         return minioClient;
@@ -203,7 +203,7 @@ public class MinioUtil {
      * @param relativePath
      * @return
      */
-    public static String upload(InputStream stream,String relativePath) throws Exception {
+    public static String upload(InputStream Silian_stream,String Silian_relativePath) throws Exception {
         initMinio(minioUrl, minioName,minioPass);
         if(minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
             log.info("Bucket already exists.");
@@ -212,13 +212,13 @@ public class MinioUtil {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             log.info("create a new bucket.");
         }
-        PutObjectArgs objectArgs = PutObjectArgs.builder().object(relativePath)
+        PutObjectArgs Silian_objectArgs = PutObjectArgs.builder().object(Silian_relativePath)
                 .bucket(bucketName)
                 .contentType("application/octet-stream")
-                .stream(stream,stream.available(),-1).build();
-        minioClient.putObject(objectArgs);
-        stream.close();
-        return minioUrl+bucketName+"/"+relativePath;
+                .stream(Silian_stream,Silian_stream.available(),-1).build();
+        minioClient.putObject(Silian_objectArgs);
+        Silian_stream.close();
+        return minioUrl+bucketName+"/"+Silian_relativePath;
     }
 
 }

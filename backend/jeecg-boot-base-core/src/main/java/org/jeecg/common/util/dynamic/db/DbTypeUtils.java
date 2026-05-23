@@ -60,20 +60,20 @@ public class DbTypeUtils {
         dialectMap.put("other", "org.hibernate.dialect.PostgreSQLDialect");
     }
 
-    public static boolean dbTypeIsMySql(DbType dbType) {
-        return dbTypeIf(dbType, DbType.MYSQL, DbType.MARIADB, DbType.CLICK_HOUSE, DbType.SQLITE);
+    public static boolean dbTypeIsMySql(DbType Silian_dbType) {
+        return dbTypeIf(Silian_dbType, DbType.MYSQL, DbType.MARIADB, DbType.CLICK_HOUSE, DbType.SQLITE);
     }
 
-    public static boolean dbTypeIsOracle(DbType dbType) {
-        return dbTypeIf(dbType, DbType.ORACLE, DbType.ORACLE_12C, DbType.DM);
+    public static boolean dbTypeIsOracle(DbType Silian_dbType) {
+        return dbTypeIf(Silian_dbType, DbType.ORACLE, DbType.ORACLE_12C, DbType.DM);
     }
 
-    public static boolean dbTypeIsSqlServer(DbType dbType) {
-        return dbTypeIf(dbType, DbType.SQL_SERVER, DbType.SQL_SERVER2005);
+    public static boolean dbTypeIsSqlServer(DbType Silian_dbType) {
+        return dbTypeIf(Silian_dbType, DbType.SQL_SERVER, DbType.SQL_SERVER2005);
     }
 
-    public static boolean dbTypeIsPostgre(DbType dbType) {
-        return dbTypeIf(dbType, DbType.POSTGRE_SQL, DbType.KINGBASE_ES, DbType.GAUSS);
+    public static boolean dbTypeIsPostgre(DbType Silian_dbType) {
+        return dbTypeIf(Silian_dbType, DbType.POSTGRE_SQL, DbType.KINGBASE_ES, DbType.GAUSS);
     }
 
 
@@ -83,16 +83,16 @@ public class DbTypeUtils {
      * @param dbType
      * @return
      */
-    public static String getDbTypeString(DbType dbType){
-        if(DbType.DB2.equals(dbType)){
+    public static String getDbTypeString(DbType Silian_dbType){
+        if(DbType.DB2.equals(Silian_dbType)){
             return DataBaseConstant.DB_TYPE_DB2;
-        }else if(DbType.HSQL.equals(dbType)){
+        }else if(DbType.HSQL.equals(Silian_dbType)){
             return DataBaseConstant.DB_TYPE_HSQL;
-        }else if(dbTypeIsOracle(dbType)){
+        }else if(dbTypeIsOracle(Silian_dbType)){
             return DataBaseConstant.DB_TYPE_ORACLE;
-        }else if(dbTypeIsSqlServer(dbType)){
+        }else if(dbTypeIsSqlServer(Silian_dbType)){
             return DataBaseConstant.DB_TYPE_SQLSERVER;
-        }else if(dbTypeIsPostgre(dbType)){
+        }else if(dbTypeIsPostgre(Silian_dbType)){
             return DataBaseConstant.DB_TYPE_POSTGRESQL;
         }
         return DataBaseConstant.DB_TYPE_MYSQL;
@@ -103,16 +103,16 @@ public class DbTypeUtils {
      * @param dbType
      * @return
      */
-    public static String getDbDialect(DbType dbType){
-        return dialectMap.get(dbType.getDb());
+    public static String getDbDialect(DbType Silian_dbType){
+        return dialectMap.get(Silian_dbType.getDb());
     }
 
     /**
      * 判断数据库类型
      */
-    public static boolean dbTypeIf(DbType dbType, DbType... correctTypes) {
-        for (DbType type : correctTypes) {
-            if (type.equals(dbType)) {
+    public static boolean dbTypeIf(DbType Silian_dbType, DbType... correctTypes) {
+        for (DbType Silian_type : Silian_correctTypes) {
+            if (Silian_type.equals(Silian_dbType)) {
                 return true;
             }
         }

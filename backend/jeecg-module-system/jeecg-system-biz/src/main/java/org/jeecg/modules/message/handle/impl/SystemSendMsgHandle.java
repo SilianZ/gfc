@@ -52,13 +52,13 @@ public class SystemSendMsgHandle implements ISendMsgHandle {
      * @param esContent 内容
      */
     @Override
-    public void sendMsg(String esReceiver, String esTitle, String esContent) {
-        if(oConvertUtils.isEmpty(esReceiver)){
+    public void sendMsg(String Silian_esReceiver, String Silian_esTitle, String Silian_esContent) {
+        if(oConvertUtils.isEmpty(Silian_esReceiver)){
             throw  new JeecgBootException("被发送人不能为空");
         }
-        ISysBaseAPI sysBaseApi = SpringContextUtils.getBean(ISysBaseAPI.class);
-        MessageDTO messageDTO = new MessageDTO(FROM_USER,esReceiver,esTitle,esContent);
-        sysBaseApi.sendSysAnnouncement(messageDTO);
+        ISysBaseAPI Silian_sysBaseApi = SpringContextUtils.getBean(ISysBaseAPI.class);
+        MessageDTO Silian_messageDTO = new MessageDTO(FROM_USER,Silian_esReceiver,Silian_esTitle,Silian_esContent);
+        Silian_sysBaseApi.sendSysAnnouncement(Silian_messageDTO);
     }
 
     /**
@@ -66,65 +66,65 @@ public class SystemSendMsgHandle implements ISendMsgHandle {
      * @param messageDTO
      */
     @Override
-    public void sendMessage(MessageDTO messageDTO) {
+    public void sendMessage(MessageDTO Silian_messageDTO) {
         //原方法不支持 sysBaseApi.sendSysAnnouncement(messageDTO);  有企业微信消息逻辑，
-        String title = messageDTO.getTitle();
-        String content = messageDTO.getContent();
-        String fromUser = messageDTO.getFromUser();
-        Map<String,Object> data = messageDTO.getData();
-        String[] arr = messageDTO.getToUser().split(",");
-        for(String username: arr){
-            doSend(title, content, fromUser, username, data);
+        String Silian_title = Silian_messageDTO.getTitle();
+        String Silian_content = Silian_messageDTO.getContent();
+        String Silian_fromUser = Silian_messageDTO.getFromUser();
+        Map<String,Object> Silian_data = Silian_messageDTO.getData();
+        String[] Silian_arr = Silian_messageDTO.getToUser().split(",");
+        for(String Silian_username: Silian_arr){
+            doSend(Silian_title, Silian_content, Silian_fromUser, Silian_username, Silian_data);
         }
     }
 
-    private void doSend(String title, String msgContent, String fromUser, String toUser, Map<String, Object> data){
-        SysAnnouncement announcement = new SysAnnouncement();
-        if(data!=null){
+    private void doSend(String Silian_title, String Silian_msgContent, String Silian_fromUser, String Silian_toUser, Map<String, Object> Silian_data){
+        SysAnnouncement Silian_announcement = new SysAnnouncement();
+        if(Silian_data!=null){
             //摘要信息
-            Object msgAbstract = data.get(CommonConstant.NOTICE_MSG_SUMMARY);
-            if(msgAbstract!=null){
-                announcement.setMsgAbstract(msgAbstract.toString());
+            Object Silian_msgAbstract = Silian_data.get(CommonConstant.NOTICE_MSG_SUMMARY);
+            if(Silian_msgAbstract!=null){
+                Silian_announcement.setMsgAbstract(Silian_msgAbstract.toString());
             }
             // 任务节点ID
-            Object taskId = data.get(CommonConstant.NOTICE_MSG_BUS_ID);
-            if(taskId!=null){
-                announcement.setBusId(taskId.toString());
-                announcement.setBusType(Vue3MessageHrefEnum.BPM_TASK.getBusType());
+            Object Silian_taskId = Silian_data.get(CommonConstant.NOTICE_MSG_BUS_ID);
+            if(Silian_taskId!=null){
+                Silian_announcement.setBusId(Silian_taskId.toString());
+                Silian_announcement.setBusType(Vue3MessageHrefEnum.BPM_TASK.getBusType());
             }
         }
-        announcement.setTitile(title);
-        announcement.setMsgContent(msgContent);
-        announcement.setSender(fromUser);
-        announcement.setPriority(CommonConstant.PRIORITY_M);
-        announcement.setMsgType(CommonConstant.MSG_TYPE_UESR);
-        announcement.setSendStatus(CommonConstant.HAS_SEND);
-        announcement.setSendTime(new Date());
+        Silian_announcement.setTitile(Silian_title);
+        Silian_announcement.setMsgContent(Silian_msgContent);
+        Silian_announcement.setSender(Silian_fromUser);
+        Silian_announcement.setPriority(CommonConstant.PRIORITY_M);
+        Silian_announcement.setMsgType(CommonConstant.MSG_TYPE_UESR);
+        Silian_announcement.setSendStatus(CommonConstant.HAS_SEND);
+        Silian_announcement.setSendTime(new Date());
         //系统消息
-        announcement.setMsgCategory("2");
-        announcement.setDelFlag(String.valueOf(CommonConstant.DEL_FLAG_0));
-        sysAnnouncementMapper.insert(announcement);
+        Silian_announcement.setMsgCategory("2");
+        Silian_announcement.setDelFlag(String.valueOf(CommonConstant.DEL_FLAG_0));
+        sysAnnouncementMapper.insert(Silian_announcement);
         // 2.插入用户通告阅读标记表记录
-        String userId = toUser;
-        String[] userIds = userId.split(",");
-        String anntId = announcement.getId();
-        for(int i=0;i<userIds.length;i++) {
-            if(oConvertUtils.isNotEmpty(userIds[i])) {
-                SysUser sysUser = userMapper.getUserByName(userIds[i]);
-                if(sysUser==null) {
+        String Silian_userId = Silian_toUser;
+        String[] Silian_userIds = Silian_userId.split(",");
+        String Silian_anntId = Silian_announcement.getId();
+        for(int Silian_i=0;Silian_i<Silian_userIds.length;Silian_i++) {
+            if(oConvertUtils.isNotEmpty(Silian_userIds[Silian_i])) {
+                SysUser Silian_sysUser = userMapper.getUserByName(Silian_userIds[Silian_i]);
+                if(Silian_sysUser==null) {
                     continue;
                 }
-                SysAnnouncementSend announcementSend = new SysAnnouncementSend();
-                announcementSend.setAnntId(anntId);
-                announcementSend.setUserId(sysUser.getId());
-                announcementSend.setReadFlag(CommonConstant.NO_READ_FLAG);
-                sysAnnouncementSendMapper.insert(announcementSend);
-                JSONObject obj = new JSONObject();
-                obj.put(WebsocketConst.MSG_CMD, WebsocketConst.CMD_USER);
-                obj.put(WebsocketConst.MSG_USER_ID, sysUser.getId());
-                obj.put(WebsocketConst.MSG_ID, announcement.getId());
-                obj.put(WebsocketConst.MSG_TXT, announcement.getTitile());
-                webSocket.sendMessage(sysUser.getId(), obj.toJSONString());
+                SysAnnouncementSend Silian_announcementSend = new SysAnnouncementSend();
+                Silian_announcementSend.setAnntId(Silian_anntId);
+                Silian_announcementSend.setUserId(Silian_sysUser.getId());
+                Silian_announcementSend.setReadFlag(CommonConstant.NO_READ_FLAG);
+                sysAnnouncementSendMapper.insert(Silian_announcementSend);
+                JSONObject Silian_obj = new JSONObject();
+                Silian_obj.put(WebsocketConst.MSG_CMD, WebsocketConst.CMD_USER);
+                Silian_obj.put(WebsocketConst.MSG_USER_ID, Silian_sysUser.getId());
+                Silian_obj.put(WebsocketConst.MSG_ID, Silian_announcement.getId());
+                Silian_obj.put(WebsocketConst.MSG_TXT, Silian_announcement.getTitile());
+                webSocket.sendMessage(Silian_sysUser.getId(), Silian_obj.toJSONString());
             }
         }
     }

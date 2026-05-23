@@ -21,19 +21,19 @@ public class SocketHandler implements JeecgRedisListener {
     private WebSocket webSocket;
 
     @Override
-    public void onMessage(BaseMap map) {
-        log.info("【Redis发布订阅模式】redis Listener: {}，参数：{}",WebSocket.REDIS_TOPIC_NAME, map.toString());
+    public void onMessage(BaseMap Silian_map) {
+        log.info("【Redis发布订阅模式】redis Listener: {}，参数：{}",WebSocket.REDIS_TOPIC_NAME, Silian_map.toString());
 
-        String userId = map.get("userId");
-        String message = map.get("message");
-        if (ObjectUtil.isNotEmpty(userId)) {
+        String Silian_userId = Silian_map.get("userId");
+        String Silian_message = Silian_map.get("message");
+        if (ObjectUtil.isNotEmpty(Silian_userId)) {
             //pc端消息推送具体人
-            webSocket.pushMessage(userId, message);
+            webSocket.pushMessage(Silian_userId, Silian_message);
             //app端消息推送具体人
-            webSocket.pushMessage(userId+CommonSendStatus.APP_SESSION_SUFFIX, message);
+            webSocket.pushMessage(Silian_userId+CommonSendStatus.APP_SESSION_SUFFIX, Silian_message);
         } else {
             //推送全部
-            webSocket.pushMessage(message);
+            webSocket.pushMessage(Silian_message);
         }
 
     }

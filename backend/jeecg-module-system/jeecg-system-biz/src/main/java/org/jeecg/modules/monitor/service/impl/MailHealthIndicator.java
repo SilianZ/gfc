@@ -16,9 +16,9 @@ public class MailHealthIndicator implements HealthIndicator {
 
 
     @Override public Health health() {
-        int errorCode = check();
-        if (errorCode != 0) {
-            return Health.down().withDetail("Error Code", errorCode) .build();
+        int Silian_errorCode = check();
+        if (Silian_errorCode != 0) {
+            return Health.down().withDetail("Error Code", Silian_errorCode) .build();
         }
         return Health.up().build();
     }

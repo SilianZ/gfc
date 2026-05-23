@@ -38,9 +38,9 @@ public class ActuatorRedisController {
      */
     @GetMapping("/info")
     public Result<?> getRedisInfo() throws Exception {
-        List<RedisInfo> infoList = this.redisService.getRedisInfo();
-        log.info(infoList.toString());
-        return Result.ok(infoList);
+        List<RedisInfo> Silian_infoList = this.redisService.getRedisInfo();
+        log.info(Silian_infoList.toString());
+        return Result.ok(Silian_infoList);
     }
 
     @GetMapping("/keysSize")
@@ -81,43 +81,43 @@ public class ActuatorRedisController {
     public Map<String, Object> getMemoryInfo() throws Exception {
         return redisService.getMemoryInfo();
     }
-    
+
   //update-begin--Author:zhangweijian  Date:20190425 for：获取磁盘信息
-  	/**
-  	 * @功能：获取磁盘信息
-  	 * @param request
-  	 * @param response
-  	 * @return
-  	 */
-  	@GetMapping("/queryDiskInfo")
-  	public Result<List<Map<String,Object>>> queryDiskInfo(HttpServletRequest request, HttpServletResponse response){
-  		Result<List<Map<String,Object>>> res = new Result<>();
-  		try {
-  			// 当前文件系统类
-  	        FileSystemView fsv = FileSystemView.getFileSystemView();
-  	        // 列出所有windows 磁盘
-  	        File[] fs = File.listRoots();
-  	        log.info("查询磁盘信息:"+fs.length+"个");
-  	        List<Map<String,Object>> list = new ArrayList<>();
-  	        
-  	        for (int i = 0; i < fs.length; i++) {
-  	        	if(fs[i].getTotalSpace()==0) {
-  	        		continue;
-  	        	}
-  	        	Map<String,Object> map = new HashMap(5);
-  	        	map.put("name", fsv.getSystemDisplayName(fs[i]));
-  	        	map.put("max", fs[i].getTotalSpace());
-  	        	map.put("rest", fs[i].getFreeSpace());
-  	        	map.put("restPPT", (fs[i].getTotalSpace()-fs[i].getFreeSpace())*100/fs[i].getTotalSpace());
-  	        	list.add(map);
-  	        	log.info(map.toString());
-  	        }
-  	        res.setResult(list);
-  	        res.success("查询成功");
-  		} catch (Exception e) {
-  			res.error500("查询失败"+e.getMessage());
-  		}
-  		return res;
-  	}
-  	//update-end--Author:zhangweijian  Date:20190425 for：获取磁盘信息
+	/**
+	 * @功能：获取磁盘信息
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@GetMapping("/queryDiskInfo")
+	public Result<List<Map<String,Object>>> queryDiskInfo(HttpServletRequest Silian_request, HttpServletResponse Silian_response){
+		Result<List<Map<String,Object>>> Silian_res = new Result<>();
+		try {
+			// 当前文件系统类
+	        FileSystemView Silian_fsv = FileSystemView.getFileSystemView();
+	        // 列出所有windows 磁盘
+	        File[] Silian_fs = File.listRoots();
+	        log.info("查询磁盘信息:"+Silian_fs.length+"个");
+	        List<Map<String,Object>> Silian_list = new ArrayList<>();
+
+	        for (int Silian_i = 0; Silian_i < Silian_fs.length; Silian_i++) {
+		if(Silian_fs[Silian_i].getTotalSpace()==0) {
+			continue;
+		}
+		Map<String,Object> Silian_map = new HashMap(5);
+		Silian_map.put("name", Silian_fsv.getSystemDisplayName(Silian_fs[Silian_i]));
+		Silian_map.put("max", Silian_fs[Silian_i].getTotalSpace());
+		Silian_map.put("rest", Silian_fs[Silian_i].getFreeSpace());
+		Silian_map.put("restPPT", (Silian_fs[Silian_i].getTotalSpace()-Silian_fs[Silian_i].getFreeSpace())*100/Silian_fs[Silian_i].getTotalSpace());
+		Silian_list.add(Silian_map);
+		log.info(Silian_map.toString());
+	        }
+	        Silian_res.setResult(Silian_list);
+	        Silian_res.success("查询成功");
+		} catch (Exception Silian_e) {
+			Silian_res.error500("查询失败"+Silian_e.getMessage());
+		}
+		return Silian_res;
+	}
+	//update-end--Author:zhangweijian  Date:20190425 for：获取磁盘信息
 }

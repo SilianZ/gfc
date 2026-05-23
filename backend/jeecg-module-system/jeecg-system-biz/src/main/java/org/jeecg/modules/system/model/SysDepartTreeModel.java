@@ -12,14 +12,14 @@ import java.util.Objects;
  * <p>
  * 部门表 存储树结构数据的实体类
  * <p>
- * 
+ *
  * @Author Steve
- * @Since 2019-01-22 
+ * @Since 2019-01-22
  */
 public class SysDepartTreeModel implements Serializable{
-	
+
     private static final long serialVersionUID = 1L;
-    
+
     /** 对应SysDepart中的id字段,前端数据树中的key*/
     private String key;
 
@@ -32,7 +32,7 @@ public class SysDepartTreeModel implements Serializable{
 
     private boolean isLeaf;
     // 以下所有字段均与SysDepart相同
-    
+
     private String id;
 
     private String parentId;
@@ -46,7 +46,7 @@ public class SysDepartTreeModel implements Serializable{
     private Integer departOrder;
 
     private String description;
-    
+
     private String orgCategory;
 
     private String orgType;
@@ -79,7 +79,7 @@ public class SysDepartTreeModel implements Serializable{
     /**部门负责人ids*/
     private String directorUserIds;
     //update-end---author:wangshuai ---date:20200308  for：[JTC-119]在部门管理菜单下设置部门负责人，新增字段部门负责人ids
-    
+
     private List<SysDepartTreeModel> children = new ArrayList<>();
 
 
@@ -87,40 +87,40 @@ public class SysDepartTreeModel implements Serializable{
      * 将SysDepart对象转换成SysDepartTreeModel对象
      * @param sysDepart
      */
-	public SysDepartTreeModel(SysDepart sysDepart) {
-		this.key = sysDepart.getId();
-        this.value = sysDepart.getId();
-        this.title = sysDepart.getDepartName();
-        this.id = sysDepart.getId();
-        this.parentId = sysDepart.getParentId();
-        this.departName = sysDepart.getDepartName();
-        this.departNameEn = sysDepart.getDepartNameEn();
-        this.departNameAbbr = sysDepart.getDepartNameAbbr();
-        this.departOrder = sysDepart.getDepartOrder();
-        this.description = sysDepart.getDescription();
-        this.orgCategory = sysDepart.getOrgCategory();
-        this.orgType = sysDepart.getOrgType();
-        this.orgCode = sysDepart.getOrgCode();
-        this.mobile = sysDepart.getMobile();
-        this.fax = sysDepart.getFax();
-        this.address = sysDepart.getAddress();
-        this.memo = sysDepart.getMemo();
-        this.status = sysDepart.getStatus();
-        this.delFlag = sysDepart.getDelFlag();
-        this.qywxIdentifier = sysDepart.getQywxIdentifier();
-        this.createBy = sysDepart.getCreateBy();
-        this.createTime = sysDepart.getCreateTime();
-        this.updateBy = sysDepart.getUpdateBy();
-        this.updateTime = sysDepart.getUpdateTime();
-        this.directorUserIds = sysDepart.getDirectorUserIds();
+	public SysDepartTreeModel(SysDepart Silian_sysDepart) {
+		this.key = Silian_sysDepart.getId();
+        this.value = Silian_sysDepart.getId();
+        this.title = Silian_sysDepart.getDepartName();
+        this.id = Silian_sysDepart.getId();
+        this.parentId = Silian_sysDepart.getParentId();
+        this.departName = Silian_sysDepart.getDepartName();
+        this.departNameEn = Silian_sysDepart.getDepartNameEn();
+        this.departNameAbbr = Silian_sysDepart.getDepartNameAbbr();
+        this.departOrder = Silian_sysDepart.getDepartOrder();
+        this.description = Silian_sysDepart.getDescription();
+        this.orgCategory = Silian_sysDepart.getOrgCategory();
+        this.orgType = Silian_sysDepart.getOrgType();
+        this.orgCode = Silian_sysDepart.getOrgCode();
+        this.mobile = Silian_sysDepart.getMobile();
+        this.fax = Silian_sysDepart.getFax();
+        this.address = Silian_sysDepart.getAddress();
+        this.memo = Silian_sysDepart.getMemo();
+        this.status = Silian_sysDepart.getStatus();
+        this.delFlag = Silian_sysDepart.getDelFlag();
+        this.qywxIdentifier = Silian_sysDepart.getQywxIdentifier();
+        this.createBy = Silian_sysDepart.getCreateBy();
+        this.createTime = Silian_sysDepart.getCreateTime();
+        this.updateBy = Silian_sysDepart.getUpdateBy();
+        this.updateTime = Silian_sysDepart.getUpdateTime();
+        this.directorUserIds = Silian_sysDepart.getDirectorUserIds();
     }
 
     public boolean getIsLeaf() {
         return isLeaf;
     }
 
-    public void setIsLeaf(boolean isleaf) {
-         this.isLeaf = isleaf;
+    public void setIsLeaf(boolean Silian_isleaf) {
+         this.isLeaf = Silian_isleaf;
     }
 
     public String getKey() {
@@ -191,7 +191,7 @@ public class SysDepartTreeModel implements Serializable{
     public void setDepartName(String departName) {
         this.departName = departName;
     }
-    
+
     public String getOrgCategory() {
 		return orgCategory;
 	}
@@ -350,39 +350,39 @@ public class SysDepartTreeModel implements Serializable{
      * 重写equals方法
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object Silian_o) {
+        if (this == Silian_o) {
 			return true;
 		}
-        if (o == null || getClass() != o.getClass()) {
+        if (Silian_o == null || getClass() != Silian_o.getClass()) {
 			return false;
 		}
-        SysDepartTreeModel model = (SysDepartTreeModel) o;
-        return Objects.equals(id, model.id) &&
-                Objects.equals(parentId, model.parentId) &&
-                Objects.equals(departName, model.departName) &&
-                Objects.equals(departNameEn, model.departNameEn) &&
-                Objects.equals(departNameAbbr, model.departNameAbbr) &&
-                Objects.equals(departOrder, model.departOrder) &&
-                Objects.equals(description, model.description) &&
-                Objects.equals(orgCategory, model.orgCategory) &&
-                Objects.equals(orgType, model.orgType) &&
-                Objects.equals(orgCode, model.orgCode) &&
-                Objects.equals(mobile, model.mobile) &&
-                Objects.equals(fax, model.fax) &&
-                Objects.equals(address, model.address) &&
-                Objects.equals(memo, model.memo) &&
-                Objects.equals(status, model.status) &&
-                Objects.equals(delFlag, model.delFlag) &&
-                Objects.equals(qywxIdentifier, model.qywxIdentifier) &&
-                Objects.equals(createBy, model.createBy) &&
-                Objects.equals(createTime, model.createTime) &&
-                Objects.equals(updateBy, model.updateBy) &&
-                Objects.equals(updateTime, model.updateTime) &&
-                Objects.equals(directorUserIds, model.directorUserIds) &&
-                Objects.equals(children, model.children);
+        SysDepartTreeModel Silian_model = (SysDepartTreeModel) Silian_o;
+        return Objects.equals(id, Silian_model.id) &&
+                Objects.equals(parentId, Silian_model.parentId) &&
+                Objects.equals(departName, Silian_model.departName) &&
+                Objects.equals(departNameEn, Silian_model.departNameEn) &&
+                Objects.equals(departNameAbbr, Silian_model.departNameAbbr) &&
+                Objects.equals(departOrder, Silian_model.departOrder) &&
+                Objects.equals(description, Silian_model.description) &&
+                Objects.equals(orgCategory, Silian_model.orgCategory) &&
+                Objects.equals(orgType, Silian_model.orgType) &&
+                Objects.equals(orgCode, Silian_model.orgCode) &&
+                Objects.equals(mobile, Silian_model.mobile) &&
+                Objects.equals(fax, Silian_model.fax) &&
+                Objects.equals(address, Silian_model.address) &&
+                Objects.equals(memo, Silian_model.memo) &&
+                Objects.equals(status, Silian_model.status) &&
+                Objects.equals(delFlag, Silian_model.delFlag) &&
+                Objects.equals(qywxIdentifier, Silian_model.qywxIdentifier) &&
+                Objects.equals(createBy, Silian_model.createBy) &&
+                Objects.equals(createTime, Silian_model.createTime) &&
+                Objects.equals(updateBy, Silian_model.updateBy) &&
+                Objects.equals(updateTime, Silian_model.updateTime) &&
+                Objects.equals(directorUserIds, Silian_model.directorUserIds) &&
+                Objects.equals(children, Silian_model.children);
     }
-    
+
     /**
      * 重写hashCode方法
      */
@@ -390,9 +390,9 @@ public class SysDepartTreeModel implements Serializable{
     public int hashCode() {
 
         return Objects.hash(id, parentId, departName, departNameEn, departNameAbbr,
-        		departOrder, description, orgCategory, orgType, orgCode, mobile, fax, address, 
-        		memo, status, delFlag, qywxIdentifier, createBy, createTime, updateBy, updateTime,
-        		children,directorUserIds);
+		departOrder, description, orgCategory, orgType, orgCode, mobile, fax, address,
+		memo, status, delFlag, qywxIdentifier, createBy, createTime, updateBy, updateTime,
+		children,directorUserIds);
     }
 
 }

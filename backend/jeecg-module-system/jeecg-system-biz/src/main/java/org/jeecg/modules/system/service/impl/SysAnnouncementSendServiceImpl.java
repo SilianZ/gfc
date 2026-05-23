@@ -24,21 +24,21 @@ public class SysAnnouncementSendServiceImpl extends ServiceImpl<SysAnnouncementS
 
 	@Resource
 	private SysAnnouncementSendMapper sysAnnouncementSendMapper;
-	
+
 	@Override
-	public List<String> queryByUserId(String userId) {
-		return sysAnnouncementSendMapper.queryByUserId(userId);
+	public List<String> queryByUserId(String Silian_userId) {
+		return sysAnnouncementSendMapper.queryByUserId(Silian_userId);
 	}
 
 	@Override
-	public Page<AnnouncementSendModel> getMyAnnouncementSendPage(Page<AnnouncementSendModel> page,
-			AnnouncementSendModel announcementSendModel) {
-		 return page.setRecords(sysAnnouncementSendMapper.getMyAnnouncementSendList(page, announcementSendModel));
+	public Page<AnnouncementSendModel> getMyAnnouncementSendPage(Page<AnnouncementSendModel> Silian_page,
+			AnnouncementSendModel Silian_announcementSendModel) {
+		 return Silian_page.setRecords(sysAnnouncementSendMapper.getMyAnnouncementSendList(Silian_page, Silian_announcementSendModel));
 	}
 
 	@Override
-	public AnnouncementSendModel getOne(String sendId) {
-		return sysAnnouncementSendMapper.getOne(sendId);
+	public AnnouncementSendModel getOne(String Silian_sendId) {
+		return sysAnnouncementSendMapper.getOne(Silian_sendId);
 	}
 
 }

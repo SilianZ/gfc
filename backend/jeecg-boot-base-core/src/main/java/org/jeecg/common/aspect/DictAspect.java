@@ -57,16 +57,16 @@ public class DictAspect {
     }
 
     @Around("excudeService()")
-    public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
-    	long time1=System.currentTimeMillis();	
-        Object result = pjp.proceed();
-        long time2=System.currentTimeMillis();
-        log.debug("获取JSON数据 耗时："+(time2-time1)+"ms");
-        long start=System.currentTimeMillis();
-        result=this.parseDictText(result);
-        long end=System.currentTimeMillis();
-        log.debug("注入字典到JSON数据  耗时"+(end-start)+"ms");
-        return result;
+    public Object doAround(ProceedingJoinPoint Silian_pjp) throws Throwable {
+	long Silian_time1=System.currentTimeMillis();
+        Object Silian_result = Silian_pjp.proceed();
+        long Silian_time2=System.currentTimeMillis();
+        log.debug("获取JSON数据 耗时："+(Silian_time2-Silian_time1)+"ms");
+        long Silian_start=System.currentTimeMillis();
+        Silian_result=this.parseDictText(Silian_result);
+        long Silian_end=System.currentTimeMillis();
+        log.debug("注入字典到JSON数据  耗时"+(Silian_end-Silian_start)+"ms");
+        return Silian_result;
     }
 
     /**
@@ -91,63 +91,63 @@ public class DictAspect {
      *             目前vue是这么进行字典渲染到table上的多了就很麻烦了 这个直接在服务端渲染完成前端可以直接用
      * @param result
      */
-    private Object parseDictText(Object result) {
-        if (result instanceof Result) {
-            if (((Result) result).getResult() instanceof IPage) {
-                List<JSONObject> items = new ArrayList<>();
+    private Object parseDictText(Object Silian_result) {
+        if (Silian_result instanceof Result) {
+            if (((Result) Silian_result).getResult() instanceof IPage) {
+                List<JSONObject> Silian_items = new ArrayList<>();
 
                 //step.1 筛选出加了 Dict 注解的字段列表
-                List<Field> dictFieldList = new ArrayList<>();
+                List<Field> Silian_dictFieldList = new ArrayList<>();
                 // 字典数据列表， key = 字典code，value=数据列表
-                Map<String, List<String>> dataListMap = new HashMap<>(5);
+                Map<String, List<String>> Silian_dataListMap = new HashMap<>(5);
                 //取出结果集
-                List<Object> records=((IPage) ((Result) result).getResult()).getRecords();
+                List<Object> Silian_records=((IPage) ((Result) Silian_result).getResult()).getRecords();
                 //update-begin--Author:zyf -- Date:20220606 ----for：【VUEN-1230】 判断是否含有字典注解,没有注解返回-----
-                Boolean hasDict= checkHasDict(records);
-                if(!hasDict){
-                    return result;
+                Boolean Silian_hasDict= checkHasDict(Silian_records);
+                if(!Silian_hasDict){
+                    return Silian_result;
                 }
 
                 log.debug(" __ 进入字典翻译切面 DictAspect —— " );
                 //update-end--Author:zyf -- Date:20220606 ----for：【VUEN-1230】 判断是否含有字典注解,没有注解返回-----
-                for (Object record : records) {
-                    String json="{}";
+                for (Object record : Silian_records) {
+                    String Silian_json="{}";
                     try {
                         //update-begin--Author:zyf -- Date:20220531 ----for：【issues/#3629】 DictAspect Jackson序列化报错-----
                         //解决@JsonFormat注解解析不了的问题详见SysAnnouncement类的@JsonFormat
-                         json = objectMapper.writeValueAsString(record);
+                         Silian_json = objectMapper.writeValueAsString(record);
                         //update-end--Author:zyf -- Date:20220531 ----for：【issues/#3629】 DictAspect Jackson序列化报错-----
-                    } catch (JsonProcessingException e) {
-                        log.error("json解析失败"+e.getMessage(),e);
+                    } catch (JsonProcessingException Silian_e) {
+                        log.error("json解析失败"+Silian_e.getMessage(),Silian_e);
                     }
                     //update-begin--Author:scott -- Date:20211223 ----for：【issues/3303】restcontroller返回json数据后key顺序错乱 -----
-                    JSONObject item = JSONObject.parseObject(json, Feature.OrderedField);
+                    JSONObject Silian_item = JSONObject.parseObject(Silian_json, Feature.OrderedField);
                     //update-end--Author:scott -- Date:20211223 ----for：【issues/3303】restcontroller返回json数据后key顺序错乱 -----
 
                     //update-begin--Author:scott -- Date:20190603 ----for：解决继承实体字段无法翻译问题------
                     //for (Field field : record.getClass().getDeclaredFields()) {
                     // 遍历所有字段，把字典Code取出来，放到 map 里
-                    for (Field field : oConvertUtils.getAllFields(record)) {
-                        String value = item.getString(field.getName());
-                        if (oConvertUtils.isEmpty(value)) {
+                    for (Field Silian_field : oConvertUtils.getAllFields(record)) {
+                        String Silian_value = Silian_item.getString(Silian_field.getName());
+                        if (oConvertUtils.isEmpty(Silian_value)) {
                             continue;
                         }
                     //update-end--Author:scott  -- Date:20190603 ----for：解决继承实体字段无法翻译问题------
-                        if (field.getAnnotation(Dict.class) != null) {
-                            if (!dictFieldList.contains(field)) {
-                                dictFieldList.add(field);
+                        if (Silian_field.getAnnotation(Dict.class) != null) {
+                            if (!Silian_dictFieldList.contains(Silian_field)) {
+                                Silian_dictFieldList.add(Silian_field);
                             }
-                            String code = field.getAnnotation(Dict.class).dicCode();
-                            String text = field.getAnnotation(Dict.class).dicText();
-                            String table = field.getAnnotation(Dict.class).dictTable();
+                            String Silian_code = Silian_field.getAnnotation(Dict.class).dicCode();
+                            String Silian_text = Silian_field.getAnnotation(Dict.class).dicText();
+                            String Silian_table = Silian_field.getAnnotation(Dict.class).dictTable();
 
-                            List<String> dataList;
-                            String dictCode = code;
-                            if (!StringUtils.isEmpty(table)) {
-                                dictCode = String.format("%s,%s,%s", table, text, code);
+                            List<String> Silian_dataList;
+                            String Silian_dictCode = Silian_code;
+                            if (!StringUtils.isEmpty(Silian_table)) {
+                                Silian_dictCode = String.format("%s,%s,%s", Silian_table, Silian_text, Silian_code);
                             }
-                            dataList = dataListMap.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                            this.listAddAllDeduplicate(dataList, Arrays.asList(value.split(",")));
+                            Silian_dataList = Silian_dataListMap.computeIfAbsent(Silian_dictCode, Silian_k -> new ArrayList<>());
+                            this.listAddAllDeduplicate(Silian_dataList, Arrays.asList(Silian_value.split(",")));
                         }
                         //date类型默认转换string格式化日期
                         //update-begin--Author:zyf -- Date:20220531 ----for：【issues/#3629】 DictAspect Jackson序列化报错-----
@@ -157,60 +157,60 @@ public class DictAspect {
                         //}
                         //update-end--Author:zyf -- Date:20220531 ----for：【issues/#3629】 DictAspect Jackson序列化报错-----
                     }
-                    items.add(item);
+                    Silian_items.add(Silian_item);
                 }
 
                 //step.2 调用翻译方法，一次性翻译
-                Map<String, List<DictModel>> translText = this.translateAllDict(dataListMap);
+                Map<String, List<DictModel>> Silian_translText = this.translateAllDict(Silian_dataListMap);
 
                 //step.3 将翻译结果填充到返回结果里
-                for (JSONObject record : items) {
-                    for (Field field : dictFieldList) {
-                        String code = field.getAnnotation(Dict.class).dicCode();
-                        String text = field.getAnnotation(Dict.class).dicText();
-                        String table = field.getAnnotation(Dict.class).dictTable();
+                for (JSONObject record : Silian_items) {
+                    for (Field Silian_field : Silian_dictFieldList) {
+                        String Silian_code = Silian_field.getAnnotation(Dict.class).dicCode();
+                        String Silian_text = Silian_field.getAnnotation(Dict.class).dicText();
+                        String Silian_table = Silian_field.getAnnotation(Dict.class).dictTable();
 
-                        String fieldDictCode = code;
-                        if (!StringUtils.isEmpty(table)) {
-                            fieldDictCode = String.format("%s,%s,%s", table, text, code);
+                        String Silian_fieldDictCode = Silian_code;
+                        if (!StringUtils.isEmpty(Silian_table)) {
+                            Silian_fieldDictCode = String.format("%s,%s,%s", Silian_table, Silian_text, Silian_code);
                         }
 
-                        String value = record.getString(field.getName());
-                        if (oConvertUtils.isNotEmpty(value)) {
-                            List<DictModel> dictModels = translText.get(fieldDictCode);
-                            if(dictModels==null || dictModels.size()==0){
+                        String Silian_value = record.getString(Silian_field.getName());
+                        if (oConvertUtils.isNotEmpty(Silian_value)) {
+                            List<DictModel> Silian_dictModels = Silian_translText.get(Silian_fieldDictCode);
+                            if(Silian_dictModels==null || Silian_dictModels.size()==0){
                                 continue;
                             }
 
-                            String textValue = this.translDictText(dictModels, value);
-                            log.debug(" 字典Val : " + textValue);
-                            log.debug(" __翻译字典字段__ " + field.getName() + CommonConstant.DICT_TEXT_SUFFIX + "： " + textValue);
+                            String Silian_textValue = this.translDictText(Silian_dictModels, Silian_value);
+                            log.debug(" 字典Val : " + Silian_textValue);
+                            log.debug(" __翻译字典字段__ " + Silian_field.getName() + CommonConstant.DICT_TEXT_SUFFIX + "： " + Silian_textValue);
 
                             // TODO-sun 测试输出，待删
-                            log.debug(" ---- dictCode: " + fieldDictCode);
-                            log.debug(" ---- value: " + value);
-                            log.debug(" ----- text: " + textValue);
-                            log.debug(" ---- dictModels: " + JSON.toJSONString(dictModels));
+                            log.debug(" ---- dictCode: " + Silian_fieldDictCode);
+                            log.debug(" ---- value: " + Silian_value);
+                            log.debug(" ----- text: " + Silian_textValue);
+                            log.debug(" ---- dictModels: " + JSON.toJSONString(Silian_dictModels));
 
-                            record.put(field.getName() + CommonConstant.DICT_TEXT_SUFFIX, textValue);
+                            record.put(Silian_field.getName() + CommonConstant.DICT_TEXT_SUFFIX, Silian_textValue);
                         }
                     }
                 }
 
-                ((IPage) ((Result) result).getResult()).setRecords(items);
+                ((IPage) ((Result) Silian_result).getResult()).setRecords(Silian_items);
             }
 
         }
-        return result;
+        return Silian_result;
     }
 
     /**
      * list 去重添加
      */
-    private void listAddAllDeduplicate(List<String> dataList, List<String> addList) {
+    private void listAddAllDeduplicate(List<String> Silian_dataList, List<String> Silian_addList) {
         // 筛选出dataList中没有的数据
-        List<String> filterList = addList.stream().filter(i -> !dataList.contains(i)).collect(Collectors.toList());
-        dataList.addAll(filterList);
+        List<String> Silian_filterList = Silian_addList.stream().filter(Silian_i -> !Silian_dataList.contains(Silian_i)).collect(Collectors.toList());
+        Silian_dataList.addAll(Silian_filterList);
     }
 
     /**
@@ -220,110 +220,110 @@ public class DictAspect {
      * @param dataListMap
      * @return
      */
-    private Map<String, List<DictModel>> translateAllDict(Map<String, List<String>> dataListMap) {
+    private Map<String, List<DictModel>> translateAllDict(Map<String, List<String>> Silian_dataListMap) {
         // 翻译后的字典文本，key=dictCode
-        Map<String, List<DictModel>> translText = new HashMap<>(5);
+        Map<String, List<DictModel>> Silian_translText = new HashMap<>(5);
         // 需要翻译的数据（有些可以从redis缓存中获取，就不走数据库查询）
-        List<String> needTranslData = new ArrayList<>();
+        List<String> Silian_needTranslData = new ArrayList<>();
         //step.1 先通过redis中获取缓存字典数据
-        for (String dictCode : dataListMap.keySet()) {
-            List<String> dataList = dataListMap.get(dictCode);
-            if (dataList.size() == 0) {
+        for (String Silian_dictCode : Silian_dataListMap.keySet()) {
+            List<String> Silian_dataList = Silian_dataListMap.get(Silian_dictCode);
+            if (Silian_dataList.size() == 0) {
                 continue;
             }
             // 表字典需要翻译的数据
-            List<String> needTranslDataTable = new ArrayList<>();
-            for (String s : dataList) {
-                String data = s.trim();
-                if (data.length() == 0) {
+            List<String> Silian_needTranslDataTable = new ArrayList<>();
+            for (String Silian_s : Silian_dataList) {
+                String Silian_data = Silian_s.trim();
+                if (Silian_data.length() == 0) {
                     continue; //跳过循环
                 }
-                if (dictCode.contains(",")) {
-                    String keyString = String.format("sys:cache:dictTable::SimpleKey [%s,%s]", dictCode, data);
-                    if (redisTemplate.hasKey(keyString)) {
+                if (Silian_dictCode.contains(",")) {
+                    String Silian_keyString = String.format("sys:cache:dictTable::SimpleKey [%s,%s]", Silian_dictCode, Silian_data);
+                    if (redisTemplate.hasKey(Silian_keyString)) {
                         try {
-                            String text = oConvertUtils.getString(redisTemplate.opsForValue().get(keyString));
-                            List<DictModel> list = translText.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                            list.add(new DictModel(data, text));
-                        } catch (Exception e) {
-                            log.warn(e.getMessage());
+                            String Silian_text = oConvertUtils.getString(redisTemplate.opsForValue().get(Silian_keyString));
+                            List<DictModel> Silian_list = Silian_translText.computeIfAbsent(Silian_dictCode, Silian_k -> new ArrayList<>());
+                            Silian_list.add(new DictModel(Silian_data, Silian_text));
+                        } catch (Exception Silian_e) {
+                            log.warn(Silian_e.getMessage());
                         }
-                    } else if (!needTranslDataTable.contains(data)) {
+                    } else if (!Silian_needTranslDataTable.contains(Silian_data)) {
                         // 去重添加
-                        needTranslDataTable.add(data);
+                        Silian_needTranslDataTable.add(Silian_data);
                     }
                 } else {
-                    String keyString = String.format("sys:cache:dict::%s:%s", dictCode, data);
-                    if (redisTemplate.hasKey(keyString)) {
+                    String Silian_keyString = String.format("sys:cache:dict::%s:%s", Silian_dictCode, Silian_data);
+                    if (redisTemplate.hasKey(Silian_keyString)) {
                         try {
-                            String text = oConvertUtils.getString(redisTemplate.opsForValue().get(keyString));
-                            List<DictModel> list = translText.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                            list.add(new DictModel(data, text));
-                        } catch (Exception e) {
-                            log.warn(e.getMessage());
+                            String Silian_text = oConvertUtils.getString(redisTemplate.opsForValue().get(Silian_keyString));
+                            List<DictModel> Silian_list = Silian_translText.computeIfAbsent(Silian_dictCode, Silian_k -> new ArrayList<>());
+                            Silian_list.add(new DictModel(Silian_data, Silian_text));
+                        } catch (Exception Silian_e) {
+                            log.warn(Silian_e.getMessage());
                         }
-                    } else if (!needTranslData.contains(data)) {
+                    } else if (!Silian_needTranslData.contains(Silian_data)) {
                         // 去重添加
-                        needTranslData.add(data);
+                        Silian_needTranslData.add(Silian_data);
                     }
                 }
 
             }
             //step.2 调用数据库翻译表字典
-            if (needTranslDataTable.size() > 0) {
-                String[] arr = dictCode.split(",");
-                String table = arr[0], text = arr[1], code = arr[2];
-                String values = String.join(",", needTranslDataTable);
-                log.debug("translateDictFromTableByKeys.dictCode:" + dictCode);
-                log.debug("translateDictFromTableByKeys.values:" + values);
-                List<DictModel> texts = commonApi.translateDictFromTableByKeys(table, text, code, values);
-                log.debug("translateDictFromTableByKeys.result:" + texts);
-                List<DictModel> list = translText.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                list.addAll(texts);
+            if (Silian_needTranslDataTable.size() > 0) {
+                String[] Silian_arr = Silian_dictCode.split(",");
+                String Silian_table = Silian_arr[0], Silian_text = Silian_arr[1], Silian_code = Silian_arr[2];
+                String Silian_values = String.join(",", Silian_needTranslDataTable);
+                log.debug("translateDictFromTableByKeys.dictCode:" + Silian_dictCode);
+                log.debug("translateDictFromTableByKeys.values:" + Silian_values);
+                List<DictModel> Silian_texts = commonApi.translateDictFromTableByKeys(Silian_table, Silian_text, Silian_code, Silian_values);
+                log.debug("translateDictFromTableByKeys.result:" + Silian_texts);
+                List<DictModel> Silian_list = Silian_translText.computeIfAbsent(Silian_dictCode, Silian_k -> new ArrayList<>());
+                Silian_list.addAll(Silian_texts);
 
                 // 做 redis 缓存
-                for (DictModel dict : texts) {
-                    String redisKey = String.format("sys:cache:dictTable::SimpleKey [%s,%s]", dictCode, dict.getValue());
+                for (DictModel Silian_dict : Silian_texts) {
+                    String Silian_redisKey = String.format("sys:cache:dictTable::SimpleKey [%s,%s]", Silian_dictCode, Silian_dict.getValue());
                     try {
                         // update-begin-author:taoyan date:20211012 for: 字典表翻译注解缓存未更新 issues/3061
                         // 保留5分钟
-                        redisTemplate.opsForValue().set(redisKey, dict.getText(), 300, TimeUnit.SECONDS);
+                        redisTemplate.opsForValue().set(Silian_redisKey, Silian_dict.getText(), 300, TimeUnit.SECONDS);
                         // update-end-author:taoyan date:20211012 for: 字典表翻译注解缓存未更新 issues/3061
-                    } catch (Exception e) {
-                        log.warn(e.getMessage(), e);
+                    } catch (Exception Silian_e) {
+                        log.warn(Silian_e.getMessage(), Silian_e);
                     }
                 }
             }
         }
 
         //step.3 调用数据库进行翻译普通字典
-        if (needTranslData.size() > 0) {
-            List<String> dictCodeList = Arrays.asList(dataListMap.keySet().toArray(new String[]{}));
+        if (Silian_needTranslData.size() > 0) {
+            List<String> Silian_dictCodeList = Arrays.asList(Silian_dataListMap.keySet().toArray(new String[]{}));
             // 将不包含逗号的字典code筛选出来，因为带逗号的是表字典，而不是普通的数据字典
-            List<String> filterDictCodes = dictCodeList.stream().filter(key -> !key.contains(",")).collect(Collectors.toList());
-            String dictCodes = String.join(",", filterDictCodes);
-            String values = String.join(",", needTranslData);
-            log.debug("translateManyDict.dictCodes:" + dictCodes);
-            log.debug("translateManyDict.values:" + values);
-            Map<String, List<DictModel>> manyDict = commonApi.translateManyDict(dictCodes, values);
-            log.debug("translateManyDict.result:" + manyDict);
-            for (String dictCode : manyDict.keySet()) {
-                List<DictModel> list = translText.computeIfAbsent(dictCode, k -> new ArrayList<>());
-                List<DictModel> newList = manyDict.get(dictCode);
-                list.addAll(newList);
+            List<String> Silian_filterDictCodes = Silian_dictCodeList.stream().filter(Silian_key -> !Silian_key.contains(",")).collect(Collectors.toList());
+            String Silian_dictCodes = String.join(",", Silian_filterDictCodes);
+            String Silian_values = String.join(",", Silian_needTranslData);
+            log.debug("translateManyDict.dictCodes:" + Silian_dictCodes);
+            log.debug("translateManyDict.values:" + Silian_values);
+            Map<String, List<DictModel>> Silian_manyDict = commonApi.translateManyDict(Silian_dictCodes, Silian_values);
+            log.debug("translateManyDict.result:" + Silian_manyDict);
+            for (String Silian_dictCode : Silian_manyDict.keySet()) {
+                List<DictModel> Silian_list = Silian_translText.computeIfAbsent(Silian_dictCode, Silian_k -> new ArrayList<>());
+                List<DictModel> Silian_newList = Silian_manyDict.get(Silian_dictCode);
+                Silian_list.addAll(Silian_newList);
 
                 // 做 redis 缓存
-                for (DictModel dict : newList) {
-                    String redisKey = String.format("sys:cache:dict::%s:%s", dictCode, dict.getValue());
+                for (DictModel Silian_dict : Silian_newList) {
+                    String Silian_redisKey = String.format("sys:cache:dict::%s:%s", Silian_dictCode, Silian_dict.getValue());
                     try {
-                        redisTemplate.opsForValue().set(redisKey, dict.getText());
-                    } catch (Exception e) {
-                        log.warn(e.getMessage(), e);
+                        redisTemplate.opsForValue().set(Silian_redisKey, Silian_dict.getText());
+                    } catch (Exception Silian_e) {
+                        log.warn(Silian_e.getMessage(), Silian_e);
                     }
                 }
             }
         }
-        return translText;
+        return Silian_translText;
     }
 
     /**
@@ -333,22 +333,22 @@ public class DictAspect {
      * @param values
      * @return
      */
-    private String translDictText(List<DictModel> dictModels, String values) {
-        List<String> result = new ArrayList<>();
+    private String translDictText(List<DictModel> Silian_dictModels, String Silian_values) {
+        List<String> Silian_result = new ArrayList<>();
 
         // 允许多个逗号分隔，允许传数组对象
-        String[] splitVal = values.split(",");
-        for (String val : splitVal) {
-            String dictText = val;
-            for (DictModel dict : dictModels) {
-                if (val.equals(dict.getValue())) {
-                    dictText = dict.getText();
+        String[] Silian_splitVal = Silian_values.split(",");
+        for (String Silian_val : Silian_splitVal) {
+            String Silian_dictText = Silian_val;
+            for (DictModel Silian_dict : Silian_dictModels) {
+                if (Silian_val.equals(Silian_dict.getValue())) {
+                    Silian_dictText = Silian_dict.getText();
                     break;
                 }
             }
-            result.add(dictText);
+            Silian_result.add(Silian_dictText);
         }
-        return String.join(",", result);
+        return String.join(",", Silian_result);
     }
 
     /**
@@ -360,54 +360,54 @@ public class DictAspect {
      * @return
      */
     @Deprecated
-    private String translateDictValue(String code, String text, String table, String key) {
-    	if(oConvertUtils.isEmpty(key)) {
-    		return null;
-    	}
-        StringBuffer textValue=new StringBuffer();
-        String[] keys = key.split(",");
-        for (String k : keys) {
-            String tmpValue = null;
-            log.debug(" 字典 key : "+ k);
-            if (k.trim().length() == 0) {
+    private String translateDictValue(String Silian_code, String Silian_text, String Silian_table, String Silian_key) {
+	if(oConvertUtils.isEmpty(Silian_key)) {
+		return null;
+	}
+        StringBuffer Silian_textValue=new StringBuffer();
+        String[] Silian_keys = Silian_key.split(",");
+        for (String Silian_k : Silian_keys) {
+            String Silian_tmpValue = null;
+            log.debug(" 字典 key : "+ Silian_k);
+            if (Silian_k.trim().length() == 0) {
                 continue; //跳过循环
             }
             //update-begin--Author:scott -- Date:20210531 ----for： !56 优化微服务应用下存在表字段需要字典翻译时加载缓慢问题-----
-            if (!StringUtils.isEmpty(table)){
-                log.debug("--DictAspect------dicTable="+ table+" ,dicText= "+text+" ,dicCode="+code);
-                String keyString = String.format("sys:cache:dictTable::SimpleKey [%s,%s,%s,%s]",table,text,code,k.trim());
-                    if (redisTemplate.hasKey(keyString)){
+            if (!StringUtils.isEmpty(Silian_table)){
+                log.debug("--DictAspect------dicTable="+ Silian_table+" ,dicText= "+Silian_text+" ,dicCode="+Silian_code);
+                String Silian_keyString = String.format("sys:cache:dictTable::SimpleKey [%s,%s,%s,%s]",Silian_table,Silian_text,Silian_code,Silian_k.trim());
+                    if (redisTemplate.hasKey(Silian_keyString)){
                     try {
-                        tmpValue = oConvertUtils.getString(redisTemplate.opsForValue().get(keyString));
-                    } catch (Exception e) {
-                        log.warn(e.getMessage());
+                        Silian_tmpValue = oConvertUtils.getString(redisTemplate.opsForValue().get(Silian_keyString));
+                    } catch (Exception Silian_e) {
+                        log.warn(Silian_e.getMessage());
                     }
                 }else {
-                    tmpValue= commonApi.translateDictFromTable(table,text,code,k.trim());
+                    Silian_tmpValue= commonApi.translateDictFromTable(Silian_table,Silian_text,Silian_code,Silian_k.trim());
                 }
             }else {
-                String keyString = String.format("sys:cache:dict::%s:%s",code,k.trim());
-                if (redisTemplate.hasKey(keyString)){
+                String Silian_keyString = String.format("sys:cache:dict::%s:%s",Silian_code,Silian_k.trim());
+                if (redisTemplate.hasKey(Silian_keyString)){
                     try {
-                        tmpValue = oConvertUtils.getString(redisTemplate.opsForValue().get(keyString));
-                    } catch (Exception e) {
-                       log.warn(e.getMessage());
+                        Silian_tmpValue = oConvertUtils.getString(redisTemplate.opsForValue().get(Silian_keyString));
+                    } catch (Exception Silian_e) {
+                       log.warn(Silian_e.getMessage());
                     }
                 }else {
-                    tmpValue = commonApi.translateDict(code, k.trim());
+                    Silian_tmpValue = commonApi.translateDict(Silian_code, Silian_k.trim());
                 }
             }
             //update-end--Author:scott -- Date:20210531 ----for： !56 优化微服务应用下存在表字段需要字典翻译时加载缓慢问题-----
 
-            if (tmpValue != null) {
-                if (!"".equals(textValue.toString())) {
-                    textValue.append(",");
+            if (Silian_tmpValue != null) {
+                if (!"".equals(Silian_textValue.toString())) {
+                    Silian_textValue.append(",");
                 }
-                textValue.append(tmpValue);
+                Silian_textValue.append(Silian_tmpValue);
             }
 
         }
-        return textValue.toString();
+        return Silian_textValue.toString();
     }
 
     /**
@@ -415,10 +415,10 @@ public class DictAspect {
      * @param records
      * @return
      */
-    private Boolean checkHasDict(List<Object> records){
-        if(oConvertUtils.isNotEmpty(records) && records.size()>0){
-            for (Field field : oConvertUtils.getAllFields(records.get(0))) {
-                if (oConvertUtils.isNotEmpty(field.getAnnotation(Dict.class))) {
+    private Boolean checkHasDict(List<Object> Silian_records){
+        if(oConvertUtils.isNotEmpty(Silian_records) && Silian_records.size()>0){
+            for (Field Silian_field : oConvertUtils.getAllFields(Silian_records.get(0))) {
+                if (oConvertUtils.isNotEmpty(Silian_field.getAnnotation(Dict.class))) {
                     return true;
                 }
             }

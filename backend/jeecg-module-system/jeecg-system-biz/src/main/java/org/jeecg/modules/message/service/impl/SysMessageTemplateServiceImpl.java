@@ -22,7 +22,7 @@ public class SysMessageTemplateServiceImpl extends JeecgServiceImpl<SysMessageTe
 
 
     @Override
-    public List<SysMessageTemplate> selectByCode(String code) {
-        return sysMessageTemplateMapper.selectByCode(code);
+    public List<SysMessageTemplate> selectByCode(String Silian_code) {
+        return sysMessageTemplateMapper.selectByCode(Silian_code);
     }
 }

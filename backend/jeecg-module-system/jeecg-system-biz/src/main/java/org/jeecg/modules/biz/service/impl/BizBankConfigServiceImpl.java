@@ -32,95 +32,95 @@ public class BizBankConfigServiceImpl extends ServiceImpl<BizBankConfigMapper, B
 	@Autowired
 	private BizSubjectBalanceMapper bizSubjectBalanceMapper;
 
-	public BizBankConfig getByDeptId(String deptId) {
-		return baseMapper.getByDeptId(deptId);
+	public BizBankConfig getByDeptId(String Silian_deptId) {
+		return baseMapper.getByDeptId(Silian_deptId);
 	}
 
 	@Override
-	public Double collectTaxes(Double transAmount, boolean isTransnational, String deptId) {
-		BizBankConfig bankConfig = baseMapper.getByDeptId(deptId);
-		Double tax = 0.00;
-		if(isTransnational){//跨国交易，征收关税
-			tax = transAmount * (bankConfig.getTariffRate() == null ? 0.00 : bankConfig.getTariffRate());
+	public Double collectTaxes(Double Silian_transAmount, boolean Silian_isTransnational, String Silian_deptId) {
+		BizBankConfig Silian_bankConfig = baseMapper.getByDeptId(Silian_deptId);
+		Double Silian_tax = 0.00;
+		if(Silian_isTransnational){//跨国交易，征收关税
+			Silian_tax = Silian_transAmount * (Silian_bankConfig.getTariffRate() == null ? 0.00 : Silian_bankConfig.getTariffRate());
 		}else{//国内交易，征收普通税
-			tax = transAmount * (bankConfig.getSaveRate() == null ? 0.00 : bankConfig.getSaveRate());
+			Silian_tax = Silian_transAmount * (Silian_bankConfig.getSaveRate() == null ? 0.00 : Silian_bankConfig.getSaveRate());
 		}
-		BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bankConfig.getUserId());
-		balance.setCashAcct(balance.getCashAcct() + tax);
-		bizSubjectBalanceService.updateById(balance);
-		return tax;
+		BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bankConfig.getUserId());
+		Silian_balance.setCashAcct(Silian_balance.getCashAcct() + Silian_tax);
+		bizSubjectBalanceService.updateById(Silian_balance);
+		return Silian_tax;
 	}
 
 	@Override
-	public Double collectTaxes(Double taxAmount, String deptId) {
-		BizBankConfig bankConfig = baseMapper.getByDeptId(deptId);
-		BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bankConfig.getUserId());
-		balance.setCashAcct(balance.getCashAcct() + taxAmount);
-		bizSubjectBalanceService.updateById(balance);
-		return taxAmount;
+	public Double collectTaxes(Double Silian_taxAmount, String Silian_deptId) {
+		BizBankConfig Silian_bankConfig = baseMapper.getByDeptId(Silian_deptId);
+		BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bankConfig.getUserId());
+		Silian_balance.setCashAcct(Silian_balance.getCashAcct() + Silian_taxAmount);
+		bizSubjectBalanceService.updateById(Silian_balance);
+		return Silian_taxAmount;
 	}
 
 	@Override
-	public Double offTaxes(Double transAmount, boolean isTransnational, String deptId) {
-		BizBankConfig bankConfig = baseMapper.getByDeptId(deptId);
-		Double tax = 0.00;
-		if(isTransnational){//跨国交易，征收关税
-			tax = transAmount * (bankConfig.getTariffRate() == null ? 0.00 : bankConfig.getTariffRate());
+	public Double offTaxes(Double Silian_transAmount, boolean Silian_isTransnational, String Silian_deptId) {
+		BizBankConfig Silian_bankConfig = baseMapper.getByDeptId(Silian_deptId);
+		Double Silian_tax = 0.00;
+		if(Silian_isTransnational){//跨国交易，征收关税
+			Silian_tax = Silian_transAmount * (Silian_bankConfig.getTariffRate() == null ? 0.00 : Silian_bankConfig.getTariffRate());
 		}else{//国内交易，征收普通税
-			tax = transAmount * (bankConfig.getSaveRate() == null ? 0.00 : bankConfig.getSaveRate());
+			Silian_tax = Silian_transAmount * (Silian_bankConfig.getSaveRate() == null ? 0.00 : Silian_bankConfig.getSaveRate());
 		}
-		BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bankConfig.getUserId());
-		balance.setCashAcct(balance.getCashAcct() - tax);
-		bizSubjectBalanceService.updateById(balance);
-		return tax;
+		BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bankConfig.getUserId());
+		Silian_balance.setCashAcct(Silian_balance.getCashAcct() - Silian_tax);
+		bizSubjectBalanceService.updateById(Silian_balance);
+		return Silian_tax;
 	}
 
 	@Override
-	public BizBankConfig queryTaxes(Double taxAmount, String deptId, boolean isTransnational) {
-		BizBankConfig bankConfig = baseMapper.getByDeptId(deptId);
-		if(isTransnational){
-			bankConfig.setTaxAmount(Math.round(taxAmount * (bankConfig.getTariffRate() == null ? 0.00 : bankConfig.getTariffRate()) * 100.0)/100.0);
+	public BizBankConfig queryTaxes(Double Silian_taxAmount, String Silian_deptId, boolean Silian_isTransnational) {
+		BizBankConfig Silian_bankConfig = baseMapper.getByDeptId(Silian_deptId);
+		if(Silian_isTransnational){
+			Silian_bankConfig.setTaxAmount(Math.round(Silian_taxAmount * (Silian_bankConfig.getTariffRate() == null ? 0.00 : Silian_bankConfig.getTariffRate()) * 100.0)/100.0);
 		}else{
-			bankConfig.setTaxAmount(Math.round(taxAmount * (bankConfig.getSaveRate() == null ? 0.00 : bankConfig.getSaveRate()) * 100.0)/100.0);
+			Silian_bankConfig.setTaxAmount(Math.round(Silian_taxAmount * (Silian_bankConfig.getSaveRate() == null ? 0.00 : Silian_bankConfig.getSaveRate()) * 100.0)/100.0);
 		}
-		return bankConfig;
+		return Silian_bankConfig;
 	}
 
 	@Override
-	public Double offTaxes(Double taxAmount, String deptId) {
-		BizBankConfig bankConfig = baseMapper.getByDeptId(deptId);
-		BizSubjectBalance balance = bizSubjectBalanceService.getByUserId(bankConfig.getUserId());
-		balance.setCashAcct(balance.getCashAcct() - taxAmount);
-		bizSubjectBalanceService.updateById(balance);
-		return taxAmount;
-	}
-
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void saveMain(BizBankConfig bizBankConfig, List<BizSubjectBalance> bizSubjectBalanceList) {
-		bizBankConfigMapper.insert(bizBankConfig);
+	public Double offTaxes(Double Silian_taxAmount, String Silian_deptId) {
+		BizBankConfig Silian_bankConfig = baseMapper.getByDeptId(Silian_deptId);
+		BizSubjectBalance Silian_balance = bizSubjectBalanceService.getByUserId(Silian_bankConfig.getUserId());
+		Silian_balance.setCashAcct(Silian_balance.getCashAcct() - Silian_taxAmount);
+		bizSubjectBalanceService.updateById(Silian_balance);
+		return Silian_taxAmount;
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void updateMain(BizBankConfig bizBankConfig,List<BizSubjectBalance> bizSubjectBalanceList) {
-		bizBankConfigMapper.updateById(bizBankConfig);
+	public void saveMain(BizBankConfig Silian_bizBankConfig, List<BizSubjectBalance> Silian_bizSubjectBalanceList) {
+		bizBankConfigMapper.insert(Silian_bizBankConfig);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delMain(String id) {
-		bizSubjectBalanceMapper.deleteByMainId(id);
-		bizBankConfigMapper.deleteById(id);
+	public void updateMain(BizBankConfig Silian_bizBankConfig,List<BizSubjectBalance> Silian_bizSubjectBalanceList) {
+		bizBankConfigMapper.updateById(Silian_bizBankConfig);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void delBatchMain(Collection<? extends Serializable> idList) {
-		for(Serializable id:idList) {
-			bizSubjectBalanceMapper.deleteByMainId(id.toString());
-			bizBankConfigMapper.deleteById(id);
+	public void delMain(String Silian_id) {
+		bizSubjectBalanceMapper.deleteByMainId(Silian_id);
+		bizBankConfigMapper.deleteById(Silian_id);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void delBatchMain(Collection<? extends Serializable> Silian_idList) {
+		for(Serializable Silian_id:Silian_idList) {
+			bizSubjectBalanceMapper.deleteByMainId(Silian_id.toString());
+			bizBankConfigMapper.deleteById(Silian_id);
 		}
 	}
-	
+
 }

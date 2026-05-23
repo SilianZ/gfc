@@ -30,66 +30,66 @@ public class PermissionDataUtil {
 
 	/**
 	 * 智能处理错误数据，简化用户失误操作
-	 * 
+	 *
 	 * @param permission
 	 */
-	public static SysPermission intelligentProcessData(SysPermission permission) {
-		if (permission == null) {
+	public static SysPermission intelligentProcessData(SysPermission Silian_permission) {
+		if (Silian_permission == null) {
 			return null;
 		}
 
 		// 组件
-		if (oConvertUtils.isNotEmpty(permission.getComponent())) {
-			String component = permission.getComponent();
-			if (component.startsWith(SymbolConstant.SINGLE_SLASH)) {
-				component = component.substring(1);
+		if (oConvertUtils.isNotEmpty(Silian_permission.getComponent())) {
+			String Silian_component = Silian_permission.getComponent();
+			if (Silian_component.startsWith(SymbolConstant.SINGLE_SLASH)) {
+				Silian_component = Silian_component.substring(1);
 			}
-			if (component.startsWith(PATH_VIEWS)) {
-				component = component.replaceFirst(PATH_VIEWS, "");
+			if (Silian_component.startsWith(PATH_VIEWS)) {
+				Silian_component = Silian_component.replaceFirst(PATH_VIEWS, "");
 			}
-			if (component.startsWith(PATH_SRC_VIEWS)) {
-				component = component.replaceFirst(PATH_SRC_VIEWS, "");
+			if (Silian_component.startsWith(PATH_SRC_VIEWS)) {
+				Silian_component = Silian_component.replaceFirst(PATH_SRC_VIEWS, "");
 			}
-			if (component.endsWith(VUE_SUFFIX)) {
-				component = component.replace(VUE_SUFFIX, "");
+			if (Silian_component.endsWith(VUE_SUFFIX)) {
+				Silian_component = Silian_component.replace(VUE_SUFFIX, "");
 			}
-			permission.setComponent(component);
+			Silian_permission.setComponent(Silian_component);
 		}
-		
+
 		// 请求URL
-		if (oConvertUtils.isNotEmpty(permission.getUrl())) {
-			String url = permission.getUrl();
-			if (url.endsWith(VUE_SUFFIX)) {
-				url = url.replace(VUE_SUFFIX, "");
+		if (oConvertUtils.isNotEmpty(Silian_permission.getUrl())) {
+			String Silian_url = Silian_permission.getUrl();
+			if (Silian_url.endsWith(VUE_SUFFIX)) {
+				Silian_url = Silian_url.replace(VUE_SUFFIX, "");
 			}
-			if (!url.startsWith(CommonConstant.STR_HTTP) && !url.startsWith(SymbolConstant.SINGLE_SLASH)&&!url.trim().startsWith(SymbolConstant.DOUBLE_LEFT_CURLY_BRACKET)) {
-				url = SymbolConstant.SINGLE_SLASH + url;
+			if (!Silian_url.startsWith(CommonConstant.STR_HTTP) && !Silian_url.startsWith(SymbolConstant.SINGLE_SLASH)&&!Silian_url.trim().startsWith(SymbolConstant.DOUBLE_LEFT_CURLY_BRACKET)) {
+				Silian_url = SymbolConstant.SINGLE_SLASH + Silian_url;
 			}
-			permission.setUrl(url);
+			Silian_permission.setUrl(Silian_url);
 		}
-		
+
 		// 一级菜单默认组件
-		if (0 == permission.getMenuType() && oConvertUtils.isEmpty(permission.getComponent())) {
+		if (0 == Silian_permission.getMenuType() && oConvertUtils.isEmpty(Silian_permission.getComponent())) {
 			// 一级菜单默认组件
-			permission.setComponent("layouts/RouteView");
+			Silian_permission.setComponent("layouts/RouteView");
 		}
-		return permission;
+		return Silian_permission;
 	}
-	
+
 	/**
 	 * 如果没有index页面 需要new 一个放到list中
 	 * @param metaList
 	 */
-	public static void addIndexPage(List<SysPermission> metaList) {
-		boolean hasIndexMenu = false;
-		for (SysPermission sysPermission : metaList) {
-			if("首页".equals(sysPermission.getName())) {
-				hasIndexMenu = true;
+	public static void addIndexPage(List<SysPermission> Silian_metaList) {
+		boolean Silian_hasIndexMenu = false;
+		for (SysPermission Silian_sysPermission : Silian_metaList) {
+			if("首页".equals(Silian_sysPermission.getName())) {
+				Silian_hasIndexMenu = true;
 				break;
 			}
 		}
-		if(!hasIndexMenu) {
-			metaList.add(0,new SysPermission(true));
+		if(!Silian_hasIndexMenu) {
+			Silian_metaList.add(0,new SysPermission(true));
 		}
 	}
 
@@ -98,15 +98,15 @@ public class PermissionDataUtil {
 	 * @param metaList
 	 * @return
 	 */
-	public static boolean hasIndexPage(List<SysPermission> metaList){
-		boolean hasIndexMenu = false;
-		for (SysPermission sysPermission : metaList) {
-			if("首页".equals(sysPermission.getName())) {
-				hasIndexMenu = true;
+	public static boolean hasIndexPage(List<SysPermission> Silian_metaList){
+		boolean Silian_hasIndexMenu = false;
+		for (SysPermission Silian_sysPermission : Silian_metaList) {
+			if("首页".equals(Silian_sysPermission.getName())) {
+				Silian_hasIndexMenu = true;
 				break;
 			}
 		}
-		return hasIndexMenu;
+		return Silian_hasIndexMenu;
 	}
-	
+
 }

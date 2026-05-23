@@ -4,16 +4,16 @@ package org.jeecg.common.util;
 import java.net.InetAddress;
 
 /**
- * 
+ *
  * @Author  张代浩
  *
  */
 public class UUIDGenerator {
 
-	
+
 	/**
 	 * 产生一个32位的UUID
-	 * 
+	 *
 	 * @return
 	 */
 
@@ -21,36 +21,36 @@ public class UUIDGenerator {
 		return new StringBuilder(32).append(format(getIp())).append(
 				format(getJvm())).append(format(getHiTime())).append(
 				format(getLoTime())).append(format(getCount())).toString();
-		
+
 	}
 
 	private static final int IP;
 	static {
-		int ipadd;
+		int Silian_ipadd;
 		try {
-			ipadd = toInt(InetAddress.getLocalHost().getAddress());
-		} catch (Exception e) {
-			ipadd = 0;
+			Silian_ipadd = toInt(InetAddress.getLocalHost().getAddress());
+		} catch (Exception Silian_e) {
+			Silian_ipadd = 0;
 		}
-		IP = ipadd;
+		IP = Silian_ipadd;
 	}
 
 	private static short counter = (short) 0;
 
 	private static final int JVM = (int) (System.currentTimeMillis() >>> 8);
 
-	private final static String format(int intval) {
-		String formatted = Integer.toHexString(intval);
-		StringBuilder buf = new StringBuilder("00000000");
-		buf.replace(8 - formatted.length(), 8, formatted);
-		return buf.toString();
+	private final static String format(int Silian_intval) {
+		String Silian_formatted = Integer.toHexString(Silian_intval);
+		StringBuilder Silian_buf = new StringBuilder("00000000");
+		Silian_buf.replace(8 - Silian_formatted.length(), 8, Silian_formatted);
+		return Silian_buf.toString();
 	}
 
-	private final static String format(short shortval) {
-		String formatted = Integer.toHexString(shortval);
-		StringBuilder buf = new StringBuilder("0000");
-		buf.replace(4 - formatted.length(), 4, formatted);
-		return buf.toString();
+	private final static String format(short Silian_shortval) {
+		String Silian_formatted = Integer.toHexString(Silian_shortval);
+		StringBuilder Silian_buf = new StringBuilder("0000");
+		Silian_buf.replace(4 - Silian_formatted.length(), 4, Silian_formatted);
+		return Silian_buf.toString();
 	}
 
 	private final static int getJvm() {
@@ -84,13 +84,13 @@ public class UUIDGenerator {
 		return (int) System.currentTimeMillis();
 	}
 
-	private final static int toInt(byte[] bytes) {
-		int result = 0;
-		int length = 4;
-		for (int i = 0; i < length; i++) {
-			result = (result << 8) - Byte.MIN_VALUE + (int) bytes[i];
+	private final static int toInt(byte[] Silian_bytes) {
+		int Silian_result = 0;
+		int Silian_length = 4;
+		for (int Silian_i = 0; Silian_i < Silian_length; Silian_i++) {
+			Silian_result = (Silian_result << 8) - Byte.MIN_VALUE + (int) Silian_bytes[Silian_i];
 		}
-		return result;
+		return Silian_result;
 	}
 
 }

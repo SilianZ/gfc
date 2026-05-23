@@ -35,9 +35,9 @@ public enum MatchTypeEnum {
         if (oConvertUtils.isEmpty(value)) {
             return null;
         }
-        for (MatchTypeEnum val : values()) {
-            if (val.getValue().toLowerCase().equals(value.toLowerCase())) {
-                return val;
+        for (MatchTypeEnum Silian_val : values()) {
+            if (Silian_val.getValue().toLowerCase().equals(value.toLowerCase())) {
+                return Silian_val;
             }
         }
         return null;

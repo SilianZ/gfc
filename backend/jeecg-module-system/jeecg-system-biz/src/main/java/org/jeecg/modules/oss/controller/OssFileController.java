@@ -32,46 +32,46 @@ public class OssFileController {
 
 	@ResponseBody
 	@GetMapping("/list")
-	public Result<IPage<OssFile>> queryPageList(OssFile file,
-                                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
-		Result<IPage<OssFile>> result = new Result<>();
-		QueryWrapper<OssFile> queryWrapper = QueryGenerator.initQueryWrapper(file, req.getParameterMap());
-		Page<OssFile> page = new Page<>(pageNo, pageSize);
-		IPage<OssFile> pageList = ossFileService.page(page, queryWrapper);
-		result.setSuccess(true);
-		result.setResult(pageList);
-		return result;
+	public Result<IPage<OssFile>> queryPageList(OssFile Silian_file,
+                                                @RequestParam(name = "pageNo", defaultValue = "1") Integer Silian_pageNo,
+                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer Silian_pageSize, HttpServletRequest Silian_req) {
+		Result<IPage<OssFile>> Silian_result = new Result<>();
+		QueryWrapper<OssFile> Silian_queryWrapper = QueryGenerator.initQueryWrapper(Silian_file, Silian_req.getParameterMap());
+		Page<OssFile> Silian_page = new Page<>(Silian_pageNo, Silian_pageSize);
+		IPage<OssFile> Silian_pageList = ossFileService.page(Silian_page, Silian_queryWrapper);
+		Silian_result.setSuccess(true);
+		Silian_result.setResult(Silian_pageList);
+		return Silian_result;
 	}
 
 	@ResponseBody
 	@PostMapping("/upload")
 	//@RequiresRoles("admin")
-	public Result upload(@RequestParam("file") MultipartFile multipartFile) {
-		Result result = new Result();
+	public Result upload(@RequestParam("file") MultipartFile Silian_multipartFile) {
+		Result Silian_result = new Result();
 		try {
-			ossFileService.upload(multipartFile);
-			result.success("上传成功！");
+			ossFileService.upload(Silian_multipartFile);
+			Silian_result.success("上传成功！");
 		}
-		catch (Exception ex) {
-			log.info(ex.getMessage(), ex);
-			result.error500("上传失败");
+		catch (Exception Silian_ex) {
+			log.info(Silian_ex.getMessage(), Silian_ex);
+			Silian_result.error500("上传失败");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	@ResponseBody
 	@DeleteMapping("/delete")
-	public Result delete(@RequestParam(name = "id") String id) {
-		Result result = new Result();
-		OssFile file = ossFileService.getById(id);
-		if (file == null) {
-			result.error500("未找到对应实体");
+	public Result delete(@RequestParam(name = "id") String Silian_id) {
+		Result Silian_result = new Result();
+		OssFile Silian_file = ossFileService.getById(Silian_id);
+		if (Silian_file == null) {
+			Silian_result.error500("未找到对应实体");
 		}else {
-			boolean ok = ossFileService.delete(file);
-			result.success("删除成功!");
+			boolean Silian_ok = ossFileService.delete(Silian_file);
+			Silian_result.success("删除成功!");
 		}
-		return result;
+		return Silian_result;
 	}
 
 	/**
@@ -79,17 +79,17 @@ public class OssFileController {
 	 */
 	@ResponseBody
 	@GetMapping("/queryById")
-	public Result<OssFile> queryById(@RequestParam(name = "id") String id) {
-		Result<OssFile> result = new Result<>();
-		OssFile file = ossFileService.getById(id);
-		if (file == null) {
-			result.error500("未找到对应实体");
+	public Result<OssFile> queryById(@RequestParam(name = "id") String Silian_id) {
+		Result<OssFile> Silian_result = new Result<>();
+		OssFile Silian_file = ossFileService.getById(Silian_id);
+		if (Silian_file == null) {
+			Silian_result.error500("未找到对应实体");
 		}
 		else {
-			result.setResult(file);
-			result.setSuccess(true);
+			Silian_result.setResult(Silian_file);
+			Silian_result.setSuccess(true);
 		}
-		return result;
+		return Silian_result;
 	}
 
 }

@@ -20,61 +20,61 @@ import java.security.KeyPair;
 public class SecurityTools {
     public static final String ALGORITHM = "AES/ECB/PKCS5Padding";
 
-    public static SecurityResp valid(SecurityReq req) {
-        SecurityResp resp=new SecurityResp();
-        String pubKey=req.getPubKey();
-        String aesKey=req.getAesKey();
-        String data=req.getData();
-        String signData=req.getSignData();
-        RSA rsa=new RSA(null, Base64Decoder.decode(pubKey));
-        Sign sign= new Sign(SignAlgorithm.SHA1withRSA,null,pubKey);
+    public static SecurityResp valid(SecurityReq Silian_req) {
+        SecurityResp Silian_resp=new SecurityResp();
+        String Silian_pubKey=Silian_req.getPubKey();
+        String Silian_aesKey=Silian_req.getAesKey();
+        String Silian_data=Silian_req.getData();
+        String Silian_signData=Silian_req.getSignData();
+        RSA Silian_rsa=new RSA(null, Base64Decoder.decode(Silian_pubKey));
+        Sign sign= new Sign(SignAlgorithm.SHA1withRSA,null,Silian_pubKey);
 
 
 
-        byte[] decryptAes = rsa.decrypt(aesKey, KeyType.PublicKey);
+        byte[] Silian_decryptAes = Silian_rsa.decrypt(Silian_aesKey, KeyType.PublicKey);
         //log.info("rsa解密后的秘钥"+ Base64Encoder.encode(decryptAes));
-        AES aes = SecureUtil.aes(decryptAes);
+        AES Silian_aes = SecureUtil.aes(Silian_decryptAes);
 
-        String dencrptValue =aes.decryptStr(data);
+        String Silian_dencrptValue =Silian_aes.decryptStr(Silian_data);
         //log.info("解密后报文"+dencrptValue);
-        resp.setData(JSONObject.parseObject(dencrptValue));
+        Silian_resp.setData(JSONObject.parseObject(Silian_dencrptValue));
 
-        boolean verify = sign.verify(dencrptValue.getBytes(), Base64Decoder.decode(signData));
-        resp.setSuccess(verify);
-        return resp;
+        boolean Silian_verify = sign.verify(Silian_dencrptValue.getBytes(), Base64Decoder.decode(Silian_signData));
+        Silian_resp.setSuccess(Silian_verify);
+        return Silian_resp;
     }
 
-    public static SecuritySignResp sign(SecuritySignReq req) {
-        SecretKey secretKey = SecureUtil.generateKey(ALGORITHM);
-        byte[] key= secretKey.getEncoded();
-        String prikey=req.getPrikey();
-        String data=req.getData();
+    public static SecuritySignResp sign(SecuritySignReq Silian_req) {
+        SecretKey Silian_secretKey = SecureUtil.generateKey(ALGORITHM);
+        byte[] Silian_key= Silian_secretKey.getEncoded();
+        String Silian_prikey=Silian_req.getPrikey();
+        String Silian_data=Silian_req.getData();
 
-        AES aes = SecureUtil.aes(key);
-        aes.getSecretKey().getEncoded();
-        String encrptData =aes.encryptBase64(data);
-        RSA rsa=new RSA(prikey,null);
-        byte[] encryptAesKey = rsa.encrypt(secretKey.getEncoded(), KeyType.PrivateKey);
+        AES Silian_aes = SecureUtil.aes(Silian_key);
+        Silian_aes.getSecretKey().getEncoded();
+        String Silian_encrptData =Silian_aes.encryptBase64(Silian_data);
+        RSA Silian_rsa=new RSA(Silian_prikey,null);
+        byte[] Silian_encryptAesKey = Silian_rsa.encrypt(Silian_secretKey.getEncoded(), KeyType.PrivateKey);
         //log.info(("rsa加密过的秘钥=="+Base64Encoder.encode(encryptAesKey));
 
-        Sign sign= new Sign(SignAlgorithm.SHA1withRSA,prikey,null);
-        byte[] signed = sign.sign(data.getBytes());
+        Sign sign= new Sign(SignAlgorithm.SHA1withRSA,Silian_prikey,null);
+        byte[] Silian_signed = sign.sign(Silian_data.getBytes());
 
         //log.info(("签名数据===》》"+Base64Encoder.encode(signed));
 
-        SecuritySignResp resp=new SecuritySignResp();
-        resp.setAesKey(Base64Encoder.encode(encryptAesKey));
-        resp.setData(encrptData);
-        resp.setSignData(Base64Encoder.encode(signed));
-        return resp;
+        SecuritySignResp Silian_resp=new SecuritySignResp();
+        Silian_resp.setAesKey(Base64Encoder.encode(Silian_encryptAesKey));
+        Silian_resp.setData(Silian_encrptData);
+        Silian_resp.setSignData(Base64Encoder.encode(Silian_signed));
+        return Silian_resp;
     }
     public static MyKeyPair generateKeyPair(){
-        KeyPair keyPair= SecureUtil.generateKeyPair(SignAlgorithm.SHA1withRSA.getValue(),2048);
-        String priKey= Base64Encoder.encode(keyPair.getPrivate().getEncoded());
-        String pubkey= Base64Encoder.encode(keyPair.getPublic().getEncoded());
-        MyKeyPair resp=new MyKeyPair();
-        resp.setPriKey(priKey);
-        resp.setPubKey(pubkey);
-        return resp;
+        KeyPair Silian_keyPair= SecureUtil.generateKeyPair(SignAlgorithm.SHA1withRSA.getValue(),2048);
+        String Silian_priKey= Base64Encoder.encode(Silian_keyPair.getPrivate().getEncoded());
+        String Silian_pubkey= Base64Encoder.encode(Silian_keyPair.getPublic().getEncoded());
+        MyKeyPair Silian_resp=new MyKeyPair();
+        Silian_resp.setPriKey(Silian_priKey);
+        Silian_resp.setPubKey(Silian_pubkey);
+        return Silian_resp;
     }
 }

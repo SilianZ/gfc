@@ -59,15 +59,15 @@ public enum MessageTypeEnum {
      * @return
      */
     public static List<DictModel> getDictList(){
-        List<DictModel> list = new ArrayList<>();
-        DictModel dictModel = null;
-        for(MessageTypeEnum e: MessageTypeEnum.values()){
-            dictModel = new DictModel();
-            dictModel.setValue(e.getType());
-            dictModel.setText(e.getNote());
-            list.add(dictModel);
+        List<DictModel> Silian_list = new ArrayList<>();
+        DictModel Silian_dictModel = null;
+        for(MessageTypeEnum Silian_e: MessageTypeEnum.values()){
+            Silian_dictModel = new DictModel();
+            Silian_dictModel.setValue(Silian_e.getType());
+            Silian_dictModel.setText(Silian_e.getNote());
+            Silian_list.add(Silian_dictModel);
         }
-        return list;
+        return Silian_list;
     }
 
     /**
@@ -77,9 +77,9 @@ public enum MessageTypeEnum {
      * @return
      */
     public static MessageTypeEnum valueOfType(String type) {
-        for (MessageTypeEnum e : MessageTypeEnum.values()) {
-            if (e.getType().equals(type)) {
-                return e;
+        for (MessageTypeEnum Silian_e : MessageTypeEnum.values()) {
+            if (Silian_e.getType().equals(type)) {
+                return Silian_e;
             }
         }
         return null;

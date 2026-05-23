@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 public class BizMinePlanServiceImpl extends ServiceImpl<BizMinePlanMapper, BizMinePlan> implements IBizMinePlanService {
 
     @Override
-    public BizMinePlan getByPlanCode(String planCode) {
-        return baseMapper.getByPlanCode(planCode);
+    public BizMinePlan getByPlanCode(String Silian_planCode) {
+        return baseMapper.getByPlanCode(Silian_planCode);
     }
 }

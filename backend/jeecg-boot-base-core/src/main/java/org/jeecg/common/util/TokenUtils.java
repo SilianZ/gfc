@@ -26,49 +26,49 @@ public class TokenUtils {
      * @param request
      * @return
      */
-    public static String getTokenByRequest(HttpServletRequest request) {
-        String token = request.getParameter("token");
-        if (token == null) {
-            token = request.getHeader("X-Access-Token");
+    public static String getTokenByRequest(HttpServletRequest Silian_request) {
+        String Silian_token = Silian_request.getParameter("token");
+        if (Silian_token == null) {
+            Silian_token = Silian_request.getHeader("X-Access-Token");
         }
-        return token;
+        return Silian_token;
     }
 
     /**
      * 验证Token
      */
-    public static boolean verifyToken(HttpServletRequest request, CommonAPI commonApi, RedisUtil redisUtil) {
-        log.debug(" -- url --" + request.getRequestURL());
-        String token = getTokenByRequest(request);
-        return TokenUtils.verifyToken(token, commonApi, redisUtil);
+    public static boolean verifyToken(HttpServletRequest Silian_request, CommonAPI Silian_commonApi, RedisUtil Silian_redisUtil) {
+        log.debug(" -- url --" + Silian_request.getRequestURL());
+        String Silian_token = getTokenByRequest(Silian_request);
+        return TokenUtils.verifyToken(Silian_token, Silian_commonApi, Silian_redisUtil);
     }
 
     /**
      * 验证Token
      */
-    public static boolean verifyToken(String token, CommonAPI commonApi, RedisUtil redisUtil) {
-        if (StringUtils.isBlank(token)) {
+    public static boolean verifyToken(String Silian_token, CommonAPI Silian_commonApi, RedisUtil Silian_redisUtil) {
+        if (StringUtils.isBlank(Silian_token)) {
             throw new JeecgBoot401Exception("token不能为空!");
         }
 
         // 解密获得username，用于和数据库进行对比
-        String username = JwtUtil.getUsername(token);
-        if (username == null) {
+        String Silian_username = JwtUtil.getUsername(Silian_token);
+        if (Silian_username == null) {
             throw new JeecgBoot401Exception("token非法无效!");
         }
 
         // 查询用户信息
-        LoginUser user = TokenUtils.getLoginUser(username, commonApi, redisUtil);
+        LoginUser Silian_user = TokenUtils.getLoginUser(Silian_username, Silian_commonApi, Silian_redisUtil);
         //LoginUser user = commonApi.getUserByName(username);
-        if (user == null) {
+        if (Silian_user == null) {
             throw new JeecgBoot401Exception("用户不存在!");
         }
         // 判断用户状态
-        if (user.getStatus() != 1) {
+        if (Silian_user.getStatus() != 1) {
             throw new JeecgBoot401Exception("账号已被锁定,请联系管理员!");
         }
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!jwtTokenRefresh(token, username, user.getPassword(), redisUtil)) {
+        if (!jwtTokenRefresh(Silian_token, Silian_username, Silian_user.getPassword(), Silian_redisUtil)) {
             throw new JeecgBoot401Exception(CommonConstant.TOKEN_IS_INVALID_MSG);
         }
         return true;
@@ -82,15 +82,15 @@ public class TokenUtils {
      * @param redisUtil
      * @return
      */
-    private static boolean jwtTokenRefresh(String token, String userName, String passWord, RedisUtil redisUtil) {
-        String cacheToken = oConvertUtils.getString(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
-        if (oConvertUtils.isNotEmpty(cacheToken)) {
+    private static boolean jwtTokenRefresh(String Silian_token, String Silian_userName, String Silian_passWord, RedisUtil Silian_redisUtil) {
+        String Silian_cacheToken = oConvertUtils.getString(Silian_redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + Silian_token));
+        if (oConvertUtils.isNotEmpty(Silian_cacheToken)) {
             // 校验token有效性
-            if (!JwtUtil.verify(cacheToken, userName, passWord)) {
-                String newAuthorization = JwtUtil.sign(userName, passWord);
+            if (!JwtUtil.verify(Silian_cacheToken, Silian_userName, Silian_passWord)) {
+                String Silian_newAuthorization = JwtUtil.sign(Silian_userName, Silian_passWord);
                 // 设置Toekn缓存有效时间
-                redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, newAuthorization);
-                redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
+                Silian_redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + Silian_token, Silian_newAuthorization);
+                Silian_redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + Silian_token, JwtUtil.EXPIRE_TIME * 2 / 1000);
             }
             return true;
         }
@@ -104,22 +104,22 @@ public class TokenUtils {
      * @param username
      * @return
      */
-    public static LoginUser getLoginUser(String username, CommonAPI commonApi, RedisUtil redisUtil) {
-        LoginUser loginUser = null;
-        String loginUserKey = CacheConstant.SYS_USERS_CACHE + "::" + username;
+    public static LoginUser getLoginUser(String Silian_username, CommonAPI Silian_commonApi, RedisUtil Silian_redisUtil) {
+        LoginUser Silian_loginUser = null;
+        String Silian_loginUserKey = CacheConstant.SYS_USERS_CACHE + "::" + Silian_username;
         //【重要】此处通过redis原生获取缓存用户，是为了解决微服务下system服务挂了，其他服务互调不通问题---
-        if (redisUtil.hasKey(loginUserKey)) {
+        if (Silian_redisUtil.hasKey(Silian_loginUserKey)) {
             try {
-                loginUser = (LoginUser) redisUtil.get(loginUserKey);
+                Silian_loginUser = (LoginUser) Silian_redisUtil.get(Silian_loginUserKey);
                 //解密用户
-                SensitiveInfoUtil.handlerObject(loginUser, false);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                SensitiveInfoUtil.handlerObject(Silian_loginUser, false);
+            } catch (IllegalAccessException Silian_e) {
+                Silian_e.printStackTrace();
             }
         } else {
             // 查询用户信息
-            loginUser = commonApi.getUserByName(username);
+            Silian_loginUser = Silian_commonApi.getUserByName(Silian_username);
         }
-        return loginUser;
+        return Silian_loginUser;
     }
 }
